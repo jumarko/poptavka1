@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.demandsModule;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
@@ -7,8 +10,19 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
 import java.math.BigDecimal;
+
+/**
+ * Potential demand detail.
+ * TODO Martin remove
+ *
+ * @author Ivan Vlcek
+ * @author Martin Slavkovsky
+ */
 public class PotentialDemandDetail implements IsSerializable {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private long demandId;
     private long messageId;
     private long userMessageId;
@@ -25,34 +39,63 @@ public class PotentialDemandDetail implements IsSerializable {
     private Date validToDate;
     private DemandTypeDetail demandType;
     private DemandStatus demandStatus;
-
-
+    /** Key provider. **/
     public static final ProvidesKey<PotentialDemandDetail> KEY_PROVIDER = new ProvidesKey<PotentialDemandDetail>() {
-
         @Override
         public Object getKey(PotentialDemandDetail item) {
             return item == null ? null : item.getDemandId();
         }
     };
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     /**
-     * Set Client Sender.
+     * Creates PotentialDemandDetail.
      */
+    public PotentialDemandDetail() {
+        //For serialization.
+    }
+
+    /**************************************************************************/
+    /* Getter & Setter pairs                                                  */
+    /**************************************************************************/
+    /*
+     * Sender pair
+     */
+    public String getSender() {
+        return sender;
+    }
+
     public void setSender(String sender) {
         this.sender = sender;
     }
 
-    /**
-     * Set Client Rating.
+    /*
+     * Rating pair.
      */
+    public int getRating() {
+        return (clientRating == null ? 0 : clientRating.intValue());
+    }
+
     public void setRating(Integer clientRating) {
         this.clientRating = clientRating;
+    }
+
+    /*
+     * Created date pair.
+     */
+    public Date getCreated() {
+        return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
+    /*
+     * Demand id pair.
+     */
     public long getDemandId() {
         return demandId;
     }
@@ -61,6 +104,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.demandId = demandId;
     }
 
+    /*
+     * Demand status pair
+     */
     public DemandStatus getDemandStatus() {
         return demandStatus;
     }
@@ -69,10 +115,20 @@ public class PotentialDemandDetail implements IsSerializable {
         this.demandStatus = demandStatus;
     }
 
+    /*
+     * Femand title pair
+     */
+    public String getTitle() {
+        return demandTitle;
+    }
+
     public void setTitle(String demandTitle) {
         this.demandTitle = demandTitle;
     }
 
+    /*
+     * Demand type pair.
+     */
     public DemandTypeDetail getDemandType() {
         return demandType;
     }
@@ -81,6 +137,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.demandType = demandType;
     }
 
+    /*
+     * Message id pair.
+     */
     public long getMessageId() {
         return messageId;
     }
@@ -89,6 +148,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.messageId = messageId;
     }
 
+    /*
+     * Demand price pair.
+     */
     public String getPrice() {
         return price.toString();
     }
@@ -105,6 +167,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.read = read;
     }
 
+    /*
+     * Starred pair
+     */
     public boolean isStarred() {
         return starred;
     }
@@ -113,6 +178,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.starred = starred;
     }
 
+    /*
+     * User message id pair
+     */
     public long getUserMessageId() {
         return userMessageId;
     }
@@ -121,18 +189,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.userMessageId = userMessageId;
     }
 
-    public String getTitle() {
-        return demandTitle;
-    }
-
-    public String getSender() {
-        return sender;
-    }
-
-    public Date getCreated() {
-        return createdDate;
-    }
-
+    /*
+     * End date pair.
+     */
     public Date getEndDate() {
         return endDate;
     }
@@ -143,9 +202,12 @@ public class PotentialDemandDetail implements IsSerializable {
 
     public String getFormattedMessageCount() {
         return "(" + getMessageCount() + "/"
-                + getUnreadSubmessages() + ")";
+            + getUnreadSubmessages() + ")";
     }
 
+    /*
+     * Message count pair
+     */
     public int getMessageCount() {
         return messageCount;
     }
@@ -154,6 +216,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.messageCount = count;
     }
 
+    /*
+     * unread sub messages pair.
+     */
     public int getUnreadSubmessages() {
         return unreadSubmessages;
     }
@@ -162,10 +227,9 @@ public class PotentialDemandDetail implements IsSerializable {
         this.unreadSubmessages = unreadSubmessages;
     }
 
-    public int getRating() {
-        return (clientRating == null ? 0 : clientRating.intValue());
-    }
-
+    /*
+     * Valid to date pair.
+     */
     public Date getValidToDate() {
         return validToDate;
     }

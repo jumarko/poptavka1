@@ -17,7 +17,6 @@
     <bean id="addressSuggestionConverter" class="com.eprovement.poptavka.server.converter.AddressSuggestionConverter" />
     <bean id="activationEmailConverter" class="com.eprovement.poptavka.server.converter.ActivationEmailConverter" />
     <bean id="addressConverter" class="com.eprovement.poptavka.server.converter.AddressConverter" />
-    <bean id="baseDemandConverter" class="com.eprovement.poptavka.server.converter.BaseDemandConverter" />
     <bean id="businessUserConverter" class="com.eprovement.poptavka.server.converter.BusinessUserConverter">
         <constructor-arg index="0" ref="addressConverter"/>
         <!--<constructor-arg index="1" ref="accessRoleConverter"/>-->

@@ -11,6 +11,7 @@ import org.apache.commons.lang.Validate;
 
 /**
  * Converts UserMessage to PotrentialDemandDetail.
+ * //TODO Martin switch to SupplierPotentialDetail
  * @author Juraj Martinka
  */
 public final class PotentialDemandConverter extends AbstractConverter<UserMessage, PotentialDemandDetail> {

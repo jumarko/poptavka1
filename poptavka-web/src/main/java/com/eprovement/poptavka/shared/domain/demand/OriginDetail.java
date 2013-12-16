@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -7,32 +10,33 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * or for call of detail, that supports editing.
  *
  * @author Beho
- *
  */
 public class OriginDetail implements IsSerializable {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private Long id;
     private String name;
     private String description;
     private String url;
 
-    /** for serialization. **/
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates OriginDetail.
+     */
     public OriginDetail() {
+        //for serialization
     }
 
-    public OriginDetail(OriginDetail demand) {
-        this.updateWholeDemandOrigin(demand);
-    }
-
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeDemandOrigin(OriginDetail originDetail) {
-        id = originDetail.getId();
-        name = originDetail.getName();
-        description = originDetail.getDescription();
-        url = originDetail.getUrl();
-    }
-
+    /**************************************************************************/
+    /* Getter & Setter pairs                                                  */
+    /**************************************************************************/
+    /*
+     * Description pair.
+     */
     public String getDescription() {
         return description;
     }
@@ -41,6 +45,9 @@ public class OriginDetail implements IsSerializable {
         this.description = description;
     }
 
+    /*
+     * Origin id pair.
+     */
     public Long getId() {
         return id;
     }
@@ -49,6 +56,9 @@ public class OriginDetail implements IsSerializable {
         this.id = id;
     }
 
+    /*
+     * Origin name pair.
+     */
     public String getName() {
         return name;
     }
@@ -57,6 +67,9 @@ public class OriginDetail implements IsSerializable {
         this.name = name;
     }
 
+    /*
+     * Origin URL pair
+     */
     public String getUrl() {
         return url;
     }
@@ -65,6 +78,9 @@ public class OriginDetail implements IsSerializable {
         this.url = url;
     }
 
+    /**************************************************************************/
+    /* Overriden methids                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
 
