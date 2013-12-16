@@ -1,12 +1,9 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.domain.enums;
 
 import java.util.Arrays;
 
 /**
- * List of string codes for common AccessRole-s.
+ * List of string codes for common AccessRoles.
  */
 public final class CommonAccessRoles {
 
@@ -27,4 +24,4 @@ public final class CommonAccessRoles {
             SUPPLIER_ACCESS_ROLE_CODE
         });
     }
-}
+}s

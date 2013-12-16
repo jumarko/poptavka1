@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
@@ -18,10 +13,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
- *
+ * Associates a user with a message and assigns him/her a role
+ * 
  * @author Vojtech Hubr
  *         Date 12.4.11
- * Associates a user to a message and assigns him/her a role
  */
 @Entity
 public class MessageUserRole extends DomainObject {
@@ -29,7 +24,9 @@ public class MessageUserRole extends DomainObject {
     private User user;
     @ManyToOne
     private Message message;
-
+    /**
+     * meaning of the role, i.e. TO, CC, BCC...
+     */
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private MessageUserRoleType type;

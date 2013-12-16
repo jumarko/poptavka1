@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.domain.register;
 
 public final class Registers {

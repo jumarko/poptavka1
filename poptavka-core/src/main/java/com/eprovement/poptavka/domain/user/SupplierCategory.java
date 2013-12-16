@@ -10,6 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
+ * Categories of demands the suppliers can realize
+ * 
  * @author Juraj Martinka
  *         Date: 13.2.11
  */

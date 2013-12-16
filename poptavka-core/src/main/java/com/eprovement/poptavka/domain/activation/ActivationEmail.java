@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.common.DomainObject;
 
 import javax.persistence.Entity;
 import java.util.Date;
+import javax.persistence.Temporal;
 
 /**
  * Represents request for activation that is sent to the user via email.
@@ -17,6 +18,7 @@ public class ActivationEmail extends DomainObject {
     private String activationCode;
 
     /** After this date the activation will not be possible. */
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date validTo;
 
     public String getActivationCode() {

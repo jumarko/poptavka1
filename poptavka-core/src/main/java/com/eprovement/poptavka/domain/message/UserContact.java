@@ -1,14 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.message;
-
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.user.User;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -16,15 +9,15 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 
 /**
- *
- * @author Vojtech Hubr
- *         Date 12.4.11
- *
  * User's contact, i.e. information a user stores for (usually) another
  * user in their contact list.
  * If the two users (the one that saves the <code>UserContact</code> and
  * the one that is represented by the <code>UserContact</code> are the same,
  * that it will be used as a template.
+*
+ * @author Vojtech Hubr
+ *         Date 12.4.11
+ *
  */
 @Entity
 public class UserContact extends DomainObject {

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
@@ -36,10 +31,12 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 /**
- *
+ * A message passed between users within the system
+ * There is just one object of a given message, which is shared among all the participants
+ * in the given conversation.
+ * 
  * @author Vojtech Hubr
  *         Date 12.4.11
- *
  */
 
 @Entity
@@ -59,19 +56,6 @@ import org.hibernate.annotations.CascadeType;
                         + "limit 1")
 }
 )
-
-/* @NamedQueries({
-        @NamedQuery(name = "getListOfClientDemandMessages",
-                query = "select m.id, count(um.id)\n"
-                        + "from UserMessage as um inner join"
-                        + " um.message as m\n"
-                        + "where um.read = false"
-                        + " and um.user = :user\n"
-                        + "group by m.id\n"
-                        + "having m.sender = :sender"
-                        ) }
-) */
-
 
 public class Message extends DomainObject {
 

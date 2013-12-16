@@ -24,7 +24,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * Represents ordinary user in application without further specification.
+ * Common class representing a user that can log in the system
  *
  * @author Juraj Martinka
  *         Date: 28.1.11

@@ -9,11 +9,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Class that provides general methods withou the need to create a concrete subclass as it is in case of
+ * Class that provides general methods without the need to create a concrete subclass as it is in case of
  * {@link GenericService}.
  *
  * <p>
- *     This is only "wrapper" service for {@link com.googlecode.genericdao.dao.jpa.GeneralDAO}.
+ *     This is only a "wrapper" service for {@link com.googlecode.genericdao.dao.jpa.GeneralDAO}.
  *
  * @author Juraj Martinka
  *         Date: 3.5.11

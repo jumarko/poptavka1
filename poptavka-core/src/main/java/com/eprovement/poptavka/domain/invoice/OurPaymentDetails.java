@@ -23,11 +23,11 @@ public class OurPaymentDetails extends DomainObject {
     private String zipCode;
     private String city;
 
-    /** aka "ic" in czech republic. */
+    /** aka "ic" in the Czech republic. */
     @Column(length = 16)
     private String identificationNumber;
 
-    /** aka "dic* in czech republic. */
+    /** aka "dic* in the Czech republic. */
     @Column(length = 16)
     private String taxId;
 

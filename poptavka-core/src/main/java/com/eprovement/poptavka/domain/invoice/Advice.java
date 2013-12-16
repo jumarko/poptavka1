@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * Advice of an upcoming invoice
+ * 
  * @author Juraj Martinka
  *         Date: 11.4.11
  */

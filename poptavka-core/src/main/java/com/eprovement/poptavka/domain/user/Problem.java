@@ -6,6 +6,8 @@ import org.hibernate.envers.Audited;
 import javax.persistence.Entity;
 
 /**
+ * A problem with the system reported by users
+ * 
  * @author Juraj Martinka
  *         Date: 29.1.11
  */

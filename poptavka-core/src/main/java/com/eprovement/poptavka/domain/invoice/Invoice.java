@@ -16,14 +16,14 @@ import java.util.List;
 
 /**
  * Represents invoice sent to the customer.
- * Only one invoice is sent to the customer for all his services - {@link }.
+ * Only one invoice is sent to the customer for all their services - {@link }.
  * <p>
  * It might seems to be important to audit this entity,
- * however, invoice is created only once and then is not normally edited.
- * If any error occurs then that invoice should be discarded and new invoice will be issued.
+ * however, invoice is created only once and it is not usually edited subsequently.
+ * If any error occurs then that invoice should be discarded and a new one issued.
  *
  * <p>
- * For naming conventions see
+ * For naming conventions, see
  * <a href="http://www.porada.sk/t73758-nalezitosti-faktury-v-anglickom-a-nemeckom-jazyku.html">
  *     nalezitosti-faktury-v-anglickom-a-nemeckom-jazyku</a>
  *
@@ -34,7 +34,7 @@ import java.util.List;
 public class Invoice extends DomainObject {
 
     /**
-     * "Number" of invoice - this must be unique code.
+     * "Number" of invoice - this must be a unique code.
      * <p>
      * Format of this number is "YYYYMMDDNNNN", where:
      * <ul>

@@ -3,7 +3,7 @@ package com.eprovement.poptavka.domain.enums;
 /**
  * Type of {@link com.eprovement.poptavka.domain.user.BusinessUser}.
  * <p/>
- * Basic types should cover many different kinds of business companies and private persons too.
+ * Forms of business entities
  *
  * @author Juraj Martinka
  *         Date: 28.1.11

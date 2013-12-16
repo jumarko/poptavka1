@@ -5,9 +5,9 @@ import com.eprovement.poptavka.domain.common.DomainObject;
 import javax.persistence.Entity;
 
 /**
- * Simple action that can be invoked in application by the user.
+ * Simple action that can be invoked by a user.
  *
- * @deprecated  will be removed -- it provides the unncessary flexibility. Using of {@link Permission} should be
+ * @deprecated  will be removed -- it provides the unnecessary flexibility. Using of {@link Permission} should be
  * sufficient.
  * @author Juraj Martinka
  *         Date: 28.1.11

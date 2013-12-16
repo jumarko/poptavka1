@@ -10,7 +10,8 @@ import javax.persistence.OneToOne;
 import java.util.List;
 
 /**
- * @author Excalibur
+ * Client demands to have projects realized
+ * 
  * @author Juraj Martinka
  */
 @Entity

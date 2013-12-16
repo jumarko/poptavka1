@@ -1,7 +1,8 @@
 package com.eprovement.poptavka.domain.enums;
 
 /**
- *
+ * Demand (project) life-cycle status (state)
+ * 
  * @author Juraj Martinka
  *         Date: 31.1.11
  */
@@ -9,16 +10,15 @@ public enum DemandStatus {
 
 
     /**
-     * New Demand has been creted by Client. This Demand has to be validated by Operator who will change its
-     * DemandStatus to ACTIVE, INVALID.
+     * New Demand that has just been created by a Client. It to be validated by an Operator, who will change its
+     * DemandStatus to ACTIVE or, INVALID.
      */
     NEW("NEW"),
 
     /**
-     * There are two meanings for this state. Brand new Client created Demand during registration
-     * and he must confirm email activation link. The other meaning is when Demand came from external system
-     * and we are waiting for approval to show Demand from non-registered Client.
-     * Until we receive link confirmation/approval this Demand is in state TEMPORARY.
+     * There are two meanings for this state:
+     * - Demand create by a client who has not verified their e-mail address yet.
+     * - Demand imported from an external system is waiting for approval
      */
     CRAWLED("CRAWLED"),
 

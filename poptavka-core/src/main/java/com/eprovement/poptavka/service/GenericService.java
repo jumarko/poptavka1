@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GenericService<T extends DomainObject, Dao extends GenericDao<T>> {
 /**
-     * get the entity with given id.
+     * get the entity with the given id.
      * @param id
      * @return entity
      * @throws com.eprovement.poptavka.exception.DomainObjectNotFoundException if no object is found

@@ -3,7 +3,8 @@ package com.eprovement.poptavka.domain.message;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 
 /**
- *
+ * Conversation of a client (current user) with a supplier.
+ * Contains the latest message, given supplier and the total number of messages in the conversation.
  * @author Vojtech Hubr
  */
 public class ClientConversation {

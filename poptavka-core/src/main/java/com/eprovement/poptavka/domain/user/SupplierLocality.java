@@ -10,6 +10,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
+ * Localities where the clients can realize demands
+ * 
  * @author Juraj Martinka
  *         Date: 13.2.11
  */

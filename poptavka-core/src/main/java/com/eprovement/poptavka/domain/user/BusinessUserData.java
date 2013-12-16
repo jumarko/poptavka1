@@ -12,8 +12,8 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * Represents personal or contact data abou business user.
- * That can be both the data abou company and/or contact person.
+ * Represents personal or contact data of a business user.
+ * That can be both the data of a company and/or a contact person.
  * <p>
  * For naming conventions see
  * <a href="http://www.porada.sk/t73758-nalezitosti-faktury-v-anglickom-a-nemeckom-jazyku.html">

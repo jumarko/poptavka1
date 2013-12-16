@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
@@ -19,7 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
- * Stores message attributes for a given user.
+ * Stores per-user message attributes
  *
   * @author Vojtech Hubr
  *         Date 12.4.11

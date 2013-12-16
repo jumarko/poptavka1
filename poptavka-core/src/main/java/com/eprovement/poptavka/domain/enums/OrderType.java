@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.domain.enums;
 
 /**
- * Represents type of ordering in two principal forms:
+ * Represents ways of ordering results, namely:
  * <ul>
  *     <li>Ascending</li>
  *     <li>Descending</li>

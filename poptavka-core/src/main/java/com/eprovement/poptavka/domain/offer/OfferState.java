@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.domain.offer;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
@@ -10,7 +6,8 @@ import com.eprovement.poptavka.domain.register.Register;
 import javax.persistence.Entity;
 
 /**
- *
+ * Wrapper for the enum representing a life-cycle state of an offer
+ * 
  * @author Vojtech Hubr
  *         Date 12.4.11
 

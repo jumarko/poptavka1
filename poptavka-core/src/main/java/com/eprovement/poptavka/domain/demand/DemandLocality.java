@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 /**
  * Locality where the project is to be realized
+ * 
  * @author Juraj Martinka
  *         Date: 13.2.11
  */

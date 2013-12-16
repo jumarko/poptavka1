@@ -1,13 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.enums;
 
 /**
- * Represents user role in message. This can express various conditions, e.g. that user is a recipient of message,
- * sender or it has to
+ * Represents user role in message.
  *
  * @author Vojtech Hubr
  *         Date 12.4.11

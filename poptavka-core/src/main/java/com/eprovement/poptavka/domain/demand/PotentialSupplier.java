@@ -5,7 +5,6 @@ import com.eprovement.poptavka.domain.user.Supplier;
 /**
  * @author Juraj Martinka
  *         Date: 9/29/11
- *         Time: 9:31 PM
  */
 public class PotentialSupplier {
 

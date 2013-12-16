@@ -1,4 +1,3 @@
-
 package com.eprovement.poptavka.exception;
 
 public class DomainObjectNotFoundException extends RuntimeException {

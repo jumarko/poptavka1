@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.domain.enums;
 
 /**
- * Type of locality available in system.
+ * Type of a locality in the locality hierarchy system
  *
  * @author Juraj Martinka
  *         Date: 4.2.11

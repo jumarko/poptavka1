@@ -23,13 +23,13 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * Represents essential group users in application that have business relationship to us.
+ * Represents an essential type of users that have a business relationship with us.
  * <p>
- * Three main categories of this users exist:
+ * Three main categories of these users exist:
  * <ul>
- *  <li>Client - is searching for some services at most situations.</li>
- *  <li>Supplier - provides some services to clients.</li>
- *  <li>Partner - a subject that has partnership beneficial to both parts </li>
+ *  <li>Client - demands to have a project realized</li>
+ *  <li>Supplier - offers to realize projects demanded by clients</li>
+ *  <li>Partner</li>
  * </ul>
  *
  * @author Juraj Martinka

@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.offer;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
@@ -21,11 +16,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
 /**
- *
+ * Response to a demand by a supplier
+ * 
  * @author Vojtech Hubr
  *         Date 12.4.11
- *
- * Response to a demand by a supplier
  */
 @Entity
 @NamedQueries({
@@ -41,12 +35,18 @@ import javax.persistence.NamedQuery;
 })
 
 public class Offer extends DomainObject {
+    /**
+     * price offered by the supplier
+     */
     private BigDecimal price;
     @Temporal(value = TemporalType.TIMESTAMP)
     @ManyToOne
     private OfferState state;
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date created;
+    /**
+     * a date by which the demand (project) should have been realized
+     */
     @Temporal(value = TemporalType.DATE)
     private Date finishDate;
     @ManyToOne

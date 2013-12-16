@@ -1,8 +1,8 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.domain.enums;
-
+/**
+ * States of offer life-cycle
+ * 
+ */
 public enum OfferStateType {
 
     ACCEPTED("ACCEPTED"),
@@ -21,10 +21,10 @@ public enum OfferStateType {
     }
 
     /**
-     * Get enum constant for given type code
+     * Get enum constant for a given type code
      *
-     * @param
-     * @return
+     * @param typeCode String representation of the enum value
+     * @return the enum value
      */
     public static OfferStateType fromValue(String typeCode) {
         for (OfferStateType type : OfferStateType.values()) {

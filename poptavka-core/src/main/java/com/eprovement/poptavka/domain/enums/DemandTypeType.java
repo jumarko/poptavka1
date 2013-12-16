@@ -1,13 +1,11 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
+
 package com.eprovement.poptavka.domain.enums;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Enum for handy work with demand type.
+ * To facilitate work with demand type.
  *
  * @see com.eprovement.poptavka.domain.demand.DemandType#getType()
  */
@@ -27,7 +25,7 @@ public enum DemandTypeType {
     }
 
     /**
-     * Get enum constant for given type code
+     * Get enum constant for a given type code
      *
      * @param
      * @return

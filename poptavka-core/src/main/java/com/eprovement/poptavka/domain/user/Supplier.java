@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.address.Locality;
@@ -21,7 +16,8 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- *
+ * Supplier posts offers and realizes projects demanded by clients
+ * 
  * @author Excalibur
  */
 @Entity

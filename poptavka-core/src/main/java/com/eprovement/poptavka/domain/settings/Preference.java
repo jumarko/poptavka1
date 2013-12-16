@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 
 /**
- * Represents one user's preference.
+ * Represents a user's preference.
  * <p>
- * To manage the required flexibility for storing arbitrary preferences, it is neccessary to store preferences in simple
+ * To manage the required flexibility for storing arbitrary preferences, it is necessary to store preferences in simple
  * form: <key, value>.
  * Key is used for accessing
  * <p>

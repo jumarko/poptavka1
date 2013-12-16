@@ -12,12 +12,13 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 /**
- * Role in a application. {@link com.eprovement.poptavka.domain.user.User} can have different roles, e.g.
+ * Role in the system. {@link com.eprovement.poptavka.domain.user.User} can have different roles, e.g.
  * <ul>
  *  <li>Client</li>
  *  <li><Administrator/li>
  *  <li>Operator</li>
  * </ul>
+ * 
  * @author Juraj Martinka
  *         Date: 28.1.11
  */

@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 /**
  * {@link Permission} aggreates actions to the consistent group that can be assinged to the {@link AccessRole}.
  * <p>
- * Permission can be related to the bigger logical action (comparable to use cases), e.g.
+ * Permission can be related to an important action (comparable to use cases), e.g.
  * <ul>
  *  <li>Create new demand</li>
  *  <li>Search for demands</li>

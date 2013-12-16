@@ -1,12 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.eprovement.poptavka.domain.enums;
 
 /**
- *
+ * Users as addressees, copy addressees etc. are associated to the messages via
+ * MessageUserRole.
+ * This enum specifies the type of the role.
+ * 
   * @author Vojtech Hubr
  *         Date 12.4.11
 

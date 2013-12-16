@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.enums;
 
 /**
+ * Status of user's e-mail verification
  * @author Juraj Martinka
  *         Date: 8.5.11
  */
