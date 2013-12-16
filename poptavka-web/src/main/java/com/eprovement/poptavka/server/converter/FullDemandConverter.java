@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -16,6 +16,10 @@ import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Converts Demand to FullDemandDetail.
+ * @author Juraj Martinka
+ */
 public final class FullDemandConverter extends AbstractConverter<Demand, FullDemandDetail> {
 
     /**************************************************************************/
@@ -27,13 +31,20 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
+
     /**************************************************************************/
-    /* Other converters                                                       */
+    /* Attributes                                                             */
     /**************************************************************************/
     private final Converter<Supplier, FullSupplierDetail> supplierConverter;
     private final Converter<Locality, ICatLocDetail> localityConverter;
     private final Converter<Category, ICatLocDetail> categoryConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates FullDemandConverter.
+     */
     private FullDemandConverter(
             Converter<Supplier, FullSupplierDetail> supplierConverter,
             Converter<Locality, ICatLocDetail> localityConverter,
@@ -45,6 +56,12 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
         this.categoryConverter = categoryConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public FullDemandDetail convertToTarget(Demand source) {
         FullDemandDetail detail = new FullDemandDetail();
@@ -79,12 +96,20 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Demand convertToSource(FullDemandDetail source) {
         return demandService.getById(source.getDemandId());
     }
 
     //--------------------------------------------------- PRIVATE METHODS ----------------------------------------------
+    /**
+     * Sets excluded suppliers
+     * @param demand domain object
+     * @param detail object
+     */
     private void setExcludedSuppliers(Demand demand, FullDemandDetail detail) {
         final List<FullSupplierDetail> excludedSuppliers = new ArrayList<FullSupplierDetail>();
         if (demand.getExcludedSuppliers() != null) {

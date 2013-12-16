@@ -1,17 +1,33 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.invoice.OurPaymentDetails;
 import com.eprovement.poptavka.shared.domain.adminModule.PaymentDetail;
 
+/**
+ * Converts OurPaymentDetails to PaymentDetail.
+ * @author Juraj Martinka
+ */
 public final class PaymentConverter extends AbstractConverter<OurPaymentDetails, PaymentDetail> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates PaymentConverter.
+     */
     private PaymentConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public PaymentDetail convertToTarget(OurPaymentDetails source) {
         PaymentDetail detail = new PaymentDetail();
@@ -35,6 +51,9 @@ public final class PaymentConverter extends AbstractConverter<OurPaymentDetails,
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public OurPaymentDetails convertToSource(PaymentDetail source) {
         throw new UnsupportedOperationException("Cannot convert from PaymentDetail to OurPaymentDetails");

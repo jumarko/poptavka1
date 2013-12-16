@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -10,12 +10,24 @@ import com.eprovement.poptavka.shared.domain.message.DemandMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts UserMessage to DemandMessageDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class DemandMessageConverter extends AbstractConverter<UserMessage, DemandMessageDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<DemandType, DemandTypeDetail> demandTypeConverter;
-
     private final Converter<UserMessage, MessageDetail> messageConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates DemandMessageConverter.
+     */
     private DemandMessageConverter(Converter<DemandType, DemandTypeDetail> demandTypeConverter,
             Converter<UserMessage, MessageDetail> messageConverter) {
         // Spring instantiates converters - see converters.xml
@@ -27,6 +39,12 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
         this.messageConverter = messageConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public DemandMessageDetail convertToTarget(UserMessage userMessage) {
         final DemandMessageDetail demandMessageDetail = new DemandMessageDetail();
@@ -44,6 +62,9 @@ public final class DemandMessageConverter extends AbstractConverter<UserMessage,
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public UserMessage convertToSource(DemandMessageDetail demandMessageDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

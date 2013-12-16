@@ -1,24 +1,41 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import java.util.ArrayList;
-import java.util.Collection;
 
-public final class CriteriaConverter implements Converter<ResultCriteria, SearchDefinition> {
+/**
+ * Converts ResultCriteria to SearchDefinition and vice versa.
+ * @author Juraj Martinka
+ */
+public final class CriteriaConverter extends AbstractConverter<ResultCriteria, SearchDefinition> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates CriteriaConverter.
+     */
     private CriteriaConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public SearchDefinition convertToTarget(ResultCriteria source) {
         throw new UnsupportedOperationException("Convertion ResultCriteria to SearchDefinition failed!");
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ResultCriteria convertToSource(SearchDefinition definition) {
         final ResultCriteria resultCriteria =
@@ -28,15 +45,5 @@ public final class CriteriaConverter implements Converter<ResultCriteria, Search
         //TODO LATER Martin 17.4.2013 - ResultCriteria is no longer used in frontend - todo delete
 //                    .orderByColumns(definition.getOrderColumns()).build();
         return resultCriteria;
-    }
-
-    @Override
-    public ArrayList<SearchDefinition> convertToTargetList(Collection<ResultCriteria> sourceObjects) {
-        throw new UnsupportedOperationException("Convertion List<ResultCriteria> to List<SearchDefinition> failed!");
-    }
-
-    @Override
-    public ArrayList<ResultCriteria> convertToSourceList(Collection<SearchDefinition> targetObjects) {
-        throw new UnsupportedOperationException("Convertion List<ResultCriteria> to List<SearchDefinition> failed!");
     }
 }

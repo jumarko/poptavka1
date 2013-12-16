@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -7,12 +7,28 @@ import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 
+/**
+ * Converts Service to ServiceDetail.
+ * @author Juraj Martinka
+ */
 public final class ServiceConverter extends AbstractConverter<Service, ServiceDetail> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates ServiceConverter.
+     */
     private ServiceConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ServiceDetail convertToTarget(Service service) {
         ServiceDetail detail = new ServiceDetail();
@@ -27,6 +43,9 @@ public final class ServiceConverter extends AbstractConverter<Service, ServiceDe
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Service convertToSource(ServiceDetail serviceDetail) {
         throw new UnsupportedOperationException("Conversion from ServiceDetail to domain object Service "

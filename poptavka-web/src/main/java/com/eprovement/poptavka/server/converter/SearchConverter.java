@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -10,11 +10,24 @@ import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts SearchDefinition to Search.
+ * @author Juraj Martinka
+ */
 public final class SearchConverter {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<Filter, FilterItem> filterConverter;
     private final SortConverter sortConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates SearchConverter.
+     */
     private SearchConverter(
             Converter<Filter, FilterItem> filterConverter,
             SortConverter sortConverter) {
@@ -25,6 +38,9 @@ public final class SearchConverter {
         this.sortConverter = sortConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
     /**
      * Construct search object for count methods. It involves:
      * <ul>
@@ -117,6 +133,11 @@ public final class SearchConverter {
         }
     }
 
+    /**
+     * Converts filters.
+     * @param definition - search criteria
+     * @param search the Search object
+     */
     private void convertFilters(SearchDefinition definition, Search search) {
         if (definition != null && definition.getFilter() != null) {
             if (CollectionUtils.isNotEmpty(definition.getFilter().getAttributes())) {
@@ -131,6 +152,11 @@ public final class SearchConverter {
         }
     }
 
+    /**
+     * Converts order columns.
+     * @param definition - search criteria
+     * @param search the Search object
+     */
     private void convertOrderColumns(SearchDefinition definition, Search search) {
         search.addSorts(sortConverter.convertToSourceList(search.getSearchClass(), definition.getSortOrder()));
     }

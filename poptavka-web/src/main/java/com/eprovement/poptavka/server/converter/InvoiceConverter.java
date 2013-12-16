@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -13,11 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts Invoice to InvoiceDetail.
+ * @author Juraj Martinka
+ */
 public final class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<PaymentMethod, PaymentMethodDetail> paymentMethodConverter;
     private final Converter<UserService, UserServiceDetail> userServiceConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates InvoiceConverter.
+     */
     private InvoiceConverter(Converter<PaymentMethod, PaymentMethodDetail> paymentMethodConverter,
             Converter<UserService, UserServiceDetail> userServiceConverter) {
         // Spring instantiates converters - see converters.xml
@@ -28,6 +41,12 @@ public final class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDe
         this.userServiceConverter = userServiceConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public InvoiceDetail convertToTarget(Invoice source) {
         InvoiceDetail detail = new InvoiceDetail();
@@ -57,6 +76,9 @@ public final class InvoiceConverter extends AbstractConverter<Invoice, InvoiceDe
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Invoice convertToSource(InvoiceDetail source) {
         throw new UnsupportedOperationException();

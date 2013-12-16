@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -8,12 +8,28 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.type.MessageType;
 import com.google.common.base.Preconditions;
 
+/**
+ * Converts Message to MessageDetail.
+ * @author Juraj Martinka
+ */
 public final class MessageConverter extends AbstractConverter<Message, MessageDetail> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates MessageConverter.
+     */
     private MessageConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public MessageDetail convertToTarget(Message source) {
         Preconditions.checkNotNull(source);
@@ -49,6 +65,9 @@ public final class MessageConverter extends AbstractConverter<Message, MessageDe
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Message convertToSource(MessageDetail source) {
         throw new UnsupportedOperationException("Conversion from MessageDetail to domain object Message "

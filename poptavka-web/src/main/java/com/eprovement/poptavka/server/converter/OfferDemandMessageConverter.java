@@ -1,17 +1,33 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.message.OfferDemandMessage;
 
+/**
+ * Converts UserMessage to OfferDemandMessage.
+ * @author Juraj Martinka
+ */
 public final class OfferDemandMessageConverter extends AbstractConverter<UserMessage, OfferDemandMessage> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates OfferDemandMessageConverter.
+     */
     private OfferDemandMessageConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public OfferDemandMessage convertToTarget(UserMessage userMessage) {
         OfferDemandMessage detail = new OfferDemandMessage();
@@ -38,6 +54,9 @@ public final class OfferDemandMessageConverter extends AbstractConverter<UserMes
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public UserMessage convertToSource(OfferDemandMessage offerDemandMessage) {
         throw new UnsupportedOperationException("Conversion from OfferDemandMessage to domain object UserMessage "

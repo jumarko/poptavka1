@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -8,8 +8,15 @@ import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Converts Address to AddressDetail.
+ * @author Juraj Martinka
+ */
 public final class AddressConverter extends AbstractConverter<Address, AddressDetail> {
 
+    /**************************************************************************/
+    /* RPC services                                                           */
+    /**************************************************************************/
     private LocalityService localityService;
 
     @Autowired
@@ -17,10 +24,22 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
         this.localityService = localityService;
     }
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates AddressConverter.
+     */
     private AddressConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public AddressDetail convertToTarget(Address address) {
         //get STATE ->> CITY --> DISTRICT --> STATE --> COUNTRY
@@ -44,6 +63,9 @@ public final class AddressConverter extends AbstractConverter<Address, AddressDe
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Address convertToSource(AddressDetail addressDetail) {
         Address address = new Address();

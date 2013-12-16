@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -11,6 +11,10 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Converts Locality to ICatLocDetail.
+ * @author Juraj Martinka
+ */
 public final class LocalityConverter extends AbstractConverter<Locality, ICatLocDetail> {
 
     /**************************************************************************/
@@ -43,6 +47,9 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates LocalityConverter.
+     */
     private LocalityConverter() {
         // Spring instantiates converters - see converters.xml
     }
@@ -50,6 +57,9 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
     /**************************************************************************/
     /* Convert methods                                                        */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ICatLocDetail convertToTarget(Locality locality) {
         CatLocDetail detail = new CatLocDetail(locality.getId(), constructName(locality));
@@ -61,6 +71,11 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
 
     }
 
+    /**
+     * If locality is a district, append {@value #DISTRICT_SUFIX} string.
+     * @param locality
+     * @return appended locality name string.
+     */
     private String constructName(Locality locality) {
         switch (locality.getType()) {
             case DISTRICT:
@@ -70,6 +85,9 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Locality convertToSource(ICatLocDetail catLocDetail) {
         return localityService.getLocality(catLocDetail.getId());
