@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.columns;
 
 import com.eprovement.poptavka.client.user.widget.grid.cell.SafeClickableTextCell;
@@ -8,6 +11,9 @@ import com.google.gwt.user.cellview.client.Column;
 import java.util.ArrayList;
 
 /**
+ * Use to create <b>locality column</b> in table.
+ * Object must implemnets <b>TableDisplayLocality</b> to be displayable in table with locality column.
+ *
  * @author Martin Slavkovsky
  */
 public class LocalityColumn extends Column<TableDisplayLocality, String> {
@@ -17,6 +23,15 @@ public class LocalityColumn extends Column<TableDisplayLocality, String> {
         ArrayList<ICatLocDetail> getLocalities();
     }
 
+    /**
+     * Creates LocalityColumn with:
+     * <ul>
+     *   <li>sortable: false</li>
+     *   <li>cellStyleNames: ellipsis</li>
+     *   <li>fieldUpdater: provided</li>
+     * </ul>
+     * @param fieldUpdater
+     */
     public LocalityColumn(FieldUpdater fieldUpdater) {
         super(new SafeClickableTextCell());
         setSortable(false);
@@ -26,6 +41,11 @@ public class LocalityColumn extends Column<TableDisplayLocality, String> {
         }
     }
 
+    /**
+     * Formats localities to more readable string.
+     * @param object implementing TableDisplayLocality
+     * @return formated localities string
+     */
     @Override
     public String getValue(TableDisplayLocality object) {
         StringBuilder str = new StringBuilder();

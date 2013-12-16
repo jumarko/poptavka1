@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -47,11 +50,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This widget was created mainly for ClientAssignedProjects, SupplierPotentialProjects,
- * SupplierContests, SupplierAssignedProjects widgets. Those listed widgets use similar
- * tables, therefore this widget was design to cover all common functionality as:
- * UniversalAsyncGrid - see UniversalAsyncGrid class
- * MultiSelectionModel
+ * Provides easy way to create UniversalAsyncGrid by choosing needed elements.
+ * To create table with Demand title column just call:
+ * <pre>
+ * {@code
+ * new UniversalGridFactory.Builder<T>().addColumnDemandTitle(null).build().
+ * }
+ * </pre>
+ * Features:
+ * <ul>
+ *   <li>addColumnAXZ(columnFieldUpdater),</li>
+ *   <li>addDefaultSort(tableSortDefinitions),</li>
+ *   <li>addSelectionModel(tableSelectionModel),</li>
+ *   <li>addRowStyles(tableRowStyles).</li>
+ * </ul>
  *
  * As for this widget has no presenter, action handlers for column field updater
  * must be defined in widget's presenter that is using this one.

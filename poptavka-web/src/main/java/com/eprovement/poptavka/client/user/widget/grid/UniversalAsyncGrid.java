@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.shared.search.SortDataHolder;
@@ -20,6 +23,8 @@ import java.util.List;
 
 /**
  * Represent DataGrid with asynchronous data retrieving.
+ * Class implements commono functionality for asynchronous data retrieving,
+ * asynchronous sort data retrieving and some additional helpfull methods.
  *
  * To use this class, eventBus of a witget that uses this class, must extend
  * interface IEventBusData. Therefore getDataCount and getData methods must be
@@ -27,7 +32,7 @@ import java.util.List;
  * Then to get data call "view.getDataGrid().getDataCount(eventBus, searchDataHolder);"
  * in presenter.
  *
- * @author Martin
+ * @author Martin Slavkovsky
  * @param <T>
  */
 public class UniversalAsyncGrid<T> extends DataGrid<T> {
@@ -115,17 +120,31 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /* Constructors of UniversalAsyncGrid                                     */
     /**************************************************************************/
+    /**
+     * Constructs a table with the given page size with the specified Resources.
+     * @param pageSize - the page size
+     * @param resources - the resources to use for this widget
+     */
     public UniversalAsyncGrid(int pageSize, Resources resources) {
         super(pageSize, resources);
         universalAsyncGridCommonSettings();
     }
 
+    /**
+     * Constructs a table with the given sort definition, page size with the specified Resources.
+     * @param pageSize - the page size
+     * @param resources - the resources to use for this widget
+     */
     public UniversalAsyncGrid(SortDataHolder sort, int pageSize, Resources resources) {
         super(pageSize, resources);
         this.sort = sort;
         universalAsyncGridCommonSettings();
     }
 
+    /**
+     * Constructs a table with a default page size of 50, and the given key provider
+     * and given sort definition.
+     */
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, SortDataHolder sort) {
         super(keyProvider);
         this.sort = sort;
@@ -135,7 +154,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**
      * Common method called in all constructors. It sets the no result Label.
      */
-    public void universalAsyncGridCommonSettings() {
+    public final void universalAsyncGridCommonSettings() {
         Label noResultsLabel = new Label(Storage.MSGS.commonNoData());
         noResultsLabel.addStyleName("no-results-label");
         setEmptyTableWidget(noResultsLabel);
@@ -180,6 +199,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         //if first called, just create dataProvider, but don't call eventBus.getData
         cancelRangeChangedEvent = true;
         this.dataProvider = new AsyncDataProvider<T>() {
+            /**
+             * On range change, request for next/previous page data.
+             */
             @Override
             protected void onRangeChanged(HasData<T> display) {
                 start = display.getVisibleRange().getStart();
@@ -194,6 +216,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 cancelRangeChangedEvent = false;
             }
 
+            /**
+             * Updates table rows count.
+             * Don't create asynchronous call when rows count is 0.
+             */
             @Override
             public void updateRowCount(int size, boolean exact) {
                 if (size > 0) {
@@ -205,6 +231,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 }
             }
 
+            /**
+             * Sets requested data to table starting form <b>start</b>.
+             */
             @Override
             public void updateRowData(int start, List<T> values) {
                 super.updateRowData(start, values);
@@ -224,6 +253,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     private void createAsyncSortHandler() {
         //Moze byt hned na zaciatku? Ak ano , tak potom aj asynchdataprovider by mohol nie?
         sortHandler = new AsyncHandler(this) {
+            /**
+             * On sort change, request for data in new sort order.
+             */
             @Override
             public void onColumnSort(ColumnSortEvent event) {
                 Column<T, String> column = (Column<T, String>) event.getColumn();
@@ -323,9 +355,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         setHeight(height + "px");
     }
 
-    // ***********************************************************************
-    // Getter metods
-    // ***********************************************************************
+    /**************************************************************************/
+    /* Getter metods                                                          */
+    /**************************************************************************/
     /**
      * Gets asynchronous data provider provided by UniversalAsyncGrid class.
      *
@@ -362,17 +394,28 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return start;
     }
 
+    /**
+     * Sets cancelRangeChangedEvent flag to true causes next table rancheChangeEvent to be ignored.
+     */
     public void cancelRangeChangedEvent() {
         cancelRangeChangedEvent = true;
     }
 
+    /**
+     * Sets sortable grid columns in order.
+     * @param sort definition
+     */
     public void setGridColumns(SortDataHolder sort) {
         this.sort = sort;
     }
 
+    /**
+     * Reloads current table page.
+     */
     public void refresh() {
         Range range = getVisibleRange();
         setVisibleRangeAndClearData(range, true); //1st way
-//        RangeChangeEvent.fire(this, range);              //2nd way
+        //Martin 22.4.2012 - should work too, but doesn't - why?
+        //RangeChangeEvent.fire(this, range);              //2nd way
     }
 }

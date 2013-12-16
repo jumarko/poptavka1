@@ -1,10 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
 /**
+ * Defines getters & setters for a detail object to be displayable in corresponding table.
  *
  * @author Martin Slavkovsky
  */

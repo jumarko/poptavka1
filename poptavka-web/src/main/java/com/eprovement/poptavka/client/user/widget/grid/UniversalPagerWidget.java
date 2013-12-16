@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
@@ -36,6 +35,7 @@ public class UniversalPagerWidget extends Composite {
 
     interface UniversalPagerWidgetUiBinder extends UiBinder<Widget, UniversalPagerWidget> {
     }
+
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -47,6 +47,9 @@ public class UniversalPagerWidget extends Composite {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates UniversalPagerWidget view's components.
+     */
     public UniversalPagerWidget() {
         initPager();
         initWidget(uiBinder.createAndBindUi(this));
@@ -57,6 +60,7 @@ public class UniversalPagerWidget extends Composite {
     }
 
     /**
+     * Creates UniversalPagerWidget view's components.
      * Constructor that generates page size options.
      *
      * @param count - define how many options in page size combo is generated.
@@ -71,7 +75,7 @@ public class UniversalPagerWidget extends Composite {
     }
 
     /**
-     * TODO Martin - remake to WSListBox
+     * TODO LATER Martin - remake to WSListBox
      * Create page size menu options according to given attributes.
      */
     private void initPageSizeListBox() {
@@ -112,10 +116,16 @@ public class UniversalPagerWidget extends Composite {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the pager
+     */
     public SimplePager getPager() {
         return pager;
     }
 
+    /**
+     * @return the pages size
+     */
     public int getPageSize() {
         return Integer.parseInt(pageSize.getText());
     }
@@ -123,6 +133,10 @@ public class UniversalPagerWidget extends Composite {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Binds pager to given HasRows object.
+     * @param object - the HasRows objecct
+     */
     public void setDisplay(HasRows object) {
         pager.setDisplay(object);
     }

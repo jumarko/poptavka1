@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
@@ -12,20 +11,35 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 
 /**
- *
- * @author Martin
+ * Cell for rendering rating information.
+ * @author Martin Slavkovsky
  */
 public class RatingCell extends AbstractCell<Integer> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private ImageResourceRenderer renderer;
     private static final ImageResource RATING_STAR = Storage.RSCS.images().ratingStar();
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates Rating cell.
+     */
     public RatingCell() {
         if (renderer == null) {
             renderer = new ImageResourceRenderer();
         }
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(Cell.Context context, Integer value, SafeHtmlBuilder sb) {
         /*

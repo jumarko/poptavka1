@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
@@ -10,11 +9,14 @@ import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
- *
- * @author Martin
+ * Cell for rendering supplier information.
+ * @author Martin Slavkovsky
  */
 public class SupplierCell extends AbstractCell<FullSupplierDetail> {
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(Cell.Context context, FullSupplierDetail value, SafeHtmlBuilder sb) {
         /*

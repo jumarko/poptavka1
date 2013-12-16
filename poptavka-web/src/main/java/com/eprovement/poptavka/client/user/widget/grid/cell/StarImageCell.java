@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -17,12 +20,27 @@ import com.eprovement.poptavka.client.common.session.Storage;
  */
 public class StarImageCell extends AbstractCell<Boolean> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static ImageResourceRenderer renderer = new ImageResourceRenderer();
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates StarImageCell.
+     */
     public StarImageCell() {
         super("click");
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
             Boolean value, SafeHtmlBuilder sb) {
@@ -37,6 +55,9 @@ public class StarImageCell extends AbstractCell<Boolean> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, Boolean value, NativeEvent event,

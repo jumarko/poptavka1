@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.columns;
 
 import com.eprovement.poptavka.client.user.widget.grid.cell.SafeClickableTextCell;
@@ -6,6 +9,8 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 
 /**
+ * Use to create <b>display name column</b> in table.
+ * Object must implemnets <b>TableDisplayDisplayName</b> to be displayable in table with display name column.
  *
  * @author Martin Slavkovsky
  */
@@ -21,6 +26,15 @@ public class DisplayNameColumn extends Column<TableDisplayDisplayName, String> {
         int getUnreadMessagesCount();
     }
 
+    /**
+     * Creates DisplayNameColumn with:
+     * <ul>
+     *   <li>sortable: false</li>
+     *   <li>cellStyleNames: ellipsis</li>
+     *   <li>fieldUpdater: provided</li>
+     * </ul>
+     * @param fieldUpdater
+     */
     public DisplayNameColumn(FieldUpdater fieldUpdater) {
         super(new SafeClickableTextCell());
         setSortable(false);
@@ -30,11 +44,22 @@ public class DisplayNameColumn extends Column<TableDisplayDisplayName, String> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public String getValue(TableDisplayDisplayName object) {
         return getCellTextAccordingToMessageCount(object.getUnreadMessagesCount(), object.getDisplayName());
     }
 
+    /**
+     * Formats display name text by adding unread messages count abter it
+     * if unread messages count is not 0.
+     *
+     * @param messageCount value
+     * @param cellText - display name text
+     * @return formated cell value
+     */
     private String getCellTextAccordingToMessageCount(int messageCount, String cellText) {
         if (messageCount > 0) {
             StringBuilder title = new StringBuilder();
