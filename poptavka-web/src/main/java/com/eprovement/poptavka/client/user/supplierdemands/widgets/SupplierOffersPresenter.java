@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -17,6 +20,12 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Part of SupplierDemands module widgets.
+ * Displays supplier's offers.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractSupplierView.class)
 public class SupplierOffersPresenter extends AbstractSupplierPresenter {
 
@@ -31,6 +40,10 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Creates SupplierOffers widget.
+     * @param filter - search criteria
+     */
     public void onInitSupplierOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_OFFERS);
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_OFFERS);
@@ -47,8 +60,8 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
     }
 
     /**
-     * Response method for onInitSupplierList()
-     * @param data
+     * Displays supplier's offers data.
+     * @param data to be displayed
      */
     public void onDisplaySupplierOffers(List<IUniversalDetail> data) {
         GWT.log("++ onResponseSupplierOffers");
@@ -60,7 +73,7 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
     /* Helper methods                                                         */
     /**************************************************************************/
     /**
-     * Create supplier offers table.
+     * Create supplier offers table using UniversalGridFactory.
      */
     @Override
     protected UniversalAsyncGrid initTable() {

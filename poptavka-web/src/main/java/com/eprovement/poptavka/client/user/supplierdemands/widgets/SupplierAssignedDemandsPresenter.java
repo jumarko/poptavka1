@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -23,6 +26,13 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Part of SupplierDemands widgets.
+ * In assigned demands mode displays supplier's demands with accpeted offer.
+ * In closed demands mode displays supplier's demands with finnished offer.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractSupplierView.class)
 public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter {
 
@@ -34,6 +44,13 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Binds handlers:
+     * <ul>
+     *   <li>finnish button handler,</li>
+     *   <li>table selection handler</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         super.bindView();
@@ -46,6 +63,10 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Creates SupplierAssignedDemands widget.
+     * @param filter - search criteria
+     */
     public void onInitSupplierAssignedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_DEMANDS);
 
@@ -55,6 +76,10 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
         initWidget(filter);
     }
 
+    /**
+     * Creates SupplierClosedDemands widget.
+     * @param filter - search criteria
+     */
     public void onInitSupplierClosedDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CLOSED_DEMANDS);
 
@@ -64,6 +89,9 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
         initWidget(filter);
     }
 
+    /**
+     * Displays thank you popup when offer has been finnished and clien has been rated.
+     */
     public void onResponseFeedback() {
         Timer additionalAction = new Timer() {
             @Override
@@ -75,8 +103,8 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     }
 
     /**
-     * Response method for onInitSupplierList()
-     * @param data
+     * Displays supplier's assigned demands data.
+     * @param data to be displayed
      */
     public void onDisplaySupplierAssignedDemands(List<IUniversalDetail> data) {
         GWT.log("++ onResponseSuppliersAssignedDemands");
@@ -85,11 +113,12 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     }
 
     /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
-    /**************************************************************************/
-    /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Creates widget's commons.
+     * @param filter - search criteria
+     */
     private void initWidget(SearchModuleDataHolder filter) {
         eventBus.resetSearchBar(new Label("Supplier's assigned/closed projects attibure's selector will be here."));
         eventBus.createTokenForHistory();
@@ -104,6 +133,10 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    /**
+     * Binds table selection handler.
+     * Displays toolbar finnih button if needed.
+     */
     public void addTableSelectionModelClickHandler() {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -119,6 +152,10 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
         });
     }
 
+    /**
+     * Binds finnish hanlder.
+     * Finishs and rates client.
+     */
     private void addFinnishButtonHandler() {
         view.getToolbar().getFinishBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -139,7 +176,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
     }
 
     /**
-     * Create supplier offers table.
+     * Creates table using UniversalGridFactory.
      */
     @Override
     public UniversalAsyncGrid initTable() {

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -19,6 +22,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Common SupplierDemands' views UI compotnents.
+ *
+ * @author Martin Slavkovsky
+ */
 public class AbstractSupplierView extends Composite implements IAbstractSupplierView {
 
     /**************************************************************************/
@@ -51,6 +59,9 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates AbstractSupplier view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -76,6 +87,9 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return list of selected user messages ids.
+     */
     @Override
     public List<Long> getSelectedUserMessageIds() {
         List<Long> idList = new ArrayList<Long>();
@@ -87,32 +101,50 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
         return idList;
     }
 
+    /**
+     * @return list of selected objects.
+     */
     @Override
     public Set getSelectedObjects() {
         MultiSelectionModel model = (MultiSelectionModel) table.getSelectionModel();
         return model.getSelectedSet();
     }
 
+    /**
+     * @return the universal asynchronous table
+     */
     @Override
     public UniversalAsyncGrid getTable() {
         return table;
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
+    /**
+     * @return the detail container
+     */
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
     }
 
+    /**
+     * @return the SupplierToolbarView
+     */
     @Override
     public SupplierToolbarView getToolbar() {
         return toolbar;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public IsWidget getWidgetView() {
         return this;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.toolbar;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -13,11 +16,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
 /**
+ * Custom toolbar for SupplierDemands module.
  * @author Martin Slavkovsky
  */
 @Singleton
 public class SupplierToolbarView extends Composite implements IsWidget {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static SupplierToolbarViewUiBinder uiBinder = GWT.create(SupplierToolbarViewUiBinder.class);
 
     interface SupplierToolbarViewUiBinder extends UiBinder<Widget, SupplierToolbarView> {
@@ -34,6 +41,9 @@ public class SupplierToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates SuppplierToolbar view's compontents.
+     */
     public SupplierToolbarView() {
         pager = new UniversalPagerWidget();
         initWidget(uiBinder.createAndBindUi(this));
@@ -42,6 +52,10 @@ public class SupplierToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Binds pager to table.
+     * @param table
+     */
     public void bindPager(UniversalAsyncGrid table) {
         pager.setDisplay(table);
     }
@@ -65,18 +79,30 @@ public class SupplierToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the finnish butotn
+     */
     public Button getFinishBtn() {
         return finishBtn;
     }
 
+    /**
+     * @return the actionBox container
+     */
     public SimplePanel getActionBox() {
         return actionBox;
     }
 
+    /**
+     * @return the universal pager widget
+     */
     public UniversalPagerWidget getPager() {
         return pager;
     }
 
+    /**
+     * @return the widget view
+     */
     public Widget getWdigetView() {
         return this;
     }

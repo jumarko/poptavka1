@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -7,9 +10,9 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 
 /**
- * History converter class. Handles history for SupplierDemandsModule.
+ * Manages history for SupplierDemands module.
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "supplierDemands")
 public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<SupplierDemandsModuleEventBus> {
@@ -25,11 +28,11 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     public static final String SUPPLIER_RATINGS_STRING = "supplierRatings";
 
     /**************************************************************************/
-    /* Convert to token methods.                                              */
+    /* ConvertToToken events                                                  */
     /**************************************************************************/
     /**
      * Creates token with current loaded view's name in it.
-     * @return
+     * @return history token
      */
     public String onCreateTokenForHistory() {
         switch (Storage.getCurrentlyLoadedView()) {
@@ -49,8 +52,11 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     }
 
     /**************************************************************************/
-    /* Convert from token method.                                             */
+    /* ConvertFromToken events                                                */
     /**************************************************************************/
+    /**
+     * Convert history token into action.
+     */
     @Override
     public void convertFromToken(String historyName, String param, SupplierDemandsModuleEventBus eventBus) {
         eventBus.menuStyleChange(Constants.USER_SUPPLIER_MODULE);
@@ -65,6 +71,9 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
         eventBus.goToSupplierDemandsModule(null, Constants.NONE);
     }
 
+    /**************************************************************************/
+    /* Other history evetns                                                   */
+    /**************************************************************************/
     @Override
     public boolean isCrawlable() {
         return false;
@@ -75,8 +84,8 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     /**************************************************************************/
     /**
      * Converts history token to current view constant.
-     * @param token
-     * @return
+     * @param token to be converted
+     * @return coresponding constant
      */
     private int getCurrentViewConstant(String token) {
         if (SUPPLIER_POTENTIAL_DEMANDS_STRING.equals(token)) {

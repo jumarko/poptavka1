@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -12,13 +15,22 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * View consists of left vertical menu and content area for placing SupplierDmenads module's widgets.
+ *
+ * @author Martin Slavkovsky
+ */
 public class SupplierDemandsModuleView extends Composite
         implements SupplierDemandsModulePresenter.SupplierLayoutInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static SupplierDemandsLayoutViewUiBinder uiBinder = GWT.create(SupplierDemandsLayoutViewUiBinder.class);
 
     interface SupplierDemandsLayoutViewUiBinder extends UiBinder<Widget, SupplierDemandsModuleView> {
     }
+
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -33,6 +45,9 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates SupplierDemandsModule view's compotents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -42,8 +57,8 @@ public class SupplierDemandsModuleView extends Composite
     /* Style change methods.                                                  */
     /**************************************************************************/
     /**
-     * Loads right styles to menu buttons.
-     * @param loadedWidget - use module constants from class Contants.
+     * Sets active style to menu buttons styles.
+     * @param loadedWidget id
      */
     @Override
     public void supplierMenuStyleChange(int loadedWidget) {
@@ -72,6 +87,9 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    /**
+     * Remove all active styles from menu buttons.
+     */
     private void removeMenuStyleChange() {
         supplierDemands.removeStyleName(Constants.ACT);
         supplierOffers.removeStyleName(Constants.ACT);
@@ -80,6 +98,9 @@ public class SupplierDemandsModuleView extends Composite
         supplierRatings.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for potential demands menu button.
+     */
     private void supplierDemandsMenuStyleChange() {
         supplierOffers.removeStyleName(Constants.ACT);
         supplierAssignedDemands.removeStyleName(Constants.ACT);
@@ -88,6 +109,9 @@ public class SupplierDemandsModuleView extends Composite
         supplierDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for offers menu button.
+     */
     private void supplierOffersMenuStyleChange() {
         supplierDemands.removeStyleName(Constants.ACT);
         supplierAssignedDemands.removeStyleName(Constants.ACT);
@@ -96,6 +120,9 @@ public class SupplierDemandsModuleView extends Composite
         supplierOffers.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for assigend demands menu button.
+     */
     private void supplierAssignedDemandsMenuStyleChange() {
         supplierDemands.removeStyleName(Constants.ACT);
         supplierOffers.removeStyleName(Constants.ACT);
@@ -104,6 +131,9 @@ public class SupplierDemandsModuleView extends Composite
         supplierAssignedDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for closed demands menu button.
+     */
     private void supplierClosedDemandsMenuStyleChange() {
         supplierDemands.removeStyleName(Constants.ACT);
         supplierOffers.removeStyleName(Constants.ACT);
@@ -112,6 +142,9 @@ public class SupplierDemandsModuleView extends Composite
         supplierClosedDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for ratings menu button.
+     */
     private void supplierRatingMenuStyleChange() {
         supplierDemands.removeStyleName(Constants.ACT);
         supplierOffers.removeStyleName(Constants.ACT);
@@ -124,6 +157,10 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Sets given widget to content area.
+     * @param contentWidget to set
+     */
     @Override
     public void setContent(IsWidget contentWidget) {
         contentContainer.setWidget(contentWidget);
@@ -132,36 +169,57 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the potential demands menu button
+     */
     @Override
     public Button getSupplierNewDemandsButton() {
         return supplierDemands;
     }
 
+    /**
+     * @return the offers menu button
+     */
     @Override
     public Button getSupplierOffersButton() {
         return supplierOffers;
     }
 
+    /**
+     * @return the assigned demands menu button
+     */
     @Override
     public Button getSupplierAssignedDemandsButton() {
         return supplierAssignedDemands;
     }
 
+    /**
+     * @return the closed demands menu button
+     */
     @Override
     public Button getSupplierClosedDemandsButton() {
         return supplierClosedDemands;
     }
 
+    /**
+     * @return the ratings menu button
+     */
     @Override
     public Button getSupplierRatingsButton() {
         return supplierRatings;
     }
 
+    /**
+     * @return the SupplierToolabrView
+     */
     @Override
     public SupplierToolbarView getToolbarContent() {
         return toolbar;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public IsWidget getWidgetView() {
         return this;

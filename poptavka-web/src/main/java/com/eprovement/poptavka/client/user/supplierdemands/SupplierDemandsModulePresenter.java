@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
@@ -19,11 +18,19 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * SupplierDemands module presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = SupplierDemandsModuleView.class)
 public class SupplierDemandsModulePresenter
         extends LazyPresenter<SupplierLayoutInterface, SupplierDemandsModuleEventBus>
         implements NavigationConfirmationInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface SupplierLayoutInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         Button getSupplierNewDemandsButton();
@@ -50,6 +57,9 @@ public class SupplierDemandsModulePresenter
         // nothing by default
     }
 
+    /**
+     * Sets body, toolbar, searchbar and update unread messages count on each forward.
+     */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Professional Menu", view.getToolbarContent(), true);
@@ -60,12 +70,15 @@ public class SupplierDemandsModulePresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Bind menu buttons handlers.
+     */
     @Override
     public void bindView() {
         view.getSupplierNewDemandsButton().addClickHandler(new ClickHandler() {
@@ -108,6 +121,11 @@ public class SupplierDemandsModulePresenter
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Created SupplierDemands module.
+     * @param filter - search criteria
+     * @param loadWidget - widget id
+     */
     public void onGoToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         ((SupplierToolbarView) view.getToolbarContent()).resetBasic();
         switch (loadWidget) {
@@ -136,16 +154,21 @@ public class SupplierDemandsModulePresenter
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
+    /**
+     * Displays SupplierModule's widget in content area.
+     * @param content container
+     */
     public void onDisplayView(IsWidget content) {
         view.setContent(content);
     }
 
     /**************************************************************************/
-    /* Business events handled by eventbus or RPC */
-    /**************************************************************************/
-    /**************************************************************************/
     /* Client Demands MENU                                                    */
     /**************************************************************************/
+    /**
+     * Sets active style to menu buttons styles.
+     * @param loadedWidget id
+     */
     public void onSupplierMenuStyleChange(int loadedWidget) {
         view.supplierMenuStyleChange(loadedWidget);
     }
