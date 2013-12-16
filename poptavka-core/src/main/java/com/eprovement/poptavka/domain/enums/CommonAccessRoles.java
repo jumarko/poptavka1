@@ -24,4 +24,4 @@ public final class CommonAccessRoles {
             SUPPLIER_ACCESS_ROLE_CODE
         });
     }
-}s
+}

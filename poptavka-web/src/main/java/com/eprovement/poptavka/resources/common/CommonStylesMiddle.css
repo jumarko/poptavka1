@@ -1,0 +1,131 @@
+@CHARSET "UTF-8";
+
+/******************************************************************************/
+/*  Action box styles                                                         */
+/******************************************************************************/
+.action-box {
+}
+
+/******************************************************************************/
+/*  Pager styles                                                              */
+/******************************************************************************/
+.universal-pager {
+}
+
+.small-loader {
+}
+
+.elem-hidden {
+}
+
+.elem-visible {
+}
+
+/** common widgets **/
+.info-message {
+}
+
+.error-message {
+}
+
+
+.disabled-text {
+}
+
+.error-field {
+}
+
+
+.loading-popup {
+}
+
+.hyperlink {
+}
+
+.user {
+}
+
+.user_content {
+}
+
+.empty_style {
+
+}
+
+.textBoxAsLabel {
+}
+
+/* Common buttons */
+.button-empty button {
+}
+
+.button-left-small {
+}
+
+.button-left-medium {
+}
+
+.button-left-large {
+}
+
+.button-right-small {
+}
+
+.button-right-medium {}
+
+.button-right-large {
+}
+
+.button-grey {
+}
+
+.button-long-grey {
+}
+
+.button-green {
+}
+
+.button-ok-green {
+}
+
+.selector-button-brown button {
+}
+
+/* CellBrowser selected item styles  */
+.selected-items-widget {}
+
+/* switch widget styles */
+.switch-left {
+}
+
+.switch-right {
+}
+
+/* error control groups */
+/*.changeMonitorStyle {}*/
+.form-fields {}
+.well-container{}
+
+/* Validation styles */
+.validation-container {}
+
+/* how it works */
+.how-it-works-container {
+}
+
+
+/* MyListBox - used for custom select-box */
+.myListBox {    
+}
+
+/* Alert Box styles */
+.alert-container {
+}
+
+.alert-container {}
+
+.selector-data-grid {
+    
+}
+
+.catLocManager {}

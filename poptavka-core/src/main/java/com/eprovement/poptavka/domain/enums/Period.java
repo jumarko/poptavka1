@@ -2,7 +2,7 @@ package com.eprovement.poptavka.domain.enums;
 
 /**
  * Periods for notifications
- * 
+ *
  * @author Juraj Martinka
  *         Date: 11.4.11
  */

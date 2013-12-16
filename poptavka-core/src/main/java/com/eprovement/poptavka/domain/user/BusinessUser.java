@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.invoice.Invoice;
 import com.eprovement.poptavka.domain.product.UserService;
@@ -40,7 +41,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class BusinessUser extends User {
     @OneToMany(mappedBy = "businessUser")
     @NotEmpty
-    private List<BusinessUserRole> businessUserRoles = new ArrayList<BusinessUserRole>();
+    private List<BusinessUserRole> businessUserRoles = new ArrayList<>();
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
@@ -68,6 +69,13 @@ public class BusinessUser extends User {
     @OneToMany
     @NotAudited
     private List<Invoice> invoices;
+
+    /**
+     * Origin of user in case of user imported from external system. Should be null for plain old internal users.
+     */
+    @OneToOne
+    @NotAudited
+    private Origin origin;
 
     public BusinessUser() {
     }
@@ -123,6 +131,27 @@ public class BusinessUser extends User {
 
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
+    }
+
+    /**
+     * @return composed display name for business user - personal name or company name
+     * @see com.eprovement.poptavka.domain.user.BusinessUserData#getDisplayName()
+     */
+    @Override
+    public String getDisplayName() {
+        return businessUserData.getDisplayName();
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
+
+    public boolean isUserFromExternalSystem() {
+        return this.origin != null && origin.isExternal();
     }
 
     //-------------------------- End of GETTERS AND SETTERS ------------------------------------------------------------

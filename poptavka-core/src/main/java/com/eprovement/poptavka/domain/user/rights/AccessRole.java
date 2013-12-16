@@ -18,7 +18,7 @@ import java.util.List;
  *  <li><Administrator/li>
  *  <li>Operator</li>
  * </ul>
- * 
+ *
  * @author Juraj Martinka
  *         Date: 28.1.11
  */

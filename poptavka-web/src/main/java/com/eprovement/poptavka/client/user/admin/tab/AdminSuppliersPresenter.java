@@ -4,9 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategorySelectorView;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -22,15 +20,12 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -54,6 +49,7 @@ public class AdminSuppliersPresenter
     private SearchModuleDataHolder searchDataHolder;
     //detail related
     private Boolean detailDisplayed = false;
+    private boolean editingCategories;
 
     /**
      * Interface for widget AdminSuppliersView.
@@ -168,44 +164,51 @@ public class AdminSuppliersPresenter
         view.getAdminSupplierDetail().getEditCatBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initCategoryWidget(
-                        view.getAdminSupplierDetail().getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminSupplierDetail().getCategories(), true);
-                view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
+                editingCategories = true;
+                eventBus.initCatLocSelector(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(),
+                        new CatLocSelectorBuilder.Builder()
+                            .initCategorySelector()
+                            .initSelectorManager()
+                            .withCheckboxes()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                            .build(),
+                        Constants.ADMIN_SUPPLIERS);
+                eventBus.setCatLocs(view.getAdminSupplierDetail().getCategories());
+                view.getAdminSupplierDetail().getSelectorWidgetPopup().show();
             }
         });
         view.getAdminSupplierDetail().getEditLocBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initLocalityWidget(
-                        view.getAdminSupplierDetail().getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminSupplierDetail().getLocalities(), true);
-                view.getAdminSupplierDetail().getSelectorWidgetPopup().center();
+                editingCategories = false;
+                eventBus.initCatLocSelector(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(),
+                        new CatLocSelectorBuilder.Builder()
+                            .initLocalitySelector()
+                            .initSelectorManager()
+                            .withCheckboxes()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                            .build(),
+                        -Constants.ADMIN_SUPPLIERS);
+                eventBus.setCatLocs(view.getAdminSupplierDetail().getLocalities());
+                view.getAdminSupplierDetail().getSelectorWidgetPopup().show();
             }
         });
-        view.getAdminSupplierDetail().getSelectorWidgetPopup().addCloseHandler(
-                new CloseHandler<PopupPanel>() {
-                    @Override
-                    public void onClose(CloseEvent<PopupPanel> event) {
-                        if (view.getAdminSupplierDetail().getSelectorWidgetPopup()
-                                .getWidget() instanceof CategorySelectorView) {
-                            view.getAdminSupplierDetail().setCategories(
-                                    ((CategorySelectorView) view.getAdminSupplierDetail()
-                                        .getSelectorWidgetPopup().getWidget())
-                                        .getCellListDataProvider().getList());
-                        } else if (view.getAdminSupplierDetail().getSelectorWidgetPopup()
-                                .getWidget() instanceof LocalitySelectorView) {
-                            view.getAdminSupplierDetail().setLocalities(
-                                    ((LocalitySelectorView) view.getAdminSupplierDetail()
-                                        .getSelectorWidgetPopup().getWidget())
-                                        .getCellListDataProvider().getList());
-                        }
-                    }
-                });
+        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSubmitBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (editingCategories) {
+                    eventBus.fillCatLocs(
+                            view.getAdminSupplierDetail().getCategories(),
+                            Constants.ADMIN_SUPPLIERS);
+                } else {
+                    eventBus.fillCatLocs(
+                            view.getAdminSupplierDetail().getLocalities(),
+                            -Constants.ADMIN_SUPPLIERS);
+                }
+            }
+        });
     }
 
     /*
@@ -381,7 +384,9 @@ public class AdminSuppliersPresenter
         view.getAdminSupplierDetail().getUpdateBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.addSupplierToCommit(view.getAdminSupplierDetail().getUpdatedSupplierDetail());
+                FullSupplierDetail detail = new FullSupplierDetail();
+                view.getAdminSupplierDetail().updateSupplierDetail(detail);
+                eventBus.addSupplierToCommit(detail);
             }
         });
     }

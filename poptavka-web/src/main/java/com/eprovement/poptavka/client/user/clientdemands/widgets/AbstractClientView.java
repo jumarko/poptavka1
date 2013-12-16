@@ -1,0 +1,156 @@
+package com.eprovement.poptavka.client.user.clientdemands.widgets;
+
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
+import com.eprovement.poptavka.client.user.clientdemands.widgets.AbstractClientPresenter.IAbstractClientView;
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+public class AbstractClientView extends Composite implements IAbstractClientView {
+
+    private static AbstractClientViewUiBinder uiBinder = GWT.create(AbstractClientViewUiBinder.class);
+
+    interface AbstractClientViewUiBinder extends UiBinder<Widget, AbstractClientView> {
+    }
+
+    /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        //for change monitors
+        Storage.RSCS.common().ensureInjected();
+        //for popups created of image hover in datagrid
+        Storage.RSCS.modal().ensureInjected();
+    }
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) UniversalAsyncGrid parentTable;
+    @UiField(provided = true) UniversalAsyncGrid childTable;
+    @UiField Label childTableLabel;
+    @UiField SimplePanel footerContainer, detailPanel;
+    /** Class attributes. **/
+    @Inject
+    protected ClientToolbarView toolbar;
+
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    @Override
+    public void createView() {
+        initWidget(uiBinder.createAndBindUi(this));
+    }
+
+    /**
+     * This is called before createView because it is called from createPresenter,
+     * which is called before createView (See: https://code.google.com/p/mvp4g/wiki/Mvp4gOptimization).
+     * It is done this way, because tables are provided form presenter and binding table events
+     * must by afterwards they are created. And View by default is initializated before presenter,
+     * therefore we need to use LazyView, but in that case
+     * we are not able to pass tables as arguments while creating view.
+     * @param parentTable
+     * @param childTable
+     */
+    @Override
+    public void initTables(UniversalAsyncGrid parentTable, UniversalAsyncGrid childTable) {
+        this.parentTable = parentTable;
+        this.childTable = childTable;
+        this.toolbar.getPager().setVisible(true);
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    //netreba lebo vonversationTableVisible setuje viditelnost oboch tabuliek
+    @Override
+    public void setParentTableVisible(boolean visible) {
+        parentTable.setVisible(visible);
+        parentTable.redraw();
+        //clear selection
+        if (!visible) {
+            SingleSelectionModel selectionModel = (SingleSelectionModel) parentTable.getSelectionModel();
+            if (selectionModel.getSelectedObject() != null) {
+                selectionModel.setSelected(selectionModel.getSelectedObject(), false);
+            }
+        }
+    }
+
+    @Override
+    public void setChildTableVisible(boolean visible) {
+        ((MultiSelectionModel) childTable.getSelectionModel()).clear();
+        childTable.setVisible(visible);
+        childTable.redraw();
+        childTableLabel.setVisible(visible);
+    }
+
+    @Override
+    public void setDemandTitleLabel(String text) {
+        childTableLabel.setText(text);
+    }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    @Override
+    public List<Long> getChildTableSelectedUserMessageIds() {
+        List<Long> idList = new ArrayList<Long>();
+        Set<TableDisplayUserMessage> set = getChildTableSelectedObjects();
+        Iterator<TableDisplayUserMessage> it = set.iterator();
+        while (it.hasNext()) {
+            idList.add(it.next().getUserMessageId());
+        }
+        return idList;
+    }
+
+    @Override
+    public Set getChildTableSelectedObjects() {
+        MultiSelectionModel model = (MultiSelectionModel) childTable.getSelectionModel();
+        return model.getSelectedSet();
+    }
+
+    @Override
+    public UniversalAsyncGrid getParentTable() {
+        return parentTable;
+    }
+
+    @Override
+    public UniversalAsyncGrid getChildTable() {
+        return childTable;
+    }
+
+    @Override
+    public SimplePanel getFooterContainer() {
+        return footerContainer;
+    }
+
+    @Override
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
+    }
+
+    @Override
+    public ClientToolbarView getToolbar() {
+        return toolbar;
+    }
+
+    @Override
+    public IsWidget getWidgetView() {
+        return this;
+    }
+}

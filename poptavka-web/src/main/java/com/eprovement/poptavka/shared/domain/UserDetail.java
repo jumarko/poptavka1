@@ -4,10 +4,11 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.client.common.validation.Email;
+import com.eprovement.poptavka.client.common.validation.Extended;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import java.util.ArrayList;
 import com.google.gwt.user.client.rpc.IsSerializable;
-import org.hibernate.validator.constraints.Length;
+import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -22,12 +23,16 @@ public class UserDetail implements IsSerializable {
      * Logged user must always has non-null id set!
      */
     private long userId;
+
     @NotBlank(message = "{emailNotBlank}")
-    @Email(message = "{patternEmail}")
+    @Email(message = "{patternEmail}", groups = Extended.class)
+    @Size(max = 255, message = "{emailSize}", groups = Extended.class)
     private String email;
+
     @NotBlank(message = "{passwordNotBlank}")
-    @Length(min = 5, message = "{passwordLength}")
+    @Size(min = 5, max = 255, message = "{passwordSize}", groups = Extended.class)
     private String password;
+
     private ArrayList<AccessRoleDetail> accessRoles;
 
     /**

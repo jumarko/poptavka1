@@ -1,48 +1,40 @@
 package com.eprovement.poptavka.client.user.settings;
 
-import com.eprovement.poptavka.client.common.StatusIconLabel;
-import com.eprovement.poptavka.client.common.StatusIconLabel.State;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.settings.toolbar.SettingsToolbarView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 
 public class SettingsView extends Composite implements
-        SettingsPresenter.HomeSettingsViewInterface {
+        SettingsPresenter.SttingsViewInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    private static HomeSettingsViewUiBinder uiBinder = GWT
-            .create(HomeSettingsViewUiBinder.class);
+    private static SettingsViewUiBinder uiBinder = GWT.create(SettingsViewUiBinder.class);
 
-    interface HomeSettingsViewUiBinder extends
-            UiBinder<Widget, SettingsView> {
+    interface SettingsViewUiBinder extends UiBinder<Widget, SettingsView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField
-    Button menuUserBtn, menuClientBtn, menuSupplierBtn, menuSystemBtn;
-    @UiField
-    SimplePanel contentPanel, footerHolder;
-    @UiField
-    Button updateButton;
-    @UiField
-    StatusIconLabel infoStatus1, infoStatus2, infoStatus3, infoStatus4;
-    //
-    private PopupPanel notify;
-    private StatusIconLabel notifyInfoMessage;
+    /** UiBinder attributes. **/
+    @UiField Button menuUserBtn, menuClientBtn, menuSupplierBtn, menuSystemBtn, menuSecurityBtn;
+    @UiField SimplePanel contentContainer, footerContainer;
+    /** Class attribute. **/
+    @Inject
+    private SettingsToolbarView toolbar;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -53,80 +45,59 @@ public class SettingsView extends Composite implements
         if (Storage.getBusinessUserDetail() != null
                 && !Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.CLIENT)) {
-            infoStatus2.setVisible(false);
             menuClientBtn.setVisible(false);
         }
-        StyleResource.INSTANCE.detailViews().ensureInjected();
-        createNotifyPopup();
-    }
 
-    @Override
-    public void initWidgetDefaults() {
-        //StatusIconLables
-        setInfoStatusState(false, infoStatus1, Storage.MSGS.settingsUserSettings());
-        setInfoStatusState(false, infoStatus2, Storage.MSGS.settingsClientSettings());
-        setInfoStatusState(false, infoStatus3, Storage.MSGS.settingsSupplierSettings());
-        setInfoStatusState(false, infoStatus4, Storage.MSGS.settingsSystemSettings());
-    }
-
-    public void createNotifyPopup() {
-        notify = new PopupPanel(true);
-        notify.setGlassEnabled(true);
-        VerticalPanel vp = new VerticalPanel();
-        //info message
-        notifyInfoMessage = new StatusIconLabel();
-        vp.add(notifyInfoMessage);
-        //Button
-        Button closeBtn = new Button(Storage.MSGS.commonBtnClose());
-        closeBtn.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
-        closeBtn.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                notify.hide();
-            }
-        });
-        vp.add(closeBtn);
-        notify.add(vp);
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+        StyleResource.INSTANCE.modal().ensureInjected();
     }
 
     /**************************************************************************/
     /*  Methods handled by view                                               */
     /**************************************************************************/
     @Override
-    public void showNofity(String message, Boolean updated) {
-        updateUserStatus(!updated);
-        updateClientStatus(!updated);
-        updateSupplierStatus(!updated);
-        updateSystemStatus(!updated);
-        notifyInfoMessage.setMessage(message);
-        notifyInfoMessage.setPassedSmall(updated);
-        notify.center();
-    }
-
-    @Override
-    public void updateUserStatus(boolean isChange) {
-        setInfoStatusState(isChange, infoStatus1, Storage.MSGS.settingsUserSettings());
-    }
-
-    @Override
-    public void updateClientStatus(boolean isChange) {
-        setInfoStatusState(isChange, infoStatus2, Storage.MSGS.settingsClientSettings());
-    }
-
-    @Override
-    public void updateSupplierStatus(boolean isChange) {
-        setInfoStatusState(isChange, infoStatus3, Storage.MSGS.settingsSupplierSettings());
-    }
-
-    @Override
-    public void updateSystemStatus(boolean isChange) {
-        setInfoStatusState(isChange, infoStatus4, Storage.MSGS.settingsSystemSettings());
-    }
-
-    @Override
     public void setClientButtonVisibility(boolean visible) {
         menuSupplierBtn.setVisible(visible);
-        infoStatus3.setVisible(visible);
+    }
+
+    public void settingsUserStyleChange() {
+        menuUserBtn.addStyleName(Constants.ACT);
+        menuClientBtn.removeStyleName(Constants.ACT);
+        menuSupplierBtn.removeStyleName(Constants.ACT);
+        menuSystemBtn.removeStyleName(Constants.ACT);
+        menuSecurityBtn.removeStyleName(Constants.ACT);
+    }
+
+    public void settingsClientStyleChange() {
+        menuUserBtn.removeStyleName(Constants.ACT);
+        menuClientBtn.addStyleName(Constants.ACT);
+        menuSupplierBtn.removeStyleName(Constants.ACT);
+        menuSystemBtn.removeStyleName(Constants.ACT);
+        menuSecurityBtn.removeStyleName(Constants.ACT);
+    }
+
+    public void settingsSupplierStyleChange() {
+        menuUserBtn.removeStyleName(Constants.ACT);
+        menuClientBtn.removeStyleName(Constants.ACT);
+        menuSupplierBtn.addStyleName(Constants.ACT);
+        menuSystemBtn.removeStyleName(Constants.ACT);
+        menuSecurityBtn.removeStyleName(Constants.ACT);
+    }
+
+    public void settingsSystemsStyleChange() {
+        menuUserBtn.removeStyleName(Constants.ACT);
+        menuClientBtn.removeStyleName(Constants.ACT);
+        menuSupplierBtn.removeStyleName(Constants.ACT);
+        menuSystemBtn.addStyleName(Constants.ACT);
+        menuSecurityBtn.removeStyleName(Constants.ACT);
+    }
+
+    public void settingsSecurityStyleChange() {
+        menuUserBtn.removeStyleName(Constants.ACT);
+        menuClientBtn.removeStyleName(Constants.ACT);
+        menuSupplierBtn.removeStyleName(Constants.ACT);
+        menuSystemBtn.removeStyleName(Constants.ACT);
+        menuSecurityBtn.addStyleName(Constants.ACT);
     }
 
     /**************************************************************************/
@@ -135,20 +106,15 @@ public class SettingsView extends Composite implements
     /** PANELS. **/
     @Override
     public SimplePanel getContentPanel() {
-        return contentPanel;
+        return contentContainer;
     }
 
     @Override
-    public SimplePanel getFooterHolder() {
-        return footerHolder;
+    public SimplePanel getFooterContainer() {
+        return footerContainer;
     }
 
     /** BUTTONS. **/
-    @Override
-    public Button getUpdateButton() {
-        return updateButton;
-    }
-
     @Override
     public Button getMenuUserBtn() {
         return menuUserBtn;
@@ -170,20 +136,17 @@ public class SettingsView extends Composite implements
     }
 
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public Button getMenuSecurityBtn() {
+        return menuSecurityBtn;
     }
 
-    /**************************************************************************/
-    /*  Helper methods                                                        */
-    /**************************************************************************/
-    private void setInfoStatusState(boolean isChange, StatusIconLabel iconLabel, String message) {
-        if (isChange) {
-            iconLabel.setDescription(message + " has changed.");
-            iconLabel.setState(State.INFO_16);
-        } else {
-            iconLabel.setDescription("No changes to " + message);
-            iconLabel.setState(State.ACCEPT_16);
-        }
+    @Override
+    public Widget getToolbarContent() {
+        return toolbar;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

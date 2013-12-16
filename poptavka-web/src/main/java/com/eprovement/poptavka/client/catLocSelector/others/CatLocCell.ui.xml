@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+    <ui:with field="imageCss" type="java.lang.String" />
+    <ui:with field="imageSrc" type="com.google.gwt.safehtml.shared.SafeUri" />
+    <ui:with field="categoryName" type="com.google.gwt.safehtml.shared.SafeHtml" />
+    <ui:style>
+        .image {
+            float: left;
+            width: 18px;
+            margin-top: 4px;
+        }
+        .text {
+            display: block;
+        }
+    </ui:style>
+
+    <div>
+        <div class='{style.image} {imageCss}'>
+            <img ui:field='image' src='{imageSrc}' />
+        </div>
+        <div class='{style.text}'>
+            <ui:safehtml from='{categoryName}' />
+        </div>
+    </div>
+</ui:UiBinder>

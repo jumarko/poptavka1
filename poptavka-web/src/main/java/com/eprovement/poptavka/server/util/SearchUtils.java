@@ -6,8 +6,7 @@ package com.eprovement.poptavka.server.util;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -30,7 +29,7 @@ public final class SearchUtils {
         result.setMaxResults(searchDefinition.getMaxResult());
         if (searchDefinition.getFilter() != null) {
             if (searchDefinition.getFilter().getCategories() != null) {
-                for (CategoryDetail categoryDetail : searchDefinition.getFilter()
+                for (ICatLocDetail categoryDetail : searchDefinition.getFilter()
                         .getCategories()) {
                     Category category = new Category();
                     category.setId(categoryDetail.getId());
@@ -39,10 +38,10 @@ public final class SearchUtils {
                 }
             }
             if (searchDefinition.getFilter().getLocalities() != null) {
-                for (LocalityDetail localityDetail : searchDefinition.getFilter()
+                for (ICatLocDetail catLocDetail : searchDefinition.getFilter()
                         .getLocalities()) {
                     Locality locality = new Locality();
-                    locality.setId(localityDetail.getId());
+                    locality.setId(catLocDetail.getId());
                     result.addFilter(new Filter(categoryLocalityPrefix + "localities",
                             locality, Filter.OP_IN));
                 }

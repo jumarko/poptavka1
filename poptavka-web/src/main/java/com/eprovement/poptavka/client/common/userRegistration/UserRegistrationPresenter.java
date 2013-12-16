@@ -1,0 +1,122 @@
+package com.eprovement.poptavka.client.common.userRegistration;
+
+import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Presenter;
+import com.mvp4g.client.presenter.LazyPresenter;
+import com.mvp4g.client.view.LazyView;
+
+@Presenter(view = UserRegistrationView.class, multiple = true)
+public class UserRegistrationPresenter
+        extends LazyPresenter<UserRegistrationPresenter.AccountFormInterface, UserRegistrationEventBus> {
+
+    /**************************************************************************/
+    /* VIEW INTERFACE                                                         */
+    /**************************************************************************/
+    public interface AccountFormInterface extends LazyView {
+        SimplePanel getAddressHolder();
+
+        Widget getWidgetView();
+
+        boolean isValid();
+
+        ValidationMonitor getEmailBox();
+
+        void initVisualFreeEmailCheck(Boolean isAvailable);
+
+        Button getPersonBtn();
+
+        Button getCompanyBtn();
+
+        void createBusinessUserDetail(BusinessUserDetail user);
+
+        boolean getCompanySelected();
+
+        void setCompanyPanelVisibility(boolean showCompanyPanel);
+    }
+
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    public void onStart() {
+        // nothing by default
+    }
+
+    public void onForward() {
+        // nothing by default
+    }
+
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    /**
+     * Init widget and call init address selector widget.
+     * @param embedToWidget
+     */
+    public void onInitUserRegistration(SimplePanel embedToWidget) {
+        embedToWidget.setWidget(view.getWidgetView());
+        eventBus.initAddressSelector(view.getAddressHolder());
+    }
+
+    /**************************************************************************/
+    /* BIND                                                                   */
+    /**************************************************************************/
+    @Override
+    public void bindView() {
+        ((TextBox) view.getEmailBox().getWidget()).addValueChangeHandler(
+                new ValueChangeHandler<String>() {
+                    @Override
+                    public void onValueChange(ValueChangeEvent<String> value) {
+                        if (view.getEmailBox().isValid() || view.getEmailBox().isExternalValidation()) {
+                            eventBus.checkFreeEmail(value.getValue().trim());
+                        }
+                    }
+                });
+        addPersonButtonClickHandler();
+        addCompanyButtonClickHandler();
+    }
+
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    public void onCheckFreeEmailResponse(Boolean isAvailable) {
+        view.initVisualFreeEmailCheck(isAvailable);
+    }
+
+    public void onFillBusinessUserDetail(BusinessUserDetail userDetail) {
+        eventBus.fillAddresses(userDetail.getAddresses());
+        view.createBusinessUserDetail(userDetail);
+    }
+
+    private void addPersonButtonClickHandler() {
+        view.getPersonBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.setCompanyPanelVisibility(false);
+                eventBus.setUserRegistrationHeight(false);
+            }
+        });
+    }
+
+    private void addCompanyButtonClickHandler() {
+        view.getCompanyBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.setCompanyPanelVisibility(true);
+                eventBus.setUserRegistrationHeight(true);
+            }
+        });
+    }
+
+    public void onCheckCompanySelected() {
+        eventBus.setUserRegistrationHeight(view.getCompanySelected());
+    }
+}

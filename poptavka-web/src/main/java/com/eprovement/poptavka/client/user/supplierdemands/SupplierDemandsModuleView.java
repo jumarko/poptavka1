@@ -1,8 +1,7 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.root.footer.FooterView;
-import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,7 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class SupplierDemandsModuleView extends Composite
-        implements SupplierDemandsModulePresenter.SupplierDemandsLayoutInterface {
+        implements SupplierDemandsModulePresenter.SupplierLayoutInterface {
 
     private static SupplierDemandsLayoutViewUiBinder uiBinder = GWT.create(SupplierDemandsLayoutViewUiBinder.class);
 
@@ -24,21 +23,19 @@ public class SupplierDemandsModuleView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) Widget footer;
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentContainer;
     @UiField Button supplierDemands, supplierOffers, supplierAssignedDemands, supplierClosedDemands, supplierRatings;
-    /** Class attributes. **/
-    private @Inject FooterView footerView;
+    /** Class attribute. **/
+    @Inject
+    private SupplierToolbarView toolbar;
+
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     /**************************************************************************/
@@ -129,7 +126,7 @@ public class SupplierDemandsModuleView extends Composite
     /**************************************************************************/
     @Override
     public void setContent(IsWidget contentWidget) {
-        contentPanel.setWidget(contentWidget);
+        contentContainer.setWidget(contentWidget);
     }
 
     /**************************************************************************/
@@ -158,6 +155,11 @@ public class SupplierDemandsModuleView extends Composite
     @Override
     public Button getSupplierRatingsButton() {
         return supplierRatings;
+    }
+
+    @Override
+    public SupplierToolbarView getToolbarContent() {
+        return toolbar;
     }
 
     @Override

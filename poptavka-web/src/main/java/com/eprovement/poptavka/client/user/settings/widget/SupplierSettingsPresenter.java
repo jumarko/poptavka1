@@ -1,37 +1,22 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.ListChangeMonitor;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategorySelectorView;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter.SupplierSettingsViewInterface;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.domain.enums.ServiceType;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,25 +35,17 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     public interface SupplierSettingsViewInterface extends LazyView {
 
         /** SETTERS. **/
-        void setChangeHandler(ChangeHandler changeHandler);
-
         void setSupplierSettings(SettingDetail detail);
-
-        void setCategories(List<CategoryDetail> categoriesList);
-
-        void setLocalities(List<LocalityDetail> localitiesList);
-
-        SettingDetail updateSupplierSettings(SettingDetail detail);
 
         /** GETTERS. **/
         //Panels
-        PopupPanel getSelectorWidgetPopup();
+        SimpleConfirmPopup getSelectorPopup();
 
         SimplePanel getServicePanel();
 
-        List<CategoryDetail> getCategories();
+        List<ICatLocDetail> getCategories();
 
-        List<LocalityDetail> getLocalities();
+        List<ICatLocDetail> getLocalities();
 
         //Buttons
         Button getEditCatBtn();
@@ -76,33 +53,15 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         Button getEditLocBtn();
 
         //Others
-        void commit();
+        boolean isValid();
 
-        ServicesSelectorView getServiceWidget();
-
-        Anchor getRevert();
-
-        Widget getWidgetView();
+        SupplierSettingsView getWidgetView();
     }
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     //history of changes
-    private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
-    private SettingDetail settingsDetail;
-    private boolean serviceChanged = false;
-    private ChangeHandler changeDetail  = new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                if (event.getSource() instanceof ListChangeMonitor) {
-                    listChangedMonitorsManager((ListChangeMonitor) event.getSource());
-                } else {
-                    serviceChangeMonitorManager((ServicesSelectorView) event.getSource());
-                }
-
-                eventBus.updateSupplierStatus(isSupplierSettingChanged());
-            }
-        };
+    private boolean editingCategories;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -112,85 +71,47 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
         view.getEditCatBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initCategoryWidget(
-                        view.getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getCategories(), true);
-                view.getSelectorWidgetPopup().center();
+                editingCategories = true;
+                eventBus.initCatLocSelector(
+                    view.getSelectorPopup().getSelectorPanel(),
+                    new CatLocSelectorBuilder.Builder()
+                        .initCategorySelector()
+                        .initSelectorManager()
+                        .withCheckboxesOnLeafsOnly()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                        .build(),
+                    Constants.USER_SETTINGS_MODULE);
+                eventBus.setCatLocs(view.getCategories());
+                view.getSelectorPopup().show();
             }
         });
         view.getEditLocBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initLocalityWidget(
-                        view.getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getLocalities(), true);
-                view.getSelectorWidgetPopup().center();
+                editingCategories = false;
+                eventBus.initCatLocSelector(
+                    view.getSelectorPopup().getSelectorPanel(),
+                    new CatLocSelectorBuilder.Builder()
+                        .initLocalitySelector()
+                        .initSelectorManager()
+                        .withCheckboxesOnLeafsOnly()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                        .build(),
+                    -Constants.USER_SETTINGS_MODULE);
+                eventBus.setCatLocs(view.getLocalities());
+                view.getSelectorPopup().show();
             }
         });
-        view.getSelectorWidgetPopup().addCloseHandler(
-                new CloseHandler<PopupPanel>() {
-                    @Override
-                    public void onClose(CloseEvent<PopupPanel> event) {
-                        if (view.getSelectorWidgetPopup()
-                                .getWidget() instanceof CategorySelectorView) {
-                            view.setCategories(
-                                    ((CategorySelectorView) view.getSelectorWidgetPopup().getWidget())
-                                    .getCellListDataProvider().getList());
-                        } else if (view.getSelectorWidgetPopup()
-                                .getWidget() instanceof LocalitySelectorView) {
-                            view.setLocalities(
-                                    ((LocalitySelectorView) view.getSelectorWidgetPopup().getWidget())
-                                    .getCellListDataProvider().getList());
-                        }
-                    }
-                });
-        view.setChangeHandler(changeDetail);
-        view.getRevert().addClickHandler(new ClickHandler() {
+        view.getSelectorPopup().getSubmitBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                view.getServicePanel().removeStyleName(Storage.RSCS.common().changed());
-                view.getRevert().setVisible(false);
-                serviceChanged = false;
-                if (settingsDetail.getSupplier() != null
-                        && settingsDetail.getSupplier().getServices() != null
-                        && !settingsDetail.getSupplier().getServices().isEmpty()) {
-                    view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
+                if (editingCategories) {
+                    eventBus.fillCatLocs(view.getCategories(), Constants.USER_SETTINGS_MODULE);
+                } else {
+                    eventBus.fillCatLocs(view.getLocalities(), -Constants.USER_SETTINGS_MODULE);
                 }
-                eventBus.updateSupplierStatus(isSupplierSettingChanged());
             }
         });
-    }
-
-    private void listChangedMonitorsManager(ListChangeMonitor source) {
-        source.getChangeDetail().setValue(source.getValue());
-        if (source.isModified()) {
-            //if contains already - remove before adding new
-            if (updatedFields.contains(source.getChangeDetail())) {
-                updatedFields.remove(source.getChangeDetail());
-            }
-            updatedFields.add(source.getChangeDetail());
-        } else {
-            updatedFields.remove(source.getChangeDetail());
-        }
-    }
-
-    private void serviceChangeMonitorManager(ServicesSelectorView source) {
-        serviceChanged = source.isChanged();
-        onServiceChanged(source.isChanged());
-        eventBus.updateSupplierStatus(isSupplierSettingChanged());
-    }
-
-    private void onServiceChanged(boolean isChange) {
-        view.getRevert().setVisible(isChange);
-        if (isChange) {
-            view.getServicePanel().addStyleName(Storage.RSCS.common().changed());
-        } else {
-            view.getServicePanel().removeStyleName(Storage.RSCS.common().changed());
-        }
     }
 
     /**************************************************************************/
@@ -198,31 +119,30 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     public void initUserSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
-        eventBus.initServicesWidget(view.getServicePanel());
+        if (Storage.getBusinessUserDetail() != null
+            && Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+            eventBus.initServicesWidget(ServiceType.SUPPLIER, view.getServicePanel());
+        } else {
+            eventBus.initServicesWidget(ServiceType.CLIENT, view.getServicePanel());
+        }
     }
 
     /**************************************************************************/
-    /* METHODS                                                                */
+    /* Business events                                                        */
     /**************************************************************************/
     public void onSetSupplierSettings(SettingDetail detail) {
-        settingsDetail = detail;
         view.setSupplierSettings(detail);
+        eventBus.selectService(detail.getSupplier().getServices().get(0));
     }
 
-    public void onNofityServicesWidgetListeners() {
-        if (settingsDetail.getSupplier() != null
-                && settingsDetail.getSupplier().getServices() != null
-                && !settingsDetail.getSupplier().getServices().isEmpty()) {
-            view.getServiceWidget().setService(settingsDetail.getSupplier().getServices().get(0));
-        }
-        view.getServiceWidget().addChangeHandler(changeDetail);
-    }
-
-    public SettingDetail updateSupplierSettings(SettingDetail settingDetail) {
-        return view.updateSupplierSettings(settingDetail);
-    }
-
-    public boolean isSupplierSettingChanged() {
-        return serviceChanged || !updatedFields.isEmpty();
+    /**************************************************************************/
+    /* SETTERS                                                                */
+    /**************************************************************************/
+    public SettingDetail updateSupplierSettings(SettingDetail detail) {
+        detail.getSupplier().setCategories(view.getCategories());
+        detail.getSupplier().setLocalities(view.getLocalities());
+        eventBus.fillServices(detail.getSupplier().getServices());
+        return detail;
     }
 }

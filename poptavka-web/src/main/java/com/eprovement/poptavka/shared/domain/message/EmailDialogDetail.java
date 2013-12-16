@@ -5,6 +5,7 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.client.common.validation.Email;
+import com.eprovement.poptavka.client.common.validation.Extended;
 
 import javax.validation.constraints.Size;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -41,10 +42,12 @@ public class EmailDialogDetail implements IsSerializable {
     // chceme rozlisovat, v ktorom okne?
     // Pri moznej zmene alebo preklade bude treba menit na viacerych miestach
     @NotBlank(message = "{emailNotBlank}")
-    @Email(message = "{patternEmail}")
+    @Email(message = "{patternEmail}", groups = Extended.class)
+    @Size(max = 255, message = "{emailSize}", groups = Extended.class)
     private String emailFrom;
+
     @NotBlank(message = "{emailDialogMessageNotBlank}")
-    @Size(max = 1000, message = "{emailDialogMessageSize}")
+    @Size(max = 1000, message = "{emailDialogMessageSize}", groups = Extended.class)
     private String message;
 
     public EmailDialogDetail() {

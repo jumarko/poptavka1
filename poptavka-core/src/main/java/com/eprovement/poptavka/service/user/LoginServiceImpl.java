@@ -25,9 +25,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
  */
 public class LoginServiceImpl implements LoginService {
 
-    /**
-     * TODO RELEASE: remove this. ivlcek: What is this?
-     */
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginServiceImpl.class);
     private final GeneralService generalService;
     private Encryptor encryptor;
@@ -43,8 +40,6 @@ public class LoginServiceImpl implements LoginService {
      * Method returns logged user from Spring Security Authentication object.
      * User has been successfully authenticated before and here he is retrieved
      * from Authentication object.
-     *
-     * TODO RELEASE: implement test. ivlcek: Juraj can you do it? I'm a bit lost.
      *
      * @return user - user retrieved from Spring Security Authentication object or null
      *                  if no authentication object is set

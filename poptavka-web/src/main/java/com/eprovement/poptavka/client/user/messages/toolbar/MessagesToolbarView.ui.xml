@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <g:FlowPanel styleName='{res.initial.toolbar}'>
+
+        <!--Action box-->
+        <g:SimplePanel ui:field="actionBox" addStyleNames='item' visible="false" />
+        
+        <!--Buttons-->
+        <g:Button ui:field="replyBtn" styleName="button-green item hide" visible="false" >
+            <ui:msg key="commonReplyBtn">Reply</ui:msg>
+        </g:Button>
+
+        <!--Pager-->
+        <s:UniversalPagerWidget ui:field='pager' addStyleNames='item' visible="false" />
+
+    </g:FlowPanel>
+</ui:UiBinder>

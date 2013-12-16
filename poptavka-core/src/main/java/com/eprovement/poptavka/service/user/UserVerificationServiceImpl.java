@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -161,14 +162,14 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         final SimpleMailMessage activationMessage = new SimpleMailMessage();
 
         ResourceBundle rb = ResourceBundle.getBundle("localization", ENGLISH_LOCALE);
-        String activationEmailText = rb.getString("uc10.mail.sentence1");
+        String activationEmailText = MessageFormat.format(rb.getString("activation.mail.body"), activationCode);
 
         activationMessage.setFrom(activationEmailFromAddress);
         activationMessage.setTo(userMail);
 
-        activationMessage.setSubject("Poptavka account activation");
+        activationMessage.setSubject(rb.getString("activation.mail.subject"));
 
-        activationMessage.setText(activationEmailText + " \n" + activationCode);
+        activationMessage.setText(activationEmailText);
         return activationMessage;
 
     }

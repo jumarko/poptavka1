@@ -20,4 +20,5 @@ public interface BusinessUserRoleService<BUR extends BusinessUserRole, BUDao ext
 
     boolean checkFreeEmail(String email);
 
+    BUR getByEmail(String email);
 }

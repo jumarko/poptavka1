@@ -1,26 +1,11 @@
 package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.shared.search.SortDataHolder;
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.widget.grid.cell.CustomImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.RatingCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
-import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OrderType;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.cell.client.ClickableTextCell;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -31,7 +16,6 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.Range;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -90,6 +74,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /*                          ATTRIBUTES                                    */
     /**************************************************************************/
+    private static final int TABLE_PADDING_HEIGHT = 20;
+    private static final int ROW_HEIGHT = 42;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.
@@ -125,37 +111,34 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * Holds filtering criteria. See class (@link SearchModuleDataHolder).
      */
     private SearchModuleDataHolder searchDataHolder = null;
-    // for EVERY text display
-    // providing HTML safe display
-    public static final ClickableTextCell TABLE_CLICKABLE_TEXT_CELL = new ClickableTextCell(
-            new SafeHtmlRenderer<String>() {
-            @Override
-            public SafeHtml render(String object) {
-                return SafeHtmlUtils.fromTrustedString(object);
-            }
-
-            @Override
-            public void render(String object, SafeHtmlBuilder builder) {
-                builder.appendHtmlConstant(object);
-            }
-        }
-    );
 
     /**************************************************************************/
     /* Constructors of UniversalAsyncGrid                                     */
     /**************************************************************************/
     public UniversalAsyncGrid(int pageSize, Resources resources) {
         super(pageSize, resources);
+        universalAsyncGridCommonSettings();
     }
 
     public UniversalAsyncGrid(SortDataHolder sort, int pageSize, Resources resources) {
         super(pageSize, resources);
         this.sort = sort;
+        universalAsyncGridCommonSettings();
     }
 
     public UniversalAsyncGrid(ProvidesKey<T> keyProvider, SortDataHolder sort) {
         super(keyProvider);
         this.sort = sort;
+        universalAsyncGridCommonSettings();
+    }
+
+    /**
+     * Common method called in all constructors. It sets the no result Label.
+     */
+    public void universalAsyncGridCommonSettings() {
+        Label noResultsLabel = new Label(Storage.MSGS.commonNoData());
+        noResultsLabel.addStyleName("no-results-label");
+        setEmptyTableWidget(noResultsLabel);
     }
 
     /**************************************************************************/
@@ -203,9 +186,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 length = display.getVisibleRange().getLength();
                 if (!cancelRangeChangedEvent) {
                     //Aks for new data
-                    if (length > 0) {
+                    if (display.getRowCount() > 0) {
                         eventBus.getData(new SearchDefinition(
-                                start, start + length, searchDataHolder, sort.getSortOrder()));
+                            start, start + length, searchDataHolder, sort.getSortOrder()));
                     }
                 }
                 cancelRangeChangedEvent = false;
@@ -213,19 +196,19 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
             @Override
             public void updateRowCount(int size, boolean exact) {
-                super.updateRowCount(size, exact);
                 if (size > 0) {
-                    setEmptyTableWidget(null);
+                    super.updateRowCount(size, exact);
                     eventBus.getData(new SearchDefinition(
-                            start, start + length, searchDataHolder, sort.getSortOrder()));
+                        start, start + length, searchDataHolder, sort.getSortOrder()));
                 } else {
-                    setEmptyTableWidget(new Label(Storage.MSGS.commonNoData()));
+                    super.updateRowCount(size, true);
                 }
             }
 
             @Override
             public void updateRowData(int start, List<T> values) {
                 super.updateRowData(start, values);
+                setTableHeight(values.size());
             }
         };
         this.dataProvider.addDataDisplay(this);
@@ -249,12 +232,12 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 }
                 sort.clear();
                 sort.addCustomSortOrder(
-                        getColumnIndex(column),
-                        event.isSortAscending() ? OrderType.ASC : OrderType.DESC);
+                    getColumnIndex(column),
+                    event.isSortAscending() ? OrderType.ASC : OrderType.DESC);
                 sort.useCustomSortOrder();
 
                 eventBus.getData(new SearchDefinition(
-                        start, getPageSize(), searchDataHolder, sort.getSortOrder()));
+                    start, getPageSize(), searchDataHolder, sort.getSortOrder()));
             }
         };
         addColumnSortHandler(sortHandler);
@@ -275,7 +258,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @param getter - the value getter for the cell
      */
     public <C> Column<T, C> addColumn(Cell<C> cell,
-            String headerText, boolean sort, String width, final GetValue<C> getter) {
+        String headerText, boolean sort, String width, final GetValue<C> getter) {
         Column<T, C> column = new Column<T, C>(cell) {
             @Override
             public C getValue(T demand) {
@@ -291,170 +274,53 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
-     * Create checkbox column providing selecting whole row/rows.
+     * Add given column to table.
      *
-     * @param selectionModel
-     * @return checkColumn
+     * Comment: Column must be as last attribute becuse there is already
+     * one method with <Column, String, String> attributes.
+     *
+     * @param headerText header text
+     * @param width of the column
+     * @param column to be added
+     * @return added column
      */
-    public Column<T, Boolean> addCheckboxColumn(Header header) {
-        Column<T, Boolean> checkColumn = new Column<T, Boolean>(new CheckboxCell(true, false)) {
-            @Override
-            public Boolean getValue(T object) {
-                // Get the value from the selection model.
-                return getSelectionModel().isSelected(object);
-            }
-        };
-        addColumn(checkColumn, header);
-        setColumnWidth(checkColumn, Constants.COL_WIDTH_ICON);
-        return checkColumn;
+    public Column addColumn(String headerText, String widthStyleName, Column column) {
+        addColumn(column, headerText);
+        addColumnStyleName(getColumnIndex(column), widthStyleName);
+        return column;
     }
 
-    /**
-     * We decided that this column doesn't need to be displayed to user
-     */
-    /**
-     * Creates offer state image column.
-     *
-     * @return created offer state image column
-     */
-//    public Column<T, OfferStateType> addOfferStateColumn(String headerText) {
-//        Column<T, OfferStateType> col = new Column<T, OfferStateType>(new OfferStateImageCell()) {
+    public Column addColumn(Header header, String widthStyleName, Column column) {
+        addColumn(column, header);
+        addColumnStyleName(getColumnIndex(column), widthStyleName);
+        return column;
+    }
+
+//    Martin - commented 10.11.2013 - archived this methods for future needs
+//    public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
+//        Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
 //            @Override
-//            public OfferStateType getValue(T object) {
-//                TableDisplay obj = (TableDisplay) object;
-//                return obj.getOfferState();
+//            public ImageResource getValue(T object) {
+//                return imageResource;
 //            }
 //        };
 //        //set column style
-//        col.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-//        addColumn(col, headerText);
-//        setColumnWidth(col, COLUMN_WIDTH_ICON, Unit.PX);
+//        col.setCellStyleNames(Storage.GRSCS.dataGridStyle().cellTableIconColumn());
+//        addColumn(col);
+//        setColumnWidth(col, Constants.COL_WIDTH_ICON);
 //        return col;
 //    }
-    public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
-        Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
-            @Override
-            public ImageResource getValue(T object) {
-                return imageResource;
-            }
-        };
-        //set column style
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
-        addColumn(col);
-        setColumnWidth(col, Constants.COL_WIDTH_ICON);
-        return col;
-    }
-
-    /**
-     * Creates demand status image column.
-     *
-     * @return created demands status image column
-     */
-    public Column<T, DemandStatus> addDemandStatusColumn(String headerText) {
-        Column<T, DemandStatus> col = new Column<T, DemandStatus>(new DemandStatusImageCell()) {
-            @Override
-            public DemandStatus getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
-                return obj.getDemandStatus();
-            }
-        };
-        //set column style
-        col.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
-//        addColumn(col, headerText);
-        addColumn(col);
-        setColumnWidth(col, Constants.COL_WIDTH_ICON);
-        return col;
-    }
-
-    /**
-     * Creates urgency's column with urgency's header represented by urgency's image.
-     *
-     * @return urgencyColumn
-     */
-    public Column<T, Date> addUrgentColumn() {
-        //create urgency's column represented by endDate's value
-        Column<T, Date> urgencyColumn = new Column<T, Date>(new UrgentImageCell()) {
-            @Override
-            public Date getValue(T object) {
-                TableDisplay obj = (TableDisplay) object;
-                return obj.getValidTo();
-            }
-        };
-        urgencyColumn.setSortable(true);
-        //create urgency's header represented by urgency's image
-        Header urgencyHeader = new Header<Date>(new UrgentImageCell()) {
-            @Override
-            public Date getValue() {
-                /* Returning null value tells UrgetUmageCell to use header image.
-                 * Using it this way we can use same class:UrgentImageCell for
-                 * providing urgency images as for hear as for urgency column items.
-                 * Otherwise we must create new class image cell providing only header's image. */
-                return null;
-            }
-        };
-        //put it together
-        addColumn(urgencyColumn, urgencyHeader);
-        setColumnWidth(urgencyColumn, Constants.COL_WIDTH_URGENT);
-        return urgencyColumn;
-    }
-
-    public Column<T, Integer> addRatingColumn() {
-        Column<T, Integer> ratingCol = new Column<T, Integer>(new RatingCell()) {
-            @Override
-            public Integer getValue(T object) {
-                return ((TableDisplayRating) object).getOveralRating();
-            }
-        };
-        //set column style
-        ratingCol.setSortable(true);
-        ratingCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        //put it together
-        addColumn(ratingCol, Storage.MSGS.columnRating());
-        setColumnWidth(ratingCol, Constants.COL_WIDTH_RATING);
-        return ratingCol;
-    }
-
-    /**
-     * Creates star-column depending on messages' isStared value.
-     * By clicking this cell, STAR attribute is immediately updated in database.
-     *
-     * NOTE:
-     * Sorting is not implemented now.
-     * TODO RELEASE Martin: let's implement star sorting as it is quite important especially for potentialDemands view
-     * Implement sorting according to star status
-     *
-     * @return star column
-     */
-    public Column<T, Boolean> addStarColumn() {
-        //create star column represented by isStarred value
-        Column<T, Boolean> starColumn = new Column<T, Boolean>(new StarImageCell()) {
-            @Override
-            public Boolean getValue(T object) {
-                IUniversalDetail obj = (IUniversalDetail) object;
-                return obj.isStarred();
-            }
-        };
-        starColumn.setSortable(true);
-        //set column style
-        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableHandCursor());
-        starColumn.setCellStyleNames(Storage.RSCS.grid().cellTableIconColumn());
-        //create star header represented by star image
-        Header starHeader = new Header<Boolean>(new StarImageCell()) {
-            @Override
-            public Boolean getValue() {
-                /* Returning null value tells StarCell to use header image.
-                 * Using it this way we can use same class StarCell for
-                 * providing star images as for header as for star column items.
-                 * Otherwise we must create new class image cell providing only header's image. */
-                return null;
-            }
-        };
-        //set header style
-        starHeader.setHeaderStyleNames(Storage.RSCS.grid().cellTableIconColumn());
-        //put it all together
-        addColumn(starColumn, starHeader);
-        setColumnWidth(starColumn, Constants.COL_WIDTH_ICON);
-        return starColumn;
+    /**************************************************************************/
+    /* Setter metods                                                          */
+    /**************************************************************************/
+    private void setTableHeight(int rowCount) {
+        //include table padding
+        int height = (2 * TABLE_PADDING_HEIGHT);
+        //include one row for a table header
+        height += ROW_HEIGHT;
+        //include table rows
+        height += (rowCount > 0 ? (rowCount * ROW_HEIGHT) : ROW_HEIGHT);
+        setHeight(height + "px");
     }
 
     // ***********************************************************************

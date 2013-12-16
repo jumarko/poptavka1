@@ -13,7 +13,10 @@ public final class Registers {
         NEW_DEMAND("new.demand"),
         OFFER_STATUS_CHANGED("offer.status.changed"),
         NEW_OFFER("new.offer"),
-        DEMAND_STATUS_CHANGED("demand.status.changed");
+        DEMAND_STATUS_CHANGED("demand.status.changed"),
+
+        WELCOME_CLIENT("welcome.client"),
+        WELCOME_SUPPLIER("welcome.supplier");
 
         private final String code;
 

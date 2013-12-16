@@ -30,7 +30,8 @@ import java.io.Serializable;
  */
 @Analyzer(impl = CzechAnalyzer.class)
 @MappedSuperclass
-// filters out all disabled objects - both '1' and NULL are considered as being enabled, objects have to be disabled explicitly
+// filters out all disabled objects -
+//    both '1' and NULL are considered as being enabled, objects have to be disabled explicitly
 @FilterDef(name = DomainObject.ENABLED_FILTER_NAME,
         defaultCondition = "(enabled = '1' OR enabled IS NULL)")
 @Filter(name = DomainObject.ENABLED_FILTER_NAME)

@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.shared.search;
 
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +21,9 @@ public final class SearchModuleDataHolder implements IsSerializable {
     //1. part of search bar ... store string for fulltext search
     private String searchText = "";
     //2. part of search bar ... store categories chosen by user
-    private ArrayList<CategoryDetail> categories = new ArrayList<CategoryDetail>();
+    private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
     //3. part of search bar ... store localities chosen by user
-    private ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
+    private ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
     //4. part of search bar ... store additional filters on certaing domain object attribute
     private ArrayList<FilterItem> attributes = new ArrayList<FilterItem>();
 
@@ -40,12 +40,12 @@ public final class SearchModuleDataHolder implements IsSerializable {
         this.searchText = searchText;
     }
 
-    public void setCategories(Collection<CategoryDetail> categories) {
-        this.categories = new ArrayList<CategoryDetail>(categories);
+    public void setCategories(Collection<ICatLocDetail> categories) {
+        this.categories = new ArrayList<ICatLocDetail>(categories);
     }
 
-    public void setLocalities(Collection<LocalityDetail> localities) {
-        this.localities = new ArrayList<LocalityDetail>(localities);
+    public void setLocalities(Collection<ICatLocDetail> localities) {
+        this.localities = new ArrayList<ICatLocDetail>(localities);
     }
 
     public void setAttributes(ArrayList<FilterItem> attributes) {
@@ -59,11 +59,11 @@ public final class SearchModuleDataHolder implements IsSerializable {
         return searchText;
     }
 
-    public ArrayList<CategoryDetail> getCategories() {
+    public ArrayList<ICatLocDetail> getCategories() {
         return categories;
     }
 
-    public ArrayList<LocalityDetail> getLocalities() {
+    public ArrayList<ICatLocDetail> getLocalities() {
         return localities;
     }
 
@@ -171,7 +171,7 @@ public final class SearchModuleDataHolder implements IsSerializable {
      */
     public String categoriesIDsToString() {
         StringBuilder str = new StringBuilder(LIST_BRACKET_LEFT);
-        for (CategoryDetail cat : categories) {
+        for (ICatLocDetail cat : categories) {
             str.append(cat.getId());
             str.append(LIST_ITEM_SEPARATOR);
         }
@@ -189,7 +189,7 @@ public final class SearchModuleDataHolder implements IsSerializable {
      */
     public String localitiesIDsToString() {
         StringBuilder str = new StringBuilder(LIST_BRACKET_LEFT);
-        for (LocalityDetail loc : localities) {
+        for (ICatLocDetail loc : localities) {
             str.append(loc.getId());
             str.append(LIST_ITEM_SEPARATOR);
         }
@@ -213,20 +213,20 @@ public final class SearchModuleDataHolder implements IsSerializable {
         //text=textString
         searchModuleDataHolder.setSearchText(items[0].split(VALUE_SEPARATOR)[1].replaceAll("\"", ""));
         //cats=[..,..]
-        ArrayList<CategoryDetail> categories = new ArrayList<CategoryDetail>();
+        ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
         String[] cats = items[1].split(VALUE_SEPARATOR);
         if (cats.length > 1) {
             for (String catId : cats[1].split(LIST_ITEM_SEPARATOR)) {
-                categories.add(new CategoryDetail(Long.valueOf(catId), ""));
+                categories.add(new CatLocDetail(Long.valueOf(catId), ""));
             }
         }
         searchModuleDataHolder.setCategories(categories);
         //locs=[..,..]
-        ArrayList<LocalityDetail> localities = new ArrayList<LocalityDetail>();
+        ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
         String[] locs = items[2].split(VALUE_SEPARATOR);
         if (locs.length > 1) {
             for (String locId : locs[1].split(LIST_ITEM_SEPARATOR)) {
-                localities.add(new LocalityDetail("", Long.parseLong(locId)));
+                localities.add(new CatLocDetail(Long.parseLong(locId), ""));
             }
         }
         searchModuleDataHolder.setLocalities(localities);

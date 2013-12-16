@@ -1,0 +1,174 @@
+/******************************************************************************/
+/*  Header View                                                               */
+/******************************************************************************/
+/*
+ *   Logo Styles
+ */
+.logo {
+    background: url(images/logo_small.png) no-repeat scroll 0 0 transparent;
+    top: -20px;
+    z-index: 10;
+}
+
+/*
+ *  Menu
+ */
+/*.menu-bar {*/
+/*}*/
+.menu-icon {
+    
+}
+.menu-panel {
+    background: url("images/menu_bg.jpg") repeat-x;
+    top: 60px;
+    left: 0;
+    width: 100%;
+}
+.menu-panel.admin {
+    width: 100%;
+}
+
+.menu {
+    left: 50%;
+    margin-left: -240px;
+}
+.menu .home-menu {
+}
+
+.menu .user-menu {
+}
+
+.menu ul {
+}
+
+.menu li {
+}
+
+.menu li button {
+}
+
+.menu li button:hover {
+}
+
+.menu li button:active {
+}
+
+.menu .button1 {
+}
+.menu .button2 {
+}
+.menu .button3 {
+}
+.menu .button4 {
+}
+.menu .button5 {
+}
+.menu .button6 {
+}
+.menu .button7 {
+}
+.menu .button8 {
+}
+.menu .button9 {
+}
+
+.menu .button1:hover, .button1.act {
+}
+.menu .button2:hover, .button2.act {
+}
+.menu .button3:hover, .button3.act {
+}
+.menu .button4:hover, .button4.act {
+}
+.menu .button5:hover, .button5.act {
+}
+.menu .button6:hover, .button6.act {
+}
+.menu .button7:hover, .button7.act {
+}
+.menu .button8:hover, .button8.act {
+}
+.menu .button9:hover, .button9.act {
+}
+
+/*
+*	Search Bar Styles
+*
+*/
+.search-icon {
+}
+.search-panel {
+    top: 10px;
+    left: auto;
+    right: 255px;
+    height: 50px;
+}
+.search-panel.admin {
+    left: auto;
+}
+
+.search-panel .search-textbox[type="text"] {
+    width: 190px;
+}
+.search-panel .advanced-search {
+    top: 2px;
+    right: -90px;
+    background: none;
+}
+.search-bar {
+    
+}
+
+/*
+ *  Settings Styles
+ */
+.settings-icon {
+    display: none;
+}
+/*
+*	Login styles
+*
+*/
+.login-icon {
+}
+.login-panel {
+}
+.login {
+    top: 9px;
+    right: 20px;
+}
+
+.login-bar {
+    top: 6px;
+    right: 70px;
+}
+
+.login-button {
+}
+
+.login-button a {
+}
+
+.login-button a:hover {
+}
+
+/*
+ *  Logout styles
+ */
+.logout-button {
+}
+
+.logout-button-act {
+}
+
+.logout-menu-bar {
+}
+
+.logout-menu-bar td {
+}
+
+.logout-menu-bar td:hover {
+}
+
+.help-button {
+}

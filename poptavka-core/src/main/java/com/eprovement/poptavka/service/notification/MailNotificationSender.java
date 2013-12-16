@@ -4,12 +4,10 @@ import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.mail.MailService;
 import com.eprovement.poptavka.validation.EmailValidator;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.util.PropertyPlaceholderHelper;
 
 import java.util.Map;
 
@@ -20,7 +18,6 @@ public class MailNotificationSender implements NotificationSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailNotificationSender.class);
 
-    private final PropertyPlaceholderHelper placeholderHelper = new PropertyPlaceholderHelper("${", "}");
     private final MailService mailService;
     private final String notificationFromAddress;
 
@@ -51,23 +48,15 @@ public class MailNotificationSender implements NotificationSender {
                 "User email address must be valid! user=" + user);
         Validate.notNull(notification, "notification cannot be null!");
 
-        LOGGER.info("action=notification_async status=startuser={} notification={}", user, notification);
+        LOGGER.info("action=notification_email_async status=startuser={} notification={}", user, notification);
         final SimpleMailMessage notificationMailMessage = new SimpleMailMessage();
         notificationMailMessage.setFrom(notificationFromAddress);
         notificationMailMessage.setTo(user.getEmail());
         notificationMailMessage.setSubject(notification.getName());
-        notificationMailMessage.setText(expandMessageBody(notification, messageVariables));
+        notificationMailMessage.setText(NotificationSenderUtils.expandMessageBody(notification, messageVariables));
 
         mailService.sendAsync(notificationMailMessage);
-        LOGGER.info("action=notification_async status=finish user={} notification={}", user, notification);
-    }
-
-    private String expandMessageBody(Notification notificationEntity, Map<String, String> messageVariables) {
-        if (MapUtils.isEmpty(messageVariables)) {
-            return notificationEntity.getMessageTemplate();
-        }
-        return placeholderHelper.replacePlaceholders(notificationEntity.getMessageTemplate(),
-                MapUtils.toProperties(messageVariables));
+        LOGGER.info("action=notification_email_async status=finish user={} notification={}", user, notification);
     }
 
 }

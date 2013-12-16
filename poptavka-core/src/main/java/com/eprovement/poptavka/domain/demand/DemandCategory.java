@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 /**
  * Category under which the demand falls
- * 
+ *
  * @author Juraj Martinka
  *         Date: 13.2.11
  */
@@ -25,7 +25,8 @@ import javax.persistence.Table;
                 query = "select count(distinct demandCategory.demand)"
                         + " from DemandCategory demandCategory"
 
-                        + " where demandCategory.category.leftBound between :leftBound and :rightBound"),
+                        + " where demandCategory.demand.status IN('ACTIVE', 'OFFERED') "
+                        + "    AND demandCategory.category.leftBound between :leftBound and :rightBound"),
 
         /**
          * In one query compute demands count for each locality and return it as a list of pairs

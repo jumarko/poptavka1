@@ -5,8 +5,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.SupplierDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
@@ -191,9 +190,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     private void getSupplierRatings(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierRatings(
                 Storage.getSupplierId(), searchDefinition,
-                new SecuredAsyncCallback<List<DemandRatingsDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<RatingDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<DemandRatingsDetail> result) {
+                    public void onSuccess(List<RatingDetail> result) {
                         eventBus.displaySupplierRatings(result);
                     }
                 });
@@ -227,9 +226,5 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 eventBus.setUpdatedUnreadMessagesCount(result);
             }
         });
-    }
-
-    public void onUpdateOfferStatus(OfferDetail offerDetail) {
-        //TODO LATER ivlcek: consider removing. Supplier shouldn't change his offer status
     }
 }

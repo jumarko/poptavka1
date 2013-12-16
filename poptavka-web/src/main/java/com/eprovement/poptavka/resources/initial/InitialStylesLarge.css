@@ -1,0 +1,488 @@
+@CHARSET "UTF-8";
+
+/**
+ * Css Resources for main basic layout for initial views
+ *
+ * @author Jaro
+ *
+ */
+/******************************************************************************/
+/*  General                                                                   */
+/******************************************************************************/
+html {
+
+}
+
+body {
+    background: url(images/content_bg.jpg) repeat;
+}
+
+body > div {
+    min-width: 320px;
+}
+
+div[aria-hidden="true"] {
+    width: 0px !important;
+}
+
+/******************************************************************************/
+/*  Toolbar styles                                                            */
+/******************************************************************************/
+.toolbar {}
+
+.toolbar .header {
+    color: #030911;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 44px;
+    margin: 0;
+    padding-left: 30px;
+    float: left;
+}
+.toolbar .left-icon {
+    float: left;
+    display: none;
+}
+.toolbar .fake-right-icon {
+    float: left;
+    width: 40px;
+}
+.toolbar .right-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+}
+
+.toolbar .button-grey {
+    background: url(images/messages-close-button.png) repeat-x #929292;
+    border: 1px solid #818181;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    height: 36px;
+    line-height: 33px;
+    margin: 0 7px 0 0;
+    cursor: pointer;
+    border-radius: 5px 5px 5px 5px;
+}
+
+/*.toolbar .button-grey.gwt-MenuBar {
+    height: 34px;
+}*/
+
+/*a.toolbar-button-grey {
+    padding: 0 15px;
+}*/
+.toolbar .button-grey:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #bbbbbb;
+    text-decoration: none;
+}
+
+.toolbar .button-grey .gwt-MenuItem {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: normal;
+    height: 34px;
+    line-height: 34px;
+    padding: 0 12px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.toolbar .button-grey .gwt-MenuItem:hover,
+.toolbar .button-grey .gwt-MenuItem-selected {
+    background: none;
+}
+
+.toolbar .button-green {
+    background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
+    border: 1px solid #199204;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    float: left;
+    font-size: 16px;
+    font-weight: normal;
+    height: 36px;
+    line-height: 33px;
+    margin: 0 7px 0 0;
+    padding: 0 12px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.toolbar .button-green:hover {
+    color: #ffffff;
+    box-shadow: 0 0 2px #42be0b;
+    text-decoration: none;
+}
+
+.toolbar .button-back {
+    background: url(images/button-back-icon.png) no-repeat scroll 0 0 transparent;
+    border: medium none;
+    height: 36px;
+    margin: 0 5px 0 0;
+    width: 52px;
+}
+
+.toolbar .item {
+    float: left;
+    margin: 6px 10px 0 0;
+}
+
+/*.toolbar-button-blue {
+    background: url(images/blue-button.gif) repeat-x #004273;
+    padding: 0px 12px;
+    border: 1px solid #004273;
+    border-radius: 4px;
+    height: 30px;
+    line-height: 28px;
+    color: #ffffff;
+    margin-right: 10px;
+    box-shadow: 0 0 3px #aaaaaa;
+    cursor: pointer;
+    text-shadow: 0 -1px #004273;
+}
+
+.toolbar-button-blue:hover {
+    color: #ffffff;
+    box-shadow: 0 0 5px #004273;
+}*/
+
+
+.toolbar .arrow {
+    position: absolute;
+    top: 49px;
+    left: 0;
+    background: url(images/left-container-top2.png) no-repeat scroll left bottom;
+    width: 50px;
+    height: 13px;
+    z-index: 2;
+}
+
+/******************************************************************************/
+/*  Footer View                                                               */
+/******************************************************************************/
+.footer {
+    min-height: 30px;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+.footer .links {
+    width: 430px;
+}
+.footer .links .button {
+    background: none;
+    border: none;
+    float: right;
+    color: #827a5e;
+    padding: 2px 8px;
+    font-size: 12px;
+}
+.footer .links .button:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #237e00;
+}
+.footer .links .separator {
+    background: none;
+    border: none;
+    float: right;
+    color: #827a5e;
+    padding: 2px 0;
+    font-size: 12px;
+}
+.border-separator {
+    display: block;
+}
+.footer .block {
+    display: block;
+    padding: 4px 8px;
+    color: #443b19;
+    font-size: 12px;
+}
+.footer .block .icon {
+    color: #177F03;
+    padding: 0 8px;
+    float: right;
+}
+
+.footer-toggle {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    border: thin solid black;
+    border-bottom: none;
+    cursor: pointer;
+}
+
+
+/******************************************************************************/
+/*  Loader Modal Styles                                                       */
+/******************************************************************************/
+.loader-modal {
+    padding: 10px;
+    background: #000000;
+    min-width: 0;
+}
+
+.loader-modal .loader-logo {
+    background: url(images/loader-modal/ws-logo.png) no-repeat;
+    height: 65px;
+    width: 160px;
+    margin: 0 auto;
+}
+
+.loader-modal .loader-logo-label {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 1px solid #3B3B3B;
+    color: #A3A3A3;
+}
+
+.loader-modal .loader-logo-icon {
+    height: 33px;
+    margin: 15px auto;
+    width: 33px;
+}
+
+.loader-modal .loader-loading {
+    text-transform: uppercase;    
+    color: #279c07;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 300;
+}
+
+.loader-modal .loader-message {
+    color: #909090;
+    padding: 10px 0 0 0;
+    text-align: center;
+}
+
+/******************************************************************************/
+/*  Home Welcome View                                                         */
+/******************************************************************************/
+.homepage {
+    background: #e1dcc8;
+    margin: 30px auto 20px;
+    width: 980px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.homepage .banner1 {
+    background:url(images/homepage/banner1_bg.png) no-repeat;
+    display: block;
+    float: left;
+    height: 315px;
+    margin: -13px 0 0 18px;
+    width: 462px;
+    position: relative;
+}
+.homepage .banner2 {
+    background:url(images/homepage/banner2_bg.png) no-repeat;
+    display: block;
+    float: left;
+    height: 315px;
+    margin: -13px 0 0 18px;
+    width: 462px;
+    position: relative;
+}
+.homepage .header {
+    color: #6F6B59;
+    font-family: "Open Sans";
+    font-size:35px;
+    font-weight:300;
+    left:26px;
+    position:absolute;
+    top:45px;
+}
+
+.homepage .subheader {
+    color: #6F6B59;
+    font-family: "Open Sans";
+    font-size:14px;
+    font-weight:normal;
+    left:26px;
+    position:absolute;
+    top:88px;
+}
+
+.homepage .banner-content {
+    color: #6F6B59;
+    font-size: 14px;
+    font-weight: normal;
+    left: 24px;
+    position: absolute;
+    top: 135px;
+    max-width: 270px;
+}
+
+.homepage .banner-content .home-list {
+    background:url(images/homepage/banner-link-list.png) no-repeat 0 8px;
+    padding: 0 0 0 15px;
+}
+
+.homepage .banner-link {
+    background: url(images/homepage/banner-link-arrow.png) no-repeat 0 10px;
+    border: medium none;
+    color: #6F6B59;
+    font-size: 12px;
+    padding-left: 13px;
+}
+
+.homepage .banner-link:hover {
+    background: url(images/homepage/banner-link-arrow_hover.png) no-repeat 0 10px;
+    color: #309b08;
+    border:none;
+}
+
+.homepage .banner-link1-position {
+    position: absolute;
+    top:203px;
+    left:26px;
+}
+.homepage .banner-link2-position {
+    left: 163px;
+    position: absolute;
+    top: 203px;
+}
+.homepage .banner-button {
+    background:url(images/homepage/green-banner-button.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    font-family:inherit;
+    font-size: 19px;
+    font-weight:300;
+    height:49px;
+    left:26px;
+    line-height: 42px;
+    padding:0 0 3px;
+    position:absolute;
+    text-align:center;
+    top: 243px;
+    width: 256px;
+    cursor:pointer;
+}
+
+.homepage .banner-button:focus {
+    border:none;
+}
+
+.homepage .category-list {
+    float: left;
+    width: 100%;
+    padding: 20px 0;
+    margin: 20px 0 5px;
+    background: #d9cda1;
+    border-top: 1px solid #938C6F;
+    border-radius: 0 0 5px 5px;
+}
+
+/*
+ *  Styles for Root category cell
+ */
+.root-category-cell {
+    float: left;
+    width: 100%;
+    max-width: 410px;
+    /*height: 37px;*/
+    margin: 2px 40px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.root-category-cell:hover {
+    background: #ffffff;
+}
+
+.root-category-cell:hover .category-name, .root-category-cell:hover .category-count {
+    color: #199204;
+}
+
+.root-category-cell:hover .category-count {
+    border: 1px solid #dcdcdc;
+    background: none;
+}
+
+.root-category-cell .category-name {
+    line-height: 37px;
+    padding: 0 0 0 8px;
+    font-size: 17px;
+    font-weight: lighter;
+    color: #554d31;
+}
+
+.root-category-cell .category-count {
+    background: #989071;
+    margin: 5px 5px 5px 0;
+    padding: 0 10px 0 0;
+    height: 25px;
+    line-height: 25px;
+    text-align: right;
+    color: #ffffff;
+    border: 1px solid #989071;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.scroll-container-bg {
+    background: url(images/left-container-top2.png) no-repeat scroll left top;
+}
+
+.scroll-container {
+/*    padding: 0;
+    margin: 0 auto;*/
+    width: 100%;
+    height: 100%;
+}
+
+/*.scroll-container h1 {
+    font-size: 26px;
+    color: #6f6b59;
+}
+
+.scroll-container h3 {
+    font-size: 18px;
+    color: #6f6b59;
+}
+
+.scroll-container h3 {
+    color: #5b5748;
+}
+
+.scroll-container .list-style {
+    list-style: none;    
+}
+
+.scroll-container .list-style li,
+.scroll-container .list-style .gwt-Label {
+    background: url(images/list-arrow.png) no-repeat scroll left 8px transparent;
+    padding: 0 0 0 10px;
+}*/
+
+/******************************************************************************/
+/*  Common Responsive                                                         */
+/******************************************************************************/
+.hide-small {}
+.expand-small {}
+.half-expand-small {}
+
+/* IE fixes */
+@if user.agent ie8 ie9 ie10 { 
+    .logout-menu-bar {
+    top:-1px;
+}
+}
+
+

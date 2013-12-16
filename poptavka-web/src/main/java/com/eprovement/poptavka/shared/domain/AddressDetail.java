@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.client.common.validation.Extended;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -24,22 +25,28 @@ public class AddressDetail implements IsSerializable {
         }
     }
     private static final int ZIP_SIZE = 4;
+
     @NotEmpty(message = "{countryNotBlank}")
     private String country;
+
     @NotEmpty(message = "{regionNotBlank}")
     private String region;
+
     @NotEmpty(message = "{cityNotBlank}")
     private String city;
     private Long cityId;
+
     @NotEmpty(message = "{districtNotBlank}")
     private String district;
-    //
+
     @NotEmpty(message = "{streetNotBlank}")
+    @Pattern(regexp = "[a-zA-Z0-9/\\-()\\ \\.]+", message = "{patternNoSpecChars}", groups = Extended.class)
     private String street;
     private String houseNum;
+
     @NotEmpty(message = "{zipCodeNotBlank}")
-    @Pattern(regexp = "\\d+", message = "{patternNonString}")
-    @Size(min = ZIP_SIZE, message = "{zipCodeSize}")
+    @Pattern(regexp = "\\d+", message = "{patternNonString}", groups = Extended.class)
+    @Size(min = ZIP_SIZE, message = "{zipCodeSize}", groups = Extended.class)
     private String zipCode;
 
     public AddressDetail() {
@@ -120,6 +127,9 @@ public class AddressDetail implements IsSerializable {
         this.zipCode = zipCode;
     }
 
+    /**************************************************************************/
+    /* Override methods                                                       */
+    /**************************************************************************/
     @Override
     public String toString() {
         StringBuilder address = new StringBuilder();
@@ -131,5 +141,43 @@ public class AddressDetail implements IsSerializable {
         address.append(", ");
         address.append(region);
         return address.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.cityId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AddressDetail other = (AddressDetail) obj;
+        if (!this.country.equals(other.country)) {
+            return false;
+        }
+        if (!this.region.equals(other.region)) {
+            return false;
+        }
+        if (!this.city.equals(other.city)) {
+            return false;
+        }
+        if (!this.district.equals(other.district)) {
+            return false;
+        }
+        if (!this.street.equals(other.street)) {
+            return false;
+        }
+        if (!this.houseNum.equals(other.houseNum)) {
+            return false;
+        }
+        if (!this.zipCode.equals(other.zipCode)) {
+            return false;
+        }
+        return true;
     }
 }

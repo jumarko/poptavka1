@@ -1,5 +1,9 @@
 package com.eprovement.poptavka.service.address;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.address.Locality;
@@ -8,9 +12,11 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.common.TreeItemService;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,20 +115,27 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetLocalitiesByMaxLengthExcl() {
         List<Locality> districts = this.localityService.getLocalitiesByMaxLengthExcl(
                 11, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(2, districts.size());
+        Assert.assertThat(districts.size(), is(2));
         checkLocalityIn(districts, "locality11");
         checkLocalityIn(districts, "locality12");
+        List<Locality> localities = this.localityService.getLocalitiesByMaxLengthExcl(
+                11, "locality1");
+        Assert.assertThat(localities.size(), is(3));
+        checkLocalityIn(localities, "locality1");
+        checkLocalityIn(localities, "locality11");
+        checkLocalityIn(localities, "locality12");
+
         districts = this.localityService.getLocalitiesByMaxLengthExcl(
                 12, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(2, districts.size());
+        Assert.assertThat(districts.size(), is(2));
         checkLocalityIn(districts, "locality11");
         checkLocalityIn(districts, "locality12");
         districts = this.localityService.getLocalitiesByMaxLengthExcl(
                 10, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(0, districts.size());
+        Assert.assertThat(districts, is(Collections.<Locality>emptyList()));
         List<Locality> cities = this.localityService.getLocalitiesByMaxLengthExcl(
                 12, "locality21", LocalityType.CITY);
-        Assert.assertEquals(4, cities.size());
+        Assert.assertThat(cities.size(), is(4));
         checkLocalityIn(cities, "locality211");
         checkLocalityIn(cities, "locality212");
         checkLocalityIn(cities, "locality213");
@@ -130,27 +143,113 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     @Test
+    public void testGetLocalitiesByMaxLengthExclWithSearchStringInsideWord() {
+        List<Locality> districts = this.localityService.getLocalitiesByMaxLengthExcl(
+                11, "cality1", LocalityType.DISTRICT);
+        Assert.assertThat(districts.size(), is(2));
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+    }
+
+    @Test
     public void testGetLocalitiesByMinLength() {
         List<Locality> districts = this.localityService.getLocalitiesByMinLength(
                 10, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(2, districts.size());
+        Assert.assertThat(districts.size(), is(2));
         checkLocalityIn(districts, "locality11");
         checkLocalityIn(districts, "locality12");
         districts = this.localityService.getLocalitiesByMinLength(
                 9, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(2, districts.size());
+        Assert.assertThat(districts.size(), is(2));
         checkLocalityIn(districts, "locality11");
         checkLocalityIn(districts, "locality12");
         districts = this.localityService.getLocalitiesByMinLength(
                 11, "locality1", LocalityType.DISTRICT);
-        Assert.assertEquals(0, districts.size());
+        Assert.assertThat(districts, is(Collections.<Locality>emptyList()));
         List<Locality> cities = this.localityService.getLocalitiesByMinLength(
                 11, "locality21", LocalityType.CITY);
-        Assert.assertEquals(4, cities.size());
+        Assert.assertThat(cities.size(), is(4));
         checkLocalityIn(cities, "locality211");
         checkLocalityIn(cities, "locality212");
         checkLocalityIn(cities, "locality213");
         checkLocalityIn(cities, "locality214");
+        List<Locality> localities = this.localityService.getLocalitiesByMinLength(
+                10, "locality21");
+        Assert.assertThat(localities.size(), is(5));
+        checkLocalityIn(localities, "locality21");
+        checkLocalityIn(localities, "locality211");
+        checkLocalityIn(localities, "locality212");
+        checkLocalityIn(localities, "locality213");
+        checkLocalityIn(localities, "locality214");
+    }
+
+    @Test
+    public void testGetLocalitiesByMinLengthWithSearchStringInsideWord() {
+        List<Locality> districts = this.localityService.getLocalitiesByMinLength(
+                10, "cality1", LocalityType.DISTRICT);
+        Assert.assertThat(districts.size(), is(2));
+        checkLocalityIn(districts, "locality11");
+        checkLocalityIn(districts, "locality12");
+    }
+
+    @Test
+    public void findCityByName() throws Exception {
+        final Locality city = localityService.findCityByName("locality1", "locality111");
+        assertNotNull("city locality111 should exist", city);
+        assertThat(city.getName(), is("locality111"));
+        assertThat(city.getParent(), CoreMatchers.<Locality>notNullValue());
+        assertThat(city.getParent().getParent(), CoreMatchers.<Locality>notNullValue());
+        assertThat(city.getParent().getParent().getName(), is("locality1"));
+    }
+
+    @Test
+    public void findCityByNameThatDoesNotExist() throws Exception {
+        assertThat("no city localityXYZ should exist",
+                localityService.findCityByName("locality1", "localityXYZ"), CoreMatchers.<Locality>nullValue());
+    }
+
+    @Test
+    public void findDistrictByName() throws Exception {
+        final Locality district = localityService.findDistrictByName("locality1", "locality12");
+        assertNotNull("district locality12 should exist", district);
+        assertThat(district.getName(), is("locality12"));
+        assertThat(district.getParent(), CoreMatchers.<Locality>notNullValue());
+        assertThat(district.getParent().getName(), is("locality1"));
+    }
+
+    @Test
+    public void findDistrictByNameThatDoesNotExist() throws Exception {
+        // note, that "locality111" exists but that's a city so no district should be found
+        assertThat("no district locality111 should exist",
+                localityService.findDistrictByName("locality1", "locality111"), CoreMatchers.<Locality>nullValue());
+    }
+
+    @Test
+    public void findRegionByName() throws Exception {
+        final Locality region = localityService.findRegion("locality2");
+        assertNotNull("state locality2 should exist", region);
+        assertThat(region.getName(), is("locality2"));
+    }
+
+    @Test
+    public void findRegionByNameThatDoesNotExist() throws Exception {
+        // note, that "locality11" exists but that's a district so no region should be found
+        assertThat("no region locality111 should exist",
+                localityService.findRegion("locality11"), CoreMatchers.<Locality>nullValue());
+    }
+
+    @Test
+    public void findRegionByAbbreviation() throws Exception {
+        // note that abbreviations are case insensitive
+        final Locality region = localityService.findRegion("Mm");
+        assertNotNull("region abbreviation Mm should represent existing locality2", region);
+        assertThat(region.getName(), is("locality2"));
+    }
+
+    @Test
+    public void findRegionByAbbreviationThatDoesNotExist() throws Exception {
+        assertThat("no region with abbreviation XY should exist",
+                localityService.findRegion("XY"), CoreMatchers.<Locality>nullValue());
     }
 
     //--------------------- HELPER METHODS -----------------------------------------------------------------------------

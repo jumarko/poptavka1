@@ -35,7 +35,7 @@ public interface Images extends ClientBundle {
     @Source("accept-icon24.png")
     ImageResource acceptIcon24();
 
-    @Source("accept-icon16.png")
+    @Source("accept-icon18.png")
     ImageResource acceptIcon16();
 
     @Source("info-icon.png")
@@ -166,4 +166,19 @@ public interface Images extends ClientBundle {
 
     @Source("star-gold.png")
     ImageResource starGold();
+
+    @Source("rating-star.png")
+    ImageResource ratingStar();
+
+    @Source("help-icon.png")
+    ImageResource helpIcon();
+
+    @Source("remove-icon.png")
+    ImageResource removeIcon();
+
+    @Source("checkbox.gif")
+    ImageResource checkbox();
+
+    @Source("checkbox-selected.gif")
+    ImageResource checkboxSelected();
 }

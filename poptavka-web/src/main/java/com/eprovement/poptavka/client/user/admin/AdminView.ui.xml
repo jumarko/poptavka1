@@ -1,109 +1,92 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:DockLayoutPanel unit="PX" styleName='{res.layout.fullSize}'>
-        <g:west size="180">
-            <g:HTMLPanel>
-                <!-- Admin submenu -->
-                <div ui:field="supMenu" style="display: block;">
-                    <div class='{res.layout.submenuHeader}'>
-                        Tables:
-                    </div>
-                    <ul class='{res.layout.submenuList}'>
-                        <li>
-                            <g:Button ui:field="newDemandsBtn">
-                                <ui:msg key="adminTableNewDemand">New Demands</ui:msg>
-                            </g:Button>
-                        </li>
-                        <!--TODO LATER Martin - finnish admin interface-->
-<!--                        <li>
-                            <g:Button ui:field="demandsButton">
-                                <ui:msg key="adminTableDemand">Demands</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="clientsButton">
-                                <ui:msg key="adminTableUser">Clients</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="suppliersButton">
-                                <ui:msg key="adminTableSupplier">Suppliers</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="offersButton">
-                                <ui:msg key="adminTableOffer">Offers</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="accessRolesButton">
-                                <ui:msg key="adminTableAccessRole">AccessRole</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="emailActivationsButton">
-                                <ui:msg key="adminTableEmailActivation">EmailActivation</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="invoicesButton">
-                                <ui:msg key="adminTableInvoice">Invoice</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="messagesButton">
-                                <ui:msg key="adminTableMessage">Message</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="ourPaymentDetailsButton">
-                                <ui:msg key="adminTableOurPaymentDetail">OurPaymentDetails</ui:msg>
-                            </g:Button>
-                   	</li>
-                        <li>
-                            <g:Button ui:field="paymentMethodsButton">
-                                <ui:msg key="adminTablePaymentMethod">PaymentMethod</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="permissionsButton">
-                                <ui:msg key="adminTablePermission">Permission</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="preferencesButton">
-                                <ui:msg key="adminTablePreference">Preference</ui:msg>
-                            </g:Button>
-                        </li>
-                        <li>
-                            <g:Button ui:field="problemsButton">
-                                <ui:msg key="adminTableProblem">Problem</ui:msg>
-                            </g:Button>
-                        </li>-->
-                    </ul>
-                </div>
-            </g:HTMLPanel>
-        </g:west>
-        <g:center>
-            <g:ScrollPanel>
-                <b:FluidContainer>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:SimplePanel ui:field="contentPanel" />
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:Widget ui:field="footer"/>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>
-            </g:ScrollPanel>
-        </g:center>
-    </g:DockLayoutPanel>
+    <g:FlowPanel>
+        <!-- Admin submenu -->
+        <g:HTMLPanel styleName='{res.layout.leftContainer} user' debugId='leftSlidingPanel'>
+            <ul class='{res.layout.submenuList}'>
+                <li>
+                    <g:Button ui:field="newDemandsBtn">
+                        <ui:msg key="adminTableNewProjects">New Projects</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="activeDemandsBtn">
+                        <ui:msg key="adminTableActiveProjects">Active Projects</ui:msg>
+                    </g:Button>
+                </li>
+                <!--TODO LATER Martin - finnish admin interface-->
+                <!--                        <li>
+                    <g:Button ui:field="demandsButton">
+                        <ui:msg key="adminTableDemand">Demands</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="clientsButton">
+                        <ui:msg key="adminTableUser">Clients</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="suppliersButton">
+                        <ui:msg key="adminTableSupplier">Suppliers</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="offersButton">
+                        <ui:msg key="adminTableOffer">Offers</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="accessRolesButton">
+                        <ui:msg key="adminTableAccessRole">AccessRole</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="emailActivationsButton">
+                        <ui:msg key="adminTableEmailActivation">EmailActivation</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="invoicesButton">
+                        <ui:msg key="adminTableInvoice">Invoice</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="messagesButton">
+                        <ui:msg key="adminTableMessage">Message</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="ourPaymentDetailsButton">
+                        <ui:msg key="adminTableOurPaymentDetail">OurPaymentDetails</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="paymentMethodsButton">
+                        <ui:msg key="adminTablePaymentMethod">PaymentMethod</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="permissionsButton">
+                        <ui:msg key="adminTablePermission">Permission</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="preferencesButton">
+                        <ui:msg key="adminTablePreference">Preference</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="problemsButton">
+                        <ui:msg key="adminTableProblem">Problem</ui:msg>
+                    </g:Button>
+                </li>-->
+            </ul>
+        </g:HTMLPanel>
+        <!--Main Content-->
+        <g:SimplePanel ui:field="contentContainer" styleName='{res.layout.contentContainer} user'/>
+    </g:FlowPanel>
 </ui:UiBinder>

@@ -1,0 +1,57 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />    
+
+    <ui:style>
+        .rating-container {
+        position: relative;
+        margin: 8px 0 0 0;
+        width: 140px;
+        }        
+        .rating-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url(images/rating-indicator-grey.png) no-repeat;
+        width: 140px;
+        height: 23px;
+        }
+        .rating {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url(images/rating-indicator-gold.png) no-repeat;
+        height: 23px;
+        }
+        .rating-number {
+        width: 80px;
+        float: left;
+        text-align: right;
+        }
+    </ui:style>
+
+    <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
+        <b:FluidRow addStyleNames='well-content-only'>
+            <b:Column size="12" addStyleNames='well-padding'>
+                <b:Column size="3">
+                    <g:Label>
+                        <ui:msg key='formRating'>Rating:</ui:msg>
+                    </g:Label>
+                </b:Column>                            
+                <b:Column size="9">
+                    <g:HTMLPanel styleName="{style.rating-container} pull-left">
+                        <g:HTMLPanel styleName="{style.rating-background}" />
+                        <g:HTMLPanel ui:field="ratingIndicator" styleName="{style.rating}" />                                    
+                    </g:HTMLPanel>
+                    <g:Label addStyleNames="{style.rating-number}" ui:field='ratingText' title="{msgs.settingsRatingTooltip}"/>
+                </b:Column>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+    
+</ui:UiBinder>

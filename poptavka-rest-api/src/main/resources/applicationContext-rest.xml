@@ -12,15 +12,32 @@
 
     <!--DO NOT USE context:component-scan because dependencies are defined in this xml file - only MVC annotations are used-->
     <context:annotation-config />
+
     <!--support Jackson-->
-    <mvc:annotation-driven />
+    <bean id="jsonObjectMapper" class="com.eprovement.poptavka.rest.common.JsonObjectMapper" />
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="jsonObjectMapper" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--infrastructure-->
+    <bean class="com.eprovement.poptavka.rest.exception.RestExceptionResolver" />
 
     <!--common-->
     <bean id="businessUserSerializer" class="com.eprovement.poptavka.rest.common.serializer.BusinessUserSerializer" />
-    <bean id="businessUserDeserializer" class="com.eprovement.poptavka.rest.common.serializer.BusinessUserDeserializer" />
+    <bean id="businessUserDeserializer" class="com.eprovement.poptavka.rest.common.serializer.BusinessUserDeserializer">
+        <constructor-arg ref="localityService" />
+        <constructor-arg ref="registerService" />
+    </bean>
 
     <!--category-->
     <bean id="categorySerializer" class="com.eprovement.poptavka.rest.category.CategorySerializer" />
+    <bean id="categoryDeserializer" class="com.eprovement.poptavka.rest.common.serializer.CategoryDeserializer" >
+        <constructor-arg ref="categoryService"/>
+    </bean>
     <bean class="com.eprovement.poptavka.rest.category.CategoryResource">
         <constructor-arg ref="categoryService" />
         <constructor-arg ref="categorySerializer" />
@@ -28,18 +45,39 @@
 
     <!--locality-->
     <bean id="localitySerializer" class="com.eprovement.poptavka.rest.locality.LocalitySerializer" />
+    <bean id="localityDeserializer" class="com.eprovement.poptavka.rest.common.serializer.LocalityDeserializer" >
+        <constructor-arg ref="localityService"/>
+    </bean>
     <bean class="com.eprovement.poptavka.rest.locality.LocalityResource">
         <constructor-arg ref="localityService" />
         <constructor-arg ref="localitySerializer" />
     </bean>
 
     <!--demand-->
-    <bean id="demandSerializer" class="com.eprovement.poptavka.rest.demand.DemandSerializer" />
+    <bean id="demandSerializer" class="com.eprovement.poptavka.rest.demand.DemandSerializer">
+        <constructor-arg ref="categorySerializer" />
+        <constructor-arg ref="localitySerializer" />
+        <constructor-arg ref="clientSerializer" />
+    </bean>
     <bean id="demandDeserializer" class="com.eprovement.poptavka.rest.demand.DemandDeserializer" />
     <bean class="com.eprovement.poptavka.rest.demand.DemandResource">
         <constructor-arg ref="demandService" />
         <constructor-arg ref="demandSerializer" />
         <constructor-arg ref="demandDeserializer" />
+    </bean>
+
+    <!--client-->
+    <bean id="clientSerializer" class="com.eprovement.poptavka.rest.client.ClientSerializer">
+        <constructor-arg ref="businessUserSerializer" />
+    </bean>
+    <bean id="clientDeserializer" class="com.eprovement.poptavka.rest.client.ClientDeserializer">
+        <constructor-arg ref="businessUserDeserializer" />
+        <constructor-arg ref="clientService" />
+    </bean>
+    <bean class="com.eprovement.poptavka.rest.client.ClientResource">
+        <constructor-arg ref="clientService" />
+        <constructor-arg ref="clientSerializer" />
+        <constructor-arg ref="clientDeserializer" />
     </bean>
 
     <!--supplier-->

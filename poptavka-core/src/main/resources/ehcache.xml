@@ -31,4 +31,10 @@
            timeToIdleSeconds="18000"
            timeToLiveSeconds="18000"
            memoryStoreEvictionPolicy="LFU"/>
+
+    <!--Special cache for regions since they are top level localities and there are only few of them-->
+    <cache name="regionCache" maxElementsInMemory="500" eternal="false" overflowToDisk="false"
+           timeToIdleSeconds="18000"
+           timeToLiveSeconds="18000"
+           memoryStoreEvictionPolicy="LFU"/>
 </ehcache>

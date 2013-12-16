@@ -62,6 +62,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("email.notBlank")
     String emailNotBlank();
 
+    @Key("email.size")
+    String emailSize();
+
     @Key("emailDialog.message.notBlank")
     String emailDialogMessageNotBlank();
 
@@ -78,6 +81,9 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("firstName.notBlank")
     String firstNameNotBlank();
 
+    @Key("firstName.size")
+    String firstNameSize();
+
     @Key("finishDate.notNull")
     String finishDateNotNull();
 
@@ -88,9 +94,15 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("identifNumber.size")
     String identifNumberSize();
 
+    @Key("itin.size")
+    String itinSize();
+
     /*******************************************************************  L **/
     @Key("lastName.notBlank")
     String lastNameNotBlank();
+
+    @Key("lastName.size")
+    String lastNameSize();
 
     /*******************************************************************  M **/
     @Key("maxSuppliers.min")
@@ -107,14 +119,20 @@ public interface ValidationMessages extends ConstantsWithLookup {
     String numberFormat();
 
     /*******************************************************************  P **/
+    @Key("pattern.no.special.chars")
+    String patternNoSpecChars();
+
     @Key("pattern.email")
     String patternEmail();
+
+    @Key("pattern.company")
+    String patternCompany();
 
     @Key("pattern.itin")
     String patternItin();
 
-    @Key("pattern.nonnumber")
-    String patternNonNumber();
+    @Key("pattern.no.chars.no.number")
+    String patternNoSpecCharsNoNumbers();
 
     @Key("pattern.nonstring")
     String patternNonString();
@@ -128,8 +146,8 @@ public interface ValidationMessages extends ConstantsWithLookup {
     @Key("password.notBlank")
     String passwordNotBlank();
 
-    @Key("password.length")
-    String passwordLength();
+    @Key("password.size")
+    String passwordSize();
 
     @Key("passwordConfirm.notBlank")
     String passwordConfirmNotBlank();

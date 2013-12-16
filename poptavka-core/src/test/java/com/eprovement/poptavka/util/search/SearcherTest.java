@@ -135,6 +135,46 @@ public class SearcherTest extends DBUnitIntegrationTest {
     }
 
     @Test
+    public void testSortCaseInsensitive() {
+        Message m = new Message();
+        m.setSubject("ACC");
+        List<Message> messages = new ArrayList();
+        messages.add(m);
+
+        Message m1 = new Message();
+        m1.setSubject("aby");
+        messages.add(m1);
+
+        Message m2 = new Message();
+        m2.setSubject("zw");
+        messages.add(m2);
+
+        Message m3 = new Message();
+        m3.setSubject("ZA");
+        messages.add(m3);
+
+        Search search = new Search(Message.class);
+        search.addSortAsc("subject", true);
+
+        List<Message> sorted = Searcher.searchCollection(messages, search);
+
+        int i = 0;
+
+        Assert.assertEquals("Message not at the right position in the list", "aby",
+                sorted.get(i).getSubject());
+        i++;
+        Assert.assertEquals("Message not at the right position in the list", "ACC",
+                sorted.get(i).getSubject());
+        i++;
+        Assert.assertEquals("Message not at the right position in the list", "ZA",
+                sorted.get(i).getSubject());
+        i++;
+        Assert.assertEquals("Message not at the right position in the list", "zw",
+                sorted.get(i).getSubject());
+        i++;
+    }
+
+    @Test
     public void testSearchMapByKeys() throws SearcherException {
         Map<Message, Integer> messageCounts = new HashMap();
 

@@ -81,8 +81,31 @@ public class ServiceDetail implements IsSerializable {
         this.type = type;
     }
 
+    /**************************************************************************/
+    /* Override methods                                                       */
+    /**************************************************************************/
     @Override
     public String toString() {
         return title + " (" + price + "/" + prepaidMonths + ")";
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ServiceDetail other = (ServiceDetail) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
     }
 }

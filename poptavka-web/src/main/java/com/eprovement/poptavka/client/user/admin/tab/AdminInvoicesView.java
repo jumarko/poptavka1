@@ -4,7 +4,6 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -135,7 +134,7 @@ public class AdminInvoicesView extends Composite implements AdminInvoicesPresent
         // ID
         idColumn = dataGrid.addColumn(
                 new ClickableTextCell(), Storage.MSGS.columnID(),
-                true, Constants.COL_WIDTH_ID,
+                true, Storage.GRSCS.dataGridStyle().colWidthId(),
                 new GetValue<String>() {
 
                     @Override

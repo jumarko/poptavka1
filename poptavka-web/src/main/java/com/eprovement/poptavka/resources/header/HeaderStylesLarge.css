@@ -1,0 +1,389 @@
+@CHARSET "UTF-8";
+
+/******************************************************************************/
+/*  Root View                                                                 */
+/******************************************************************************/
+.menu-panel {
+}
+.hiding-panel {
+
+}
+
+/******************************************************************************/
+/*  Header View                                                               */
+/******************************************************************************/
+/*
+ *  Logo styles
+ */
+.logo {
+    background: url(images/logo2.png) no-repeat scroll 0 0 transparent;
+    height: 115px;
+    position: absolute;
+    top: 11px;
+    width: 235px;
+    z-index: 11;
+    border: 0px;
+}
+
+
+/*
+ *  Menu styles
+ */
+/*.menu-bar {
+
+}*/
+.menu-icon {
+    display: none;
+    position: absolute;
+    color: #FFFFFF;
+    z-index: 10;
+}
+
+.menu-panel {
+    display: block;
+    background: url("images/menu_bg.png") no-repeat top right transparent;
+    position: absolute;
+    top: 18px;
+    left: 75px;
+    height: 90px;
+    width: 700px;
+    z-index: 10;
+}
+.menu-panel.user {
+    width: 780px;
+}
+.menu-panel.admin {
+    width: 410px;
+}
+.menu {
+    position: absolute;
+    top: 0;
+    left: 180px;
+    list-style-type: none;
+}
+/*.menu {*/
+/*    */
+/*}*/
+
+.menu .home-menu {
+    /*padding: 0 45px;*/
+    float:left;
+}
+
+.menu .user-menu {
+    /*padding: 0 35px;*/
+}
+
+.menu ul {
+    height: 90px;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    display: block;
+    float: left;
+}
+
+.menu li button {
+    width: 95px;
+    height: 90px;
+    line-height: 15px;
+    border: none;
+    color: #f4f4f4;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center;
+    padding: 30px 5px 0;
+}
+
+.menu li button:hover {
+    border: none;
+    text-shadow: 0px 0px 3px #777;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.menu li button:active {
+    border: none;
+}
+
+.menu .button1 {
+    background: url(images/menu-icons.png) no-repeat 0 0;
+}
+.menu .button2 {
+    background: url(images/menu-icons.png) no-repeat 0 -90px;
+}
+.menu .button3 {
+    background: url(images/menu-icons.png) no-repeat 0 -180px;
+}
+.menu .button4 {
+    background: url(images/menu-icons.png) no-repeat 0 -270px;
+}
+.menu .button5 {
+    background: url(images/menu-icons.png) no-repeat 0 -360px;
+}
+.menu .button6 {
+    background: url(images/menu-icons.png) no-repeat 0 -450px;
+}
+.menu .button7 {
+    background: url(images/menu-icons.png) no-repeat 0 -540px;
+}
+.menu .button8 {
+    background: url(images/menu-icons.png) no-repeat 0 -630px;
+}
+.menu .button9 {
+    background: url(images/menu-icons.png) no-repeat 0 -720px;
+}
+.menu .button-more {
+    background: url(images/more-arrows-small.png) no-repeat;
+    float: left;
+    widows: 25px;
+    height: 31px;
+}
+
+.menu .button1:hover, .button1.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 0;
+}
+.menu .button2:hover, .button2.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -90px;
+}
+.menu .button3:hover, .button3.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -180px;
+}
+.menu .button4:hover, .button4.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -270px;
+}
+.menu .button5:hover, .button5.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -360px;
+}
+.menu .button6:hover, .button6.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -450px;
+}
+.menu .button7:hover, .button7.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -540px;
+}
+.menu .button8:hover, .button8.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -630px;
+}
+.menu .button9:hover, .button9.act {
+    background: url(images/menu-icons-hover.png) no-repeat 0 -720px;
+}
+
+
+/*
+ *  Search Bar Styles
+ */
+.search-icon {
+    display: none;
+    position: absolute;
+    color: #FFFFFF;
+    z-index: 10;
+}
+
+.search-panel {
+    display: block;
+    position: absolute;
+    top: 44px;
+    left: 795px;
+    height: 89px;
+    z-index: 10;
+}
+
+.search-panel.user {
+    left: 875px;
+}
+.search-panel.admin {
+    left: 520px;
+}
+
+.search-panel .search-textbox[type="text"] {
+    background: url(images/search_bg2.png) no-repeat;
+    border: medium none;
+    box-shadow: none;
+    color: #0E41AA;
+    height: 42px;
+    line-height: 37px;
+    margin: 0 0 0 3px;
+    padding: 0 15px;
+    width: 149px;
+    box-shadow:none;
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+}
+
+.search-panel .search-textbox[type="text"]:focus {
+    box-shadow:none;    
+}
+
+.search-panel .search-button {
+    background: url(images/search_button.png) no-repeat;
+    border: medium none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    height: 42px;
+    padding: 0;
+    width: 54px;
+}
+
+.search-panel .blue-button:hover {
+    cursor:
+        pointer;
+}
+
+.search-panel .advanced-search {
+    background: url(images/search_flag.png) no-repeat scroll 0 0 transparent;
+    border: none;
+    position: absolute;
+    top: 40px;
+    right: 95px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 5px 0;
+    width: 89px;
+    height: 35px;
+}
+
+/*
+ *  Settings Styles
+ */
+.settings-icon {
+    display: none;
+    position: absolute;
+    top: 0;
+    color: #FFFFFF;
+    z-index: 10;
+}
+/*
+*	Login styles
+*
+*/
+.login-icon {
+    display: none;
+    display: none;
+    position: absolute;
+    color: #FFFFFF;
+    z-index: 10;
+}
+.login-panel {
+    display: block;
+}
+.login {
+    position: absolute;
+    top: 44px;
+    right: 50px;
+    /*margin: 26px 30px 0 5px;*/
+    z-index: 150;
+    /*    width: 134px;
+        height: 42px;*/
+}
+
+.login-bar {
+    position: absolute;
+    top: 42px;
+    right: 100px;
+    color: #FFFFFF;
+    /*float: right;*/
+    /*margin: 26px 0 0;*/
+    z-index: 10;
+}
+
+.login-button {
+    background: url(images/login_bg.png) no-repeat;
+    height: 42px;
+    text-align: center;
+    width: 134px;
+}
+
+.login-button a {
+    color: #FBFBFB;
+    display: block;
+    font-size: 15px;
+    line-height: 39px;
+    padding: 0 0 5px 35px;
+}
+
+.login-button a:hover {
+    color: #fbfbfb;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/*
+*	Logout styles
+*
+*/
+.logout-button {
+    background: url(images/logout.png) no-repeat;
+    width: 44px;
+    height: 49px;
+    cursor: pointer;
+}
+
+.logout-button-act {
+    background: url(images/logout_hover.png) no-repeat;
+    width: 44px;
+    height: 49px;
+    cursor: pointer;
+}
+
+.logout-menu-bar {
+    background: url(images/logout-menubar.png) no-repeat scroll right top transparent;
+    border: medium none;    
+    color: #FFFFFF;
+    padding: 10px 0 0;
+    position: absolute;
+    top: 0;
+    box-shadow: 0 2px 2px #bbbbbb;
+    -moz-box-shadow: 0 2px 2px #bbbbbb;
+    -webkit-box-shadow: 0 2px 2px #bbbbbb;
+    border-radius: 5px 0 5px 5px;
+    -moz-border-radius: 5px 0 5px 5px;
+    -webkit-border-radius: 5px 0 5px 5px;    
+}
+
+.logout-menu-bar td {
+    color: #FFFFFF;
+    display: block;
+    line-height: 28px;
+    padding: 0 15px;
+}
+
+.logout-menu-bar td:hover {
+    color: #237e00;
+    cursor: pointer;
+    background: #ffffff;
+}
+
+.help-button {
+    margin: 0;
+    padding: 0;
+    background: url(images/help-button.png) no-repeat;
+    border: none;
+    float: right;
+    height: 36px;
+    width: 49px;
+}
+
+/*.logout-button {
+    border-top: 1px solid #75be68;
+    padding: 5px 15px !important;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+}*/
+
+/*.logout-button-act {
+    background: url(images/logout_hover.png) no-repeat;
+}*/
+
+
+@if user.agent ie8 ie9 ie10 {
+    .search-panel .search-textbox[type="text"] {
+        height: 24px;
+        line-height: 24px;
+        width:122px;                
+    }
+}

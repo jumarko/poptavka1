@@ -5,16 +5,11 @@
 package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.github.gwtbootstrap.client.ui.Column;
-import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,41 +34,23 @@ public class UrgencySelectorView extends Composite {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField FluidContainer fluidContainer;
     @UiField RadioButton urgency1, urgency2, urgency3, urgency4;
     @UiField Column labelColumn4, buttonColumn4, creditsColumn4;
-    @UiField Anchor revert;
-    /** Class attributes. **/
-    private Date validToOriginal;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     /**
-     * @param advancedView True displays fourth choice - Grey icon - selection in progress
+     * @param advanced True displays fourth choice - Grey icon - selection in progress
      *                     False otherwise
      */
     @UiConstructor
-    public UrgencySelectorView(boolean advancedView) {
+    public UrgencySelectorView(boolean advanced, boolean title) {
         initWidget(uiBinder.createAndBindUi(this));
 
-        labelColumn4.setVisible(advancedView);
-        buttonColumn4.setVisible(advancedView);
-        creditsColumn4.setVisible(advancedView);
-    }
-
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    @UiHandler("revert")
-    public void revert(ClickEvent e) {
-        setValidTo(validToOriginal);
-        setChangeStyle(false);
-    }
-
-    @UiHandler(value = {"urgency1", "urgency2", "urgency3", "urgency4" })
-    public void checkBoxClickHandlers(ClickEvent e) {
-        setChangeStyle(isChanged());
+        labelColumn4.setVisible(advanced);
+        buttonColumn4.setVisible(advanced);
+        creditsColumn4.setVisible(advanced);
     }
 
     /**************************************************************************/
@@ -86,7 +63,6 @@ public class UrgencySelectorView extends Composite {
      */
     public void setValidTo(Date validTo) {
         Date now = new Date();
-        this.validToOriginal = validTo;
         int daysBetween = CalendarUtil.getDaysBetween(now, validTo);
         if (daysBetween < 0) {
             urgency4.setValue(Boolean.TRUE);
@@ -96,16 +72,6 @@ public class UrgencySelectorView extends Composite {
             urgency2.setValue(Boolean.TRUE);
         } else {
             urgency1.setValue(Boolean.TRUE);
-        }
-    }
-
-    public void setChangeStyle(boolean isChange) {
-        if (isChange) {
-            fluidContainer.addStyleName(Storage.RSCS.common().changed());
-            revert.setVisible(true);
-        } else {
-            fluidContainer.removeStyleName(Storage.RSCS.common().changed());
-            revert.setVisible(false);
         }
     }
 
@@ -133,14 +99,6 @@ public class UrgencySelectorView extends Composite {
             CalendarUtil.addDaysToDate(validTo, -1);
         }
         return validTo;
-    }
-
-    public boolean isChanged() {
-        if (validToOriginal == null) {
-            return false;
-        } else {
-            return !CalendarUtil.isSameDate(validToOriginal, getValidTo());
-        }
     }
 
     /** CheckBoxes. **/

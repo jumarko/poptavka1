@@ -3,7 +3,6 @@ package com.eprovement.poptavka.client.home.createDemand;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.smallPopups.ThankYouPopup;
 import com.eprovement.poptavka.client.service.demand.DemandCreationRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -50,9 +49,10 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
             public void onSuccess(BusinessUserDetail client) {
                 if (client.getClientId() != -1) {
                     eventBus.loadingHide();
-                    //popytaj ten overovaci kod
-                    eventBus.initActivationCodePopup(newClient, Constants.CREATE_DEMAND);
-                    //check if given client is the same as created client - for security ???
+                    eventBus.autoLogin(
+                            newClient.getEmail(),
+                            newClient.getPassword(),
+                            Constants.CREATE_DEMAND);
                 }
             }
         });
@@ -79,7 +79,7 @@ public class DemandCreationHandler extends BaseEventHandler<DemandCreationEventB
                             eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
                         }
                     };
-                    ThankYouPopup.create(Storage.MSGS.thankYouCreateDemand(), additionalAction);
+                    eventBus.showThankYouPopup(Storage.MSGS.thankYouCreateDemand(), additionalAction);
                 }
             });
         LOGGER.info("submitting new demand");

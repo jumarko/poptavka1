@@ -1,12 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cl="urn:import:com.eprovement.poptavka.client.common.locality"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:p1="urn:import:com.google.gwt.user.datepicker.client">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:btns="urn:import:com.eprovement.poptavka.client.home.createDemand.widget">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <ui:style>
         .tabIndex1 { z-index: 1; }
@@ -16,11 +16,10 @@
         .tabIndex5 { z-index: 5; }
     </ui:style>
 
-    <g:DockLayoutPanel unit="PX" addStyleNames='{res.layout.fullSize}'>
-        <g:center>
+    <g:ScrollPanel styleName='{res.layout.fullSize}'>
+        <g:FlowPanel>
             <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}'
-                              addStyleNames='{res.layout.bodyContainer} {res.common.validationContainer}' barUnit='PX' barHeight='70'
-                              animationDuration="1000">
+                              barUnit='PX' barHeight='70' animationDuration="1000">
                 <!--1-->
                 <g:tab>
                     <g:customHeader size="30">
@@ -29,32 +28,19 @@
                             <ui:msg key="supplierCreationTab1">User registration</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>
-                        <g:HTMLPanel>
-                            <b:FluidRow>
-                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:SimplePanel ui:field="contentHolder1" styleName='formContainer' />
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:HTMLPanel styleName='formFooter'>
-                                        <g:Label>
-                                            <ui:msg key="formRequiredFields">* fields are required</ui:msg>
-                                        </g:Label>
-                                        <g:HTMLPanel styleName='buttonsContainer'>
-                                            <g:Button ui:field="nextButtonTab1" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                            </g:Button>
-                                        </g:HTMLPanel>
-                                    </g:HTMLPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                        </g:HTMLPanel>
-                    </g:ScrollPanel>
+                    <g:HTMLPanel styleName='contentContainer'>
+                        <g:SimplePanel ui:field="contentHolder1" debugId="userRegistrationHolder" />
+                        <g:FlowPanel>
+                            <g:Label addStyleNames='pull-left'>
+                                <ui:msg key="formRequiredFields">* fields are required</ui:msg>
+                            </g:Label>
+                            <btns:ButtonsPanel ui:field='buttonsPanel1'
+                                               backBtn='{msgs.commonBtnBack}'
+                                               nextBtn='{msgs.commonBtnNext}'
+                                               nextBtnTooltip='{msgs.tooltipInvalidFields}'
+                                               size='SMALL'/>
+                        </g:FlowPanel>
+                    </g:HTMLPanel>
                 </g:tab>
                 <!--2-->
                 <g:tab>
@@ -64,44 +50,14 @@
                             <ui:msg key="supplierCreationTab2">Category selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>
-                        <g:HTMLPanel>
-                            <b:FluidRow>
-                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:DockLayoutPanel unit="PX" styleName='formContainer selectionContainer'>
-                                        <g:east size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:east>
-                                        <g:west size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:west>
-                                        <g:center>
-                                            <g:ScrollPanel>
-                                                <g:SimplePanel ui:field="contentHolder2" styleName='formContainer'/>
-                                            </g:ScrollPanel>
-                                        </g:center>
-                                    </g:DockLayoutPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:HTMLPanel styleName='formFooter'>
-                                        <g:HTMLPanel styleName='buttonsContainer'>
-                                            <g:Button ui:field="nextButtonTab2" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                            </g:Button>
-                                            <g:Button ui:field="backButtonTab2" styleName='{res.common.buttonLeftSmall}'>
-                                                <ui:msg key="commonBtnBack">Back</ui:msg>
-                                            </g:Button>
-                                        </g:HTMLPanel>
-                                    </g:HTMLPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                        </g:HTMLPanel>
-                    </g:ScrollPanel>
+                    <g:HTMLPanel styleName='contentContainer'>
+                        <g:SimplePanel ui:field="contentHolder2" debugId="categoryContentHolder"/>
+                        <btns:ButtonsPanel ui:field='buttonsPanel2'
+                                           backBtn='{msgs.commonBtnBack}'
+                                           nextBtn='{msgs.commonBtnNext}'
+                                           nextBtnTooltip='{msgs.tooltipInvalidFields}'
+                                           size='SMALL'/>
+                    </g:HTMLPanel>
                 </g:tab>
                 <!--3-->
                 <g:tab>
@@ -111,42 +67,14 @@
                             <ui:msg key="supplierCreationTab3">Locality selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>
-                        <g:HTMLPanel>
-                            <b:FluidRow>
-                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:DockLayoutPanel unit="PX" styleName='formContainer selectionContainer'>
-                                        <g:east size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:east>
-                                        <g:west size="20">
-                                            <g:HTMLPanel></g:HTMLPanel>
-                                        </g:west>
-                                        <g:center>
-                                            <g:SimplePanel ui:field="contentHolder3" styleName='formContainer' />
-                                        </g:center>
-                                    </g:DockLayoutPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:HTMLPanel styleName='formFooter'>
-                                        <g:HTMLPanel styleName='buttonsContainer'>
-                                            <g:Button ui:field="nextButtonTab3" styleName='{res.common.buttonRightSmall}'>
-                                                <ui:msg key="commonBtnNext">Next</ui:msg>
-                                            </g:Button>
-                                            <g:Button ui:field="backButtonTab3" styleName='{res.common.buttonLeftSmall}'>
-                                                <ui:msg key="commonBtnBack">Back</ui:msg>
-                                            </g:Button>
-                                        </g:HTMLPanel>
-                                    </g:HTMLPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                        </g:HTMLPanel>
-                    </g:ScrollPanel>
+                    <g:HTMLPanel styleName='contentContainer'>
+                        <g:SimplePanel ui:field="contentHolder3" debugId="localityContentHolder" />
+                        <btns:ButtonsPanel ui:field='buttonsPanel3'
+                                           backBtn='{msgs.commonBtnBack}'
+                                           nextBtn='{msgs.commonBtnNext}'
+                                           nextBtnTooltip='{msgs.tooltipInvalidFields}'
+                                           size='SMALL'/>
+                    </g:HTMLPanel>
                 </g:tab>
                 <!--4-->
                 <g:tab>
@@ -156,55 +84,27 @@
                             <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
-                    <g:ScrollPanel>
+                    <g:HTMLPanel styleName='contentContainer'>
+                        <g:SimplePanel ui:field="contentHolder4" debugId="serviceContentHolder"/>
+                        <!--<g:HTMLPanel styleName='formFooter formFooter2'>-->
                         <g:HTMLPanel>
-                            <b:FluidRow>
-                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <b:FluidContainer addStyleNames='formContainer'>
-                                        <g:SimplePanel ui:field="contentHolder4" />
-                                    </b:FluidContainer>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:HTMLPanel styleName='formFooter formFooter2'>
-                                        <g:HorizontalPanel ui:field="agreementPanel" >
-                                            <g:CheckBox ui:field="agreedCheck" />
-                                            <g:Anchor ui:field="conditionLink">
-                                                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
-                                            </g:Anchor>
-                                        </g:HorizontalPanel>
-                                    </g:HTMLPanel>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <b:FluidContainer>
-                                        <b:FluidRow addStyleNames='buttonsBorderRow'>
-                                            <b:Column size="4">
-                                                <g:Button ui:field="backButtonTab4" styleName='{res.common.buttonLeftLarge}'>
-                                                    <ui:msg key="commonBtnBack">Back</ui:msg>
-                                                </g:Button>
-                                            </b:Column>
-                                            <b:Column size="4">
-                                                <g:Button ui:field="registerBtn" styleName='{res.common.buttonRightLarge}'>
-                                                    <ui:msg key="supplierCreationRegisterBtn">Register Supplier</ui:msg>
-                                                </g:Button>
-                                            </b:Column>
-                                        </b:FluidRow>
-                                    </b:FluidContainer>
-                                </b:Column>
-                            </b:FluidRow>
+                            <g:HorizontalPanel ui:field="agreementPanel" >
+                                <g:CheckBox ui:field="agreedCheck" debugId="agreeCheckbox"/>
+                                <g:Anchor ui:field="conditionLink">
+                                    <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
+                                </g:Anchor>
+                            </g:HorizontalPanel>
                         </g:HTMLPanel>
-                    </g:ScrollPanel>
+                        <btns:ButtonsPanel ui:field='buttonsPanel4'
+                                           backBtn='{msgs.commonBtnBack}'
+                                           nextBtn='{msgs.supplierCreationRegisterBtn}'
+                                           nextBtnTooltip='{msgs.tooltipInvalidFields}'
+                                           size='LARGE'/>
+                    </g:HTMLPanel>
                 </g:tab>
             </g:TabLayoutPanel>
-        </g:center>
-        <g:south size="24">
-            <g:Widget ui:field="footer"/>
-        </g:south>
-    </g:DockLayoutPanel>
+            <!--Footer-->
+            <g:SimplePanel ui:field="footerPanel"/>
+        </g:FlowPanel>
+    </g:ScrollPanel>
 </ui:UiBinder>

@@ -1,8 +1,6 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.rest.locality;
 
+import com.eprovement.poptavka.rest.common.dto.LocalityDto;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.rest.common.ResourceUtils;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(LocalityResource.LOCALITY_RESOURCE_URI)
 public class LocalityResource extends AbstractPageableResource<Locality, LocalityDto> {
 
-    static final String LOCALITY_RESOURCE_URI = "/localities";
+    public static final String LOCALITY_RESOURCE_URI = "/localities";
 
     private final LocalityService localityServcie;
     private final Converter<Locality, LocalityDto> localitySerializer;
@@ -41,7 +39,7 @@ public class LocalityResource extends AbstractPageableResource<Locality, Localit
 
     @Override
     public Collection<LocalityDto> convertToDtos(Collection<Locality> domainObjectsPage) {
-        final ArrayList<LocalityDto> categoryDtosPage = new ArrayList<LocalityDto>();
+        final ArrayList<LocalityDto> categoryDtosPage = new ArrayList<>();
         for (Locality locality : domainObjectsPage) {
             final LocalityDto localityDto = this.localitySerializer.convert(locality);
             setLinks(localityDto, locality);

@@ -17,7 +17,7 @@ import javax.persistence.NamedQuery;
 
 /**
  * Response to a demand by a supplier
- * 
+ *
  * @author Vojtech Hubr
  *         Date 12.4.11
  */

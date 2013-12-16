@@ -1,0 +1,87 @@
+/**
+ * Css Resources for main basic layout for initial views
+ *
+ * @author Jaro
+ *
+ */
+html {
+}
+
+body {
+    /*min-width: 480px;*/
+}
+
+body > div {
+    /*min-width: 480px;*/
+}
+
+.homepage {
+    width: 490px;
+}
+.homepage .banner1 {
+    margin: -13px 0 0 14px;
+}
+.homepage .banner2 {
+    margin: -13px 0 0 14px;
+}
+
+.root-category-cell {}
+
+.scroll-container {}
+
+/******************************************************************************/
+/*  Toolbar styles                                                            */
+/******************************************************************************/
+.toolbar {}
+.toolbar .header {    
+    display: none;
+}
+.toolbar .right-icon {
+    display: block;
+}
+
+/******************************************************************************/
+/*  Footer View                                                               */
+/******************************************************************************/
+.footer {
+}
+.footer .links {
+    width: auto;
+    margin: 0 11px 6px 0;
+}
+.footer .links .button {
+    padding: 2px 6px;
+}
+.footer .links .button:hover {
+}
+.footer .links .separator {
+    /*padding: 2px 5px;*/
+}
+.border-separator {
+    display: none;
+}
+.footer .block {
+}
+.footer-container-texts {    
+}
+
+.footer-toggle {
+}
+
+/* Loader Modal Styles */
+.loader-modal {
+    margin: 0 auto !important;
+}
+
+/******************************************************************************/
+/*  Common Responsive                                                         */
+/******************************************************************************/
+.hide-small {
+    display: none !important;
+}
+.expand-small {
+    width: 100% !important;
+}
+.half-expand-small {
+    width: 50% !important;
+}

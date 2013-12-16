@@ -1,0 +1,46 @@
+.height-registration-extended {}
+.height-registration {}
+.height-selector {}
+.height-advanced {}
+.height-basic {}
+.createTabPanel {
+}
+.createTabPanel .infoLabel1 {
+    font-size: 30px;
+    line-height: 60px;
+}
+.fourStepTabPanel {}
+
+.buttons-panel.middle {
+    width: 266px;
+}
+.buttons-panel.large {
+    width: 266px;
+}
+.buttons-panel .button {
+    font-size: 14px;
+    padding: 0;
+}
+.buttons-panel .button.left-large {
+    background: url(images/button-left-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+}
+.buttons-panel .button.left-middle {
+    background: url(images/button-left-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+}
+.buttons-panel .button.right-large {
+    background: url(images/button-right-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+}
+.buttons-panel .button.right-middle {
+    background: url(images/button-right-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+}
+.buttons-panel .buttons-separator {
+    margin: 0 25px;
+}

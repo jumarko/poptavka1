@@ -5,24 +5,30 @@ package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.product.Service;
+import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang.Validate;
 
 public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
 
-    private final Converter<Category, CategoryDetail> categoryConverter;
-    private final Converter<Locality, LocalityDetail> localityConverter;
+    private final Converter<Category, ICatLocDetail> categoryConverter;
+    private final Converter<Locality, ICatLocDetail> localityConverter;
     private final Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private final Converter<Service, ServiceDetail> serviceConverter;
 
     private SupplierConverter(
-            Converter<Category, CategoryDetail> categoryConverter,
-            Converter<Locality, LocalityDetail> localityConverter,
-            Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
+            Converter<Category, ICatLocDetail> categoryConverter,
+            Converter<Locality, ICatLocDetail> localityConverter,
+            Converter<BusinessUser, BusinessUserDetail> businessUserConverter,
+            Converter<Service, ServiceDetail> serviceConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(categoryConverter);
         Validate.notNull(localityConverter);
@@ -30,6 +36,7 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         this.categoryConverter = categoryConverter;
         this.localityConverter = localityConverter;
         this.businessUserConverter = businessUserConverter;
+        this.serviceConverter = serviceConverter;
     }
 
     @Override
@@ -46,8 +53,17 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
         }
+        detail.setServices(convertServices(source.getBusinessUser().getUserServices()));
         return detail;
 
+    }
+
+    private List<ServiceDetail> convertServices(List<UserService> services) {
+        List<ServiceDetail> servicesDetails = new ArrayList<ServiceDetail>();
+        for (UserService userService : services) {
+            servicesDetails.add(serviceConverter.convertToTarget(userService.getService()));
+        }
+        return servicesDetails;
     }
 
     @Override

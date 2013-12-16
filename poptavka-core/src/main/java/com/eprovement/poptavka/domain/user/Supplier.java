@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Supplier posts offers and realizes projects demanded by clients
- * 
+ *
  * @author Excalibur
  */
 @Entity
@@ -94,7 +94,7 @@ public class Supplier extends BusinessUserRole {
     private List<Category> categories;
 
     /** Flag indicates whether supplier is certified or not.
-     * TODO RELEASE Juraj : the type of ceritification should be available!*/
+     * TODO LATER Juraj : the type of ceritification should be available!*/
     // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
     @Column(columnDefinition = "BIT")
     private Boolean certified;
@@ -123,7 +123,7 @@ public class Supplier extends BusinessUserRole {
         return certified;
     }
 
-    public void setCertified(boolean certified) {
+    public void setCertified(Boolean certified) {
         this.certified = certified;
     }
 

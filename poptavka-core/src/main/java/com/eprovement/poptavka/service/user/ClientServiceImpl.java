@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.Period;
+import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.notification.NotificationTypeService;
@@ -9,7 +11,9 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.slf4j.Logger;
@@ -27,7 +31,7 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
     public ClientServiceImpl(GeneralService generalService, RegisterService registerService,
                              UserVerificationService userVerificationService,
                              NotificationTypeService notificationTypeService) {
-        super(generalService, registerService, userVerificationService, notificationTypeService);
+        super(Client.class, generalService, registerService, userVerificationService, notificationTypeService);
         this.clientAccessRoles = Arrays.asList(
                 getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class),
                 getRegisterService().getValue(CommonAccessRoles.USER_ACCESS_ROLE_CODE, AccessRole.class));
@@ -62,8 +66,15 @@ public class ClientServiceImpl extends BusinessUserRoleServiceImpl<Client, Clien
     }
 
     @Override
-    protected List<Notification> getNotifications() {
+    protected List<Notification> getNotificationsWithDefaultPeriod() {
         return notificationTypeService.getNotificationsForClient();
+    }
+
+    @Override
+    protected Map<Notification, Period> getNotificationsWithCustomPeriod() {
+        final HashMap<Notification, Period> customNotifications = new HashMap<>();
+        customNotifications.put(getWelcomeNotification(Registers.Notification.WELCOME_CLIENT), Period.INSTANTLY);
+        return customNotifications;
     }
 
 }

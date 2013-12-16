@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.user.messages;
 
-import com.eprovement.poptavka.client.root.footer.FooterView;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.user.messages.toolbar.MessagesToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,20 +24,38 @@ public class MessagesView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) Widget footer;
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentContainer;
     @UiField Button menuMessagesInboxBtn;
-    /** Class attributes. **/
-    private @Inject FooterView footerView;
+    /** UiBinder attributes. **/
+    @Inject
+    private MessagesToolbarView toolbar;
 
     /**************************************************************************/
     /* Initialization                                                            */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
+
         StyleResource.INSTANCE.common().ensureInjected();
+    }
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Loads right styles to menu buttons.
+     * @param loadedWidget - use module constants from class Contants.
+     */
+    @Override
+    public void setMessagesMenuStyleChange(int loadedWidget) {
+        switch (loadedWidget) {
+            case Constants.MESSAGES_INBOX:
+                menuMessagesInboxBtn.addStyleName(Constants.ACT);
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/
@@ -44,14 +63,19 @@ public class MessagesView extends Composite
     /**************************************************************************/
     /** Panels. **/
     @Override
-    public SimplePanel getContentPanel() {
-        return contentPanel;
+    public SimplePanel getContentContainer() {
+        return contentContainer;
     }
 
     /** Buttons. **/
     @Override
     public Button getMessagesInbox() {
         return menuMessagesInboxBtn;
+    }
+
+    @Override
+    public Widget getToolbarContent() {
+        return toolbar;
     }
 
     /** Other. **/

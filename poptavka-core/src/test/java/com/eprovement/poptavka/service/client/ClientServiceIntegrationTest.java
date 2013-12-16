@@ -23,6 +23,8 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import org.junit.Assert;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,6 +160,7 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertFalse(createdClient.getBusinessUser().getBusinessUserRoles().isEmpty());
         Assert.assertThat(createdClient.getBusinessUser().getBusinessUserRoles().get(0).getId(),
                 is(createdClient.getId()));
+        assertNull(createdClient.getBusinessUser().getOrigin());
 
         // check if new client has automatically assigned service "classic client" with status unverified
         final Search userServiceSearch = new Search(UserService.class);
@@ -169,9 +172,14 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check if new client has also all client notifications set to the sensible values
         Assert.assertNotNull(createdClient.getBusinessUser().getSettings());
-        checkNotifications(createdClient, Registers.Notification.NEW_OFFER,
-                Registers.Notification.NEW_MESSAGE, Registers.Notification.NEW_INFO,
-                Registers.Notification.NEW_MESSAGE_OPERATOR, Registers.Notification.DEMAND_STATUS_CHANGED);
+        assertThat("Unexpected count of notifications",
+                createdClient.getBusinessUser().getSettings().getNotificationItems().size(), is(6));
+        checkNotifications(createdClient, Registers.Notification.NEW_OFFER, Registers.Notification.NEW_MESSAGE,
+                Registers.Notification.NEW_INFO, Registers.Notification.NEW_MESSAGE_OPERATOR,
+                Registers.Notification.DEMAND_STATUS_CHANGED);
+        UserTestUtils.checkHasNotification(createdClient.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.WELCOME_CLIENT.getCode(), Notification.class),
+                true, Period.INSTANTLY);
     }
 
 

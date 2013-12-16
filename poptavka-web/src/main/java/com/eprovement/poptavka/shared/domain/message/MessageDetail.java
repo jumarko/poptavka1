@@ -4,7 +4,6 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -14,7 +13,7 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
+public class MessageDetail implements IsSerializable {
 
     public enum MessageField {
 
@@ -46,7 +45,6 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
             return null;
         }
     }
-
     //UserMessage
     private boolean read = false;
     private boolean starred = false;
@@ -235,12 +233,29 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
         this.senderId = senderId;
     }
 
-    public boolean isRead() {
-        return read;
+    /**
+     * @return the senderName
+     */
+    public String getSender() {
+        return sender;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    /**
+     * @param senderName the senderName to set
+     */
+    public void setSender(String senderName) {
+        this.sender = senderName;
+    }
+
+    /**************************************************************************/
+    /* TableDisplayUserMessage implementations                                */
+    /**************************************************************************/
+    public long getUserMessageId() {
+        return userMessageId;
+    }
+
+    public void setUserMessageId(long userMessageId) {
+        this.userMessageId = userMessageId;
     }
 
     public boolean isStarred() {
@@ -251,15 +266,17 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
         this.starred = starred;
     }
 
-    @Override
-    public long getUserMessageId() {
-        return userMessageId;
+    public boolean isRead() {
+        return read;
     }
 
-    public void setUserMessageId(long userMessageId) {
-        this.userMessageId = userMessageId;
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
+    /**************************************************************************/
+    /* Overriden mehtods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -280,19 +297,5 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
         sb.append(", sent=" + (sent == null ? "null" : sent.toString()));
         sb.append('}');
         return sb.toString();
-    }
-
-    /**
-     * @return the senderName
-     */
-    public String getSender() {
-        return sender;
-    }
-
-    /**
-     * @param senderName the senderName to set
-     */
-    public void setSender(String senderName) {
-        this.sender = senderName;
     }
 }

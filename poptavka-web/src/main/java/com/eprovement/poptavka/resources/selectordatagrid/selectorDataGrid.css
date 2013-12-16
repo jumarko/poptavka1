@@ -1,0 +1,190 @@
+/*
+ * Copyright 2011 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+@def selectionBorderWidth 2px;
+
+.dataGridWidget {
+}
+
+.dataGridFirstColumn {
+
+}
+
+.dataGridLastColumn {
+
+}
+
+.dataGridLastColumn div img {
+    margin: 0 auto;
+    display: block;
+}
+
+.dataGridFooter {
+    padding: 3px 15px;
+    text-align: left;
+    color: #6f6b59;
+    text-shadow: #ddf 1px 1px 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.dataGridHeader {
+    background-position: top right;
+    background-color: #f1ecda;
+    padding: 5px 12px 3px 12px;
+    text-align: left;
+    color: #6f6b59;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: normal;
+    text-shadow: none;
+    border: none;
+    border-left: 1px solid #F9F6EA;
+}
+
+.dataGridCell {
+    padding: 2px 15px;
+    line-height: 30px;
+    overflow: hidden;
+    color: #6f6b59;
+}
+
+.dataGridCell.title  > div {    
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.dataGridFirstColumnFooter {
+
+}
+
+.dataGridFirstColumnHeader {
+    border-radius: 6px 0 0 0;
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-left: 1px solid #d0cbba;
+}
+
+.dataGridLastColumnFooter {
+
+}
+
+.dataGridSortableHeader {
+    cursor: pointer;
+    cursor: hand;
+    background-position: top right;
+}
+
+.dataGridLastColumnHeader {
+    background-position: top right;
+    border-radius: 0 6px 0 0;
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-right: 1px solid #d0cbba;
+}
+
+.dataGridSortableHeader:hover {
+    text-shadow: 0 0 2px 2px #eeeeee;
+    text-decoration: underline;
+    color: #6f6b59;
+}
+
+.dataGridSortedHeaderAscending {
+
+}
+
+.dataGridSortedHeaderDescending {
+
+}
+.dataGridSortedHeaderAscending,
+.dataGridSortedHeaderDescending {
+
+}
+
+.dataGridEvenRow {
+    background: #faf7eb;
+    white-space:nowrap;
+}
+
+.dataGridEvenRowCell {
+    border-top: 1px solid #fefdfa;
+    border-bottom: 1px solid #e9e5d7;
+    border-left: none;
+    border-right: none;
+}
+
+.dataGridOddRow {
+    background: #faf7eb;
+    white-space:nowrap;
+}
+
+.dataGridOddRowCell {
+    border-top: 1px solid #fefdfa;
+    border-bottom: 1px solid #e9e5d7;
+    border-left: none;
+    border-right: none;
+}
+
+.dataGridHoveredRow {
+    background: #f0eddf;
+    opacity: 1;
+}
+
+.dataGridHoveredRowCell {
+
+}
+
+.dataGridKeyboardSelectedRow {
+    background: #ffc;
+}
+
+.dataGridKeyboardSelectedRowCell {
+
+}
+
+.dataGridSelectedRow {
+    height: auto;
+    overflow: auto;
+    background: #ffffff;
+    opacity: 1;
+}
+
+.dataGridSelectedRowCell {
+    color: #6f6b59;
+}
+
+.dataGridFirstColumn {
+    border-left: 1px solid #d1ccbc;
+}
+
+.dataGridLastColumn {
+    border-right: 1px solid #d1ccbc;
+}
+
+/**
+ * The keyboard selected cell is visible over selection.
+ */
+.dataGridKeyboardSelectedCell {
+
+}
+
+/* IE fixes */
+@if user.agent ie8 ie9 ie10 { 
+    .dataGridHeader {
+        height: 34px !important;
+    }
+}

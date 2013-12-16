@@ -4,7 +4,6 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
@@ -120,7 +119,7 @@ public class AdminPaymentMethodsView extends Composite
 
         // ID
         dataGrid.addColumn(new TextCell(), Storage.MSGS.columnID(),
-                true, Constants.COL_WIDTH_ID,
+                true, Storage.GRSCS.dataGridStyle().colWidthId(),
                 new GetValue<String>() {
 
                     @Override

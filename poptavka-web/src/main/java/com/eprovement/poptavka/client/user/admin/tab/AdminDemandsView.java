@@ -4,10 +4,10 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
+import com.eprovement.poptavka.client.user.widget.grid.cell.SafeClickableTextCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -137,8 +137,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
     private void initTableColumns() {
 
         // Demand ID.
-        idColumn = dataGrid.addColumn(dataGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnID(),
-                true, Constants.COL_WIDTH_ID,
+        idColumn = dataGrid.addColumn(new SafeClickableTextCell(), Storage.MSGS.columnID(),
+                true, Storage.GRSCS.dataGridStyle().colWidthId(),
                 new GetValue<String>() {
 
                     @Override
@@ -148,8 +148,8 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
                 });
 
         // Client ID.
-        cidColumn = dataGrid.addColumn(dataGrid.TABLE_CLICKABLE_TEXT_CELL, Storage.MSGS.columnCID(),
-                true, Constants.COL_WIDTH_ID,
+        cidColumn = dataGrid.addColumn(new SafeClickableTextCell(), Storage.MSGS.columnCID(),
+                true, Storage.GRSCS.dataGridStyle().colWidthId(),
                 new GetValue<String>() {
 
                     @Override
@@ -165,7 +165,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
 
                     @Override
                     public String getValue(Object object) {
-                        return String.valueOf(((FullDemandDetail) object).getTitle());
+                        return String.valueOf(((FullDemandDetail) object).getDemandTitle());
                     }
                 });
 
@@ -214,7 +214,7 @@ public class AdminDemandsView extends Composite implements AdminDemandsPresenter
         // Demand end date.
         demandEndColumn = dataGrid.addColumn(
                 new DatePickerCell(dateFormat), Storage.MSGS.columnEndDate(),
-                true, Constants.COL_WIDTH_DATE,
+                true, Storage.GRSCS.dataGridStyle().colWidthDate(),
                 new GetValue<Date>() {
 
                     @Override

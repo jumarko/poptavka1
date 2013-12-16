@@ -4,14 +4,12 @@ import com.eprovement.poptavka.base.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
 import com.eprovement.poptavka.server.service.clientdemands.ClientDemandsModuleRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
@@ -19,13 +17,10 @@ import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.googlecode.genericdao.search.Search;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -67,25 +62,14 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     private Converter<Demand, FullDemandDetail> demandConverter;
 
     @Autowired
-    @Qualifier("searchConverter")
-    private Converter<Search, SearchDefinition> searchConverter;
-
-    @Autowired
     @Qualifier("supplierConverter")
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
-
-    @Autowired
-    @Qualifier("messageConverter")
-    private Converter<Message, MessageDetail> messageConverter;
 
     @Autowired
     private ClientService clientService;
 
     @Autowired
     private GeneralService generalService;
-
-    @Autowired
-    private MessageService messageService;
 
     @Autowired
     private UserMessageService userMessageService;
@@ -109,21 +93,18 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         // converters
         clientDemandsRPCService.setClientDemandConverter(clientDemandConverter);
         clientDemandsRPCService.setDemandConverter(demandConverter);
-        clientDemandsRPCService.setSearchConverter(searchConverter);
-        clientDemandsRPCService.setMessageConverter(messageConverter);
         clientDemandsRPCService.setSupplierConverter(supplierConverter);
 
         // services
         clientDemandsRPCService.setClientService(clientService);
         clientDemandsRPCService.setGeneralService(generalService);
-        clientDemandsRPCService.setMessageService(messageService);
         clientDemandsRPCService.setUserMessageService(userMessageService);
         clientDemandsRPCService.setOfferService(offerService);
 
     }
 
     private void authenticateClient() {
-        // TODO RELEASE juraj: authenticate correctly as client - make common methods in abstract parent
+        // TODO LATER juraj: authenticate correctly as client - make common methods in abstract parent
         // setup correct roles in UsersDataSet.xml
         final PoptavkaAuthenticationProvider authenticationProvider = new PoptavkaAuthenticationProvider(loginService);
         final Authentication clientAuthentication = authenticationProvider
@@ -200,21 +181,6 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
                 dashboard.getUnreadMessagesAssignedDemandsCount());
         Assert.assertEquals("Expected number of unread messages for Closed Demands doesn't match the result", 0,
                 dashboard.getUnreadMessagesClosedDemandsCount());
-    }
-
-    private void checkFullOfferDetailExists(List<FullOfferDetail> offers,
-            final long offerId, final long userMessageId) {
-        Assert.assertTrue(
-                "FullOfferDetail [offerId=" + offerId + ", userMessageId ="
-                        + userMessageId + "] expected to be in collection ["
-                + offers + "] is not there.",
-                CollectionUtils.exists(offers, new Predicate() {
-                    @Override
-                    public boolean evaluate(Object object) {
-                        return offerId == ((FullOfferDetail) object).getOfferDetail().getId()
-                                && userMessageId == ((FullOfferDetail) object).getUserMessageId();
-                    }
-                }));
     }
 
     private void checkClientOfferedDemandOffersDetailExists(List<ClientOfferedDemandOffersDetail> offers,

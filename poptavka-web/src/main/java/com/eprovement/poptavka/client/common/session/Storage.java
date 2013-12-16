@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.common.session;
 
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.google.gwt.core.client.GWT;
@@ -35,19 +36,13 @@ public final class Storage {
     private static boolean calledDueToHistory = false;
     private static String forwardHistory = "";
     private static Boolean appCalledByURL = null;
-    private static boolean timerStarted;
-
-    public static final String BACK = "back";
-    public static final String FORWARD = "forward";
-    public static final int TIMER_PERIOD_MILISECONDS = 30000;
+    private DateTimeFormat dateTimeFormat;
     /**************************************************************************/
     //global constants
     public static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     public static final ValidationMessages VMSGS = GWT.create(ValidationMessages.class);
+    public static final DataGridResources GRSCS = GWT.create(DataGridResources.class);
     public static final StyleResource RSCS = GWT.create(StyleResource.class);
-    public static final DateTimeFormat TIME_FORMATTER = DateTimeFormat.getFormat("hh:mm a");
-    public static final DateTimeFormat DATE_FORMAT_SHORT = DateTimeFormat.getFormat(MSGS.formatDateShort());
-    public static final DateTimeFormat DATE_FORMAT_LONG = DateTimeFormat.getFormat(MSGS.formatDateLong());
     //Define own custom currency number formater because we don't want cents to be displayed.
     //Otherwise just use NumberFormat.getCurrencyFormater() to format currency numbers;
     public static final NumberFormat CURRENCY_FORMAT = NumberFormat.getFormat(MSGS.formatCurrency());
@@ -96,6 +91,19 @@ public final class Storage {
         Storage.forwardHistory = forwardHistory;
     }
 
+    /**************************************************************************/
+    /*  Date time formater initialization                                     */
+    /**************************************************************************/
+    public void initDateTimeFormat(boolean longFormat) {
+        if (longFormat) {
+            dateTimeFormat = DateTimeFormat.getFormat(MSGS.formatDateLong());
+        } else {
+            dateTimeFormat = DateTimeFormat.getFormat(MSGS.formatDateMiddle());
+        }
+    }
+    public DateTimeFormat getDateTimeFormat() {
+        return dateTimeFormat;
+    }
     /**************************************************************************/
     /**
      * @return the businessUserDetail
@@ -208,7 +216,6 @@ public final class Storage {
         setAppCalledByURL(null);
         setDemandId(-1L);
         setCurrentlyLoadedView(-1);
-        setTimerStarted(false);
     }
 
     /**
@@ -227,19 +234,5 @@ public final class Storage {
         } else {
             throw new NullPointerException("userDetail or businessUserDetail in Storage were not initialized.");
         }
-    }
-
-    /**
-     * @return the timerStarted
-     */
-    public static boolean isTimerStarted() {
-        return timerStarted;
-    }
-
-    /**
-     * @param timerStarted the timerStarted to set
-     */
-    public static void setTimerStarted(boolean timerStartedValue) {
-        timerStarted = timerStartedValue;
     }
 }

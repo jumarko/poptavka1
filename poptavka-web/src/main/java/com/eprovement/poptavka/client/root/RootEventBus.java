@@ -10,44 +10,47 @@
  */
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.actionBox.ActionBoxPresenter;
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
-import com.eprovement.poptavka.client.common.search.SearchModule;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorPresenter;
-import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormPresenter;
-import com.eprovement.poptavka.client.error.ErrorModule;
+import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorModule;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
+import com.eprovement.poptavka.client.addressSelector.AddressSelectorModule;
+import com.eprovement.poptavka.client.common.LoadingPopupPresenter;
+import com.eprovement.poptavka.client.common.actionBox.ActionBoxModule;
+import com.eprovement.poptavka.client.login.LoginModule;
+import com.eprovement.poptavka.client.search.SearchModule;
+import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationModule;
+import com.eprovement.poptavka.client.infoWidgets.InfoWidgetsModule;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationModule;
-
 import com.eprovement.poptavka.client.home.createSupplier.SupplierCreationModule;
 import com.eprovement.poptavka.client.homeWelcome.HomeWelcomeModule;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
-import com.eprovement.poptavka.client.root.activation.ActivationCodePopupPresenter;
+import com.eprovement.poptavka.client.detail.DetailModule;
+import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
+import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
-import com.eprovement.poptavka.client.root.header.UserHeaderPresenter;
-import com.eprovement.poptavka.client.root.menu.MenuPresenter;
-import com.eprovement.poptavka.client.root.menu.UserMenuPresenter;
+import com.eprovement.poptavka.client.root.header.menu.MenuPresenter;
+import com.eprovement.poptavka.client.root.toolbar.ToolbarPresenter;
+import com.eprovement.poptavka.client.serviceSelector.ServiceSelectorModule;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.enums.ServiceType;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.FullClientDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -61,7 +64,6 @@ import com.mvp4g.client.annotation.module.ChildModules;
 import com.mvp4g.client.annotation.module.DisplayChildModuleView;
 import com.mvp4g.client.annotation.module.LoadChildModuleError;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.ArrayList;
 import java.util.List;
 
 @Events(startPresenter = RootPresenter.class, historyOnStart = true)
@@ -77,8 +79,15 @@ import java.util.List;
     @ChildModule(moduleClass = SupplierDemandsModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = MessagesModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = SettingsModule.class, async = true, autoDisplay = false),
-    @ChildModule(moduleClass = ErrorModule.class, async = true, autoDisplay = true),
-    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false) })
+    @ChildModule(moduleClass = InfoWidgetsModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = LoginModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = AdminModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = CatLocSelectorModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = UserRegistrationModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = ServiceSelectorModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = AddressSelectorModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = ActionBoxModule.class, async = true, autoDisplay = false),
+    @ChildModule(moduleClass = DetailModule.class, async = true, autoDisplay = false) })
 public interface RootEventBus extends EventBusWithLookup {
 
     /**
@@ -87,7 +96,7 @@ public interface RootEventBus extends EventBusWithLookup {
      */
     @Start
     @InitHistory
-    @Event(handlers = RootPresenter.class)
+    @Event(handlers = {RootPresenter.class, HeaderPresenter.class, ToolbarPresenter.class, MenuPresenter.class })
     void start();
 
     /**************************************************************************/
@@ -96,36 +105,60 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void setHeader(IsWidget header);
 
-    @Event(handlers = RootPresenter.class)
-    void setMenu(IsWidget menu);
-
-    @DisplayChildModuleView(SearchModule.class)
-    @Event(handlers = RootPresenter.class)
-    void setSearchBar(IsWidget searchBar);
-
-    @Event(handlers = RootPresenter.class)
-    void setUpSearchBar(IsWidget advanceSearchWidget);
-
     /**
      * Pouzitie autodisplay funkcie v RootModule ma za nasledok, ze kazdy modul sa
      * automaticky nastavi do RootPresentera cez metodu setBody(), ktora reprezentuje
      * hlavne telo webstranky. Je nutne anotovat tuto metody aby RootModul vedel,
      * ktora metoda ma nahrat pohlad ChildModulu a zobrazit na webstranke
      */
-    @DisplayChildModuleView({
-        HomeWelcomeModule.class,
-        ErrorModule.class })
+    @DisplayChildModuleView(HomeWelcomeModule.class)
     @Event(handlers = RootPresenter.class)
     void setBody(IsWidget body);
 
+    @Event(handlers = HeaderPresenter.class)
+    void setMenu(IsWidget menu);
+
+    @DisplayChildModuleView(SearchModule.class)
+    @Event(handlers = HeaderPresenter.class)
+    void setSearchBar(IsWidget searchBar);
+
     @Event(handlers = RootPresenter.class)
-    void setFooter(SimplePanel footerHolder);
+    void slideBodyPanel(String px, int duration);
+
+    @Event(handlers = RootPresenter.class)
+    void setToolbar(IsWidget toolbar);
+
+    @Event(handlers = ToolbarPresenter.class)
+    void setToolbarContent(String title, Widget toolbarContent, boolean hasAnimationLayout);
+
+    @Event(handlers = FooterPresenter.class)
+    void setFooter(SimplePanel footerPanel);
+
+    //Notice that user modules should have its own resize because they require logged user
+    //and therefore on browser resize Login is called, which is wrong.
+    @Event(handlers = RootPresenter.class)
+    void resize();
 
     /**************************************************************************/
-    /* History events.                                                     */
+    /* Footer section                                                         */
+    /**************************************************************************/
+    @Event(handlers = FooterPresenter.class)
+    void displayAboutUs();
+
+    @Event(handlers = FooterPresenter.class)
+    void displayFaq();
+
+    @Event(handlers = FooterPresenter.class)
+    void displayPrivacyPolicy();
+
+    @Event(handlers = FooterPresenter.class)
+    void displayTermsAndConditions();
+
+    /**************************************************************************/
+    /* History events.                                                        */
     /**************************************************************************/
     @Event(historyConverter = RootHistoryConverter.class, name = "view")
-    String createCustomToken(String param);
+    void createCustomToken(String param);
 
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
@@ -137,7 +170,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToModules = HomeDemandsModule.class)
-    void goToHomeDemandsModuleFromWelcome(int categoryIdx, CategoryDetail category);
+    void goToHomeDemandsModuleFromWelcome(int categoryIdx, ICatLocDetail category);
 
     @Event(forwardToModules = HomeSuppliersModule.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
@@ -148,15 +181,6 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
 
-    /**
-     * Forward error handling to Error Module that will display proper messages to user.
-     *
-     * @param errorResponseCode - HTTP error response code if available, otherwise use value 0
-     * @param errorId - errorId if available, otherwise use null
-     */
-    @Event(forwardToModules = ErrorModule.class)
-    void displayError(int errorResponseCode, String errorId);
-
     /**************************************************************************/
     /* Navigation events - User menu control section                          */
     /**************************************************************************/
@@ -165,19 +189,6 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(forwardToModules = SupplierDemandsModule.class)
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
-
-    @Event(forwardToModules = SupplierDemandsModule.class)
-    void startSupplierNotificationTimer();
-
-    @Event(forwardToModules = ClientDemandsModule.class)
-    void startClientNotificationTimer();
-
-    @Event(forwardToModules = SupplierDemandsModule.class)
-    void stopSupplierNotificationTimer();
-
-    @Event(forwardToModules = ClientDemandsModule.class)
-    void stopClientNotificationTimer();
-
 
     /**
      * @param filter - provided by search module
@@ -191,21 +202,32 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = AdminModule.class)
     void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
 
-    /* Both Home and User menut control section */
-    @Event(forwardToModules = SearchModule.class)
-    void goToSearchModule();
+    /**************************************************************************/
+    /* Info widgets module                                                    */
+    /**************************************************************************/
+    /**
+     * Forward error handling to Error Module that will display proper messages to user.
+     *
+     * @param errorResponseCode - HTTP error response code if available, otherwise use value 0
+     * @param errorId - errorId if available, otherwise use null
+     */
+    @Event(forwardToModules = InfoWidgetsModule.class)
+    void displayError(int errorResponseCode, String errorId);
 
-    /**************************************************************************/
-    /* EMAIL DIALOG POPUP.                                                    */
-    /**************************************************************************/
     /**
      * Contact us popup will appear. Parameters will be forwared to method fillContactUsValues().
      *
      * @param subject - predefined subject i.e. report issue that was invoked by user from Error Module
      * @param errorId - the error ID what was genereated for reported issue
      */
-    @Event(handlers = RootPresenter.class)
+    @Event(forwardToModules = InfoWidgetsModule.class)
     void sendUsEmail(int subject, String errorId);
+
+    @Event(forwardToModules = InfoWidgetsModule.class)
+    void showThankYouPopup(SafeHtml message, Timer timer);
+
+    @Event(forwardToModules = InfoWidgetsModule.class)
+    void showAlertPopup(String message);
 
     /**************************************************************************/
     /* Navigation events - Other control sections                             */
@@ -221,20 +243,11 @@ public interface RootEventBus extends EventBusWithLookup {
      * Login usera prechadza vzdy cez tuto metodu. Nastavuje sa menu, hlavicka,
      * cookies a defaultny modul po odhlaseni
      */
-    @Event(handlers = {UserHeaderPresenter.class, RootPresenter.class, UserMenuPresenter.class })
+    @Event(handlers = {HeaderPresenter.class, RootPresenter.class, MenuPresenter.class })
     void atAccount();
 
-    @Event(handlers = UserHeaderPresenter.class)
+    @Event(handlers = HeaderPresenter.class)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
-
-    /**
-     * This method populates Storage i.e. our custom GWT session object with UserDetail.
-     * A secured RPC service is invoked so this method can be called only if user is logged in and he opened our
-     * website in new browser tab, which obviously starts the whole app from the begining. If user is not logged in
-     * the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
-     */
-    @Event(handlers = RootHandler.class)
-    void loginFromSession(int widgetToLoad);
 
     /**
      * This event will be called in case an error occurs while loading the
@@ -253,7 +266,9 @@ public interface RootEventBus extends EventBusWithLookup {
      * This event will be called before starting to load the ChildModule code.
      * You can for example decide to display a wait popup.
      *
-     * Zatial zakomentovane. Mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
+     * Vytvara to vela volani, pretoze mame vela modulov. Trebarz len pri loadovani
+     * Welcomu sa to vola 3x - Start app, HomeWelcome, SearchModule,
+     * Skusit zakomentovanat, mozno to nebudeme potrebovat kvoli zrychleniu aplikacie
      */
     @BeforeLoadChildModule
     @Event(handlers = RootPresenter.class)
@@ -283,160 +298,116 @@ public interface RootEventBus extends EventBusWithLookup {
     void notFound();
 
     /**************************************************************************/
-    /* LOGIN - LOGOUT.                                                        */
+    /* Business events handled by Login module                                */
     /**************************************************************************/
-    /**
-     * Login is handled by HeaderPresenter so that event handler can be set up before calling LoginPopupPresenter.
-     */
-    @Event(handlers = RootPresenter.class)
+    @Event(forwardToModules = LoginModule.class)
     void login(int widgetToLoad);
 
-    @Event(handlers = RootPresenter.class)
+    /**
+     * This method populates Storage i.e. our custom GWT session object with UserDetail.
+     * A secured RPC service is invoked so this method can be called only if user is logged in and he opened our
+     * website in new browser tab, which obviously starts the whole app from the begining. If user is not logged in
+     * the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
+     */
+    @Event(forwardToModules = LoginModule.class)
+    void loginFromSession(int widgetToLoad);
+
+    @Event(forwardToModules = LoginModule.class)
     void autoLogin(String email, String password, int widgetToLoad);
 
-    @Event(handlers = UserHeaderPresenter.class)
+    @Event(forwardToModules = LoginModule.class)
     void logout(int widgetToLoad);
 
     /**************************************************************************/
     /* LOADING.                                                               */
     /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
+    @Event(handlers = LoadingPopupPresenter.class)
     void loadingShow(String loadingMessage);
 
-    // TODO LATER ivlcek - zakomentoval som tieto dve metody na loadovanie cakacieho popupu
-    // Chcem pouzit standardnu funkciu cez onBefore, onAfter, ktora mi zatial nefunguje :(
-    @Event(handlers = RootPresenter.class)
+    @Event(handlers = LoadingPopupPresenter.class)
     void loadingHide();
 
     /**************************************************************************/
-    /* CATEGORY SELECTOR WIDGET.                                              */
+    /* SEARCH MODULE.                                                         */
+    /**************************************************************************/
+    @Event(forwardToModules = SearchModule.class)
+    void goToSearchModule();
+
+    @Event(forwardToModules = SearchModule.class)
+    void showAdvancedSearchPopup();
+
+    @Event(forwardToModules = SearchModule.class)
+    void resetSearchBar(Widget newAttributeSearchWidget);
+
+    /**************************************************************************/
+    /* CATEGORY SELECTOR MODULE.                                              */
     /**************************************************************************/
     /** CategorySelection section. **/
-    @Event(handlers = RootPresenter.class)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void initCatLocSelector(
+            SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void fillCatLocs(List<ICatLocDetail> selectedCategories, int instanceId);
+
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void setCatLocs(List<ICatLocDetail> categories);
+
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
+
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void registerCatLocTreeSelectionHandler(SelectionChangeEvent.Handler selectionHandler);
 
     /**************************************************************************/
-    /* LOCALITY SELECTOR WIDGET.                                              */
+    /* ADDRESS SELECTOR MODULE.                                               */
     /**************************************************************************/
-    /** LocalitySelector section. **/
-    @Event(handlers = RootPresenter.class)
-    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
+    @Event(forwardToModules = AddressSelectorModule.class)
+    void initAddressSelector(SimplePanel embedToWidget);
+
+    @Event(forwardToModules = AddressSelectorModule.class)
+    void fillAddresses(List<AddressDetail> addresses);
+
+    @Event(forwardToModules = AddressSelectorModule.class)
+    void setAddresses(List<AddressDetail> addresses);
 
     /**************************************************************************/
-    /* ADDRESS SELECTOR WIDGET.                                               */
+    /* SERVICE SELECTOR MODULE.                                               */
     /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initAddressWidget(SimplePanel embedToWidget);
+    @Event(forwardToModules = ServiceSelectorModule.class)
+    void initServicesWidget(ServiceType serviceType, SimplePanel embedToWidget);
 
-    @Event(forwardToModules = {SupplierCreationModule.class, DemandCreationModule.class, SettingsModule.class },
-    passive = true)
-    void notifyAddressWidgetListeners(AddressSelectorInterface addressWidget);
+    @Event(forwardToModules = ServiceSelectorModule.class)
+    void fillServices(List<ServiceDetail> services);
 
-    /**************************************************************************/
-    /* SERVICE SELECTOR WIDGET.                                               */
-    /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initServicesWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToModules = SettingsModule.class, passive = true)
-    void nofityServicesWidgetListeners();
-
-    @Event(handlers = RootHandler.class)
-    void getServices();
-
-    @Event(handlers = ServicesSelectorPresenter.class)
-    void setServices(ArrayList<ServiceDetail> services);
-
-    /**************************************************************************/
-    /* ACTION BOX.                                                            */
-    /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
+    @Event(forwardToModules = ServiceSelectorModule.class)
+    void selectService(ServiceDetail service);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     /**************************************************************************/
-    /* Business events handled by MenuPresenter --- HOME MENU                 */
+    /* Business events handled by UserMenuPresenter --- USER MENU             */
     /**************************************************************************/
     @Event(handlers = MenuPresenter.class)
     void menuStyleChange(int loadedModule);
 
-    /**************************************************************************/
-    /* Business events handled by UserMenuPresenter --- USER MENU             */
-    /**************************************************************************/
-    @Event(handlers = UserMenuPresenter.class)
-    void userMenuStyleChange(int loadedModule);
 
     /**************************************************************************/
-    /* Vytvorenie DevelDetailWrapperPresentera.                               */
+    /* Action box module                                                      */
     /**************************************************************************/
-    //Musi byt, lebo na vytvorenie DeatilWraper widgetu musim pouzit rootEventBus
-    @Event(handlers = RootPresenter.class)
-    void requestDetailWrapperPresenter();
+    @Event(forwardToModules = ActionBoxModule.class)
+    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
 
-    /** Musi byt passive, inak to vyhadzuje Access Denied - preco??? */
-    @Event(forwardToModules = {ClientDemandsModule.class, SupplierDemandsModule.class }, passive = true)
-    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
-
-    /**************************************************************************/
-    /* Business events handled by DevelDetailWrapperPresenter.                */
-    /**************************************************************************/
-    /*
-     * Request/Response Method pair
-     * DemandDetail for detail section
-     * @param demandId
-     * @param type
-     */
-    @Event(handlers = RootHandler.class)
-    void requestDemandDetail(Long demandId);
-
-    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void responseDemandDetail(FullDemandDetail demandDetail);
-
-    @Event(handlers = RootHandler.class)
-    void requestClientDetail(Long clientId);
-
-    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void responseClientDetail(FullClientDetail clientDetail);
-
-    @Event(handlers = RootHandler.class)
-    void requestSupplierDetail(Long supplierId);
-
-    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
-    void responseSupplierDetail(FullSupplierDetail supplierDetail);
-
-    /*
-     * Request conversation messages for detail section tab: Conversations between currently logged user and its
-     * counterparty.
-     *
-     * @param threadRootId - root message i.e. first demand message in the conversation always created by client
-     * @param loggedUserId - userId of currently logged user
-     * @param counterPartyUserId - userId of counterparty
-     */
-    @Event(handlers = RootHandler.class)
-    void requestConversation(long threadRootId, long loggedUserId, long counterPartyUserId);
-
-    @Event(handlers = RootHandler.class)
-    void updateUserMessagesReadStatus(Long userId, List<MessageDetail> messages);
-
-    @Event(handlers = DetailsWrapperPresenter.class)
-    void responseConversation(List<MessageDetail> chatMessages);
-
-    /**************************************************************************/
-    /* Messages                                                               */
-    /**************************************************************************/
     /**
      * Send/Response method pair
      * Update message read status.
      * @param messageToSend
      */
-    @Event(handlers = RootHandler.class)
+    @Event(forwardToModules = ActionBoxModule.class)
     void requestReadStatusUpdate(List<Long> userMessageIds, boolean isRead);
 
-    @Event(handlers = ActionBoxPresenter.class)
+    @Event(forwardToModules = ActionBoxModule.class)
     void responseReadStatusUpdate();
 
     /**
@@ -444,63 +415,56 @@ public interface RootEventBus extends EventBusWithLookup {
      * Update message star status.
      * @param messageToSend
      */
-    @Event(handlers = RootHandler.class)
+    @Event(forwardToModules = ActionBoxModule.class)
     void requestStarStatusUpdate(List<Long> userMessageIdList, boolean newStatus);
 
-    @Event(handlers = ActionBoxPresenter.class)
+    @Event(forwardToModules = ActionBoxModule.class)
     void responseStarStatusUpdate();
-
-    /**
-     * Send/Response method pair
-     * Sends message and receive the answer in a form of the same message to be displayed on UI.
-     * @param messageToSend
-     */
-    @Event(handlers = RootHandler.class)
-    void sendQuestionMessage(MessageDetail messageToSend);
-
-    @Event(handlers = RootHandler.class)
-    void sendOfferMessage(OfferMessageDetail offerMessageToSend);
-
-    @Event(handlers = DetailsWrapperPresenter.class)
-    void responseSendOfferMessage();
-
-    @Event(handlers = DetailsWrapperPresenter.class)
-    void addConversationMessage(MessageDetail sentMessage);
 
     /**
      * Send status message i.e. when user clicks on action buttons like Accept Offer, Finish Offer, Close Demand etc.
      * @param statusMessageBody representing status message text
      */
-    @Event(handlers = DetailsWrapperPresenter.class, passive = true)
+    @Event(forwardToModules = DetailModule.class)
     void sendStatusMessage(String statusMessageBody);
 
     /**************************************************************************/
-    /* User Activatoin                                                        */
+    /* User Registration Module                                               */
     /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad);
+    @Event(forwardToModules = UserRegistrationModule.class)
+    void initUserRegistration(SimplePanel holderWidget);
 
-    @Event(handlers = RootHandler.class)
-    void activateUser(BusinessUserDetail user, String activationCode);
-
-    @Event(handlers = RootHandler.class)
-    void sendActivationCodeAgain(BusinessUserDetail client);
-
-    @Event(handlers = ActivationCodePopupPresenter.class)
-    void responseActivateUser(UserActivationResult activationResult);
-
-    @Event(handlers = ActivationCodePopupPresenter.class)
-    void responseSendActivationCodeAgain(boolean sent);
+    @Event(forwardToModules = UserRegistrationModule.class)
+    void fillBusinessUserDetail(BusinessUserDetail userDetail);
 
     /**************************************************************************/
-    /* Business events handled by AccountAccountInfoPresenters.               */
+    /* Detail module business events.                                         */
     /**************************************************************************/
-    @Event(handlers = RootPresenter.class)
-    void initUserRegistrationForm(SimplePanel holderWidget);
+    @Event(forwardToModules = DetailModule.class)
+    void initDetailSection(UniversalAsyncGrid grid, SimplePanel detailSection);
 
-    @Event(handlers = RootHandler.class)
-    void checkFreeEmail(String value);
+    @Event(forwardToModules = DetailModule.class)
+    void buildDetailSectionTabs(DetailModuleBuilder builder);
 
-    @Event(handlers = UserRegistrationFormPresenter.class)
-    void checkFreeEmailResponse(Boolean result);
+    @Event(forwardToModules = DetailModule.class)
+    void displayAdvertisement();
+
+    @Event(forwardToModules = DetailModule.class)
+    void setCustomWidget(int tabIndex, Widget customWidget);
+
+    @Event(forwardToModules = DetailModule.class)
+    void setCustomSelectionHandler(SelectionHandler selectionHandler);
+
+    @Event(forwardToModules = DetailModule.class)
+    void allowSendingOffer();
+
+    /**
+     * Create professional and create project user registration tab height
+     * handlers.
+    */
+    @Event(forwardToModules = {DemandCreationModule.class, SupplierCreationModule.class }, passive = true)
+    void setUserRegistrationHeight(boolean company);
+
+    @Event(forwardToModules = UserRegistrationModule.class)
+    void checkCompanySelected();
 }

@@ -1,228 +1,28 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-             ui:generateLocales='default'>
+             xmlns:f="urn:import:com.eprovement.poptavka.client.common.forms"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <g:HTMLPanel>
-        <b:FluidContainer>
-            <b:FluidRow>
-                <b:Column size="6">                    
-                    <b:WellForm>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key='formAddress'>Address:</ui:msg>
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <g:SimplePanel ui:field="addressHolder"/>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:WellForm>
-                    <b:WellForm>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key="formCompanyInfo">Company Info</ui:msg>
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formCompanyName'>Company Name:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='companyNameMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formVatNumber'>Vat number:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='identifNumberMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formTaxNumber'>Tax number:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='taxNumberMonitor'>
-                                    <g:TextBox/>
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:WellForm>
-                    <b:WellForm>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key='formCommonInfo'>Common info:</ui:msg>
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>                                            
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <g:Label>
-                                    <ui:msg key='formDescription'>Description:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="1"></b:Column>
-                            <b:Column size="11">
-                                <cm:ChangeMonitor ui:field='descriptionMonitor'>
-                                    <g:TextArea width="450px" height="130px"/>
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:WellForm>
-                </b:Column>
-                <b:Column size="6">
-                    <b:WellForm>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key='formContactInfo'>Contact person:</ui:msg>
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formWebsite'>Web site:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='websiteMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formEmail'>Email:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='emailMonitor'>
-                                    <g:TextBox enabled='false'/>
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formPhone'>Phone:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='phoneMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formFirstName'>First name:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='firstNameMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formLastName'>Last name:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ChangeMonitor ui:field='lastNameMonitor'>
-                                    <g:TextBox />
-                                </cm:ChangeMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:WellForm>                    
-                    <b:WellForm>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    <ui:msg key='formPasswordInfo'>Change password:</ui:msg>
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>                                            
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key='formPasswordCurrent'>Current password:</ui:msg>
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ValidationMonitor ui:field='passwordCurrentMonitor'>
-                                    <g:PasswordTextBox />
-                                </cm:ValidationMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key="formPassword">New password</ui:msg>:
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ValidationMonitor ui:field="passwordNewMonitor">
-                                    <g:PasswordTextBox />
-                                </cm:ValidationMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="4">
-                                <g:Label>
-                                    <ui:msg key="formPasswordConfirm">New password Again</ui:msg>:
-                                </g:Label>
-                            </b:Column>
-                            <b:Column size="8">
-                                <cm:ValidationMonitor ui:field="passwordNewConfirmMonitor">
-                                    <g:PasswordTextBox />
-                                </cm:ValidationMonitor>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow>
-                            <b:Column size="12">
-                                <g:Button ui:field="changeBtn" styleName='{res.common.buttonGreen}'>
-                                    <ui:msg key="commonBtnChange">Change</ui:msg>
-                                </g:Button>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:WellForm>
-                </b:Column>
-            </b:FluidRow>
-        </b:FluidContainer>
-    </g:HTMLPanel>
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <g:SimplePanel ui:field="addressHolder"/>
+            </b:Column>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <f:CompanyInfoForm ui:field="companyInfoForm"/>
+            </b:Column>
+        </b:FluidRow>
+        <b:FluidRow>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <f:ContactInfoForm ui:field="contactInfoForm"/>
+            </b:Column>                
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <f:AdditionalInfoForm ui:field="additionalInfoForm"/>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

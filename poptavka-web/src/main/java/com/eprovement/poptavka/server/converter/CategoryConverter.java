@@ -7,10 +7,11 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.SupplierService;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public final class CategoryConverter extends AbstractConverter<Category, CategoryDetail> {
+public final class CategoryConverter extends AbstractConverter<Category, ICatLocDetail> {
 
     /**************************************************************************/
     /* RPC Services                                                           */
@@ -45,8 +46,8 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
     /* Convert methods                                                        */
     /**************************************************************************/
     @Override
-    public CategoryDetail convertToTarget(Category category) {
-        CategoryDetail detail = new CategoryDetail(category.getId(), category.getName());
+    public ICatLocDetail convertToTarget(Category category) {
+        CatLocDetail detail = new CatLocDetail(category.getId(), category.getName());
 //        detail.setId(category.getId());
 //        detail.setName(category.getName());
         detail.setDemandsCount(demandService.getDemandsCountQuick(category));
@@ -58,7 +59,7 @@ public final class CategoryConverter extends AbstractConverter<Category, Categor
     }
 
     @Override
-    public Category convertToSource(CategoryDetail categoryDetail) {
+    public Category convertToSource(ICatLocDetail categoryDetail) {
         return categoryService.getById(categoryDetail.getId());
     }
 }

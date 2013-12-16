@@ -9,6 +9,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
+import com.eprovement.poptavka.client.user.messages.MessagesPresenter.MessagesLayoutInterface;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
@@ -18,21 +20,26 @@ import com.mvp4g.client.view.LazyView;
 /**
  * @author Martin Slavkovsky
  */
-@Presenter(view = MessagesView.class, multiple = true)
+@Presenter(view = MessagesView.class)
 public class MessagesPresenter
-        extends LazyPresenter<MessagesPresenter.MessagesLayoutInterface, MessagesEventBus>
+        extends LazyPresenter<MessagesLayoutInterface, MessagesEventBus>
         implements NavigationConfirmationInterface {
 
-    private SearchModuleDataHolder filter = null;
+    public interface MessagesLayoutInterface extends LazyView, IsWidget, ProvidesToolbar {
 
-    public interface MessagesLayoutInterface extends LazyView, IsWidget {
+        void setMessagesMenuStyleChange(int loadedWidget);
 
-        SimplePanel getContentPanel();
+        SimplePanel getContentContainer();
 
         Button getMessagesInbox();
 
         Widget getWidgetView();
     }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private SearchModuleDataHolder filter = null;
 
     /**************************************************************************/
     /* Bind                                                                   */
@@ -64,7 +71,8 @@ public class MessagesPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
-        eventBus.userMenuStyleChange(Constants.USER_MESSAGES_MODULE);
+        eventBus.setToolbarContent("Inbox", view.getToolbarContent(), true);
+        eventBus.menuStyleChange(Constants.USER_MESSAGES_MODULE);
     }
 
     @Override
@@ -73,7 +81,7 @@ public class MessagesPresenter
     }
 
     /**************************************************************************/
-    /* Navigation events                                                      */
+    /* Business events handled by presenter                                   */
     /**************************************************************************/
     /**
      * Initialize view for message module.
@@ -85,10 +93,11 @@ public class MessagesPresenter
         eventBus.initInbox(filter);
     }
 
-    /**************************************************************************/
-    /* Business events handled by presenter                                   */
-    /**************************************************************************/
     public void onDisplayView(IsWidget content) {
-        view.getContentPanel().setWidget(content);
+        view.getContentContainer().setWidget(content);
+    }
+
+    public void onMessagesMenuStyleChange(int loadedWidget) {
+        view.setMessagesMenuStyleChange(loadedWidget);
     }
 }

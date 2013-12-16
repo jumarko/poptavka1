@@ -40,7 +40,7 @@ public class EnabledFilterIntegrationTest extends DBUnitIntegrationTest {
     public void testGetAllEnabledNotifications() {
         final List<Notification> enabledNotifications = this.registerService.getAllValues(Notification.class);
         Assert.assertNotNull(enabledNotifications);
-        Assert.assertThat("Unexpected count of notifications", enabledNotifications.size(), Is.is(7));
+        Assert.assertThat("Unexpected count of notifications", enabledNotifications.size(), Is.is(9));
         for (Notification notification : enabledNotifications) {
             assertTrue("notification is expected to be enabled but it is not: " + notification,
                     notification.isEnabled());

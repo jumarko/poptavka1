@@ -1,51 +1,243 @@
 package com.eprovement.poptavka.client.root.header;
 
+import com.eprovement.poptavka.client.common.CommonAccessRoles;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.LocalizableMessages;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Window.ClosingEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;
-import java.util.logging.Logger;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.PushButton;
 
-@Presenter(view = HeaderView.class)
+@Presenter(view = HeaderView.class)//, async = SingleSplitter.class)
 public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
-        implements IHeaderPresenter {
+    implements IHeaderPresenter {
 
-    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
-    private static final Logger LOGGER = Logger.getLogger(HeaderPresenter.class.getName());
+    /** Constants. **/
+    private static final String SLIDE_PX = "90px";
+    //See usage. In this way style are overriden correctly, not need to use !important
+    private static final String USER = "user";
+    private static final String ADMIN = "admin";
+    private static final int SLIDE_DURATION = 500;
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     public void onStart() {
-        // empty
-    }
-
-    public void onAtHome() {
-        GWT.log("Header presenter loaded");
         eventBus.setHeader(view);
     }
 
+    /**************************************************************************/
+    /* Layout events.                                                         */
+    /**************************************************************************/
+    public void onAtHome() {
+        view.getLogin().setVisible(true);
+        view.getLogout().setVisible(false);
+        view.getNotifications().setVisible(false);
+        view.getMenu().getMenuPanel().removeStyleName(ADMIN);
+        view.getSearch().getSearchPanel().removeStyleName(ADMIN);
+        view.getMenu().getMenuPanel().removeStyleName(USER);
+        view.getSearch().getSearchPanel().removeStyleName(USER);
+        view.getSettingsAnchor().setVisible(false);
+    }
+
+    public void onAtAccount() {
+        view.getLogin().setVisible(false);
+        view.getLogout().setVisible(true);
+        view.getNotifications().setVisible(true);
+        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+            view.getMenu().getMenuPanel().addStyleName(ADMIN);
+            view.getSearch().getSearchPanel().addStyleName(ADMIN);
+        } else {
+            view.getMenu().getMenuPanel().addStyleName(USER);
+            view.getSearch().getSearchPanel().addStyleName(USER);
+        }
+        view.getSettingsAnchor().setVisible(true);
+        view.getLogout().getUsername().setText(Storage.getUser().getEmail());
+    }
+
+    /**************************************************************************/
+    /* Business events.                                                       */
+    /**************************************************************************/
+    public void onSetMenu(IsWidget menu) {
+        GWT.log("Menu widget set");
+        view.getMenu().setMenu(menu);
+    }
+
+    public void onSetSearchBar(IsWidget searchBar) {
+        GWT.log("Search bar widget set");
+        view.getSearch().setSearchBar(searchBar);
+    }
+
+    /**************************************************************************/
+    /* Bind                                                                   */
+    /**************************************************************************/
     @Override
     public void bind() {
-        view.getLoginLink().addClickHandler(new ClickHandler() {
+        view.getLogo().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Storage.getUser() == null) {
+                    eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+                } else {
+                    eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+                }
+                eventBus.goToHomeWelcomeModule();
+            }
+        });
+        bindMenuHandlers();
+        bindLoginHandlers();
+        bindLogoutHandlers();
+        bindSearchHandlers();
+        bindSettingsHandlers();
+        bindNotificationHandlers();
+    }
 
+    private void bindMenuHandlers() {
+        view.getMenu().getMenuAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.slideBodyPanel(SLIDE_PX, SLIDE_DURATION);
+            }
+        });
+    }
+
+    private void bindLoginHandlers() {
+        view.getLogin().getLoginButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.login(Constants.NONE);
             }
         });
-        Window.addWindowClosingHandler(new Window.ClosingHandler() {
+        view.getLogin().getLoginAnchor().addClickHandler(new ClickHandler() {
             @Override
-            public void onWindowClosing(ClosingEvent event) {
-                //TODO LATER Martin - musi to tu byt, pouzivame vobec cookies?
-//                Cookies.setCookie("login", "no");
+            public void onClick(ClickEvent event) {
+                eventBus.login(Constants.NONE);
             }
         });
+    }
+
+    private void bindLogoutHandlers() {
+        view.getLogout().getMenuLogOut().setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+                eventBus.logout(Constants.HOME_WELCOME_MODULE);
+            }
+        });
+        view.getLogout().getLogoutAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+                eventBus.logout(Constants.HOME_WELCOME_MODULE);
+            }
+        });
+        view.getLogout().getMenuMyProfile().setScheduledCommand(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                eventBus.menuStyleChange(Constants.USER_SETTINGS_MODULE);
+                eventBus.goToSettingsModule();
+            }
+        });
+    }
+
+    private void bindSearchHandlers() {
+        view.getSearch().getSearchAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.showAdvancedSearchPopup();
+            }
+        });
+    }
+
+    private void bindSettingsHandlers() {
+        view.getSettingsAnchor().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.menuStyleChange(Constants.USER_SETTINGS_MODULE);
+                eventBus.goToSettingsModule();
+            }
+        });
+    }
+
+    private void bindNotificationHandlers() {
+        view.getNotifications().getPushButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.ADMIN)) {
+                    eventBus.goToAdminModule(null, Constants.NONE);
+                } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    eventBus.goToSupplierDemandsModule(null, Constants.NONE);
+                } else {
+                    eventBus.goToClientDemandsModule(null, Constants.NONE);
+                }
+            }
+        });
+        view.getNotifications().getPushSystemButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToMessagesModule(null, Constants.NONE);
+            }
+        });
+    }
+
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Loads notification icons with adequate numbers of unread messages for user header section.
+     * @param numberOfMessages carrying number of unread demand and system messages
+     */
+    public void onSetUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages) {
+        if (numberOfMessages.getUnreadMessagesCount() == 0) {
+            view.getNotifications().getNewMessagesCount().setText("");
+            setButton(view.getNotifications().getPushButton(),
+                new Image(Storage.RSCS.images().envelopeImageEmpty()), false, null);
+        } else {
+            view.getNotifications().getNewMessagesCount().setText(
+                String.valueOf(numberOfMessages.getUnreadMessagesCount()));
+            setButton(view.getNotifications().getPushButton(), new Image(Storage.RSCS.images().envelopeImage()), true,
+                new Image(Storage.RSCS.images().envelopeHoverImage()));
+        }
+        if (numberOfMessages.getUnreadSystemMessageCount() == 0) {
+            view.getNotifications().getNewSystemMessagesCount().setText("");
+            setButton(view.getNotifications().getPushSystemButton(),
+                new Image(Storage.RSCS.images().flagImageEmpty()), false, null);
+        } else {
+            view.getNotifications().getNewSystemMessagesCount().setText(
+                String.valueOf(numberOfMessages.getUnreadSystemMessageCount()));
+            setButton(view.getNotifications().getPushSystemButton(), new Image(Storage.RSCS.images().flagImage()), true,
+                new Image(Storage.RSCS.images().flagHoverImage()));
+        }
+    }
+
+    /**
+     * Define images for hovering and click actions for given button.
+     * @param button to be adjusted
+     * @param image default image
+     * @param upHoveringFace is hovering actions enabled for this button
+     * @param upHoveringImage to be displayed if hovering action is enabled
+     */
+    private void setButton(PushButton button, Image image, boolean upHoveringFace, Image upHoveringImage) {
+        if (upHoveringFace) {
+            button.getUpHoveringFace().setImage(upHoveringImage);
+        } else {
+            button.getUpHoveringFace().setImage(image);
+        }
+        button.getUpFace().setImage(image);
+        button.getDownFace().setImage(image);
+        button.getDownHoveringFace().setImage(image);
     }
 }

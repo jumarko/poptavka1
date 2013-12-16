@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.user.widget.detail;
 
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -29,8 +28,6 @@ public class MessageDetailView extends Composite {
     /**************************************************************************/
     public MessageDetailView() {
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     /**************************************************************************/

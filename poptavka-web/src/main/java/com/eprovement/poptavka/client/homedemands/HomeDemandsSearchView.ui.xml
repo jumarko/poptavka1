@@ -2,113 +2,83 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             xmlns:mlb="urn:import:com.eprovement.poptavka.client.common.myListBox">
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common.monitors"
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    
+    <b:FluidContainer addStyleNames='{res.common.formFields} {res.common.wellContainer}'>
+        <b:FluidRow addStyleNames='well-content'>
+            <b:Column size="12" addStyleNames='well-padding'>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formTitle">Title</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
+                        <cm:ValidationMonitor ui:field="titleMonitor">
+                            <b:TextBox placeholder="Demand title" styleName='full-width' />
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
 
-    <ui:style>
-        .priceBox {
-        width: 70px;
-        margin-right: 10px;
-        margin-left: 4px;
-        }
-
-        .dateBox {
-        width: 70px;
-        margin-right: 10px;
-        margin-left: 4px;
-        }
-    </ui:style>
-
-    <g:HTMLPanel>
-        <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formTitle">Title</ui:msg>
-                    </g:Label>
-                    <b:TextBox ui:field="demandTitle" placeholder="{msgs.columnText}" styleName='full-width' />
-                </b:Column>
-            </b:FluidRow>
-
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formPrice">Price:</ui:msg>
-                    </g:Label>
-                    <g:HTMLPanel styleName="input-append">
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formPrice">Price:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="priceMonitorFrom">
-                            <cm:BigDecimalBox placeholder="{msgs.formFrom}" styleName="{style.priceBox} append-dollar" />
+                            <cmn:WSBigDecimalBox placeholder="Price from" styleName="append-dollar" />
                         </cm:ValidationMonitor>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName="input-append">
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="priceMonitorTo">
-                            <cm:BigDecimalBox placeholder="{msgs.formTo}" styleName="{style.priceBox} append-dollar" />
+                            <cmn:WSBigDecimalBox placeholder="Price to" styleName="append-dollar" />
                         </cm:ValidationMonitor>
-                    </g:HTMLPanel>
-                </b:Column>
-            </b:FluidRow>
+                    </b:Column>
+                </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formDemandType">Project Type:</ui:msg>
-                    </g:Label>
-                    <mlb:MyListBox ui:field="demandTypes" styleName='selector-box full-width' />
-                </b:Column>
-            </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formDemandType">Project Type:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
+                        <cmn:WSListBox ui:field="demandTypes" styleName='selector-box full-width' />
+                    </b:Column>
+                </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formCreationDate">Created:</ui:msg>
-                    </g:Label>
-                    <mlb:MyListBox ui:field="creationDate" styleName='selector-box full-width' />
-                </b:Column>
-            </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formCreationDate">Created:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="10" addStyleNames='{res.initial.hideOnSmall}'>
+                        <cmn:WSListBox ui:field="creationDate" styleName='selector-box full-width' />
+                    </b:Column>
+                </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formEndDate">End date:</ui:msg>
-                    </g:Label>
-                    <g:HTMLPanel styleName="input-append">
-                        <cm:MyDateBox placeholder="{msgs.formFrom}" styleName="{style.dateBox} append-date" ui:field="endDateFrom" />
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName="input-append">
-                        <cm:MyDateBox placeholder="{msgs.formTo}" styleName="{style.dateBox} append-date" ui:field="endDateTo" />
-                    </g:HTMLPanel>
-                </b:Column>
-            </b:FluidRow>
-
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <b:Button ui:field="clearBtn" styleName='{res.common.buttonGrey} clear-button'>
-                        <ui:msg key="commonBtnClear">Clear</ui:msg>
-                    </b:Button>
-                </b:Column>
-            </b:FluidRow>
-        </b:FluidContainer>
-    </g:HTMLPanel>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formEndDate">End date:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
+                        <cmn:WSDateBox placeholder="End from" styleName="append-date" ui:field="endDateFrom" />
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
+                        <cmn:WSDateBox placeholder="End to" styleName="append-date" ui:field="endDateTo" />
+                    </b:Column>
+                </b:FluidRow>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

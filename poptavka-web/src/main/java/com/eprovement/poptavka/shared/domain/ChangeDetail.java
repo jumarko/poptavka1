@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,13 +26,13 @@ public class ChangeDetail implements IsSerializable {
     private Number integerValue;
     private String stringValue;
     private Boolean booleanValue;
-    private ArrayList<IListDetailObject> listValue;
+    private ArrayList<ICatLocDetail> listValue;
     //Changed values
     private Date originalDateValue;
     private Number originalIntegerValue;
     private String originalStringValue;
     private Boolean originalBooleanValue;
-    private ArrayList<IListDetailObject> originalListValue;
+    private ArrayList<ICatLocDetail> originalListValue;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -56,8 +57,8 @@ public class ChangeDetail implements IsSerializable {
         } else if (value instanceof Boolean) {
             this.originalBooleanValue = (Boolean) value;
         } else if (value instanceof List) {
-            this.originalListValue = new ArrayList<IListDetailObject>(
-                    (List<IListDetailObject>) value); //make a copy
+            this.originalListValue = new ArrayList<ICatLocDetail>(
+                    (List<ICatLocDetail>) value); //make a copy
         }
     }
 
@@ -90,8 +91,8 @@ public class ChangeDetail implements IsSerializable {
         } else if (value instanceof Boolean) {
             this.booleanValue = (Boolean) value;
         } else if (value instanceof List) {
-            this.listValue = new ArrayList<IListDetailObject>(
-                    (List<IListDetailObject>) value); //make a copy
+            this.listValue = new ArrayList<ICatLocDetail>(
+                    (List<ICatLocDetail>) value); //make a copy
         }
     }
 
@@ -121,6 +122,14 @@ public class ChangeDetail implements IsSerializable {
     /**************************************************************************/
     /* Other methods                                                          */
     /**************************************************************************/
+    public void commit() {
+        originalDateValue = dateValue;
+        originalIntegerValue = integerValue;
+        originalStringValue = stringValue;
+        originalBooleanValue = booleanValue;
+        originalListValue = listValue;
+    }
+
     public void revert() {
         dateValue = originalDateValue;
         integerValue = originalIntegerValue;

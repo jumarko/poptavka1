@@ -27,4 +27,28 @@ public interface CategoryDao extends GenericDao<Category> {
      * @return category with given code or null if no such category exists.
      */
     Category getCategory(Long id);
+
+    /**
+     * Gets a list of categories whose name is shorter than <code>maxlengthExcl</code> and
+     * contains <code>nameSubstring</code>
+     * @param maxLengthExcl all <code>Category</code>-ies' names returned must be shorter than the given length
+     * @param nameSubstring a <code>String</code> that all the categories' names must contain
+     * @return a <code>List<code> of categories satisfying criteria
+     */
+    List<Category> getCategoriesByMaxLengthExcl(int maxLengthExcl, String nameSubstring);
+
+    /**
+     * Gets a list of categories whose name is the same length or longer than <code>minLength</code> and
+     * contains <code>nameSubstring</code>.
+     * @param minLength all <code>Category</code>-ies' names returned must be at least of the given length
+     * @param nameSubstring a <code>String</code> that all the categories' names must contain
+     * @return a <code>List<code> of categories satisfying criteria
+     */
+    List<Category> getCategoriesByMinLength(int minLength, String nameSubstring);
+
+     /**
+     * Finds category by given sic code.
+     * SicCode must match the exactly with the entry in underlying data source.
+     */
+    Category getCategoryBySicCode(String sicCode);
 }

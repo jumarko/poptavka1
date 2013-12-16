@@ -7,7 +7,6 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
@@ -36,6 +35,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -108,35 +108,6 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetDemandTypeForBlankCode() {
         String demandTypeCode = null;
         DemandType demandType = this.demandService.getDemandType(demandTypeCode);
-    }
-
-
-    @Test
-    public void testGetDemandOrigins() {
-        final List<DemandOrigin> demandOrigins = this.demandService.getDemandOrigins();
-        Assert.assertEquals(3, demandOrigins.size());
-        checkDemandOriginExists("epoptavka.cz", demandOrigins);
-        checkDemandOriginExists("poptavam.com", demandOrigins);
-        checkDemandOriginExists("isvzus.cz", demandOrigins);
-    }
-
-    @Test
-    public void testGetDemandOrigin() {
-        checkGetDemandOriginByCode("epoptavka.cz");
-        checkGetDemandOriginByCode("poptavam.com");
-        checkGetDemandOriginByCode("isvzus.cz");
-
-        // check once again - this time the cached value should be returned
-        checkGetDemandOriginByCode("epoptavka.cz");
-    }
-
-
-    @Test
-    public void testGetDemandOriginForWrongCode() {
-        final String nonexistingDemandOriginCode = "normal";
-        final DemandOrigin nonexistingDemandOrigin = this.demandService.getDemandOrigin(nonexistingDemandOriginCode);
-        Assert.assertNull("DemandOrigin with code [" + nonexistingDemandOriginCode + "] should not exist.",
-                nonexistingDemandOrigin);
     }
 
 
@@ -215,7 +186,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetDemandsByLocalityWithFirstResultOrderBy() {
         final ResultCriteria criteria = new ResultCriteria.Builder()
                 .firstResult(2)
-                .orderByColumns(Arrays.asList("title"))
+                .orderByColumns(asList("title"))
                 .build();
 
         final Collection<Demand> loc2Demands = checkDemandsByLocalityAdditionalCriteria(3, criteria, 2L);
@@ -394,6 +365,9 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testCreateDemand() {
 
+        final Locality locality211 = this.localityService.getLocality(211L);
+        final Category category211 = this.categoryService.getCategory(211L);
+
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
         demand.setDescription("Test poptavka description");
@@ -403,6 +377,8 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         demand.setMaxSuppliers(20);
         demand.setMinRating(99);
         demand.setStatus(DemandStatus.NEW);
+        demand.setCategories(asList(category211));
+        demand.setLocalities(asList(locality211));
         // one day to the future
         final Date endDate = new Date(System.currentTimeMillis() + 8640000);
         demand.setEndDate(endDate);
@@ -414,12 +390,12 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Client newClient = new Client();
         newClient.getBusinessUser().setEmail("test@poptavam.com");
         newClient.getBusinessUser().setPassword("myPassword");
-        newClient.getBusinessUser().setAccessRoles(Arrays.asList(this.generalService.find(AccessRole.class, 1L)));
+        newClient.getBusinessUser().setAccessRoles(asList(this.generalService.find(AccessRole.class, 1L)));
         final Address clientAddress = new Address();
-        clientAddress.setCity(this.localityService.getLocality(211L));
+        clientAddress.setCity(locality211);
         clientAddress.setStreet("Gotham city");
         clientAddress.setZipCode("12");
-        newClient.getBusinessUser().setAddresses(Arrays.asList(clientAddress));
+        newClient.getBusinessUser().setAddresses(asList(clientAddress));
         final String clientSurname = "Client";
         newClient.getBusinessUser().setBusinessUserData(
                 new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());
@@ -451,8 +427,8 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Collection<Demand> demandsByCategoriesAndLocalities =
                 this.demandService.getDemands(
                         ResultCriteria.EMPTY_CRITERIA,
-                        Arrays.asList(category11),
-                        Arrays.asList(locality11));
+                        asList(category11),
+                        asList(locality11));
 
         assertThat(demandsByCategoriesAndLocalities.size(), Is.is(2));
         checkDemandExists(demandsByCategoriesAndLocalities, 5);
@@ -467,7 +443,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
 
         final long demandsCount =
-                this.demandService.getDemandsCount(Arrays.asList(category11), Arrays.asList(locality11));
+                this.demandService.getDemandsCount(asList(category11), asList(locality11));
 
         assertThat(demandsCount, Is.is(2L));
     }
@@ -481,8 +457,8 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
         final Collection<Demand> demandsByCategoriesAndLocalities =
                 this.demandService.getDemandsIncludingParents(
-                        Arrays.asList(category11),
-                        Arrays.asList(locality11),
+                        asList(category11),
+                        asList(locality11),
                         ResultCriteria.EMPTY_CRITERIA);
 
         assertThat(demandsByCategoriesAndLocalities.size(), Is.is(3));
@@ -578,15 +554,6 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         }));
     }
 
-    private void checkDemandOriginExists(final String demandOriginCode, final List<DemandOrigin> demandOrigins) {
-        Assert.assertTrue(CollectionUtils.exists(demandOrigins, new Predicate() {
-            @Override
-            public boolean evaluate(Object object) {
-                return demandOriginCode.equals(((DemandOrigin) object).getCode());
-            }
-        }));
-    }
-
     private void checkDemandExists(Collection<Demand> demands, final long demandId) {
         Assert.assertTrue(CollectionUtils.exists(demands, new Predicate() {
             @Override
@@ -600,11 +567,6 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     private void checkGetDemandTypeByCode(String demandTypeCode) {
         final DemandType demandType = this.demandService.getDemandType(demandTypeCode);
         Assert.assertEquals(demandTypeCode, demandType.getCode());
-    }
-
-    private void checkGetDemandOriginByCode(String demandOriginCode) {
-        final DemandOrigin demandOrigin = this.demandService.getDemandOrigin(demandOriginCode);
-        Assert.assertEquals(demandOriginCode, demandOrigin.getCode());
     }
 
     private void checkDemandsByLocality(int expectedDemandsNumber, Long... localityCodes) {

@@ -7,10 +7,8 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -27,7 +25,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      * First event to be handled.
      */
     @Start
-    @Event(handlers = HomeWelcomePresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = HomeWelcomePresenter.class)
     void start();
 
     /**
@@ -35,7 +33,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
-    @Event(handlers = HomeWelcomePresenter.class)
+    @Event(handlers = HomeWelcomePresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
@@ -48,7 +46,13 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
      */
     @Event(handlers = HomeWelcomePresenter.class, historyConverter = HomeWelcomeHistoryConverter.class,
             navigationEvent = true)
-    String goToHomeWelcomeModule();
+    void goToHomeWelcomeModule();
+
+    /**************************************************************************/
+    /* History events.                                                        */
+    /**************************************************************************/
+    @Event(historyConverter = HomeWelcomeHistoryConverter.class, name = "view")
+    void createCustomToken(String param);
 
     /**************************************************************************/
     /* Navigation Parent events */
@@ -57,7 +61,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     void goToHomeDemandsModule(SearchModuleDataHolder filter);
 
     @Event(forwardToParent = true)
-    void goToHomeDemandsModuleFromWelcome(int categoryIdx, CategoryDetail category);
+    void goToHomeDemandsModuleFromWelcome(int categoryIdx, ICatLocDetail category);
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
@@ -68,14 +72,17 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     @Event(forwardToParent = true)
     void goToCreateSupplierModule();
 
-    @Event(forwardToParent = true)
-    void initServicesWidget(SimplePanel embedToWidget);
-
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = HomeWelcomePresenter.class)
-    void displayCategories(ArrayList<CategoryDetail> list);
+    void displayCategories(ArrayList<ICatLocDetail> list);
+
+    @Event(handlers = HomeWelcomePresenter.class)
+    void displayHowItWorkdsDemands();
+
+    @Event(handlers = HomeWelcomePresenter.class)
+    void displayHowItWorkdsSuppliers();
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

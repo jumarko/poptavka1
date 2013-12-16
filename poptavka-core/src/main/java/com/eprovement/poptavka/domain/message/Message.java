@@ -34,7 +34,7 @@ import org.hibernate.annotations.CascadeType;
  * A message passed between users within the system
  * There is just one object of a given message, which is shared among all the participants
  * in the given conversation.
- * 
+ *
  * @author Vojtech Hubr
  *         Date 12.4.11
  */

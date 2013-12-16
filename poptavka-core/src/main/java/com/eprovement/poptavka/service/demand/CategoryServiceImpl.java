@@ -6,6 +6,7 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,14 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
         return getDao().getCategory(id);
     }
 
+    @Override
+    @Cacheable(cacheName = "categoryCache")
+    public Category getCategoryBySicCode(String sicCode) {
+        Validate.notEmpty(sicCode, "sicCode cannot be empty");
+        Validate.isTrue(sicCode.length() > 1, "sicCode should have at least two charactes");
+        return getDao().getCategoryBySicCode(sicCode.substring(0, 2));
+    }
+
     //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------
 
 
@@ -78,5 +87,21 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     @Override
     public void removeById(long id) {
         throw new TreeItemModificationException();
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public List<Category> getCategoriesByMaxLengthExcl(int maxLengthExcl, String nameSubstring) {
+        return getDao().getCategoriesByMaxLengthExcl(maxLengthExcl, nameSubstring);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public List<Category> getCategoriesByMinLength(int minLength, String nameSubstring) {
+        return getDao().getCategoriesByMinLength(minLength, nameSubstring);
     }
 }

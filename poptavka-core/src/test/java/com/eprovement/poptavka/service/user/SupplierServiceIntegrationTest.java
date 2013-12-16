@@ -258,9 +258,14 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check if new supplier has also all supplier notifications set to the sensible values
         assertNotNull(createdSupplier.getBusinessUser().getSettings());
+        assertThat("Unexpected count of notifications",
+                createdSupplier.getBusinessUser().getSettings().getNotificationItems().size(), is(6));
         checkNotifications(createdSupplier, Registers.Notification.NEW_DEMAND, Registers.Notification.NEW_MESSAGE,
                 Registers.Notification.NEW_INFO, Registers.Notification.NEW_MESSAGE_OPERATOR,
                 Registers.Notification.OFFER_STATUS_CHANGED);
+        UserTestUtils.checkHasNotification(createdSupplier.getBusinessUser(),
+                this.registerService.getValue(Registers.Notification.WELCOME_SUPPLIER.getCode(), Notification.class),
+                true, Period.INSTANTLY);
 
         // check that potential demand has been sent to supplier immediately after he has been created
         final ArgumentCaptor<Demand> demandCaptor = ArgumentCaptor.forClass(Demand.class);

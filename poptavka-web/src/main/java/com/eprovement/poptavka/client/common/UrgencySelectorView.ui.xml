@@ -19,8 +19,7 @@
         .urgency-container input[type="radio"] {
         margin: 6px auto;
         display: block;
-        }       
-        
+        }
         .label {
         color: #237E00;
         font-size: 14px;
@@ -31,87 +30,68 @@
         }
     </ui:style>
 
-    <b:FluidContainer ui:field="fluidContainer" addStyleNames='{style.urgency-container}'>
+    <b:FluidContainer addStyleNames='{style.urgency-container}'>
         <b:FluidRow>
             <b:Column size="12">
                 <b:FluidRow>
                     <b:Column size="3">
-                        <g:Label>
-                            Urgency level:
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="2">
                         <g:Label addStyleNames='{style.label}'>
-                            Normal
+                            <ui:msg key='urgencyLevelLowLabel'>Low</ui:msg>
                         </g:Label>
-                        <g:Image resource='{res.images.urgencyGreen}' title='{msgs.urgencyNormalDesc}' />
+                        <g:Image resource='{res.images.urgencyGreen}' title='{msgs.urgencyLowDesc}' />
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:Label addStyleNames='{style.label}'>
-                            Higher
+                            <ui:msg key='urgencyLevelMediumLabel'>Medium</ui:msg>
                         </g:Label>
-                        <g:Image resource='{res.images.urgencyOrange}' title='{msgs.urgencyHigherDesc}'/>
+                        <g:Image resource='{res.images.urgencyOrange}' title='{msgs.urgencyMediumDesc}'/>
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:Label addStyleNames='{style.label}'>
-                            High
+                            <ui:msg key='urgencyLevelHighLabel'>High</ui:msg>
                         </g:Label>
                         <g:Image resource='{res.images.urgencyRed}' title='{msgs.urgencyHighDesc}'/>
                     </b:Column>
-                    <b:Column size="2" ui:field="labelColumn4">
+                    <b:Column size="3" ui:field="labelColumn4">
                         <g:Label addStyleNames='{style.label}'>
-                            Expired
+                            <ui:msg key='urgencyLevelExpiredLabel'>Expired</ui:msg>
                         </g:Label>
                         <g:Image resource='{res.images.urgencyHeader}' title='{msgs.urgencyExpiredDesc}'/>
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow>
                     <b:Column size="3">
-                    </b:Column>
-                    <b:Column size="2">
                         <g:RadioButton name="urgency" ui:field="urgency1" checked="true" />
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:RadioButton name="urgency" ui:field="urgency2" />
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:RadioButton name="urgency" ui:field="urgency3" />
                     </b:Column>
-                    <b:Column size="2" ui:field="buttonColumn4">
+                    <b:Column size="3" ui:field="buttonColumn4">
                         <g:RadioButton name="urgency" ui:field="urgency4" />
                     </b:Column>
                 </b:FluidRow>
                 <b:FluidRow styleName='hide'>
-                    <b:Column size="4">
-                        <g:Label>
-                            Cost creadits:
-                        </g:Label>
-                    </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:Label>
                             5
                         </g:Label>
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:Label>
                             10
                         </g:Label>
                     </b:Column>
-                    <b:Column size="2">
+                    <b:Column size="3">
                         <g:Label>
                             15
                         </g:Label>
                     </b:Column>
-                    <b:Column size="2" ui:field="creditsColumn4"/>
+                    <b:Column size="3" ui:field="creditsColumn4"/>
                 </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12">
-                        <g:Anchor ui:field="revert" visible="false">
-                            <ui:msg key="commonBtnRevert">Revert</ui:msg>
-                        </g:Anchor>
-                    </b:Column>
-                </b:FluidRow>
-            </b:Column>                    
+            </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
 </ui:UiBinder>

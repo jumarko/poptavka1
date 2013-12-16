@@ -13,7 +13,6 @@ import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
-import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
@@ -22,41 +21,35 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
-import com.eprovement.poptavka.server.converter.SortConverter;
+import com.eprovement.poptavka.server.converter.SearchConverter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.server.util.SearchUtils;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserSearchCriteria;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.offer.FullOfferDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,18 +73,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private GeneralService generalService;
     private OfferService offerService;
     private UserMessageService userMessageService;
-    private MessageService messageService;
     private DemandService demandService;
     //Converters
-    private Converter<Category, CategoryDetail> categoryConverter;
-    private Converter<Locality, LocalityDetail> localityConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
+    private Converter<Locality, ICatLocDetail> localityConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
-    private Converter<Message, MessageDetail> messageConverter;
-    private Converter<Search, SearchDefinition> searchConverter;
+    private SearchConverter searchConverter;
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
-    private Converter<Message, FullOfferDetail> fullOfferConverter;
-    private SortConverter sortConverter;
 
     /**************************************************************************/
     /* Autowired methods                                                      */
@@ -123,11 +112,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
     }
@@ -135,13 +119,13 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     //Converters
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
@@ -158,32 +142,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     @Autowired
-    public void setMessageConverter(
-            @Qualifier("messageConverter") Converter<Message, MessageDetail> messageConverter) {
-        this.messageConverter = messageConverter;
-    }
-
-    @Autowired
-    public void setSearchConverter(
-            @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
-        this.searchConverter = searchConverter;
-    }
-
-    @Autowired
     public void setClientDemandConverter(
             @Qualifier("clientDemandConverter") Converter<Demand, ClientDemandDetail> clientDemandConverter) {
         this.clientDemandConverter = clientDemandConverter;
     }
 
     @Autowired
-    public void setFullOfferConverter(
-            @Qualifier("fullOfferConverter") Converter<Message, FullOfferDetail> fullOfferConverter) {
-        this.fullOfferConverter = fullOfferConverter;
-    }
-
-    @Autowired
-    public void setSortConverter(@Qualifier("sortConverter") SortConverter sortConverter) {
-        this.sortConverter = sortConverter;
+    public void setSearchConverter(@Qualifier("searchConverter") SearchConverter searchConverter) {
+        this.searchConverter = searchConverter;
     }
 
     /**************************************************************************/
@@ -204,19 +170,16 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public int getClientDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
+        final Search search = searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
         ArrayList<DemandStatus> demandStatuses = new ArrayList<DemandStatus>();
         demandStatuses.add(DemandStatus.ACTIVE);
         demandStatuses.add(DemandStatus.NEW);
         demandStatuses.add(DemandStatus.INVALID);
         demandStatuses.add(DemandStatus.INACTIVE);
         demandStatuses.add(DemandStatus.OFFERED);
-        clientDemandsSearch.addFilterIn("status", demandStatuses);
-        clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id", Field.OP_COUNT);
-        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
+        search.addFilterIn("status", demandStatuses);
+        search.addFilterEqual("client", client);
+        return generalService.count(search);
     }
 
     /**
@@ -237,10 +200,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientDemandDetail> getClientDemands(long userId, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException, IllegalArgumentException {
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        Map<Demand, Integer> clientDemandsWithUnreadSubMsgs = demandService
-                .getClientDemandsWithUnreadSubMsgs(businessUser, clientDemandsSearch);
+        final Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
+        final Map<Demand, Integer> clientDemandsWithUnreadSubMsgs = demandService
+                .getClientDemandsWithUnreadSubMsgs(businessUser, search);
 
         ArrayList<ClientDemandDetail> clientDemands = clientDemandConverter
                 .convertToTargetList(clientDemandsWithUnreadSubMsgs.keySet());
@@ -250,7 +212,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Map.Entry<Demand, Integer> userMessageEntry : clientDemandsWithUnreadSubMsgs.entrySet()) {
             for (ClientDemandDetail cdd : clientDemands) {
                 if (cdd.getDemandId() == userMessageEntry.getKey().getId()) {
-                    cdd.setUnreadSubmessagesCount(((Integer) userMessageEntry.getValue()));
+                    cdd.setUnreadMessagesCount(((Integer) userMessageEntry.getValue()));
                     break;
                 }
             }
@@ -273,8 +235,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public int getClientDemandConversationsCount(final long userId, final long demandID,
             final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        Demand demand = generalService.find(Demand.class, demandID);
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        final Demand demand = generalService.find(Demand.class, demandID);
         return userMessageService.getClientConversationsWithoutOfferCount(businessUser, demand);
     }
 
@@ -292,35 +254,31 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             final SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Demand demand = generalService.find(Demand.class, demandID);
+        final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
         final Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getClientConversationsWithoutOffer(businessUser, demand);
+                userMessageService.getClientConversationsWithoutOffer(businessUser, demand, search);
 
-        List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
-                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
         final List<ClientDemandConversationDetail> list = new ArrayList<ClientDemandConversationDetail>();
 
-        for (UserMessage userMessage : sortedList) {
+        for (UserMessage userMessage : latestSupplierUserMessagesWithUnreadSub.keySet()) {
             // TODO LATER ivlcek - make detail object converter
             // TODO RELEASE vojto - implement search definition
             final ClientDemandConversationDetail cdcd = new ClientDemandConversationDetail();
             // set UserMessage attributes
             cdcd.setUserMessageId(userMessage.getId());
-            cdcd.setIsStarred(userMessage.isStarred());
-            cdcd.setIsRead(userMessage.isRead());
-            cdcd.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            cdcd.setStarred(userMessage.isStarred());
+            cdcd.setRead(userMessage.isRead());
+            cdcd.setUnreadMessagesCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             // set Message attributes
-            cdcd.setMessageId(userMessage.getMessage().getId());
             cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             cdcd.setMessageBody(userMessage.getMessage().getBody());
             cdcd.setMessageSent(userMessage.getMessage().getSent());
             // set Demand attributes
             cdcd.setDemandId(demandID);
-            cdcd.setTitle(userMessage.getMessage().getDemand().getTitle());
             // set Supplier attributes
             final Supplier supplier = findSupplier(
                     latestSupplierUserMessagesWithUnreadSub.get(userMessage).getSupplier().getId());
             cdcd.setSupplierId(supplier.getId());
-            // TODO RELEASE ivlcek - refactor this senderId
             cdcd.setSenderId(supplier.getBusinessUser().getId());
             cdcd.setDisplayName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setRating(supplier.getOveralRating().intValue());
@@ -346,13 +304,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public int getClientOfferedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterIn("status", DemandStatus.OFFERED);
-        clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id", Field.OP_COUNT);
-        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
+        final Search search = searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
+        search.addFilterIn("status", DemandStatus.OFFERED);
+        search.addFilterEqual("client", client);
+        return generalService.count(search);
     }
 
     /**
@@ -373,9 +328,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public List<ClientDemandDetail> getClientOfferedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        Map<Demand, Integer> clientDemandsWithUnreadSubMsgs = demandService
-                .getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser, clientDemandsSearch);
+        final Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
+        final Map<Demand, Integer> clientDemandsWithUnreadSubMsgs = demandService
+                .getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser, search);
 
         ArrayList<ClientDemandDetail> clientDemands = clientDemandConverter
                 .convertToTargetList(clientDemandsWithUnreadSubMsgs.keySet());
@@ -385,7 +340,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         for (Map.Entry<Demand, Integer> userMessageEntry : clientDemandsWithUnreadSubMsgs.entrySet()) {
             for (ClientDemandDetail cdd : clientDemands) {
                 if (cdd.getDemandId() == userMessageEntry.getKey().getId()) {
-                    cdd.setUnreadSubmessagesCount(((Integer) userMessageEntry.getValue()));
+                    cdd.setUnreadMessagesCount(((Integer) userMessageEntry.getValue()));
                     break;
                 }
             }
@@ -424,23 +379,24 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientOfferedDemandOffers(long userId, long demandID,
             long threadRootId, SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        Demand demand = generalService.find(Demand.class, demandID);
-        OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        final Demand demand = generalService.find(Demand.class, demandID);
+        final OfferState offerPending = offerService.getOfferState(OfferStateType.PENDING.getValue());
+        final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
 
-        Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getClientConversationsWithOffer(businessUser, demand, offerPending);
-        List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
-                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
+        final Map<UserMessage, ClientConversation> latestClientUserMessagesWithUnreadSub =
+                userMessageService.getClientConversationsWithOffer(businessUser, demand, offerPending, search);
+
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
-        for (UserMessage userMessage : sortedList) {
+
+        for (UserMessage userMessage : latestClientUserMessagesWithUnreadSub.keySet()) {
             Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - refactor and create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
-            codod.setIsRead(userMessage.isRead());
-            codod.setIsStarred(userMessage.isStarred());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            codod.setRead(userMessage.isRead());
+            codod.setStarred(userMessage.isStarred());
+            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
@@ -455,7 +411,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setDeliveryDate(offer.getFinishDate());
             codod.setReceivedDate(offer.getCreated());
             // set demand attributes
-            codod.setTitle(demand.getTitle());
+            codod.setDemandTitle(demand.getTitle());
 
             listCodod.add(codod);
         }
@@ -498,14 +454,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public int getClientAssignedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterIn("status", DemandStatus.ASSIGNED,
-                DemandStatus.PENDINGCOMPLETION);
-        clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id", Field.OP_COUNT);
-        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
+        final Search search = searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
+        search.addFilterIn("status", DemandStatus.ASSIGNED, DemandStatus.PENDINGCOMPLETION);
+        search.addFilterEqual("client", client);
+        return generalService.count(search);
     }
 
     /**
@@ -521,31 +473,30 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientAssignedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
-        Search search = new Search(UserMessage.class);
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
+        final Map<UserMessage, ClientConversation> latestClientUserMessagesWithUnreadSub =
+                userMessageService.getClientConversationsWithAcceptedOffer(businessUser, search);
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
-        Map<UserMessage, ClientConversation> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getClientConversationsWithAcceptedOffer(businessUser, search);
-        List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
-                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
-        for (UserMessage userMessage : sortedList) {
-            Offer offer = userMessage.getMessage().getOffer();
-            BusinessUser supplierUser = latestSupplierUserMessagesWithUnreadSub.get(userMessage).getSupplier();
+        for (UserMessage userMessage : latestClientUserMessagesWithUnreadSub.keySet()) {
+            final Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
-            codod.setIsRead(userMessage.isRead());
-            codod.setIsStarred(userMessage.isStarred());
+            codod.setRead(userMessage.isRead());
+            codod.setStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
-            codod.setSupplierId(supplierUser.getId());
-            codod.setDisplayName(supplierUser.getBusinessUserData().getDisplayName());
-            codod.setRating(offer.getSupplier().getOveralRating());
-            codod.setSenderId(supplierUser.getId());
+            final Supplier supplier = findSupplier(
+                    latestClientUserMessagesWithUnreadSub.get(userMessage).getSupplier().getId());
+            codod.setSupplierId(supplier.getId());
+            codod.setSenderId(supplier.getBusinessUser().getId());
+            codod.setDisplayName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
+            codod.setRating(supplier.getOveralRating().intValue());
             // set Offer attributes
             codod.setOfferId(offer.getId());
             codod.setPrice(offer.getPrice());
@@ -553,7 +504,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes
             codod.setDemandId(offer.getDemand().getId());
-            codod.setTitle(offer.getDemand().getTitle());
+            codod.setDemandTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
@@ -574,13 +525,10 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public int getClientClosedDemandsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
-        clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addField("id",  Field.OP_COUNT);
-        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
+        final Search search = searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
+        search.addFilterEqual("status", DemandStatus.CLOSED);
+        search.addFilterEqual("client", client);
+        return generalService.count(search);
     }
 
     /**
@@ -595,23 +543,22 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public List<ClientOfferedDemandOffersDetail> getClientClosedDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
-        BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
+        final Map<UserMessage, ClientConversation> latestClientUserMessagesWithUnreadSub =
+                userMessageService.getClientConversationsWithClosedOffer(businessUser, search);
 
         List<ClientOfferedDemandOffersDetail> listCodod = new ArrayList<ClientOfferedDemandOffersDetail>();
 
-        Map<UserMessage, Integer> latestSupplierUserMessagesWithUnreadSub =
-                userMessageService.getSupplierConversationsWithClosedDemands(businessUser);
-        List<UserMessage> sortedList = searchInMemory(new Search(UserMessage.class),
-                searchDefinition, latestSupplierUserMessagesWithUnreadSub.keySet());
-        for (UserMessage userMessage : sortedList) {
+        for (UserMessage userMessage : latestClientUserMessagesWithUnreadSub.keySet()) {
             Offer offer = userMessage.getMessage().getOffer();
             // TODO LATER ivlcek - create converter
             ClientOfferedDemandOffersDetail codod = new ClientOfferedDemandOffersDetail();
             // set UserMessage attributes
-            codod.setIsRead(userMessage.isRead());
-            codod.setIsStarred(userMessage.isStarred());
+            codod.setRead(userMessage.isRead());
+            codod.setStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setMessageCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage));
+            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());
@@ -625,7 +572,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setReceivedDate(offer.getCreated());
             // set Demand attributes
             codod.setDemandId(offer.getDemand().getId());
-            codod.setTitle(offer.getDemand().getTitle());
+            codod.setDemandTitle(offer.getDemand().getTitle());
 
             listCodod.add(codod);
         }
@@ -645,14 +592,11 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public int getClientRatingsCount(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
+        final Search clientDemandsSearch = searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
         clientDemandsSearch.addFilterEqual("status", DemandStatus.CLOSED);
         clientDemandsSearch.addFilterEqual("client", client);
         clientDemandsSearch.addFilterNotNull("rating");
-        clientDemandsSearch.addField("id",  Field.OP_COUNT);
-        clientDemandsSearch.setResultMode(Search.RESULT_SINGLE);
-        return ((Long) generalService.searchUnique(clientDemandsSearch)).intValue();
+        return generalService.count(clientDemandsSearch);
     }
 
     /**
@@ -664,33 +608,26 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
-    public List<DemandRatingsDetail> getClientRatings(long userId,
+    public List<RatingDetail> getClientRatings(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
 
         final Client client = findClient(userId);
-        final Search clientDemandsSearch = searchConverter.convertToSource(searchDefinition);
-        clientDemandsSearch.setSearchClass(Demand.class);
-        clientDemandsSearch.addFilterIn("status", DemandStatus.CLOSED, DemandStatus.PENDINGCOMPLETION);
-        clientDemandsSearch.addFilterEqual("client", client);
-        clientDemandsSearch.addFilterNotNull("rating");
-        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
-            clientDemandsSearch.addSorts(sortConverter.convertToSourceList(
-                    clientDemandsSearch.getSearchClass(), searchDefinition.getSortOrder()));
-        }
-        List<Demand> demandsWithRating = generalService.search(clientDemandsSearch);
+        final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
+        final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
+        final Search supplierClosedDemandsSearch = searchConverter.convertToSource(Offer.class, searchDefinition);
+        supplierClosedDemandsSearch.addFilterEqual("demand.client", client);
+        supplierClosedDemandsSearch.addFilterIn("state", offerClosed, offerCompleted);
+        supplierClosedDemandsSearch.addFilterNotNull("demand.rating");
+        final List<Offer> offersWithRating = generalService.search(supplierClosedDemandsSearch);
 
-        ArrayList<DemandRatingsDetail> ratings = new ArrayList<DemandRatingsDetail>();
+        ArrayList<RatingDetail> ratings = new ArrayList<RatingDetail>();
 
-        for (Demand demand : demandsWithRating) {
-            DemandRatingsDetail drd = new DemandRatingsDetail();
+        for (Offer offer : offersWithRating) {
+            RatingDetail drd = new RatingDetail();
+            Demand demand = offer.getDemand();
             drd.setDemandId(demand.getId());
             drd.setDemandTitle(demand.getTitle());
-            drd.setDemandPrice(demand.getPrice());
-            drd.setDemandDescription(demand.getDescription());
-            drd.setRatingClient(demand.getRating().getClientRating());
-            drd.setRatingSupplier(demand.getRating().getSupplierRating());
-            drd.setRatingClientMessage(demand.getRating().getClientMessage());
-            drd.setRatingSupplierMessage(demand.getRating().getSupplierMessage());
+            drd.setPrice(demand.getPrice());
             ratings.add(drd);
         }
         return ratings;
@@ -711,7 +648,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void acceptOffer(final long offerId) throws RPCException, ApplicationSecurityException {
-        Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
+        final Offer offer = (Offer) this.generalService.find(Offer.class, offerId);
 
         // set offer as accepted
         offer.setState((OfferState) offerService.getOfferState(
@@ -840,7 +777,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     private Demand updateDemandFields(Demand demand, FullDemandDetail updatedDemand) {
-        demand.setTitle(updatedDemand.getTitle());
+        demand.setTitle(updatedDemand.getDemandTitle());
         demand.setDescription(updatedDemand.getDescription());
         demand.setPrice(updatedDemand.getPrice());
         demand.setEndDate(updatedDemand.getEndDate());
@@ -982,15 +919,5 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         cdd.setUnreadMessagesClosedDemandsCount(((Long) generalService.searchUnique(search4)).intValue());
 
         return cdd;
-    }
-
-    private List<UserMessage> searchInMemory(Search search, SearchDefinition searchDefinition, Set set) {
-        List<UserMessage> sortedList = new ArrayList<UserMessage>(set);
-        if (searchDefinition != null && searchDefinition.getSortOrder() != null) {
-            search.addSorts(
-                    sortConverter.convertToSourceList(search.getSearchClass(), searchDefinition.getSortOrder()));
-            Searcher.sortList(search, sortedList);
-        }
-        return sortedList;
     }
 }

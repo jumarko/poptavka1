@@ -1,16 +1,16 @@
 package com.eprovement.poptavka.shared.domain;
 
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
+import com.eprovement.poptavka.client.common.validation.Extended;
+import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
+import javax.validation.constraints.Pattern;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.google.gwt.user.client.rpc.IsSerializable;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Beho
  *
  */
-public class BusinessUserDetail extends UserDetail implements IsSerializable, TableDisplayDisplayName {
+public class BusinessUserDetail extends UserDetail implements IsSerializable {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -27,7 +27,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     public enum UserField {
 
         COMPANY_NAME("companyName"),
-        IDENTIF_NUMBER("identificationNumber"),
         FIRST_NAME("personFirstName"),
         LAST_NAME("personLastName"),
         EMAIL("email"),
@@ -35,7 +34,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
         PHONE("phone"),
         DESCRIPTION("description"),
         OVERALL_RATING("overalRating"),
-        TAX_ID("taxId"),
+        TAX_NUMBER("taxId"),
+        VAT_NUMBER("identificationNumber"),
         WEBSITE("website");
 
         public static final String SEARCH_CLASS = "businessUserData";
@@ -57,17 +57,25 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
     /** Base. **/
     private Long clientId = -1L;
     private Long supplierId = -1L;
+
     /** BusinessUserData. **/
     @NotBlank(message = "{companyNameNotBlank}")
-    @Size(max = 20, message = "{comapanyNameSize}")
+    @Pattern(regexp = "[a-zA-Z0-9&.\\ ]*", message = "{patternCompany}", groups = {Extended.class, SearchGroup.class })
+    @Size(max = 50, message = "{companyNameSize}", groups = {Extended.class, SearchGroup.class })
     private String companyName;
+
     @Size(max = 20, message = "{identifNumberSize}")
+    @Pattern(regexp = "[\\d\\-]+", message = "{patternNoSpecChars}", groups = Extended.class)
     private String identificationNumber;
+
     @NotBlank(message = "{firstNameNotBlank}")
-    @Pattern(regexp = "\\D+", message = "{patternNonNumber}")
+    @Pattern(regexp = "[a-zA-Z\\ ]+", message = "{patternNoSpecCharsNoNumbers}", groups = Extended.class)
+    @Size(max = 255, message = "{firstNameSize}", groups = Extended.class)
     private String personFirstName;
+
     @NotBlank(message = "{lastNameNotBlank}")
-    @Pattern(regexp = "\\D+", message = "{patternNonNumber}")
+    @Pattern(regexp = "[a-zA-Z\\ ]+", message = "{patternNoSpecCharsNoNumbers}", groups = Extended.class)
+    @Size(max = 255, message = "{lastNameSize}", groups = Extended.class)
     private String personLastName;
     /**
      * The following regular expression for validating US and Canada phone number formats.
@@ -83,30 +91,40 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
 //    Commented this strict regex, but leaving here for furthture usage...maybe
 //    @Pattern(regexp = "^[+]?[01]?[- .]?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[- .]?\\d{3}[- .]?\\d{4}$",
 //            message = "{patternPhone}")
-    @Pattern(regexp = "[+]?\\d{8,10}", message = "{patternPhone}")
+    @Pattern(regexp = "[+]?\\d{8,13}", message = "{patternPhone}", groups = Extended.class)
     @NotBlank(message = "{phoneNotBlank}")
     private String phone;
+
     @NotBlank(message = "{descriptionNotBlank}")
-    @Size(min = 20, message = "{descriptionSize}")
+    @Size(min = 20, max = 255, message = "{descriptionSize}", groups = {Extended.class, SearchGroup.class })
     private String description;
-    @NotBlank(message = "{taxNumberNotBlank}")
+
     /**
      * Individual Taxpayer Identification Number (or ITIN) it's a nine-digit number that begins with
      * the number 9 and has a range of 70 to 99 (excluding 89 and 93) in the fourth and fifth digit,
      * example 9XX-70-XXXX or 9XX-99-XXXX
      * Link: http://en.wikipedia.org/wiki/Individual_Taxpayer_Identification_Number
      */
-    @Pattern(regexp = "^(9\\d{2})([\\ \\-]?)(7\\d+|8[0-8]|9([0-2]|[4-9]))([\\ \\-]?)(\\d{4})$",
-            message = "{patternItin}")
+//    Commented this strict regex, but reconsider it because we should inform user that something
+//    might be wrong and the invoice might be filled with invalid data. -- TODO LATER reconsider
+//    @Pattern(regexp = "^(9\\d{2})([\\ \\-]?)(7\\d+|8[0-8]|9([0-2]|[4-9]))([\\ \\-]?)(\\d{4})$",
+//            message = "{patternItin}")
+    @NotBlank(message = "{taxNumberNotBlank}")
+    @Pattern(regexp = "[\\d\\-]+", message = "{patternNoSpecChars}", groups = Extended.class)
+    @Size(min = 8, max = 15, message = "{itinSize}", groups = Extended.class)
     private String taxId;
-    @Pattern(regexp = "^((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$",
+
+    @Pattern(regexp = "^(|((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?)$",
             message = "{patternWebsite}")
     private String website;
+
     /** Class lists. **/
     private ArrayList<BusinessRole> businessRoles = new ArrayList<BusinessRole>();
+
     @Valid
     @Size(min = 1)
-    private ArrayList<AddressDetail> addresses;
+    private ArrayList<AddressDetail> addresses = new ArrayList<AddressDetail>();
+
     /** Others. **/
     private String displayName;
     private BusinessType businessType;
@@ -254,7 +272,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable, Ta
         this.verification = Verification.valueOf(verification);
     }
 
-    @Override
     public String getDisplayName() {
         return displayName;
     }

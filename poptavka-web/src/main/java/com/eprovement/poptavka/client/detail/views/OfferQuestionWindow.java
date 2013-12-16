@@ -1,0 +1,241 @@
+package com.eprovement.poptavka.client.detail.views;
+
+import com.eprovement.poptavka.client.common.ui.WSBigDecimalBox;
+import com.eprovement.poptavka.client.common.ui.WSDateBox;
+import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
+import com.github.gwtbootstrap.client.ui.FluidRow;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.Widget;
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * Mixed widget for sending offer as well for asking questions.
+ *
+ * @author Beho
+ * @author Martin Slavkovsky
+ */
+public class OfferQuestionWindow extends Composite implements ProvidesValidate {
+
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
+
+    interface ReplyWindowUiBinder extends UiBinder<Widget, OfferQuestionWindow> {
+    }
+    /** Constants. **/
+    public static final int RESPONSE_OFFER = 0;
+    public static final int RESPONSE_QUESTION = 1;
+    public static final String EMPTY = "";
+    /** UiBinder attributes. **/
+    @UiField(provided = true) ValidationMonitor bodyMonitor, priceMonitor, finishDateMonitor;
+    @UiField Button offerReplyBtn, questionReplyBtn;
+    @UiField Button submitBtn, cancelBtn;
+    @UiField HTMLPanel header, messageBody;
+    @UiField FluidRow priceRow, finishDateRow;
+    @UiField Label sender, sent, body;
+    /** Class attributes. **/
+    private int selectedResponse;
+    private MessageDetail replyToMessage;
+
+    /**************************************************************************/
+    /* INITIALIZATION                                                         */
+    /**************************************************************************/
+    public OfferQuestionWindow() {
+        initValidationMonitors();
+        initWidget(uiBinder.createAndBindUi(this));
+        offerReplyBtn.setVisible(false);
+
+        Storage.RSCS.details().ensureInjected();
+    }
+
+    private void initValidationMonitors() {
+        bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
+        priceMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.PRICE.getValue());
+        finishDateMonitor = new ValidationMonitor<OfferMessageDetail>(
+                OfferMessageDetail.class, OfferMessageDetail.MessageField.FINISH_DATE.getValue());
+    }
+
+
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("offerReplyBtn")
+    public void offerReplyBtnHandler(ClickEvent event) {
+        resetValidationStyles();
+        setSendingOfferStyle();
+        selectedResponse = RESPONSE_OFFER;
+    }
+
+    @UiHandler("questionReplyBtn")
+    public void questionReplyBtnHandler(ClickEvent event) {
+        resetValidationStyles();
+        setSendingQuestionStyle();
+        selectedResponse = RESPONSE_QUESTION;
+    }
+
+    @UiHandler("cancelBtn")
+    public void cancelBtnHandler(ClickEvent event) {
+        setDefaultStyle();
+    }
+
+    /**************************************************************************/
+    /* SETTER                                                                 */
+    /**************************************************************************/
+    public void setSendingOfferStyle() {
+        header.setVisible(false);
+        messageBody.setVisible(true);
+        priceRow.setVisible(true);
+        finishDateRow.setVisible(true);
+        submitBtn.setEnabled(true);
+        ((TextArea) bodyMonitor.getWidget()).setFocus(true);
+    }
+
+    public void setSendingQuestionStyle() {
+        header.setVisible(false);
+        messageBody.setVisible(true);
+        priceRow.setVisible(false);
+        finishDateRow.setVisible(false);
+        submitBtn.setEnabled(true);
+        ((TextArea) bodyMonitor.getWidget()).setFocus(true);
+    }
+
+    public void setDefaultStyle() {
+        header.setVisible(true);
+        messageBody.setVisible(false);
+        priceRow.setVisible(false);
+        finishDateRow.setVisible(false);
+        ((WSBigDecimalBox) priceMonitor.getWidget()).setText(EMPTY);
+        ((WSDateBox) finishDateMonitor.getWidget()).getTextBox().setText(EMPTY);
+        bodyMonitor.setValue(EMPTY);
+    }
+
+    private void resetValidationStyles() {
+        bodyMonitor.resetValidation();
+        priceMonitor.resetValidation();
+        finishDateMonitor.resetValidation();
+    }
+
+    public void setSendingOfferEnabled(boolean enable) {
+        offerReplyBtn.setVisible(enable);
+    }
+
+    /**************************************************************************/
+    /* GETTER of created messages.                                            */
+    /**************************************************************************/
+    public MessageDetail getCreatedMessage() {
+        MessageDetail message = new MessageDetail();
+        message.setBody((String) bodyMonitor.getValue());
+        return message;
+    }
+
+    public OfferMessageDetail getCreatedOfferMessage() {
+        OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
+        offerMessageDetailImpl.setPrice((BigDecimal) priceMonitor.getValue());
+        offerMessageDetailImpl.setFinishDate((Date) finishDateMonitor.getValue());
+        offerMessageDetailImpl.setBody((String) bodyMonitor.getValue());
+        return offerMessageDetailImpl;
+    }
+
+    /**************************************************************************/
+    /* GETTER                                                                 */
+    /**************************************************************************/
+    public Button getOfferReplyBtn() {
+        return offerReplyBtn;
+    }
+
+    public Button getSubmitBtn() {
+        return submitBtn;
+    }
+
+    public int getSelectedResponse() {
+        return selectedResponse;
+    }
+
+    @Override
+    public boolean isValid() {
+        boolean valid = bodyMonitor.isValid();
+        if (selectedResponse == RESPONSE_OFFER) {
+            valid = priceMonitor.isValid() && valid;
+            valid = finishDateMonitor.isValid() && valid;
+        }
+        return valid;
+    }
+
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    /**************************************************************************/
+    /* Conversation Methods                                                   */
+    /**************************************************************************/
+    public MessageDetail getMessage() {
+        return replyToMessage;
+    }
+
+    public void setMessage(MessageDetail message) {
+        if (Storage.getUser().getUserId() == message.getSenderId()) {
+            sender.setStyleName(Storage.RSCS.details().conversationDetailHeaderRed());
+        } else {
+            sender.setStyleName(Storage.RSCS.details().conversationDetailHeaderGreen());
+        }
+
+        this.replyToMessage = message;
+        sender.setText(message.getSender());
+        if (message.getSent() != null) {
+            sent.setText(Storage.get().getDateTimeFormat().format(message.getSent()));
+        }
+        body.setText(message.getBody());
+    }
+
+    /**
+     * Received the message being sent and fills it with necessary attributes, from stored message.
+     *
+     * @param MessageDetail message being sent
+     * @return updated message
+     */
+    public OfferMessageDetail updateSendingOfferMessage(OfferMessageDetail messageDetail) {
+        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
+        messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setStarred(replyToMessage.isStarred());
+        messageDetail.setSubject(replyToMessage.getSubject());
+        messageDetail.setSupplierId(Storage.getBusinessUserDetail().getSupplierId());
+        return messageDetail;
+    }
+
+    /**
+     * Received the message being sent and fills it with necessary attributes, from stored message.
+     *
+     * @param MessageDetail message being sent
+     * @return updated message
+     */
+    public MessageDetail updateSendingMessage(MessageDetail messageDetail) {
+        messageDetail.setThreadRootId(replyToMessage.getThreadRootId());
+        messageDetail.setParentId(replyToMessage.getMessageId());
+        messageDetail.setStarred(replyToMessage.isStarred());
+        messageDetail.setSubject(replyToMessage.getSubject());
+        return messageDetail;
+    }
+
+    public void clear() {
+        messageBody.setVisible(false);
+        replyToMessage = null;
+        setDefaultStyle();
+    }
+}

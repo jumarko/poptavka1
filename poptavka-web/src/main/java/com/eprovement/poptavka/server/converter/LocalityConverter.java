@@ -7,10 +7,16 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.SupplierService;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public final class LocalityConverter extends AbstractConverter<Locality, LocalityDetail> {
+public final class LocalityConverter extends AbstractConverter<Locality, ICatLocDetail> {
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private static final String DISTRICT_SUFIX = " Co.";
 
     /**************************************************************************/
     /* RPC Services                                                           */
@@ -45,11 +51,8 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
     /* Convert methods                                                        */
     /**************************************************************************/
     @Override
-    public LocalityDetail convertToTarget(Locality locality) {
-        LocalityDetail detail = new LocalityDetail(locality.getName(), locality.getId());
-//        detail.setId(locality.getId());
-//        detail.setName(locality.getName());
-        detail.setLocalityType(locality.getType());
+    public ICatLocDetail convertToTarget(Locality locality) {
+        CatLocDetail detail = new CatLocDetail(locality.getId(), constructName(locality));
         detail.setDemandsCount(demandService.getDemandsCountQuick(locality));
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(locality));
         detail.setLevel(locality.getLevel());
@@ -58,8 +61,17 @@ public final class LocalityConverter extends AbstractConverter<Locality, Localit
 
     }
 
+    private String constructName(Locality locality) {
+        switch (locality.getType()) {
+            case DISTRICT:
+                return locality.getName() + DISTRICT_SUFIX;
+            default:
+                return locality.getName();
+        }
+    }
+
     @Override
-    public Locality convertToSource(LocalityDetail localityDetail) {
-        return localityService.getLocality(localityDetail.getId());
+    public Locality convertToSource(ICatLocDetail catLocDetail) {
+        return localityService.getLocality(catLocDetail.getId());
     }
 }

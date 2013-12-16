@@ -1,0 +1,107 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:with field='res'
+             type='com.eprovement.poptavka.resources.StyleResource' />
+    
+    <ui:style>
+        .ratingLabel {
+        color:#F7BD00 !important;
+        }
+        
+        .position {
+            margin: -7px 0 0 -7px;
+        }
+    </ui:style>
+
+    <b:FluidContainer addStyleNames='{res.details.demandDetailContent}'>
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                    <ui:msg key="formCommonInfo">Common info</ui:msg>
+                </b:Heading>
+            </b:Column>
+
+            <b:Column size='12'>
+                <g:Label styleName='{res.details.detailBlockLabel}'>
+                    <ui:msg key="formDemandTitle">Demand title: </ui:msg>
+                </g:Label>
+                <g:Label ui:field="demandName" addStyleNames='{res.details.detailStrong}'/>
+            </b:Column>
+
+            <b:Column size='12'>
+                <g:Label styleName='{res.details.detailBlockLabel}'>
+                    <ui:msg key="formPrice">Price:</ui:msg>
+                </g:Label>
+                <g:Label ui:field="price" addStyleNames='{res.details.detailStrong}'/>
+            </b:Column>
+
+            <b:Column size='12'>
+                <g:Label styleName='{res.details.detailBlockLabel}'>
+                    <ui:msg key="formEndDate">End date:</ui:msg>
+                </g:Label>
+                <g:Label styleName='{res.details.detailDateLabel}'
+                         ui:field="endDate" />
+            </b:Column>
+            <b:Column size='12'>
+                <g:Label styleName='{res.details.detailBlockLabel}'>
+                    <ui:msg key="formUrgency">Urgency: </ui:msg>
+                </g:Label>
+                <g:HTMLPanel addStyleNames="pull-left {style.position}">
+                    <g:Image ui:field="urgency" />
+                </g:HTMLPanel>
+                <g:Label styleName='{res.details.detailDateLabel}'
+                             ui:field="urgencyLabel" />
+            </b:Column>
+            <b:Column size='12' ui:field="ratingColumn">
+                <g:Label styleName='{res.details.detailBlockLabel}'>
+                    <ui:msg key="formClientRating">Client rating:</ui:msg>
+                </g:Label>
+                <g:Image resource='{res.images.starGold}' addStyleNames="pull-left" />
+                <g:Label ui:field="clientRating" addStyleNames='{res.details.detailStrong} {style.ratingLabel}'/>
+            </b:Column>
+        </b:FluidRow>
+
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                    <ui:msg key="formCategories">Category info</ui:msg>
+                </b:Heading>
+            </b:Column>
+            <b:Column size='12'>
+                <c:CellList ui:field="categories"
+                            styleName='{res.details.detailCategoryLabel}' />
+            </b:Column>
+        </b:FluidRow>
+
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                    <ui:msg key="formLocalities">Locality info</ui:msg>
+                </b:Heading>
+            </b:Column>
+            <b:Column size='12'>
+                <c:CellList ui:field="localities"
+                            styleName='{res.details.detailLocalityLabel}' />
+            </b:Column>
+        </b:FluidRow>
+
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+            <b:Column size='12'>
+                <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                    <ui:msg key="formDescription">Description: </ui:msg>
+                </b:Heading>
+            </b:Column>
+            <b:Column size='12'>
+                <g:HTMLPanel>
+                    <pre class='{res.details.conversationDetailContent}'>
+                        <g:Label ui:field="description" />
+                    </pre>
+                </g:HTMLPanel>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

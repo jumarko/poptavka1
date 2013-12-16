@@ -48,6 +48,9 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
         LOGGER.info("Sending mail message to: " + emailDialogDetail.getRecipient());
 
         final SimpleMailMessage notificationMessage = new SimpleMailMessage();
+        if (emailDialogDetail.getEmailFrom() != null) {
+            notificationMessage.setCc(emailDialogDetail.getEmailFrom());
+        }
         notificationMessage.setFrom(notificationMailSender);
         notificationMessage.setTo(emailDialogDetail.getRecipient());
 

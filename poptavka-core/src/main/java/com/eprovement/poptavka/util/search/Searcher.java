@@ -177,9 +177,19 @@ public final class Searcher {
                     }
                 }
                 if (value instanceof String) {
-                    String stringValue = (String) value;
-                    String filterValue = (String) filter.getValue();
                     if (filter.getOperator() == Filter.OP_LIKE) {
+                        String stringValue = (String) value;
+                        String filterValue = (String) filter.getValue();
+                        belongsToResult = stringValue.contains(filterValue);
+                        if (belongsToResult) {
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (filter.getOperator() == Filter.OP_ILIKE) {
+                        String stringValue = ((String) value).toLowerCase();
+                        String filterValue = ((String) filter.getValue()).toLowerCase();
                         belongsToResult = stringValue.contains(filterValue);
                         if (belongsToResult) {
                             continue;
@@ -237,7 +247,11 @@ public final class Searcher {
                         return 1 * ascDesc;
                     }
                     int result = 0;
-                    if (Arrays.asList(type.getInterfaces()).contains(
+                    if (sort.isIgnoreCase() && type.equals(String.class)) {
+                        String stringValue1 = ((String) value1).toLowerCase();
+                        String stringValue2 = ((String) value2).toLowerCase();
+                        result = stringValue1.compareTo(stringValue2) * ascDesc;
+                    } else if (Arrays.asList(type.getInterfaces()).contains(
                             Comparable.class)) {
                         Comparable comparableValue1 = (Comparable) value1;
                         Comparable comparableValue2 = (Comparable) value2;

@@ -1,6 +1,13 @@
 <!DOCTYPE dataset SYSTEM "../../../../../test.dtd">
 <dataset >
 
+    <ORIGIN ID="1" CODE="external" DESCRIPTION="Objects imported from external systems. Use more specific origin if possible"
+            NAME="general external system" URL="[NULL]" />
+    <ORIGIN ID="2" CODE="epoptavka.cz" DESCRIPTION="poptavky povodom z epoptavka.cz" NAME="epoptavka.cz" URL="http://epoptavka.cz"/>
+    <ORIGIN ID="3" CODE="poptavam.com" DESCRIPTION="Poptavky povodom z poptavam.com" NAME="poptavam.com" URL="http://poptavam.com"/>
+    <ORIGIN ID="4" CODE="isvzus.cz" DESCRIPTION="Poptavky z verejneho  informacneho portalu" NAME="isvzus.cz" URL="http://www.isvzus.cz"/>
+
+
     <ACCESSROLE ID="1" CODE="test.access.role" DESCRIPTION="Useful only for testing" NAME="Test access role" />
     <ACCESSROLE ID="2" CODE="ROLE_CLIENT" DESCRIPTION="Real client role - the same as in production" NAME="Client access role" />
     <ACCESSROLE ID="3" CODE="ROLE_ADMIN" DESCRIPTION="Admin" NAME="Admin access role" />
@@ -34,6 +41,11 @@
                    NAME="Reserved for future 2" NOTIFICATIONTYPE="CLIENT" CODE="reserved.future.2" ENABLED="0"/>
     <NOTIFICATION  ID="10" DESCRIPTION="Notification reserved for future use 3"
                    NAME="Reserved for future 3" NOTIFICATIONTYPE="CLIENT" CODE="reserved.future.3" ENABLED="0"/>
+
+    <NOTIFICATION  ID="11" DESCRIPTION="Notification is sent when new client is activated." MESSAGETEMPLATE="Welcome New Client!"
+                   NAME="Welcome new client" NOTIFICATIONTYPE="WELCOME" CODE="welcome.client" ENABLED="1"/>
+    <NOTIFICATION  ID="12" DESCRIPTION="Notification is sent when new supplier is activated." MESSAGETEMPLATE="Welcome New Supplier!"
+                   NAME="Welcome new supplier" NOTIFICATIONTYPE="WELCOME" CODE="welcome.supplier" ENABLED="1"/>
 
 
     <!--see real DB for more information on SERVICEs-->

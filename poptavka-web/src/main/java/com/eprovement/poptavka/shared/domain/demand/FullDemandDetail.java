@@ -1,11 +1,14 @@
 package com.eprovement.poptavka.shared.domain.demand;
 
+import com.eprovement.poptavka.client.common.validation.Extended;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
+import com.eprovement.poptavka.client.user.widget.grid.columns.CreatedDateColumn.TableDisplayCreatedDate;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandStatusColumn.TableDisplayDemandStatus;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
+import com.eprovement.poptavka.client.user.widget.grid.columns.LocalityColumn.TableDisplayLocality;
+import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.enums.OfferStateType;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.message.TableDisplay;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -20,8 +23,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.validation.groups.Default;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -31,7 +34,8 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Beho, Martin Slavkovsky
  */
-public class FullDemandDetail implements IsSerializable, TableDisplay {
+public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate,
+    TableDisplayValidTo, TableDisplayDemandTitle, TableDisplayDemandStatus, TableDisplayLocality {
 
     //Only fields that can be updated
     public enum DemandField {
@@ -85,8 +89,8 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
             return value;
         }
     }
-    private ArrayList<LocalityDetail> localities;
-    private ArrayList<CategoryDetail> categories;
+    private ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
+    private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
     private long clientId;
     @Min(value = 0, message = "{maxSuppliersMin}")
     private int maxSuppliers;
@@ -96,32 +100,34 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     private DemandStatus status;
     private DemandDetailType detailType = DemandDetailType.BASE;
     private long demandId;
-    // messageId = threadRoot
-    private long messageId;
-    private long userMessageId;
-    private boolean read;
     private boolean starred;
-    private int unreadSubmessagesCount;
     private Date created;
+
     //Basic Demand Info
     @NotBlank(message = "{titleNotBlank}")
-    @Size(min = 5, max = 50, message = "{titleSize}")
+    @Pattern(regexp = "[a-zA-Z0-9\\ ,]*", message = "{patternNoSpecChars}",
+            groups = {Extended.class, SearchGroup.class })
+    @Size(min = 5, max = 100, message = "{titleSize}", groups = Extended.class)
     private String title;
+
     @NotNull(message = "{priceNotNull}")
-    @Min(value = 0, message = "{priceMin}", groups = {Default.class, SearchGroup.class })
-    @Digits(integer = 12, fraction = 0, message = "{priceDigits}",
-    groups = {Default.class, SearchGroup.class })
+    //@Pattern cannot be used for non String attributes
+    @Digits(integer = 12, fraction = 0, message = "{priceDigits}", groups = {Extended.class, SearchGroup.class })
+    @Min(value = 0, message = "{priceMin}", groups = {Extended.class, SearchGroup.class })
     private BigDecimal price;
+
     @NotNull(message = "{endDateNotNull}")
-    @Future(message = "{endDateFuture}")
+    @Future(message = "{endDateFuture}", groups = Extended.class)
     private Date endDate;
+
     @NotNull(message = "{validToNotNull}")
-    @Future(message = "{validToFuture}")
+    @Future(message = "{validToFuture}", groups = Extended.class)
     private Date validTo;
-    @NotBlank(message = "{descriptinoNotBlank}")
-    @Size(min = 20, max = 1500, message = "{descriptoinSize}")
+
+    @NotBlank(message = "{descriptionNotBlank}")
+    @Size(min = 20, max = 1500, message = "{descriptionSize}", groups = Extended.class)
     private String description;
-    //
+
     private List<FullSupplierDetail> excludedSuppliers;
     //KeyProvider
     public static final ProvidesKey<FullDemandDetail> KEY_PROVIDER =
@@ -147,7 +153,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
     //---------------------------- GETTERS AND SETTERS --------------------
     public void updateWholeDemand(FullDemandDetail demand) {
         demandId = demand.getDemandId();
-        title = demand.getTitle();
+        title = demand.getDemandTitle();
         description = demand.getDescription();
         price = demand.getPrice();
         created = demand.getCreated();
@@ -156,10 +162,10 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         maxSuppliers = demand.getMaxSuppliers();
         minRating = demand.getMinRating();
         //categories
-        categories = new ArrayList<CategoryDetail>(demand.getCategories());
+        categories = new ArrayList<ICatLocDetail>(demand.getCategories());
 
         //localities
-        localities = new ArrayList<LocalityDetail>(demand.getLocalities());
+        localities = new ArrayList<ICatLocDetail>(demand.getLocalities());
 
         status = demand.getDemandStatus();
         demandType = demand.getDemandType();
@@ -171,20 +177,24 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         }
     }
 
-    public ArrayList<CategoryDetail> getCategories() {
+    public ArrayList<ICatLocDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(Collection<CategoryDetail> categories) {
-        this.categories = new ArrayList<CategoryDetail>(categories);
+    public void setCategories(Collection<ICatLocDetail> categories) {
+        this.categories = new ArrayList<ICatLocDetail>(categories);
     }
 
-    public ArrayList<LocalityDetail> getLocalities() {
+    /**
+     * Localities pair.
+     */
+    @Override
+    public ArrayList<ICatLocDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(Collection<LocalityDetail> localities) {
-        this.localities = new ArrayList<LocalityDetail>(localities);
+    public void setLocalities(Collection<ICatLocDetail> localities) {
+        this.localities = new ArrayList<ICatLocDetail>(localities);
     }
 
     public long getClientId() {
@@ -219,12 +229,21 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.demandType = demandType;
     }
 
+    /**
+     * Demand created date pair.
+     */
+    @Override
     public Date getCreated() {
         return created;
     }
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    @Override
+    public int getUnreadMessagesCount() {
+        return 0;
     }
 
     @Override
@@ -250,6 +269,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
                 + "\n     demandStatus=" + status;
     }
 
+    /**
+     * Offer status pair.
+     */
     @Override
     public DemandStatus getDemandStatus() {
         return status;
@@ -275,39 +297,8 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.demandId = demandId;
     }
 
-    public long getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(long messageId) {
-        this.messageId = messageId;
-    }
-
-    public long getUserMessageId() {
-        return userMessageId;
-    }
-
-    public void setUserMessageId(long userMessageId) {
-        this.userMessageId = userMessageId;
-    }
-
-    @Override
-    public boolean isStarred() {
-        return starred;
-    }
-
-    @Override
-    public void setIsStarred(boolean starred) {
-        this.starred = starred;
-    }
-
     public Date getEndDate() {
         return endDate;
-    }
-
-    @Override
-    public OfferStateType getOfferState() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void setEndDate(Date endDate) {
@@ -323,11 +314,15 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         this.validTo = validToDate;
     }
 
-    public String getTitle() {
+    /**
+     * Demand title pair.
+     */
+    @Override
+    public String getDemandTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setDemandTitle(String title) {
         this.title = title;
     }
 
@@ -387,20 +382,5 @@ public class FullDemandDetail implements IsSerializable, TableDisplay {
         int hash = 7;
         hash = 11 * hash + (int) (this.demandId ^ (this.demandId >>> 32));
         return hash;
-    }
-
-    /**
-     * @return the unreadSubmessagesCount
-     */
-    @Override
-    public int getUnreadSubmessagesCount() {
-        return unreadSubmessagesCount;
-    }
-
-    /**
-     * @param unreadSubmessagesCount the unreadSubmessagesCount to set
-     */
-    public void setUnreadSubmessagesCount(int unreadSubmessagesCount) {
-        this.unreadSubmessagesCount = unreadSubmessagesCount;
     }
 }

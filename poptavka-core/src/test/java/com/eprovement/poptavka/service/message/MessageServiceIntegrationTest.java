@@ -23,6 +23,7 @@ import java.util.Collection;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.hamcrest.core.AnyOf;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -176,14 +177,16 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
 
         Assert.assertEquals(4, potentialDemandConversationUserMessages.size());
         // check if all expected messages are in conversation
+        // anyOf matcher is used because messages 2, 4 and 1, 3 have the same created date
+        // and their order is not fully predictable
         assertThat("Unxpected UserMessage by order specified in Search definition",
-                potentialDemandConversationUserMessages.get(0).getMessage().getId(), is(2L));
+                potentialDemandConversationUserMessages.get(0).getMessage().getId(), AnyOf.anyOf(is(2L), is(4L)));
         assertThat("Unxpected UserMessage by order specified in Search definition",
-                potentialDemandConversationUserMessages.get(1).getMessage().getId(), is(4L));
+                potentialDemandConversationUserMessages.get(1).getMessage().getId(), AnyOf.anyOf(is(2L), is(4L)));
         assertThat("Unxpected UserMessage by order specified in Search definition",
-                potentialDemandConversationUserMessages.get(2).getMessage().getId(), is(1L));
+                potentialDemandConversationUserMessages.get(2).getMessage().getId(), AnyOf.anyOf(is(1L), is(3L)));
         assertThat("Unxpected UserMessage by order specified in Search definition",
-                potentialDemandConversationUserMessages.get(3).getMessage().getId(), is(3L));
+                potentialDemandConversationUserMessages.get(3).getMessage().getId(), AnyOf.anyOf(is(1L), is(3L)));
     }
 
     @Test
@@ -347,6 +350,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals("Incorrect sender set to reply.",
                 user2, reply.getSender());
 
+        reply.setBody("Message body");
         messageService.send(reply);
 
         Assert.assertEquals("MessageState of a reply after sending"

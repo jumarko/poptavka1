@@ -1,0 +1,65 @@
+/******************************************************************************/
+/*  DataGrid styles                                                           */
+/******************************************************************************/
+.dataGridWidget {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridFooter {}
+.dataGridHeader {}
+.dataGridCell {}
+.dataGridFirstColumnFooter {}
+.dataGridFirstColumnHeader {}
+.dataGridLastColumnFooter {}
+.dataGridSortableHeader {}
+.dataGridLastColumnHeader {
+    border-radius: 0;
+}
+.dataGridSortedHeaderAscending {}
+.dataGridSortedHeaderDescending {}
+.dataGridEvenRow {}
+.dataGridEvenRowCell {}
+.dataGridOddRow {}
+.dataGridOddRowCell {}
+.dataGridHoveredRow {}
+.dataGridHoveredRowCell {}
+.dataGridKeyboardSelectedRow {}
+.dataGridKeyboardSelectedRowCell {}
+.dataGridSelectedRow {}
+.dataGridSelectedRowCell {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridKeyboardSelectedCell {}
+
+/******************************************************************************/
+/*  Additional styles                                                         */
+/******************************************************************************/
+.unread {}
+
+.col-width-icon {}
+.col-width-star {
+    width: 0;
+}
+.col-width-ratting {
+    width: 0;
+}
+.col-width-title {}
+.col-width-locality {}
+.col-width-displayName {}
+.col-width-messageText {}
+.col-width-price {}
+.col-width-createdDate {
+    width: 60px;
+}
+.col-width-receivedDate {
+    width: 0;
+}
+.col-width-date {}
+.col-width-urgency {}
+.col-width-id {}
+.col-width-sender {}
+.col-width-logo {
+    width: 0;
+}
+
+.cell-style-urgency {}
+.cell-style-star {}

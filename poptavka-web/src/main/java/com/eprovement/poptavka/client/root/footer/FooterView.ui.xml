@@ -1,69 +1,50 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:bb="urn:import:com.github.gwtbootstrap.client.ui.base"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <ui:style>
-        .footer-block {
-        display: block;
-        padding: 4px 8px;
-        color: #443b19;
-        font-size: 12px;
-        }
-
-        .footerButton {
-        background: none;
-        border: none;
-        float: right;
-        color: #827a5e;
-        padding: 2px 8px;
-        font-size: 12px;
-        }
-
-        .footerButton:hover {
-        text-decoration: underline;
-        cursor: pointer;
-        color: #237e00;
-        }
-
-        .separator {
-        background: none;
-        border: none;
-        float: right;
-        color: #827a5e;
-        padding: 2px 0;
-        font-size: 12px;
-        }
-    </ui:style>
-
-    <!--Jaro please provide default style-->
-    <g:HTMLPanel styleName='{res.layout.footerContainer}'>
-        <g:HTMLPanel styleName=''>
-            <g:Label styleName='pull-left {style.footer-block}'>
-                <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
-            </g:Label>
-        </g:HTMLPanel>
-        <g:HTMLPanel styleName=''>
-            <g:Button ui:field="termsAndConditions" styleName='{style.footerButton}'>
+    <g:HTMLPanel styleName='{res.initial.footer}'>
+        <g:HTMLPanel styleName='links pull-right' >
+            <g:Button ui:field="termsAndConditions" styleName='button'>
                 <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
             </g:Button>
-            <div class='{style.separator}'>|</div>
-            <g:Button ui:field="contactUs" styleName='{style.footerButton}'>
+            <div class='separator'>|</div>
+            <g:Button ui:field="contactUs" styleName='button'>
                 <ui:msg key='footerContactUs'>Contact us</ui:msg>
             </g:Button>
-            <div class='{style.separator}'>|</div>
-            <g:Button ui:field="aboutUs" styleName='{style.footerButton}'>
+            <div class='separator'>|</div>
+            <g:Button ui:field="aboutUs" styleName='button'>
                 <ui:msg key='footerAboutUs'>About us</ui:msg>
             </g:Button>
-            <div class='{style.separator}'>|</div>
-            <g:Button ui:field="faq" styleName='{style.footerButton}'>
+            <div class='separator'>|</div>
+            <g:Button ui:field="faq" styleName='button'>
                 <ui:msg key='faq'>FAQ</ui:msg>
             </g:Button>
-            <div class='{style.separator}'>|</div>
-            <g:Button ui:field="privacyPolicy" styleName='{style.footerButton}'>
+            <div class='separator'>|</div>
+            <g:Button ui:field="privacyPolicy" styleName='button'>
                 <ui:msg key='privacyPolicy'>Privacy Policy</ui:msg>
-            </g:Button>
+            </g:Button>            
+        </g:HTMLPanel>
+            
+        <g:HTMLPanel styleName='block' >
+            <g:HTMLPanel styleName='pull-left' >
+                <g:Label>
+                    <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
+                </g:Label>
+            </g:HTMLPanel>
+            <g:HTMLPanel styleName='pull-right' >
+                <bb:IconAnchor styleName='icon' icon="GOOGLE_PLUS_SIGN" iconSize="LARGE"
+                               href="https://plus.google.com/116839001052592837742" target="_blank"/>
+                <bb:IconAnchor styleName='icon' icon="LINKEDIN_SIGN" iconSize="LARGE"
+                               href="http://www.linkedin.com/company/3218120?trk=tyah" target="_blank"/>
+                <bb:IconAnchor styleName='icon' icon="TWITTER_SIGN" iconSize="LARGE"
+                               href="https://twitter.com/WntSomethingCom" target="_blank"/>
+                <bb:IconAnchor styleName='icon' icon="FACEBOOK_SIGN" iconSize="LARGE"
+                               href="https://www.facebook.com/WantSomethingCom" target="_blank"/>
+                <bb:IconAnchor styleName='icon' icon="BOOK" iconSize="LARGE"
+                               href="http://blog.want-something.com/" target="_blank"/>
+            </g:HTMLPanel>
         </g:HTMLPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

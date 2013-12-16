@@ -1,5 +1,12 @@
 package com.eprovement.poptavka.resources;
 
+import com.eprovement.poptavka.resources.details.DetailModuleStyles;
+import com.eprovement.poptavka.resources.modals.ModalStyles;
+import com.eprovement.poptavka.resources.tabPanel.CreateTabPanelStyles;
+import com.eprovement.poptavka.resources.layout.LayoutStyles;
+import com.eprovement.poptavka.resources.common.CommonStyles;
+import com.eprovement.poptavka.resources.initial.InitialStyles;
+import com.eprovement.poptavka.resources.header.HeaderStyles;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource.NotStrict;
@@ -32,42 +39,87 @@ public interface StyleResource extends ClientBundle {
      * @return CssStyle style
      */
     @NotStrict
-    @Source("poptavka-base.css")
-    LayoutResource layout();
+    @Source("initial/InitialStylesLarge.css")
+    InitialStyles initial();
+    @NotStrict
+    @Source("initial/InitialStylesMiddle.css")
+    InitialStyles initialMiddle();
+    @NotStrict
+    @Source("initial/InitialStylesSmall.css")
+    InitialStyles initialSmall();
+    @NotStrict
+    @Source("initial/InitialStylesTiny.css")
+    InitialStyles initialTiny();
 
     @NotStrict
-    @Source("common.css")
-    CommonResource common();
+    @Source("header/HeaderStylesLarge.css")
+    HeaderStyles header();
+    @NotStrict
+    @Source("header/HeaderStylesMiddle.css")
+    HeaderStyles headerMiddle();
+    @NotStrict
+    @Source("header/HeaderStylesSmall.css")
+    HeaderStyles headerSmall();
 
     @NotStrict
-    @Source("modal.css")
+    @Source("layout/LayoutStylesLarge.css")
+    LayoutStyles layout();
+    @NotStrict
+    @Source("layout/LayoutStylesMiddle.css")
+    LayoutStyles layoutMiddle();
+    @NotStrict
+    @Source("layout/LayoutStylesSmall.css")
+    LayoutStyles layoutSmall();
+    @NotStrict
+    @Source("layout/LayoutStylesTiny.css")
+    LayoutStyles layoutTiny();
+
+    @NotStrict
+    @Source("common/CommonStylesLarge.css")
+    CommonStyles common();
+    @NotStrict
+    @Source("common/CommonStylesMiddle.css")
+    CommonStyles commonMidle();
+    @NotStrict
+    @Source("common/CommonStylesSmall.css")
+    CommonStyles commonSmall();
+    @NotStrict
+    @Source("common/CommonStylesTiny.css")
+    CommonStyles commonTiny();
+
+    @NotStrict
+    @Source("modals/ModalStylesLarge.css")
     ModalStyles modal();
-
-    @Source("table.css")
-    TableStyle table();
-
-    @Source("gridTable.css")
-    GridTableResources grid();
+    @NotStrict
+    @Source("modals/ModalStylesMiddle.css")
+    ModalStyles modalMiddle();
+    @NotStrict
+    @Source("modals/ModalStylesSmall.css")
+    ModalStyles modalSmall();
+    @NotStrict
+    @Source("modals/ModalStylesTiny.css")
+    ModalStyles modalTiny();
 
     @NotStrict
-    @Source("tabLayout.css")
-    TabLayout tabLayout();
+    @Source("tabPanel/CreateTabPanelStylesLarge.css")
+    CreateTabPanelStyles createTabPanel();
+    @NotStrict
+    @Source("tabPanel/CreateTabPanelStylesMiddle.css")
+    CreateTabPanelStyles createTabPanelMiddle();
+    @NotStrict
+    @Source("tabPanel/CreateTabPanelStylesSmall.css")
+    CreateTabPanelStyles createTabPanelSmall();
+    @NotStrict
+    @Source("tabPanel/CreateTabPanelStylesTiny.css")
+    CreateTabPanelStyles createTabPanelTiny();
 
     @NotStrict
-    @Source("createTabPanel.css")
-    CreateTabPanel createTabPanel();
+    @Source("details/DetailModuleStyles.css")
+    DetailModuleStyles details();
 
     @NotStrict
-    @Source("detailTabPanel.css")
-    DetailTabPanel detailTabPanel();
-
-    @NotStrict
-    @Source("detailViews.css")
-    DetailViews detailViews();
-
-    @NotStrict
-    @Source("advancedSearchTabPanel.css")
-    AdvancedSearchTabPanel advancedSearchTabPanel();
+    @Source("standartStyles-initial.css")
+    StandartStyles initialStandartStyles();
 
     @NotStrict
     @Source("standartStyles.css")
@@ -86,7 +138,4 @@ public interface StyleResource extends ClientBundle {
     /** Text Resource **/
     @Source("text/conditions.txt")
     TextResource conditions();
-
-    @Source("mailBox.css")
-    MailBox mailBox();
 }

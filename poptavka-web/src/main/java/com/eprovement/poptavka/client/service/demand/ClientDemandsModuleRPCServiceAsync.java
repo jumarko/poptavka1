@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -67,7 +67,7 @@ public interface ClientDemandsModuleRPCServiceAsync {
             AsyncCallback<Integer> callback);
 
     void getClientRatings(long userID, SearchDefinition searchDefinition,
-            AsyncCallback<List<DemandRatingsDetail>> callback);
+            AsyncCallback<List<RatingDetail>> callback);
 
     /**************************************************************************/
     /* Setter methods                                                         */

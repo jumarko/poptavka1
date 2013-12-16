@@ -55,14 +55,22 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testSendNewMessageNotification() throws Exception {
         final String expectedMessageBody = "New message(s) summary:\n"
-                + "    First new message subject\n"
-                + "    Second new message subject\n"
-                + "    Last new message subject\n";
+                + "    First new message subject - Message body...\n"
+                + "    Second new message subject - Message body...\n"
+                + "    Last new message subject - Message body...\n";
         checkNotificationSent(expectedMessageBody,
                 createMessageWithSubject("First new message subject"),
                 createMessageWithSubject("Second new message subject"),
                 createMessageWithSubject("Last new message subject"));
 
+    }
+
+    @Test
+    public void testNoNotificationSentForMessagesThatAlreadyBeenRead() throws Exception {
+        checkNotificationNotSentForReadMessages(
+                createMessageWithSubject("First new message subject"),
+                createMessageWithSubject("Second new message subject"),
+                createMessageWithSubject("Last new message subject"));
     }
 
     @Test
@@ -91,6 +99,7 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
         final Message originalMessage = new Message();
         originalMessage.setMessageState(MessageState.COMPOSED);
         originalMessage.setSubject(messageSubject);
+        originalMessage.setBody("Message body");
         return originalMessage;
     }
 
@@ -111,6 +120,20 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
         assertThat(message.getTo()[0], is(notifiedUser.getEmail()));
         assertThat("Incorrect message subject", message.getSubject(), is("New message"));
         assertThat("Incorrect message body", message.getText(), is(expectedMessageBody));
+    }
+
+    private void checkNotificationNotSentForReadMessages(Message... originalMessages) {
+        final User notifiedUser = generalService.find(User.class, 111111111L);
+        final ArrayList<UserMessage> newUserMessages = new ArrayList<>();
+        for (Message message : originalMessages) {
+            final UserMessage userMessage = createUserMessage(message, notifiedUser);
+            userMessage.setRead(true);
+            newUserMessages.add(userMessage);
+        }
+        notificationService.notifyUserNewMessage(Period.INSTANTLY,
+                newUserMessages.toArray(new UserMessage[newUserMessages.size()]));
+
+        verifyZeroInteractions(mailServiceMock);
     }
 
     private UserMessage createUserMessage(Message originalMessage, User notifiedUser) {

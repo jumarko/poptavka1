@@ -1,0 +1,191 @@
+/******************************************************************************/
+/*  Header View                                                               */
+/******************************************************************************/
+/*
+ *   Logo Styles
+ */
+.logo {
+    display: none;
+}
+
+/*
+ *  Menu
+ */
+/*.menu-bar {
+}*/
+.menu-icon {
+    display: block;
+    top: 15px;
+    left: 20px;
+}
+.menu-panel {}
+.menu {
+    left: 0;
+    margin: 0 auto;
+    position: relative;
+    width: 95%;
+}
+
+.menu .home-menu {
+}
+
+.menu .user-menu {
+}
+
+.menu ul {
+}
+
+.menu li {
+    width: 30%;
+    margin-right: 3%;    
+}
+
+.menu li button {
+    height: 30px;
+    margin: 7px 5px;
+    padding: 7px 10px 7px 40px;
+    text-align: left;    
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.menu li button:hover, .menu li button.act {
+    box-shadow: 0px 0px 2px #067202 inset;
+}
+
+.menu .button1 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 0;
+}
+.menu .button2 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -30px;
+}
+.menu .button3 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -60px;
+}
+.menu .button4 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -90px;
+}
+.menu .button5 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -120px;
+}
+.menu .button6 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -150px;
+}
+.menu .button7 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -180px;
+}
+.menu .button8 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -90px;
+}
+.menu .button9 {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -210px;
+}
+
+.menu .button1:hover, .button1.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -240px;
+}
+.menu .button2:hover, .button2.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -270px;
+}
+.menu .button3:hover, .button3.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -300px;
+}
+.menu .button4:hover, .button4.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -330px;
+}
+.menu .button5:hover, .button5.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -360px;
+}
+.menu .button6:hover, .button6.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -390px;
+}
+.menu .button7:hover, .button7.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -420px;
+}
+.menu .button8:hover, .button8.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -330px;
+}
+.menu .button9:hover, .button9.act {
+    background: url(images/menu-icons-responsive.png) no-repeat 0 -450px;
+}
+
+/*
+*	Search Bar Styles
+*
+*/
+.search-icon {
+    display: block;
+    top: 15px;
+    left: 70px;
+}
+.search-panel {
+    display: none;
+    background: none;
+    top: 0;
+    left: 40px;
+}
+.search-bar {
+    
+}
+
+/*
+ *  Settings Styles
+ */
+.settings-icon {
+    display: block;
+    right: 50px;
+    margin: 15px;
+}
+/*
+*	Login styles
+*
+*/
+.login-icon {
+    display: block;
+    top: 15px;
+    right: 20px;
+}
+.login-panel {
+    display: none;
+}
+.login {
+    top: 0;
+    right: 0;
+}
+
+.login-bar {
+    top: 6px;
+    right: 100px;
+}
+
+.login-button {
+}
+
+.login-button a {
+}
+
+.login-button a:hover {
+}
+
+/*
+ *  Logout styles
+ */
+.logout-button {
+}
+
+.logout-button-act {
+}
+
+.logout-menu-bar {
+}
+
+.logout-menu-bar td {
+}
+
+.logout-menu-bar td:hover {
+}
+
+.help-button {
+}

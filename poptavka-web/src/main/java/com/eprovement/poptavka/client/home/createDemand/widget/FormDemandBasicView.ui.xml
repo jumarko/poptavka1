@@ -2,101 +2,71 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" 
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui"
              xmlns:p1="urn:import:com.google.gwt.user.datepicker.client"
-             xmlns:vm="urn:import:com.eprovement.poptavka.client.common">
+             xmlns:vm="urn:import:com.eprovement.poptavka.client.common.monitors">
 
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:style>
-        .clickable {
-        cursor: pointer;
-        }
-
-        .clickable div:hover {
-        background-color: #EEE;
-        }
-
-        .hiddenField {
-        display: none;
-        }
-
-        .error {
-        font-size:10px;
-        color: red;
-        }
-
-        .width {
-        width: 400px;
-        }
-        
-        .textbox {
-        height: 160px !important;
-        max-width: 95% !important;
-        width: 95% !important;
+        .row {
+        margin-bottom: 10px;
         }
     </ui:style>
-    <b:FluidContainer>
-        <b:FluidRow>
+    <b:FluidContainer addStyleNames='{res.common.formFields} {res.common.wellContainer}'>
+        <b:FluidRow addStyleNames='well-header'>
             <b:Column size="12">
-                <b:WellForm>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <ui:msg key="formAccountInfo">Account Info</ui:msg>
-                            </b:Heading>
+                <b:Heading size="4">
+                    <ui:msg key="formProjectInfo">Project Information</ui:msg>
+                </b:Heading>
+            </b:Column>
+        </b:FluidRow>
+        <b:FluidRow addStyleNames='well-content'>
+            <b:Column size="12" addStyleNames='well-padding'>
+                <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                    <b:FluidRow addStyleNames='{style.row}'>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formTitle">Title</ui:msg>:
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="titleMonitor">
+                                <g:TextBox debugId="titleBox"/>
+                            </vm:ValidationMonitor>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='{style.row}'>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formPrice">Price</ui:msg>:
+                            </g:Label>
+                        </b:Column>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="priceMonitor">
+                                <cmn:WSBigDecimalBox debugId="priceBox" addStyleNames='append-dollar'/>
+                            </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow>
-                        <b:Column size="6">
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formTitle">Title</ui:msg>:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="8">
-                                    <vm:ValidationMonitor ui:field="titleMonitor">
-                                        <g:TextBox />
-                                    </vm:ValidationMonitor>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formPrice">Price</ui:msg>:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="8">
-                                    <vm:ValidationMonitor ui:field="priceMonitor">
-                                        <cm:BigDecimalBox addStyleNames='append-dollar'/>
-                                    </vm:ValidationMonitor>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formEndDate">End Date</ui:msg>:
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="8">
-                                    <vm:ValidationMonitor ui:field="endDateMonitor">
-                                        <p1:DateBox addStyleNames='append-date'/>
-                                    </vm:ValidationMonitor>
-                                </b:Column>
-                            </b:FluidRow>
+                        <b:Column size="4">
+                            <g:Label>
+                                <ui:msg key="formEndDate">End Date</ui:msg>:
+                            </g:Label>
                         </b:Column>
-                        <b:Column size="6">
-                            <b:FluidRow>                                
-                                <b:Column size="12">
-                                    <vm:ValidationMonitor ui:field="descriptionMonitor">
-                                        <b:TextArea styleName="{style.textbox}"
-                                                    placeholder="{msgs.placeholderDemandDesciption}"/>
-                                    </vm:ValidationMonitor>
-                                </b:Column>
-                            </b:FluidRow>
+                        <b:Column size="8">
+                            <vm:ValidationMonitor ui:field="endDateMonitor">
+                                <p1:DateBox debugId="endDateBox" addStyleNames='append-date'/>
+                            </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>
-                </b:WellForm>
+                </b:Column>
+                <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                    <vm:ValidationMonitor ui:field="descriptionMonitor">
+                        <b:TextArea debugId="descriptionArea" height='160px'
+                                        placeholder="{msgs.placeholderDemandDescription}"/>
+                    </vm:ValidationMonitor>
+                </b:Column>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

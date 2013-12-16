@@ -1,19 +1,17 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormView;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter.FormDemandAdvViewInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,6 +20,7 @@ import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -37,8 +36,8 @@ import java.util.logging.Logger;
 
 @Presenter(view = DemandCreationView.class, multiple = true)
 public class DemandCreationPresenter
-        extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus>
-        implements NavigationConfirmationInterface {
+    extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus>
+    implements NavigationConfirmationInterface {
 
     private final static Logger LOGGER = Logger.getLogger("DemandCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
@@ -53,6 +52,7 @@ public class DemandCreationPresenter
     private FormDemandBasicPresenter demandBasicForm = null;
     private FormDemandAdvPresenter demandAdvForm = null;
     private int maxSelectedTab = 1;
+    private boolean registrationAllowed;
 
     public interface CreationViewInterface extends LazyView, IsWidget {
 
@@ -86,6 +86,10 @@ public class DemandCreationPresenter
         HTML getHeaderLabelTab1();
 
         /** Other. **/
+        Tooltip getNextBtnTooltip(int order);
+
+        SimplePanel getFooterPanel();
+
         Widget getWidgetView();
     }
 
@@ -117,8 +121,13 @@ public class DemandCreationPresenter
                     //if selecting other tab, check if present tab is valid
                     if (view.getMainPanel().getSelectedIndex() < eventItem) {
                         //if present tab is valid, continue
-                        if (!canContinue(view.getMainPanel().getSelectedIndex())) {
+                        if (view.getMainPanel().getSelectedIndex() == FIRST_TAB_LOGIN_REGISTER_FORM) {
                             event.cancel();
+                        } else {
+                            if (!canContinue(view.getMainPanel().getSelectedIndex())) {
+                                displayTooltip();
+                                event.cancel();
+                            }
                         }
                         //define how far am i allowed to click
                         //If there is unvalidated tab between clicked tabs, cancel event.
@@ -144,37 +153,53 @@ public class DemandCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
+            case FIRST_TAB_LOGIN_REGISTER_FORM:
+                LOGGER.info(" -> Login Or Registration Selection Form");
+                setHeightBasic();
+                break;
             case SECONT_TAB_DEMAND_BASIC_FORM:
-                LOGGER.info(" -> Supplier Info Form");
+                LOGGER.info(" -> Demand Basic Info Form");
                 if (view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget() == null) {
                     eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
                 }
+                setHeightBasic();
                 break;
             case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
                 if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
-                    eventBus.initCategoryWidget(
-                            view.getHolderPanel(THIRD_TAB_CATEGORY),
-                            Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                            CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
-                            null, true);
+                    eventBus.initCatLocSelector(
+                        view.getHolderPanel(THIRD_TAB_CATEGORY),
+                        new CatLocSelectorBuilder.Builder()
+                            .initCategorySelector()
+                            .initSelectorManager()
+                            .withCheckboxesOnLeafsOnly()
+                            .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                            .build(),
+                        Constants.CREATE_DEMAND);
                 }
+                setHeightSelector();
                 break;
             case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
                 if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
-                    eventBus.initLocalityWidget(
-                            view.getHolderPanel(FOURTH_TAB_LOCALITY),
-                            Constants.WITH_CHECK_BOXES,
-                            CategoryCell.DISPLAY_COUNT_OF_DEMANDS,
-                            null, true);
+                    eventBus.initCatLocSelector(
+                        view.getHolderPanel(FOURTH_TAB_LOCALITY),
+                        new CatLocSelectorBuilder.Builder()
+                            .initLocalitySelector()
+                            .initSelectorManager()
+                            .withCheckboxes()
+                            .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                            .build(),
+                        -Constants.CREATE_DEMAND);
                 }
+                setHeightSelector();
                 break;
             case FIFTH_TAB_DEMAND_ADVANCE_FORM:
                 LOGGER.info(" -> init Demand Form supplierService");
                 if (view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget() == null) {
                     eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM));
                 }
+                setHeightAdvanced();
                 break;
             default:
                 break;
@@ -186,6 +211,7 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.restoreDefaultFirstTab();
+                setHeightBasic();
             }
         });
     }
@@ -204,7 +230,8 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 view.setRegisterLayout();
-                eventBus.initUserRegistrationForm(view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM));
+                setHeightRegistration();
+                eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM));
             }
         });
     }
@@ -213,8 +240,8 @@ public class DemandCreationPresenter
         view.getNextButtonTab1().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (((UserRegistrationFormView) view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM)
-                        .getWidget()).isValid()) {
+                if (((ProvidesValidate) view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM).getWidget()).isValid()) {
+                    view.getNextButtonTab1().setEnabled(false);
                     registerNewClient();
                 }
             }
@@ -226,10 +253,19 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(FIFTH_TAB_DEMAND_ADVANCE_FORM)) {
+                    view.getNextButtonTab5().setEnabled(false);
                     createNewDemand(Storage.getBusinessUserDetail());
                 }
             }
         });
+    }
+
+    public void onSetUserRegistrationHeight(boolean company) {
+        if (company) {
+            setHeightRegistrationExtended();
+        } else {
+            setHeightRegistration();
+        }
     }
 
     /**************************************************************************/
@@ -243,13 +279,18 @@ public class DemandCreationPresenter
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setUpSearchBar(null);
+        eventBus.setToolbarContent("Post a Project", null, false);
+        eventBus.setFooter(view.getFooterPanel());
+        eventBus.resetSearchBar(null);
         if (Storage.getUser() == null) {
             eventBus.menuStyleChange(Constants.CREATE_DEMAND);
         } else {
-            eventBus.userMenuStyleChange(Constants.CREATE_DEMAND);
+            eventBus.menuStyleChange(Constants.CREATE_DEMAND);
         }
         maxSelectedTab = 1;
+        view.getNextButtonTab1().setEnabled(true); //register client btn
+        view.getNextButtonTab5().setEnabled(true); //create demand btn
+        view.setLoginLayout();
     }
 
     @Override
@@ -270,6 +311,7 @@ public class DemandCreationPresenter
         view.getHolderPanel(THIRD_TAB_CATEGORY).setWidget(null);
         view.getHolderPanel(FOURTH_TAB_LOCALITY).setWidget(null);
         view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).setWidget(null);
+        setHeightBasic();
         if (Storage.getUser() != null) {
             view.setFirstTabVisibility(false);
             view.getMainPanel().selectTab(SECONT_TAB_DEMAND_BASIC_FORM, false);
@@ -304,14 +346,6 @@ public class DemandCreationPresenter
         demandAdvForm.initDemandAdvForm(holderWidget);
     }
 
-    /**
-     * Perform some additional action after Address selector widget has loaded.
-     * In this case, disabled change monitoring for Address selector widget.
-     */
-    public void onNotifyAddressWidgetListeners(AddressSelectorInterface addressWidget) {
-        addressWidget.setChangeMonitorsEnabled(false);
-    }
-
     // Responses
     //--------------------------------------------------------------------------
     public void onRestoreDefaultFirstTab() {
@@ -325,10 +359,9 @@ public class DemandCreationPresenter
     /**************************************************************************/
     private void registerNewClient() {
         eventBus.loadingShow(MSGS.progressRegisterClient());
-        UserRegistrationFormView accountInfo =
-                (UserRegistrationFormView) view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM).getWidget();
 
-        BusinessUserDetail user = accountInfo.createBusinessUserDetail();
+        BusinessUserDetail user = new BusinessUserDetail();
+        eventBus.fillBusinessUserDetail(user);
         //register a shof popup na activation code
         eventBus.registerNewClient(user);
     }
@@ -346,25 +379,66 @@ public class DemandCreationPresenter
         eventBus.loadingShow(MSGS.progressCreatingDemand());
 
         FormDemandBasicInterface basicValues =
-                (FormDemandBasicInterface) view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget();
-        CategorySelectorInterface categoryValues =
-                (CategorySelectorInterface) view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget();
-        LocalitySelectorInterface localityValues =
-                (LocalitySelectorInterface) view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget();
+            (FormDemandBasicInterface) view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget();
         FormDemandAdvViewInterface advValues =
-                (FormDemandAdvViewInterface) view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget();
+            (FormDemandAdvViewInterface) view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget();
 
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
         demand = basicValues.updateBasicDemandInfo(demand);
         demand = advValues.updateAdvDemandInfo(demand);
-        demand.setLocalities(localityValues.getCellListDataProvider().getList());
-        demand.setCategories(categoryValues.getCellListDataProvider().getList());
+        eventBus.fillCatLocs(demand.getCategories(), Constants.CREATE_DEMAND);
+        eventBus.fillCatLocs(demand.getLocalities(), -Constants.CREATE_DEMAND);
         eventBus.createDemand(demand, client.getClientId());
     }
 
     private boolean canContinue(int step) {
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
+        registrationAllowed = widget.isValid();
         return widget.isValid();
+    }
+
+    private void displayTooltip() {
+        view.getNextBtnTooltip(view.getMainPanel().getSelectedIndex()).show();
+        Timer timer = new Timer() {
+            @Override
+            public void run() {
+                view.getNextBtnTooltip(view.getMainPanel().getSelectedIndex()).hide();
+            }
+        };
+        timer.schedule(Constants.VALIDATION_TOOLTIP_DISPLAY_TIME);
+    }
+
+    private void setHeightBasic() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
+    }
+
+    private void setHeightAdvanced() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightAdvanced());
+    }
+
+    private void setHeightSelector() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());
+    }
+
+    private void setHeightRegistration() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistration());
+    }
+
+    private void setHeightRegistrationExtended() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistrationExtended());
+    }
+
+    private void clearHeight() {
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightAdvanced());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistration());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistrationExtended());
     }
 }

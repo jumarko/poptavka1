@@ -12,7 +12,7 @@ import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.user.LoginService;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -50,16 +50,15 @@ public class AdminRPCServiceImplTest {
 
     private void mockSecurity() {
         if (ApplicationContextHolder.getApplicationContext() != null) {
-            // TODO RELEASE juraj: XXX there is some application context
-            // (but what the hell does it mean ?
-            // there should be no spring application context because we are in simple unit test)
-            // -> However, we have to mock spring security in this case
+            // TODO LATER juraj: there is some application context set by integration tests
+            // we should strive for more clear separation of integration tests and unit tests, see task:
+            // https://bitbucket.org/poptavka/poptavka-app/issue/201/separate-integration-tests-from-unit-tests
             final Map<String, PoptavkaAuthenticationProvider> authenticationProvider =
                 ApplicationContextHolder.getApplicationContext().getBeansOfType(PoptavkaAuthenticationProvider.class);
             final PoptavkaAuthenticationProvider poptavkaAuthenticationProvider =
                     authenticationProvider.entrySet().iterator().next().getValue();
             final LoginService loginService = mock(LoginService.class);
-            final String adminUsername = "ja";
+            final String adminUsername = "ja@nieco.com";
             final String adminPassword = "ty";
             final User admin = new User(adminUsername, adminPassword);
             final AccessRole accessRole = new AccessRole();
@@ -76,9 +75,9 @@ public class AdminRPCServiceImplTest {
 
     @Test
     public void testApproveDemands() throws Exception {
-        final FullDemandDetail demandDetail = new FullDemandDetail();
+        final NewDemandDetail demandDetail = new NewDemandDetail();
         demandDetail.setDemandId(DEMAND_ID);
-        adminRPCService.approveDemands(new HashSet<FullDemandDetail>() { { add(demandDetail); } });
+        adminRPCService.approveDemands(new HashSet<NewDemandDetail>() { { add(demandDetail); } });
         verify(potentialDemandService).sendDemandToPotentialSuppliers(DEMAND);
     }
 }

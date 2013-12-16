@@ -38,7 +38,7 @@ public abstract class AbstractPageableResource<Domain extends DomainObject, Dto>
     private final String collectionUri;
 
     @Autowired
-    private GeneralService generalService;
+    protected GeneralService generalService;
 
 
     protected AbstractPageableResource(Class<Domain> domainClass, String collectionUri) {
@@ -85,7 +85,7 @@ public abstract class AbstractPageableResource<Domain extends DomainObject, Dto>
         final Collection<Dto> dtosPage = convertToDtos(domainObjectsPageLimited);
 
         final int count = domainObjectsPageLimited.size();
-        return new PageableCollectionDto<Dto>(
+        return new PageableCollectionDto<>(
                 dtosPage,
                 new PageableCollectionDto.Paging(offset, count,
                         generateNextPageLink(isLastPage, offset, count)),

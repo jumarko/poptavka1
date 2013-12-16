@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <!-- injecting style resources -->
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:FlowPanel ui:field='buttonsPanel' stylePrimaryName='{res.createTabPanel.buttonsPanel}'>
+        <b:Tooltip ui:field="nextBtnTooltip" placement="TOP" trigger="MANUAL">
+            <g:Button ui:field="nextBtn" styleName='button'/>
+        </b:Tooltip>
+        <g:HTMLPanel ui:field="separator" styleName='buttons-separator'/>
+        <g:Button ui:field="backBtn" stylePrimaryName='button'/>
+    </g:FlowPanel>
+
+</ui:UiBinder>

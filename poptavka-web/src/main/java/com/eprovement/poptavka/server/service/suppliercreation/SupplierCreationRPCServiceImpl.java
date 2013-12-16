@@ -22,8 +22,7 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -47,8 +46,8 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private ClientService clientService;
     private GeneralService generalService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
-    private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Locality, ICatLocDetail> localityConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
 
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
@@ -73,13 +72,13 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 

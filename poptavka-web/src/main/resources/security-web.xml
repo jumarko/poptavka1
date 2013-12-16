@@ -15,7 +15,7 @@
         <!-- URL patterns that require Authentication by particular roles -->
         <!-- TODO RELEASE ivlcek: test that all secured RPC working correctly. -->
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <security:intercept-url pattern="/poptavka/service/user" access="ROLE_CLIENT" />
+        <security:intercept-url pattern="/poptavka/service/login" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/settings" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/messagesmodule" access="ROLE_CLIENT" />
@@ -31,8 +31,11 @@
         -->
         <security:form-login authentication-success-handler-ref="customAuthenticationSuccessHandler"
                              authentication-failure-handler-ref="customAuthenticationFailureHandler" />
+        <!--allow basic authentication, useful for REST API calls-->
+        <security:http-basic />
         <security:logout success-handler-ref="logoutSuccessHandler" />
-        <security:custom-filter before="CONCURRENT_SESSION_FILTER" ref="XSRFAttackFilter" />
+        <!--TODO LATER: fix xsrf filter -  it does not work properly -->
+        <!--<security:custom-filter before="CONCURRENT_SESSION_FILTER" ref="XSRFAttackFilter" />-->
     </security:http>
 
     <bean id="XSRFAttackFilter" class="com.eprovement.poptavka.server.security.XSRFAttackFilter" />

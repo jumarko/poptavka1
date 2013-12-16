@@ -3,19 +3,20 @@ package com.eprovement.poptavka.service.fulltext;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
-import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * @author Juraj Martinka
  *         Date: 20.5.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
@@ -23,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandFulltextDataSet.xml" },
         dtd = "classpath:test.dtd")
-// TODO RELEASE juraj: Fulltext index is not created correctly, probably because transaction is not really commited
+// TODO LATER juraj: Fulltext index is not created correctly, probably because transaction is not really commited
 // in integration tests
 @Ignore
 public class HibernateFulltextSearchIntegrationTest extends DBUnitIntegrationTest {
@@ -37,7 +38,6 @@ public class HibernateFulltextSearchIntegrationTest extends DBUnitIntegrationTes
     /**
      * Creates initial fulltext index - only once per test class due the performance reasons.
      */
-    @Before
     public void createFulltextIndex() {
         if (!fulltextIndexInitialized) {
             fulltextSearchService.createInitialFulltextIndex();
@@ -45,6 +45,11 @@ public class HibernateFulltextSearchIntegrationTest extends DBUnitIntegrationTes
         }
     }
 
+    @Override
+    public void fillData() {
+        createFulltextIndex();
+        super.fillData();    //To change body of overridden methods use File | Settings | File Templates.
+    }
 
     @Test
     public void testSearchBasic() {

@@ -4,7 +4,7 @@
     <ui:with field="tooltip" type="java.lang.String" />
     <ui:with field='image' type='com.google.gwt.safehtml.shared.SafeHtml'/>
 
-    <span href="#" rel="tooltip" data-html="true"  title="{tooltip}">
+    <span href="#" rel="tooltip" data-html="true">
         <ui:safehtml from='{image}' />
     </span>
 </ui:UiBinder>

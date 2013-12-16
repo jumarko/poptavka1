@@ -22,6 +22,7 @@ public interface LocalizableMessages extends Messages {
     /*** ATTRIBUTES ***********************************************************/
     /** Formats i18n. **/
     String formatDateShort();
+    String formatDateMiddle();
     String formatDateLong();
     String formatCurrency();
     String formatCurrencySign();
@@ -42,15 +43,26 @@ public interface LocalizableMessages extends Messages {
     String commonBtnReport();
     String commonBtnRevert();
     String commonBtnSend();
+    String commonBtnSignUp();
     String commonBtnSubmit();
     String commonBtnQuestion();
 
-    /** Common tooltips. **/
-    String tooltipReply();
-    String tooltipOffer();
+    /** Tooltips. **/
     String tooltipAccept();
-    String tooltipFinish();
+    String tooltipAgreement();
     String tooltipClose();
+    String tooltipDemandType();
+    String tooltipFinish();
+    String tooltipInvalidFields();
+    String tooltipNotifications();
+    String tooltipNoCategories();
+    String tooltipNoLocalities();
+    String tooltipOffer();
+    String tooltipPhone();
+    String tooltipReply();
+    String tooltipSystemMessages();
+    String tooltipTaxNumber();
+    String tooltipUpdateProfile();
 
     /** Common labels. **/
     String commonCategoriesLabel();
@@ -76,7 +88,8 @@ public interface LocalizableMessages extends Messages {
     String commonListUnstarred();
 
     /** Placeholders. **/
-    String placeholderDemandDesciption();
+    String placeholderCompanyDescription();
+    String placeholderDemandDescription();
     String placeholderOfferPrice();
 
     /** Form section info labels . **/
@@ -90,10 +103,12 @@ public interface LocalizableMessages extends Messages {
     String formDatesInfo();
     String formDemandInfo();
     String formDetailInfo();
+    String formEmailChange();
     String formMessageInfo();
     String formInvoiceInfo();
-    String formPasswordInfo();
+    String formPasswordChange();
     String formPriceInfo();
+    String formProjectInfo();
     String formRatingInfo();
     String formSupplierInfo();
     String formSupplierRatingInfo();
@@ -189,8 +204,9 @@ public interface LocalizableMessages extends Messages {
     String menuSupplierRatings();
     String menuSettingsUser();
     String menuSettingsClient();
-    String menuSettingsSupplier();
+    String menuSettingsSecurity();
     String menuSettingsSystem();
+    String menuSettingsSupplier();
     String menuMessagesInbox();
 
     /*** ATTRIBUTES ***********************************************************/
@@ -209,7 +225,7 @@ public interface LocalizableMessages extends Messages {
     String footerContactUs();
     String footerTermsConditions();
 
-    /** EmailDialogPopupView.ui. **/
+    /** ContactUsPopupView.ui. **/
     String emailDialogCustomerSupport();
     String emailDialogEnterYourEmail();
     String emailDialogMaximumChars();
@@ -226,14 +242,16 @@ public interface LocalizableMessages extends Messages {
     String supportWantSomethingEmail();
 
     /** # ThankYouPopup.ui **/
-    String thankYouActivationClose();
-    String thankYouAcceptOffer();
-    String thankYouContactUs();
-    String thankYouCreateDemand();
-    String thankYouFinishDemand();
-    String thankYouSendOffer();
-    String thankYouCodeActivated();
-    String thankYouClosedDemand();
+    SafeHtml thankYouActivationClose();
+    SafeHtml thankYouAcceptOffer();
+    SafeHtml thankYouContactUs();
+    SafeHtml thankYouCreateDemand();
+    SafeHtml thankYouFinishDemand();
+    SafeHtml thankYouSendOffer();
+    SafeHtml thankYouCodeActivatedToDemandCreation();
+    SafeHtml thankYouCodeActivatedToClientDashboard();
+    SafeHtml thankYouCodeActivatedToSupplierDashboard();
+    SafeHtml thankYouClosedDemand();
 
     /** ActivationCodePopupView.ui. **/
     String activationBtnActivate();
@@ -245,6 +263,7 @@ public interface LocalizableMessages extends Messages {
     String activationFailedSentNewCode();
     String activationFailedUnknownError();
     String activationFailedUnknownUser();
+    String activationNewCodeSending();
     String activationNewCodeSent();
     String activationPassed();
 
@@ -252,6 +271,7 @@ public interface LocalizableMessages extends Messages {
     String detailsWrapperTabClientDetail();
     String detailsWrapperTabDemandDetail();
     String detailsWrapperTabSupplierDetail();
+    String detailsWrapperTabRatingDetail();
     String detailsWrapperTabConversationDetail();
 
     /** List creationDate. **/
@@ -358,12 +378,18 @@ public interface LocalizableMessages extends Messages {
     String progressGetUserDetail();
     String progressMessagesLayoutInit();
 
-    /** UrgentImageCell.java. **/
+    /** UrgentSelector. **/
+    String urgencyCostLabel();
     String urgencyDesc();
     String urgencyExpiredDesc();
     String urgencyHighDesc();
-    String urgencyHigherDesc();
-    String urgencyNormalDesc();
+    String urgencyMediumDesc();
+    String urgencyLevelLabel();
+    String urgencyLevelExpiredLabel();
+    String urgencyLevelHighLabel();
+    String urgencyLevelLowLabel();
+    String urgencyLevelMediumLabel();
+    String urgencyLowDesc();
     String urgencyTooltip();
 
     /** Explanation texts for DemandStatus icon column. **/
@@ -491,7 +517,20 @@ public interface LocalizableMessages extends Messages {
     String faq5r();
     /** 1.4 - Footer Info - Privacy Policy */
     String privacyPolicy();
-
+    /** 1.5 - Footer Info - About Us */
+    String aboutUsAboutWSTitle();
+    String aboutUsAboutWS();
+    String aboutUsVisionTitle();
+    String aboutUsVision();
+    String aboutUsEstablished();
+    String aboutUsIvanVlcek();
+    String aboutUsTeamLeader();
+    String aboutUsJurajMartinka();
+    String aboutUsBackendDeveloper();
+    String aboutUsVojtechHubr();
+    String aboutUsMartinSlavkovsky();
+    String aboutUsFrontendDeveloper();
+    String aboutUsJaroslavKrivus();
 
     /*** 2 - Home Demands module view *********************************** 2 ***/
     /** HomeDemandsView.ui. **/
@@ -539,7 +578,6 @@ public interface LocalizableMessages extends Messages {
     String supplierCreationInfoLabel3();
     String supplierCreationInfoLabel4();
     String supplierCreationAgreementConditions();
-    String supplierCreationAgreementMessage();
     String supplierCreationRegisterBtn();
     String supplierCreationSelectService();
 
@@ -683,12 +721,15 @@ public interface LocalizableMessages extends Messages {
     String supplierAssignedDemandsTableTitle();
 
     /*** 10 - Admin module view **************************************** 10 ***/
+    String adminToolbarLabel();
     /** AdminView.ui. **/
     String adminTableAccessRole();
+    String adminTableActiveProjects();
     String adminTableDemand();
     String adminTableEmailActivation();
     String adminTableInvoice();
     String adminTableMessage();
+    String adminTableNewProjects();
     String adminTableOffer();
     String adminTableOurPaymentDetail();
     String adminTablePaymentMethod();

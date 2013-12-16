@@ -4,20 +4,18 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.ChangeMonitor;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.locality.LocalityCell;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
+import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.i18n.client.LocalizableMessages;
@@ -28,11 +26,12 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import java.util.ArrayList;
+import com.google.gwt.view.client.ListDataProvider;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,23 +47,155 @@ public class AdminDemandInfoView extends Composite {
     interface AdminDemandInfoViewUiBinder extends
             UiBinder<Widget, AdminDemandInfoView> {
     }
-    // demand detail input fields
-    @UiField(provided = true)
-    ChangeMonitor titleBox, descriptionBox, endDateBox, expirationBox, priceBox;
-    @UiField(provided = true)
-    ChangeMonitor maxOffers, minRating, demandStatus, demandType, categoryList;
-    @UiField(provided = true)
-    ChangeMonitor localityList, excludedSupplierList;
-    @UiField(provided = true)
-    CellList categoryCellList, localityCellList, excludedSupplierCellList;
-    @UiField
-    TextBox clientID;
-    @UiField
-    Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
-    private FullDemandDetail demandInfo;
-    private PopupPanel selectorWidgetPopup;
+    /**************************************************************************/
+    /* Attributes                                                               */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField(provided = true) ValidationMonitor titleMonitor, descriptionMonitor, endDateMonitor;
+    @UiField(provided = true) ValidationMonitor expirationMonitor, priceMonitor, maxOffersMonitor;
+    @UiField(provided = true) ValidationMonitor minRatingMonitor, demandStatusMonitor, demandTypeMonitor;
+    @UiField(provided = true) CellList categoryList, localityList, excludedSupplierList;
+    @UiField TextBox clientID;
+    @UiField Button editCatBtn, editLocBtn, editExcludedSupplierBtn, createButton, updateButton;
+    /** Class attributes. **/
+    private ListDataProvider categoryProvider;
+    private ListDataProvider localityProvider;
+    private ListDataProvider excludedSupplierProvider;
+    private SimpleConfirmPopup selectorWidgetPopup;
 
-    public PopupPanel getSelectorWidgetPopup() {
+    /**************************************************************************/
+    /* INITIALIZATON                                                          */
+    /**************************************************************************/
+    public AdminDemandInfoView() {
+        titleMonitor = createValidationMonitor(DemandField.TITLE);
+        descriptionMonitor = createValidationMonitor(DemandField.DESCRIPTION);
+        endDateMonitor = createValidationMonitor(DemandField.END_DATE);
+        expirationMonitor = createValidationMonitor(DemandField.VALID_TO);
+        priceMonitor = createValidationMonitor(DemandField.PRICE);
+        maxOffersMonitor = createValidationMonitor(DemandField.MAX_OFFERS);
+        minRatingMonitor = createValidationMonitor(DemandField.MIN_RATING);
+        demandStatusMonitor = createValidationMonitor(DemandField.DEMAND_STATUS);
+        demandTypeMonitor = createValidationMonitor(DemandField.DEMAND_TYPE);
+
+        categoryList = new CellList<ICatLocDetail>(new CatLogSimpleCell());
+        categoryProvider = new ListDataProvider(CatLocDetail.KEY_PROVIDER);
+        categoryProvider.addDataDisplay(categoryList);
+
+        localityList = new CellList<ICatLocDetail>(new CatLogSimpleCell());
+        localityProvider = new ListDataProvider(CatLocDetail.KEY_PROVIDER);
+        localityProvider.addDataDisplay(localityList);
+
+        excludedSupplierList = new CellList<FullSupplierDetail>(new SupplierCell());
+        excludedSupplierProvider = new ListDataProvider(CatLocDetail.KEY_PROVIDER);
+        excludedSupplierProvider.addDataDisplay(excludedSupplierList);
+
+        initWidget(uiBinder.createAndBindUi(this));
+
+        selectorWidgetPopup = new SimpleConfirmPopup();
+
+        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
+        ((DateBox) expirationMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
+        clientID.setEnabled(false);
+    }
+
+    private ValidationMonitor createValidationMonitor(DemandField field) {
+        return new ValidationMonitor<FullDemandDetail>(FullDemandDetail.class, field.getValue());
+    }
+
+    /**************************************************************************/
+    /* setters                                                                */
+    /**************************************************************************/
+    public void setDemandDetail(FullDemandDetail demand) {
+        resetValidationMonitors();
+        if (demand != null) {
+            updateButton.setEnabled(demand != null);
+            if (demand != null) {
+                titleMonitor.setValue(demand.getDemandTitle());
+                descriptionMonitor.setValue(demand.getDescription());
+                priceMonitor.setValue(currencyFormat.format(demand.getPrice()));
+                endDateMonitor.setValue(demand.getEndDate());
+                expirationMonitor.setValue(demand.getValidTo());
+                clientID.setValue(String.valueOf(demand.getClientId()));
+                maxOffersMonitor.setValue(String.valueOf(demand.getMaxSuppliers()));
+                minRatingMonitor.setValue(String.valueOf(demand.getMinRating()));
+
+                excludedSupplierProvider.setList(demand.getExcludedSuppliers());
+                categoryProvider.setList(demand.getCategories());
+                localityProvider.setList(demand.getLocalities());
+
+                // demand type settings
+                // Add the types to the status box.
+                final ClientDemandType[] types = ClientDemandType.values();
+                int i = 0;
+                int j = 0;
+                ((ListBox) demandTypeMonitor.getWidget()).clear();
+                for (ClientDemandType type : types) {
+                    ((ListBox) demandTypeMonitor.getWidget()).addItem(type.getValue());
+                    if (demand.getDemandType() != null
+                            && demand.getDemandType().equalsIgnoreCase(type.getValue())) {
+                        j = i;
+                    }
+                    i++;
+                }
+                demandTypeMonitor.setValue(j);
+
+                // demand status settings
+                // Add the statuses to the status box.
+                final DemandStatus[] statuses = DemandStatus.values();
+                i = 0;
+                j = 0;
+                ((ListBox) demandStatusMonitor.getWidget()).clear();
+                for (DemandStatus status : statuses) {
+                    ((ListBox) demandStatusMonitor.getWidget()).addItem(status.getValue());
+                    if (demand.getDemandStatus() != null
+                            && demand.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
+                        j = i;
+                    }
+                    i++;
+                }
+                demandStatusMonitor.setValue(j);
+            }
+        }
+    }
+
+    public FullDemandDetail updateDemandDetail(FullDemandDetail demandToUpdate) {
+        demandToUpdate.setDemandTitle((String) titleMonitor.getValue());
+        demandToUpdate.setPrice((BigDecimal) priceMonitor.getValue());
+        demandToUpdate.setEndDate((Date) endDateMonitor.getValue());
+//        demandToUpdate.setValidTo(urgencySelector.getValidTo());
+        demandToUpdate.setCategories(getCategories());
+        demandToUpdate.setLocalities(getLocalities());
+        demandToUpdate.setMaxSuppliers((Integer) maxOffersMonitor.getValue());
+        demandToUpdate.setMinRating((Integer) minRatingMonitor.getValue());
+        demandToUpdate.setDescription((String) descriptionMonitor.getValue());
+        return demandToUpdate;
+    }
+
+    public void resetValidationMonitors() {
+        titleMonitor.resetValidation();
+        descriptionMonitor.resetValidation();
+        endDateMonitor.resetValidation();
+        expirationMonitor.resetValidation();
+        priceMonitor.resetValidation();
+        maxOffersMonitor.resetValidation();
+        minRatingMonitor.resetValidation();
+        demandStatusMonitor.resetValidation();
+        demandTypeMonitor.resetValidation();
+    }
+
+    /**************************************************************************/
+    /* Getters                                                               */
+    /**************************************************************************/
+    public List<ICatLocDetail> getCategories() {
+        return categoryProvider.getList();
+    }
+
+    public List<ICatLocDetail> getLocalities() {
+        return localityProvider.getList();
+    }
+
+    public SimpleConfirmPopup getSelectorWidgetPopup() {
         return selectorWidgetPopup;
     }
 
@@ -88,234 +219,7 @@ public class AdminDemandInfoView extends Composite {
         return editExcludedSupplierBtn;
     }
 
-    public ChangeMonitor getCategoryList() {
-        return categoryList;
-    }
-
-    public ChangeMonitor getLocalityList() {
-        return localityList;
-    }
-
-    public ChangeMonitor getTitleBox() {
-        return titleBox;
-    }
-
-    public AdminDemandInfoView() {
-        titleBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.TITLE.getValue()));
-        descriptionBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DESCRIPTION.getValue()));
-        endDateBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.END_DATE.getValue()));
-        expirationBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.VALID_TO.getValue()));
-        priceBox = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.PRICE.getValue()));
-        maxOffers = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MAX_OFFERS.getValue()));
-        minRating = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.MIN_RATING.getValue()));
-        excludedSupplierCellList = new CellList<FullSupplierDetail>(new SupplierCell());
-        excludedSupplierList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.EXCLUDE_SUPPLIER.getValue()));
-        demandStatus = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_STATUS.getValue()));
-        demandType = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.DEMAND_TYPE.getValue()));
-        categoryCellList = new CellList<CategoryDetail>(new CategoryCell(CategoryCell.DISPLAY_COUNT_DISABLED));
-        categoryList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.CATEGORIES.getValue()));
-        localityCellList = new CellList<LocalityDetail>(new LocalityCell(LocalityCell.DISPLAY_COUNT_DISABLED));
-        localityList = new ChangeMonitor<FullDemandDetail>(
-                FullDemandDetail.class, new ChangeDetail(DemandField.LOCALITIES.getValue()));
-        //
-        initWidget(uiBinder.createAndBindUi(this));
-        //
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT);
-        ((DateBox) expirationBox.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
-        ((DateBox) endDateBox.getWidget()).setFormat(new DateBox.DefaultFormat(dateFormat));
-        clientID.setEnabled(false);
-        //
-        createSelectorWidgetPopup();
-    }
-
-    public void setChangeHandler(ChangeHandler changeHandler) {
-        titleBox.addChangeHandler(changeHandler);
-        descriptionBox.addChangeHandler(changeHandler);
-        endDateBox.addChangeHandler(changeHandler);
-        expirationBox.addChangeHandler(changeHandler);
-        priceBox.addChangeHandler(changeHandler);
-        maxOffers.addChangeHandler(changeHandler);
-        minRating.addChangeHandler(changeHandler);
-        excludedSupplierList.addChangeHandler(changeHandler);
-        demandStatus.addChangeHandler(changeHandler);
-        demandType.addChangeHandler(changeHandler);
-        categoryList.addChangeHandler(changeHandler);
-        localityList.addChangeHandler(changeHandler);
-    }
-
-    private void createSelectorWidgetPopup() {
-        selectorWidgetPopup = new PopupPanel(true);
-        selectorWidgetPopup.setSize("300px", "300px");
-        selectorWidgetPopup.setGlassEnabled(true);
-        selectorWidgetPopup.hide();
-    }
-
-    public ArrayList<CategoryDetail> getCategories() {
-        return (ArrayList<CategoryDetail>) categoryList.getValue();
-    }
-
-    /**
-     * Need for CategorySelector when closing to set newly chosen categories.
-     * @param categories
-     */
-    public void setCategories(List<CategoryDetail> categories) {
-        categoryList.setValue(categories);
-    }
-
-    public ArrayList<LocalityDetail> getLocalities() {
-        return (ArrayList<LocalityDetail>) localityList.getValue();
-    }
-
-    public void setLocalities(List<LocalityDetail> localities) {
-        localityList.setValue(localities);
-    }
-
-    public ArrayList<FullSupplierDetail> getExcludedSupplier() {
-        return (ArrayList<FullSupplierDetail>) excludedSupplierList.getValue();
-    }
-
-    public void setExcludedSupplier(List<FullSupplierDetail> localities) {
-        excludedSupplierList.setValue(localities);
-    }
-
-    public FullDemandDetail getDemandDetail() {
-        return demandInfo;
-    }
-
-    public void setDemandDetail(FullDemandDetail demand) {
-        resetChangeMonitors();
-        if (demand != null) {
-            this.demandInfo = demand;
-
-            updateButton.setEnabled(demand != null);
-            if (demand != null) {
-                titleBox.setBothValues(demand.getTitle());
-                descriptionBox.setBothValues(demand.getDescription());
-                priceBox.setBothValues(currencyFormat.format(demand.getPrice()));
-                endDateBox.setBothValues(demand.getEndDate());
-                expirationBox.setBothValues(demand.getValidTo());
-                clientID.setValue(String.valueOf(demand.getClientId()));
-                maxOffers.setBothValues(String.valueOf(demand.getMaxSuppliers()));
-                minRating.setBothValues(String.valueOf(demand.getMinRating()));
-                excludedSupplierList.setBothValues(demand.getExcludedSuppliers());
-                categoryList.setBothValues(demand.getCategories());
-                localityList.setBothValues(demand.getLocalities());
-
-                // demand type settings
-                // Add the types to the status box.
-                final ClientDemandType[] types = ClientDemandType.values();
-                int i = 0;
-                int j = 0;
-                ((ListBox) demandType.getWidget()).clear();
-                for (ClientDemandType type : types) {
-                    ((ListBox) demandType.getWidget()).addItem(type.getValue());
-                    if (demand.getDemandType() != null
-                            && demand.getDemandType().equalsIgnoreCase(type.getValue())) {
-                        j = i;
-                    }
-                    i++;
-                }
-                demandType.setBothValues(j);
-
-                // demand status settings
-                // Add the statuses to the status box.
-                final DemandStatus[] statuses = DemandStatus.values();
-                i = 0;
-                j = 0;
-                ((ListBox) demandStatus.getWidget()).clear();
-                for (DemandStatus status : statuses) {
-                    ((ListBox) demandStatus.getWidget()).addItem(status.getValue());
-                    if (demand.getDemandStatus() != null
-                            && demand.getDemandStatus() == DemandStatus.valueOf(status.getValue())) {
-                        j = i;
-                    }
-                    i++;
-                }
-                demandStatus.setBothValues(j);
-            }
-        }
-    }
-
-    public void setFieldChanges(ArrayList<ChangeDetail> changes) {
-        for (ChangeDetail change : changes) {
-            switch (DemandField.valueOf(change.getField())) {
-                case TITLE:
-                    titleBox.setChangeDetail(change);
-                    break;
-                case DESCRIPTION:
-                    descriptionBox.setChangeDetail(change);
-                    break;
-                case PRICE:
-                    priceBox.setChangeDetail(change);
-                    break;
-                case END_DATE:
-                    endDateBox.setChangeDetail(change);
-                    break;
-                case VALID_TO:
-                    expirationBox.setChangeDetail(change);
-                    break;
-                case MAX_OFFERS:
-                    maxOffers.setChangeDetail(change);
-                    break;
-                case MIN_RATING:
-                    minRating.setChangeDetail(change);
-                    break;
-                case DEMAND_STATUS:
-                    demandStatus.setChangeDetail(change);
-                    break;
-                case CATEGORIES:
-                    categoryList.setChangeDetail(change);
-                    break;
-                case LOCALITIES:
-                    localityList.setChangeDetail(change);
-                    break;
-                case EXCLUDE_SUPPLIER:
-                    excludedSupplierList.setChangeDetail(change);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    public void resetChangeMonitors() {
-        titleBox.reset();
-        descriptionBox.reset();
-        endDateBox.reset();
-        expirationBox.reset();
-        priceBox.reset();
-        maxOffers.reset();
-        minRating.reset();
-        excludedSupplierList.reset();
-        demandStatus.reset();
-        demandType.reset();
-        categoryList.reset();
-        localityList.reset();
-    }
-
-    public void revertChangeMonitors() {
-        titleBox.revert();
-        descriptionBox.revert();
-        endDateBox.revert();
-        expirationBox.revert();
-        priceBox.revert();
-        maxOffers.revert();
-        minRating.revert();
-        excludedSupplierList.revert();
-        demandStatus.revert();
-        demandType.revert();
-        categoryList.revert();
-        localityList.revert();
+    public ValidationMonitor getTitleBox() {
+        return titleMonitor;
     }
 }

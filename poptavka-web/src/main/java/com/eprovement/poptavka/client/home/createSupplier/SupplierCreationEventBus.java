@@ -6,21 +6,17 @@
  */
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
+import com.eprovement.poptavka.client.root.gateways.ServiceSelectorGateway;
+import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.List;
 
 /**
  *
@@ -28,14 +24,15 @@ import java.util.List;
  */
 @Events(startPresenter = SupplierCreationPresenter.class, module = SupplierCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildEventBus {
+public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildEventBus,
+    CatLocSelectorGateway, UserRegistrationGateway, ServiceSelectorGateway {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = SupplierCreationPresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = SupplierCreationPresenter.class)
     void start();
 
     /**
@@ -44,7 +41,7 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = SupplierCreationPresenter.class)
+    @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
@@ -64,21 +61,7 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     void logout(int widgetToLoad);
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void initServicesWidget(SimplePanel embedToWidget);
-
-    @Event(forwardToParent = true)
-    void initUserRegistrationForm(SimplePanel holderPanel);
+    void checkCompanySelected();
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -90,5 +73,5 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = SupplierCreationPresenter.class)
-    void notifyAddressWidgetListeners(AddressSelectorPresenter.AddressSelectorInterface addressWidget);
+    void setUserRegistrationHeight(boolean company);
 }

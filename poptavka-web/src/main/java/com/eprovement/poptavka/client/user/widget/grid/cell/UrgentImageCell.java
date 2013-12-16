@@ -3,12 +3,18 @@ package com.eprovement.poptavka.client.user.widget.grid.cell;
 import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiRenderer;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
@@ -30,12 +36,19 @@ public class UrgentImageCell extends AbstractCell<Date> {
 
         void render(SafeHtmlBuilder sb, SafeHtml image, String tooltip);
     }
+
+    public UrgentImageCell() {
+        super("mouseover", "mouseout");
+    }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     private static ImageResourceRenderer imageRenderer = new ImageResourceRenderer();
     private SafeHtml imageResource;
     private String tooltip;
+    private PopupPanel popup = new PopupPanel(true);
+    private boolean displayed;
 
     /**************************************************************************/
     /* Override methods                                                       */
@@ -44,6 +57,41 @@ public class UrgentImageCell extends AbstractCell<Date> {
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
         setImageResoureAndTooltip(value);
         uiRenderer.render(sb, imageResource, tooltip);
+    }
+
+    @Override
+    public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
+            Element parent, Date value, NativeEvent event,
+            ValueUpdater<Date> valueUpdater) {
+        if ("mouseover".equals(event.getType())) {
+            displayPopup(event);
+        }
+        if ("mouseout".equals(event.getType())) {
+            hidePopup();
+        }
+    }
+
+    private void displayPopup(NativeEvent event) {
+        if (displayed) {
+            return;
+        }
+        displayed = true;
+
+        popup.clear();
+        HTMLPanel htmlPanel2 = new HTMLPanel(tooltip);
+        htmlPanel2.addStyleName("container-fluid");
+        htmlPanel2.addStyleName("short-message");
+        HTMLPanel htmlPanel1 = new HTMLPanel("");
+        htmlPanel1.add(htmlPanel2);
+        htmlPanel1.setStylePrimaryName(StyleResource.INSTANCE.modal().commonModalStyle());
+        popup.add(htmlPanel1);
+        popup.setPopupPosition(event.getClientX() + 32, event.getClientY() + 32);
+        popup.show();
+    }
+
+    private void hidePopup() {
+        displayed = false;
+        popup.hide();
     }
 
     /**************************************************************************/
@@ -76,10 +124,10 @@ public class UrgentImageCell extends AbstractCell<Date> {
         }
         if (daysBetween <= Constants.DAYS_URGENCY_HIGHER) {
             imageResource = imageRenderer.render(Storage.RSCS.images().urgencyOrange());
-            tooltip = Storage.MSGS.urgencyHigherDesc();
+            tooltip = Storage.MSGS.urgencyMediumDesc();
             return;
         }
         imageResource = imageRenderer.render(Storage.RSCS.images().urgencyGreen());
-        tooltip = Storage.MSGS.urgencyNormalDesc();
+        tooltip = Storage.MSGS.urgencyLowDesc();
     }
 }

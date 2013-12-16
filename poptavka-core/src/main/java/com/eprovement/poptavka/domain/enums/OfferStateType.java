@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.domain.enums;
 /**
  * States of offer life-cycle
- * 
+ *
  */
 public enum OfferStateType {
 

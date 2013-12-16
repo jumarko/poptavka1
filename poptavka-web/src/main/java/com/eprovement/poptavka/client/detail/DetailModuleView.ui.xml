@@ -1,0 +1,65 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:w="urn:import:com.eprovement.poptavka.client.detail.views"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:ScrollPanel>
+        <g:TabLayoutPanel stylePrimaryName='{res.details.detailTabPanel}'
+                      ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
+            <g:tab>
+                <g:header>
+                    <ui:msg key="detailsWrapperTabDemandDetail">Project</ui:msg>
+                </g:header>
+                <g:ScrollPanel ui:field="demandDetailHolder">
+                    <w:DemandDetailView ui:field="demandDetail" advancedView="false" />
+                </g:ScrollPanel>
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="detailsWrapperTabSupplierDetail">Professional</ui:msg>
+                </g:header>
+                <g:ScrollPanel>
+                    <w:UserDetailView ui:field="userDetail" advancedView="false" />
+                </g:ScrollPanel>
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="detailsWrapperTabRatingDetail">Ratings</ui:msg>
+                </g:header>
+                <g:ScrollPanel>
+                    <w:RatingDetailView ui:field="ratingDetail" visible="false" />
+                </g:ScrollPanel>
+            </g:tab>
+            <g:tab>
+                <g:header>
+                    <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
+                </g:header>
+                <g:ScrollPanel>
+                    <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.details.conversationContainer}'>
+                        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                            <b:Column size='12'>
+                                <w:OfferQuestionWindow ui:field="replyHolder" styleName='{res.details.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                            <b:Column size='12'>
+                                <c:CellList ui:field="messageList" />
+                                <!--styleName='{res.details.conversationBlock}'/>-->
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
+                </g:ScrollPanel>
+            </g:tab>
+            <g:tab>
+                <g:header/>
+                <g:ScrollPanel ui:field="advertisementHolder">
+                    <g:HTMLPanel styleName='{res.details.emptyView}'/>
+                </g:ScrollPanel>
+            </g:tab>
+        </g:TabLayoutPanel>
+    </g:ScrollPanel>
+</ui:UiBinder>

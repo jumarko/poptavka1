@@ -1,22 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.forms.RatingInfoForm;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class ClientSettingsView extends Composite implements ClientSettingsPresenter.ClientSettingsViewInterface {
+public class ClientSettingsView extends Composite
+    implements ClientSettingsPresenter.ClientSettingsViewInterface, ProvidesValidate {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -26,10 +24,11 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
 
     interface ClientSettingsViewUiBinder extends UiBinder<Widget, ClientSettingsView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField Label clientRating;
+    @UiField RatingInfoForm ratingInfoForm;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -40,20 +39,11 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     }
 
     /**************************************************************************/
-    /* Change monitoring methods                                              */
-    /**************************************************************************/
-    @Override
-    public void commit() {
-        // nothing for now - no updatable field for client settings for now
-    }
-
-    /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
     public void setClientSettings(SettingDetail detail) {
-//        originalsStorage.clear();
-        clientRating.setText(Integer.toString(detail.getClientRating()));
+        ratingInfoForm.setRating(detail.getClientRating());
     }
 
     @Override
@@ -66,7 +56,7 @@ public class ClientSettingsView extends Composite implements ClientSettingsPrese
     /* GETTERS                                                                */
     /**************************************************************************/
     @Override
-    public boolean isSettingChange() {
+    public boolean isValid() {
         return true;
     }
 

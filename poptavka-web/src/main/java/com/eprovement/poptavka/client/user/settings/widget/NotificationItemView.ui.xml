@@ -3,38 +3,49 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-             ui:generateLocales='default'>
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui">
 
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
-
+    
     <ui:style>
-        .label {
-        font-weight: bold;
+        .noteLabel {
+        padding: 0 10px;
         }
     </ui:style>
 
-    <g:HTMLPanel ui:field="panel">
-        <b:FluidContainer>
-            <b:FluidRow>
-                <b:Column size="5">
+    <b:FluidContainer addStyleNames='{res.layout.notificationPanel}'>
+        <b:FluidRow>
+            <b:Column size="12">
+                <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
                     <g:Label ui:field="name" />
                 </b:Column>
-                <b:Column size="1">
-                    <g:CheckBox ui:field='enabled' />
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <b:Column size="5">
+                        <b:FluidRow>
+                            <g:HTMLPanel styleName="pull-left label-on">
+                                <g:Label addStyleNames="choice-Label">
+                                    <ui:msg key="on">On</ui:msg>
+                                </g:Label>
+                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName="pull-left buttons">
+                                <g:HTMLPanel ui:field="notificationChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                                    <g:Button ui:field="onBtn"></g:Button>
+                                    <g:Button ui:field="offBtn"></g:Button>
+                                </g:HTMLPanel>
+                            </g:HTMLPanel>
+                            <g:HTMLPanel styleName="pull-left label-off">
+                                <g:Label addStyleNames="choice-Label">
+                                    <ui:msg key="off">Off</ui:msg>
+                                </g:Label>
+                            </g:HTMLPanel>
+                        </b:FluidRow>
+                    </b:Column>
+                    <b:Column size="7">
+                        <cmn:WSListBox ui:field="period" styleName='selector-box'/>
+                    </b:Column>
                 </b:Column>
-                <b:Column size="5">
-                    <g:ListBox ui:field="period" visibleItemCount='1' />
-                </b:Column>
-                <b:Column size="1">
-                    <g:Anchor ui:field="revert" visible="false">
-                        <ui:msg key="commonBtnRevert">Revert</ui:msg>
-                    </g:Anchor>
-                </b:Column>
-            </b:FluidRow>
-        </b:FluidContainer>
-    </g:HTMLPanel>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

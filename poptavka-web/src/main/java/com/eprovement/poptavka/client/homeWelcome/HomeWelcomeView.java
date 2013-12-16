@@ -3,23 +3,25 @@ package com.eprovement.poptavka.client.homeWelcome;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.root.ReverseCompositeView;
-import com.eprovement.poptavka.client.root.footer.FooterView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
 import java.util.ArrayList;
 
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static HomeWelcomeViewUiBinder uiBinder = GWT.create(HomeWelcomeViewUiBinder.class);
 
     interface HomeWelcomeViewUiBinder extends UiBinder<Widget, HomeWelcomeView> {
@@ -29,17 +31,15 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) CellList<CategoryDetail> categoryList;
-    @UiField(provided = true) Widget footer;
-    @UiField FlowPanel categorySection;
+    @UiField(provided = true) CellList<ICatLocDetail> categoryList;
+    @UiField SimplePanel footerContainer;
     @UiField Button suppliersBtn, demandsBtn;
     @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
     @UiField Button registerSupplierBtn, registerDemandBtn;
     /** Class attributes. **/
-    private @Inject FooterView footerView;
     private ListDataProvider dataProvider = new ListDataProvider();
-    private final SingleSelectionModel<CategoryDetail> selectionRootModel =
-            new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
+    private final SingleSelectionModel<ICatLocDetail> selectionRootModel =
+            new SingleSelectionModel<ICatLocDetail>(CatLocDetail.KEY_PROVIDER);
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -58,8 +58,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
      */
     @Override
     public void createView() {
-        footer = footerView;
-        categoryList = new CellList<CategoryDetail>(new RootCategoryCell());
+        categoryList = new CellList<ICatLocDetail>(new RootCategoryCell());
         categoryList.setSelectionModel(selectionRootModel);
         dataProvider.addDataDisplay(categoryList);
         initWidget(uiBinder.createAndBindUi(this));
@@ -68,9 +67,8 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
-
     @Override
-    public void displayCategories(ArrayList<CategoryDetail> rootCategories) {
+    public void displayCategories(ArrayList<ICatLocDetail> rootCategories) {
         dataProvider.setList(rootCategories);
     }
 
@@ -78,18 +76,18 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* GETTERS                                                                */
     /**************************************************************************/
     @Override
-    public FlowPanel getCategorySection() {
-        return categorySection;
-    }
-
-    @Override
-    public SingleSelectionModel<CategoryDetail> getCategorySelectionModel() {
+    public SingleSelectionModel<ICatLocDetail> getCategorySelectionModel() {
         return selectionRootModel;
     }
 
     @Override
     public ListDataProvider getDataProvider() {
         return dataProvider;
+    }
+
+    @Override
+    public SimplePanel getFooterContainer() {
+        return footerContainer;
     }
 
     @Override

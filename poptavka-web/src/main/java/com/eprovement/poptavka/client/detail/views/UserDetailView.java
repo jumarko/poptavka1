@@ -1,0 +1,126 @@
+package com.eprovement.poptavka.client.detail.views;
+
+import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.FullClientDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.Column;
+import com.github.gwtbootstrap.client.ui.FluidRow;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiConstructor;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+
+public class UserDetailView extends Composite {
+
+    private static UserDetailViewUiBinder uiBinder = GWT.create(UserDetailViewUiBinder.class);
+
+    interface UserDetailViewUiBinder extends UiBinder<Widget, UserDetailView> {
+    }
+    private static final String EMPTY = "";
+    @UiField(provided = true) CellList categories, localities;
+    @UiField HTMLPanel categoryPanel, localityPanel;
+    @UiField FluidRow invoiceRow;
+    @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn;
+    @UiField Label overalRating, description, email, companyName, taxId, identificationNumber,
+    firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
+
+    /**
+     * Detail view of user (client/supplier/..).
+     *
+     * @param advancedView true to show fields for admin, false to show fields for clients
+     */
+    @UiConstructor
+    public UserDetailView(boolean advancedView) {
+        categories = new CellList<ICatLocDetail>(new CatLogSimpleCell());
+        localities = new CellList<ICatLocDetail>(new CatLogSimpleCell());
+        initWidget(uiBinder.createAndBindUi(this));
+
+        businessTypeColumn.setVisible(advancedView);;
+        certifiedColumn.setVisible(advancedView);
+        phoneColumn.setVisible(advancedView);
+        emailColumn.setVisible(advancedView);
+        invoiceRow.setVisible(advancedView);
+
+        StyleResource.INSTANCE.details().ensureInjected();
+    }
+
+    public void setSupplierDetail(FullClientDetail detail) {
+        if (detail.getOveralRating() == null) {
+            overalRating.setText("Not ranked");
+        } else {
+            overalRating.setText(detail.getOveralRating().toString());
+        }
+        if (detail.getUserData().getBusinessType() != null) {
+            businessType.setText(detail.getUserData().getBusinessType().getValue());
+        }
+        categoryPanel.setVisible(false);
+        localityPanel.setVisible(false);
+        description.setText(detail.getUserData().getDescription());
+        email.setText(detail.getUserData().getEmail());
+        //Address
+        street.setText(detail.getUserData().getAddresses().get(0).getStreet());
+        city.setText(detail.getUserData().getAddresses().get(0).getCity());
+        zipCode.setText(detail.getUserData().getAddresses().get(0).getZipCode());
+        //BusinessUserData
+        companyName.setText(detail.getUserData().getCompanyName());
+        identificationNumber.setText(detail.getUserData().getIdentificationNumber());
+        firstName.setText(detail.getUserData().getPersonFirstName());
+        lastName.setText(detail.getUserData().getPersonLastName());
+        phone.setText(detail.getUserData().getPhone());
+        website.setText(detail.getUserData().getWebsite());
+        taxId.setText(detail.getUserData().getTaxId());
+    }
+
+    public void setSupplierDetail(FullSupplierDetail detail) {
+        if (detail.getOveralRating() == null) {
+            overalRating.setText(Storage.MSGS.commonNotRanked());
+        } else {
+            overalRating.setText(detail.getOveralRating().toString());
+        }
+        if (detail.getUserData().getBusinessType() != null) {
+            businessType.setText(detail.getUserData().getBusinessType().getValue());
+        }
+        certified.setText(Boolean.toString(detail.isCertified()));
+        description.setText(detail.getUserData().getDescription());
+        localities.setRowData(detail.getLocalities());
+        categories.setRowData(detail.getCategories());
+        email.setText(detail.getUserData().getEmail());
+        //Address
+        street.setText(detail.getUserData().getAddresses().get(0).getStreet());
+        city.setText(detail.getUserData().getAddresses().get(0).getCity());
+        zipCode.setText(detail.getUserData().getAddresses().get(0).getZipCode());
+        //BusinessUserData
+        companyName.setText(detail.getUserData().getCompanyName());
+        identificationNumber.setText(detail.getUserData().getIdentificationNumber());
+        firstName.setText(detail.getUserData().getPersonFirstName());
+        lastName.setText(detail.getUserData().getPersonLastName());
+        phone.setText(detail.getUserData().getPhone());
+        website.setText(detail.getUserData().getWebsite());
+        taxId.setText(detail.getUserData().getTaxId());
+    }
+
+    public void clear() {
+        description.setText(EMPTY);
+        localities.setRowCount(0);
+        categories.setRowCount(0);
+        email.setText(EMPTY);
+        companyName.setText(EMPTY);
+        identificationNumber.setText(EMPTY);
+        firstName.setText(EMPTY);
+        lastName.setText(EMPTY);
+        phone.setText(EMPTY);
+        website.setText(EMPTY);
+        street.setText(EMPTY);
+        city.setText(EMPTY);
+        zipCode.setText(EMPTY);
+        taxId.setText(EMPTY);
+    }
+}

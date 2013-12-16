@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,22 +8,22 @@ import java.util.List;
 public class SupplierDetail implements IsSerializable {
 
     private Long supplierId;
-    private Integer overallRating;
+    private Integer overalRating;
     private boolean certified;
     private String description;
-    private ArrayList<LocalityDetail> localities;
-    private ArrayList<CategoryDetail> categories;
+    private ArrayList<ICatLocDetail> localities;
+    private ArrayList<ICatLocDetail> categories;
     private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
 
     public SupplierDetail() {
     }
 
-    public Integer getOverallRating() {
-        return overallRating;
+    public Integer getOveralRating() {
+        return overalRating;
     }
 
-    public void setOverallRating(int overallRating) {
-        this.overallRating = overallRating;
+    public void setOveralRating(int overalRating) {
+        this.overalRating = overalRating;
     }
 
     public boolean isCertified() {
@@ -33,23 +34,23 @@ public class SupplierDetail implements IsSerializable {
         this.certified = certified;
     }
 
-    public ArrayList<LocalityDetail> getLocalities() {
+    public ArrayList<ICatLocDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(List<LocalityDetail> localities) {
+    public void setLocalities(List<ICatLocDetail> localities) {
         if (localities != null) {
-            this.localities = new ArrayList<LocalityDetail>(localities);
+            this.localities = new ArrayList<ICatLocDetail>(localities);
         }
     }
 
-    public ArrayList<CategoryDetail> getCategories() {
+    public ArrayList<ICatLocDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<CategoryDetail> categories) {
+    public void setCategories(List<ICatLocDetail> categories) {
         if (categories != null) {
-            this.categories = new ArrayList<CategoryDetail>(categories);
+            this.categories = new ArrayList<ICatLocDetail>(categories);
         }
     }
 

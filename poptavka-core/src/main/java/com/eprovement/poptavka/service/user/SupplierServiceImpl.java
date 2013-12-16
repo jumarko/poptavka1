@@ -9,6 +9,8 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.Period;
+import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
@@ -50,7 +52,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
             RegisterService registerService, UserVerificationService userVerificationService,
             NotificationTypeService notificationTypeService) {
-        super(generalService, registerService, userVerificationService, notificationTypeService);
+        super(Supplier.class, generalService, registerService, userVerificationService, notificationTypeService);
         Validate.notNull(supplierDao);
         setDao(supplierDao);
         this.supplierAccessRoles = Arrays.asList(
@@ -101,10 +103,16 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     }
 
     @Override
-    protected List<Notification> getNotifications() {
+    protected List<Notification> getNotificationsWithDefaultPeriod() {
         return notificationTypeService.getNotificationsForSupplier();
     }
 
+    @Override
+    protected Map<Notification, Period> getNotificationsWithCustomPeriod() {
+        final HashMap<Notification, Period> customNotifications = new HashMap<>();
+        customNotifications.put(getWelcomeNotification(Registers.Notification.WELCOME_SUPPLIER), Period.INSTANTLY);
+        return customNotifications;
+    }
 
     /**
      * {@inheritDoc}
@@ -152,7 +160,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
         final Map<Locality, Long> suppliersCountForLocalitiesMap =
-                new HashMap<Locality, Long>(DemandService.ESTIMATED_NUMBER_OF_LOCALITIES);
+                new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_LOCALITIES);
         for (Map<String, Object> suppliersCountForLocality : suppliersCountForAllLocalities) {
             suppliersCountForLocalitiesMap.put((Locality) suppliersCountForLocality.get("locality"),
                     (Long) suppliersCountForLocality.get("suppliersCount"));
@@ -180,9 +188,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Locality locality) {
         Validate.notNull(locality, "locality cannot be null!");
-        return locality.getAdditionalInfo() != null
-                ? locality.getAdditionalInfo().getSuppliersCount()
-                : getDao().getSuppliersCountQuick(locality);
+        return getDao().getSuppliersCountQuick(locality);
     }
 
     /**
@@ -219,7 +225,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
         final Map<Category, Long> suppliersCountForCategoriesMap =
-                new HashMap<Category, Long>(DemandService.ESTIMATED_NUMBER_OF_CATEGORIES);
+                new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_CATEGORIES);
         for (Map<String, Object> suppliersCountForCategory : suppliersCountForAllCategories) {
             suppliersCountForCategoriesMap.put((Category) suppliersCountForCategory.get("category"),
                     (Long) suppliersCountForCategory.get("suppliersCount"));
@@ -267,9 +273,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Transactional(readOnly = true)
     public long getSuppliersCountQuick(Category category) {
         Validate.notNull(category, "category cannot be null!");
-        return category.getAdditionalInfo() != null
-                ? category.getAdditionalInfo().getSuppliersCount()
-                : getDao().getSuppliersCountQuick(category);
+        return getDao().getSuppliersCountQuick(category);
     }
 
     /**
@@ -290,6 +294,11 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     void sendPotentialDemandsToNewSupplier(Supplier newSupplier) {
         Validate.notNull(newSupplier, "newSupplier cannot be null");
 
+        if (newSupplier.getBusinessUser().isUserFromExternalSystem()) {
+            LOGGER.info("action=send_potential_demands_to_supplier status=skip reason=external_supplier supplier={} ",
+                    newSupplier);
+            return;
+        }
         LOGGER.info("action=send_potential_demands_to_supplier status=start supplier={}", newSupplier);
 
         final PotentialSupplier newPotentialSupplier = new PotentialSupplier(newSupplier);
@@ -314,8 +323,8 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * This should filter low rating and similar unsuitable suppliers.
      * This also filter demands in invalid states.
      *
-     * @param newPotentialSupplier
-     * @param demand
+     * @param newPotentialSupplier new potential supplier candidate
+     * @param demand demand for which potential supplier candidates
      * @return true if given supplier is a good potential supplier for demand, false otherwise
      * @see com.eprovement.poptavka.service.demand.NaiveSuppliersSelection
      */

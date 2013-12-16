@@ -1,0 +1,386 @@
+@CHARSET "UTF-8";
+
+/**
+ * Css Resources for main basic layout for rest views
+ *
+ * @author Jaro
+ *
+ */
+.header-container {
+    background: url(images/header_bg.jpg) no-repeat top right;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 134px;
+    width: 100%;
+    z-index: 5;
+}
+.toolbar-container {
+    background: #cad4de;
+    position: absolute;
+    top: 134px;
+    left: 0;
+    min-height: 50px;
+    width: 100%;
+    z-index: 10;
+}
+.body-container {
+    background: url(images/content_bg.jpg) repeat;
+    position: absolute;
+    top: 184px;
+    bottom: 0;
+    left: 0;
+    /*height is calculated from top - bottom, that's why we use absolute positioning*/
+    width: 100%;
+    z-index: 7;
+}
+
+.layout-user-main {
+    width: 100%;
+    height: 100%;
+}
+
+.full-size-panel {
+    width: 100%;
+    height: 100%;
+    background: url(images/content_bg.jpg) repeat scroll 0 0 transparent;
+}
+
+.fluid-main-grid {
+    padding: 0 20px 0 0;
+}
+
+.fluid-main-grid .grid-span7 {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    height:100%;
+    width:57.265%;
+    margin-right:1.564%;
+}
+
+.fluid-main-grid .grid-span5 {
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:57%;
+    right:0;
+    height:100%;
+    width:40.1709%;
+    margin-left:1.564%;
+    margin-right:1.564%;
+}
+
+.search-view {
+    margin: 0;
+    padding: 0;
+    float: right;
+}
+
+.search-view ul {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    list-style: none;
+}
+
+.search-view ul li {
+    display: inline;
+}
+
+.search-view select {
+    width: 115px;
+}
+
+.search-view input {
+    padding: 0 2px;
+    width: 100px;
+}
+
+.advanced-search-modal {
+    width: 1075px;
+    /* Changing the width of a Twitter Bootstrap Modal:
+     * Here we set the width of the modal element to 1075px wide, this is the actual width we are setting the modal too.
+     * We then need to accomodate for the new width by modifying the modal margins.
+     * We change the left margin from -280px to -532px, 1075 / 2 */
+    margin: -250px 0 0 -532px;
+    height: 600px;
+}
+
+.advanced-search-small-modal {
+    width: 750px;
+    /* Changing the width of a Twitter Bootstrap Modal:
+     * Here we set the width of the modal element to 750px wide, this is the actual width we are setting the modal too.
+     * We then need to accomodate for the new width by modifying the modal margins.
+     * We change the left margin from -280px to -375px, 1075 / 2 */
+    margin: -250px 0 0 -375px;
+    height: 400px;
+}
+
+/*
+*	Toolbar Module styles
+*
+*/
+.submenu-icon {
+    display: none;
+    margin: 10px;
+}
+.submenu-header {
+    background: url(images/submenu_header.png) no-repeat;
+    color: #ffffff;
+    font-weight: bold;
+    line-height: 26px;
+    margin: 11px 0 -6px 0;
+    padding-left: 10px;
+    height: 36px;
+}
+
+.content-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 20px;
+}
+.content-container.home {
+    left: 330px;
+}
+.content-container.user {
+    left: 220px;
+}
+
+.detail-container {
+
+}
+
+.left-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: url("images/left-container_bg.jpg") repeat-y top right;
+    overflow: auto;
+}
+.left-container.home {
+    width: 330px;
+}
+.left-container.user {
+    width: 220px;
+}
+
+.submenu-list {
+    /*background: url(images/left-container-top.png) no-repeat top left;*/
+    list-style: none;
+    margin: 0;
+    padding: 20px 0 0 13px;
+}
+
+.submenu-list .gwt-Button {
+    background: url(images/left-menu_bg.png) no-repeat;
+    width: 190px;
+    height: 39px;
+    display: block;    
+    padding: 0 0 2px 40px;
+    margin-bottom: 10px;
+    color: #443b19;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+}
+
+.submenu-list .gwt-Button:hover, .gwt-Button.act {
+    background: url(images/left-menu_hover.png) no-repeat;
+    color: #ffffff;
+}
+
+.pager {
+    background: url(images/tab_header.gif) repeat-x;
+    color: #ffffff;
+    border-bottom: 1px solid #07545a;
+}
+
+.filter-label {
+    color: #6F6B59;
+    font-size: 18px;
+    font-weight: lighter;
+    line-height: 30px;
+    padding: 0px 10px 10px;
+}
+/** Other Styles **/
+.data-grid-container {
+    /*margin: 20px;*/
+}
+.data-grid-container table {
+    padding: 0 20px 20px;
+    background: #e4dfcb;
+    border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+}
+
+.data-grid-container table:first-child  {
+    padding: 20px 20px 0;
+    background: #e4dfcb;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+}
+
+.data-grid-container table[align="center"] {
+    width: 100%;
+}
+
+.data-grid-container table[align="center"] img {
+    margin: 30px auto !important;
+    display: block;
+}
+
+.detail-info {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.popup-dropdown-container table {
+    background: #ffffff;
+    padding: 10px;
+    margin: 0;
+    line-height: 20px;
+    border: 1px solid #C2C8D2;
+    border-radius: 4px;
+    box-shadow: 0 0 3px #DDDDDD;
+}
+
+.tab-layout-container {
+    border: none;
+}
+
+.tab-layout-panel {
+    border: none !important;
+}
+
+.stack-layout {
+    border-bottom: 1px solid #BDA45D;
+    position: absolute !important;
+    left: 50px;
+    right: 50px;
+    top: 20px;
+    bottom: 20px;
+    max-height: 500px;
+}
+
+.stack-layout-panel-header {
+    cursor: pointer;
+    cursor: hand;
+    font-weight: bold;
+    padding: 6px;
+    border: 1px solid #BDA45D;
+    border-bottom: 0px;
+    background: url(images/stack-layout-panel-header.gif) repeat-x;
+    text-shadow: 0 2px 2px #FBF2D8;
+}
+
+.stack-layout-panel-header:hover {
+    background: #d3def6 url(images/gwt-style/hborder.png) repeat-x 0px
+        -1464px;
+    background: url(images/stack-layout-panel-header-hover.gif) repeat-x;
+}
+
+/* Client And Supplier Dashboard Styles*/
+
+.dashboard {
+    background: #e3deca;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 20px;
+}
+
+.dashboard .well-content {
+    background: #FAF7EB !important;
+}
+.dashboard .well-content .well-padding {
+    padding: 0 25px !important;
+}
+/*.dashboard .dashboard-block {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+}*/
+
+/*.dashboard h4 {
+    background: url(images/header2.gif) repeat-x scroll left top #F1ECDA;
+    border-bottom: 1px solid #e8e3d2;
+    border-left: 1px solid #D1CCBB;    
+    border-right: 1px solid #D1CCBB;
+    color: #6F6B59;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0;
+    padding: 5px 14px;
+    text-align: left;
+    border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+}*/
+
+/*.dashboard h5 {
+    color: #6F6B59; 
+    font-weight: normal; 
+    margin: 0px; 
+    padding: 9px 15px;
+    font-size: 15px;
+    border-bottom: 1px solid #e9e5d7;
+}*/
+
+/*.dashboard .dashboard-block-content {
+    background: #faf7eb;
+    border-bottom: 1px solid #aba798;    
+    padding: 0;
+    border-radius: 0 0 5px 5px;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+}*/
+/*
+.dashboard .dashboard-block-content > .span12 {
+    border-left: 1px solid #D1CCBB;
+    border-right: 1px solid #D1CCBB;
+}*/
+/*
+*/.dashboard  .well-content .gwt-HTML.label-list {
+    color: #6f6b59;
+    padding: 10px 15px;
+    border-bottom: 1px solid #e9e5d7;
+    border-top: 1px solid #fefdfa;
+    cursor: pointer;
+}
+
+.dashboard  .well-content .gwt-HTML.label-list:hover {
+    background: #ffffff;
+}
+
+.dashboard  .well-content .gwt-HTML.label-list strong {
+    color: #249a06;
+}
+
+.dashboard  .well-content .gwt-HTML.label-list span {
+    text-decoration: underline;
+}
+
+.dashboard  .well-content .gwt-Label.pull-left {
+    background: url(images/dashboard-arrow-icon.png) no-repeat scroll right 16px;
+    width: 145px;
+}
+
+.dashboard  .well-content .description {
+    float: left;
+    font-size: 14px;
+    line-height: 40px;
+    padding-left: 15px;
+}
+
+.notification-panel {}

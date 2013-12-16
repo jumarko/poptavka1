@@ -1,13 +1,9 @@
 package com.eprovement.poptavka.domain.address;
 
-import com.eprovement.poptavka.domain.common.AdditionalInfo;
-import com.eprovement.poptavka.domain.common.AdditionalInfoAware;
 import com.eprovement.poptavka.domain.common.TreeItem;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.util.orm.OrmConstants;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +12,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import java.util.List;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
  * Some type of locality.
@@ -36,16 +31,26 @@ import javax.persistence.NamedQuery;
                 query = "select locality "
                         + " from Locality locality\n"
                         + "where LENGTH(locality.name) < :length"
-                        + " and locality.type = :type"
-                        + " and locality.name like :name"),
+                        + " and lower(locality.name) like lower(:name)"),
         @NamedQuery(name = "getLocalitiesByMinLength",
                 query = "select locality "
                         + " from Locality locality\n"
                         + "where LENGTH(locality.name) >= :length"
+                        + " and lower(locality.name) like (:name)"),
+        @NamedQuery(name = "getLocalitiesByMaxLengthAndType",
+                query = "select locality "
+                        + " from Locality locality\n"
+                        + "where LENGTH(locality.name) < :length"
                         + " and locality.type = :type"
-                        + " and locality.name like :name")
+                        + " and lower(locality.name) like lower(:name)"),
+        @NamedQuery(name = "getLocalitiesByMinLengthAndType",
+                query = "select locality "
+                        + " from Locality locality\n"
+                        + "where LENGTH(locality.name) >= :length"
+                        + " and locality.type = :type"
+                        + " and lower(locality.name) like (:name)")
 })
-public class Locality extends TreeItem implements AdditionalInfoAware {
+public class Locality extends TreeItem {
 
     private String name;
 
@@ -55,10 +60,6 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
 
     @ManyToMany(mappedBy = "localities")
     private List<Demand> demands;
-
-    @OneToOne
-    @Cascade(CascadeType.ALL)
-    private AdditionalInfo additionalInfo;
 
     public Locality(String name, LocalityType type) {
         this.name = name;
@@ -103,15 +104,6 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
         this.type = type;
     }
 
-    public AdditionalInfo getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    public void setAdditionalInfo(AdditionalInfo additionalInfo) {
-        this.additionalInfo = additionalInfo;
-    }
-
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -119,7 +111,6 @@ public class Locality extends TreeItem implements AdditionalInfoAware {
         sb.append("{id='").append(getId()).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", type=").append(type);
-        sb.append(", additionalInfo=").append(additionalInfo);
         sb.append('}');
         return sb.toString();
     }

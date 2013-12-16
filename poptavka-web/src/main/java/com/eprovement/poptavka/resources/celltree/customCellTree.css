@@ -14,10 +14,10 @@
  * the License.
  */
 .cellTreeWidget {
-    background: url(images/left-container-top.png) no-repeat scroll left top transparent;
+/*    background: url(images/left-container-top.png) no-repeat scroll left top transparent;
     border: none;
     padding: 15px 0 0;
-    color: #443b19;
+    color: #443b19;*/
 }
 
 .cellTreeEmptyMessage {
@@ -84,7 +84,6 @@
 
 .cellTreeTopItem .cellTreeTopItemImageValue {
     padding-bottom: 1px;
-    height: 27px;
     line-height: 27px;
 }
 
@@ -117,4 +116,15 @@
 .cellTreeShowMoreButton {
     padding-left: 16px;
     outline: none;
+}
+
+/* IE fixes */
+@if user.agent ie8 ie9 ie10 { 
+    .cellTreeTopItemImage {
+    top: 0px;
+    }
+    
+    .cellTreeItemImage {
+    top: 0px;    
+    }
 }

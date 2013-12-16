@@ -1,35 +1,39 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:bb="urn:import:com.github.gwtbootstrap.client.ui.base"
+             xmlns:h="urn:import:com.eprovement.poptavka.client.root.header.ui"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with field='res'
-		type='com.eprovement.poptavka.resources.StyleResource' />
-	<ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-	<ui:style>
-		.important {
-			font-weight: bold;
-		}
-	</ui:style>
+    <g:HTMLPanel>
+        <!-- Logo -->
+        <g:Button ui:field='logo' styleName='{res.header.logo}' />
 
-	<g:HTMLPanel ui:field='headerHolder'>
-		<!-- Logo -->
-		<!-- <div style="position: absolute; background: url(images/logo.png) no-repeat
-			scroll 0% 0% transparent; left: 10px; width: 368px; height: 64px; top: 24px;">
-			</div> -->
-		<!-- end Logo -->
+        <!--Menu-->
+        <h:MenuElement ui:field='menu' />
+        <!--<h:MenuElement ui:field='menu' styleName='{res.header.menu}'/>-->
+        <!--<g:SimplePanel ui:field="menu" styleName='{res.header.menu}'/>-->
 
-		<!-- Login Button -->
-		<div class='{res.layout.login}'>
-			<div class='{res.layout.loginButton}'>
-				<g:Anchor ui:field="loginButton">
-					<ui:msg key="headerLogIn">Log In</ui:msg>
-				</g:Anchor>
-			</div>
-			<div id="loginAnchor"
-				style="position: absolute; width: 150px; right: 0px; z-index: 151;">
-			</div>
-		</div>
+        <!--Search-->
+        <h:SearchElement ui:field="search" />
 
-	</g:HTMLPanel>
+        <!--Header Toolbar-->        
+        <b:Tooltip text="My profile" placement="BOTTOM">
+            <bb:IconAnchor ui:field='settingsAnchor' icon="WRENCH" iconSize="TWO_TIMES" styleName='{res.header.settingsIcon}'/>
+        </b:Tooltip>
+    
+        <!--Notifications-->
+        <h:NotificationsElement ui:field='notifications' styleName='{res.header.loginBar}'/>
+
+        <!--Login-->
+        <!--<h:LoginElement ui:field='login'/>-->
+        <h:LoginElement ui:field='login'/>
+
+        <!--Logout-->
+        <!--<h:LogoutElement ui:field='logout' styleName='{res.header.login}'/>-->
+        <h:LogoutElement ui:field='logout'/>
+
+    </g:HTMLPanel>
 </ui:UiBinder>

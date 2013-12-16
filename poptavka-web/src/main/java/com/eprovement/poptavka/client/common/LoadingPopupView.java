@@ -1,17 +1,17 @@
 package com.eprovement.poptavka.client.common;
 
+import com.eprovement.poptavka.client.common.LoadingPopupPresenter.LoadingPopupViewInterface;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Modal;
-import com.google.gwt.user.client.ui.Composite;
+import com.github.gwtbootstrap.client.ui.constants.BackdropType;
 import com.google.gwt.user.client.ui.Label;
 
-public class LoadingPopupView extends Composite
-        implements LoadingPopupPresenter.LoadingPopupViewInterface {
+public class LoadingPopupView extends Modal implements LoadingPopupViewInterface {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -20,11 +20,11 @@ public class LoadingPopupView extends Composite
 
     interface LoadingPopupViewUiBinder extends UiBinder<Widget, LoadingPopupView> {
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiField attributes. **/
-    @UiField Modal modal;
     @UiField Label loadingMessage;
     @UiField SimpleIconLabel loader;
 
@@ -33,19 +33,21 @@ public class LoadingPopupView extends Composite
     /**************************************************************************/
     @Override
     public void createView() {
-        initWidget(uiBinder.createAndBindUi(this));
+        add(uiBinder.createAndBindUi(this));
+
+        addStyleName(StyleResource.INSTANCE.initial().loaderModal());
+        setWidth(200);
+        setBackdrop(BackdropType.STATIC);
+        setKeyboard(false);
+        setDynamicSafe(true);
+        setHideOthers(false);
 
         loader.setImageResource(StyleResource.INSTANCE.images().loaderIcon33());
-        StyleResource.INSTANCE.modal().ensureInjected();
     }
 
     public void show(String message) {
         loadingMessage.setText(message);
-        modal.show();
-    }
-
-    public void hide() {
-        modal.hide();
+        show();
     }
 
     /**************************************************************************/

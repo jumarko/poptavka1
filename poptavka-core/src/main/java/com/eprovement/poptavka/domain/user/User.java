@@ -120,6 +120,21 @@ public class User extends DomainObject {
         this.activationEmail = activationEmail;
     }
 
+    /**
+     * Compose appropriate display name for user.
+     *
+     * <p>
+     *     By default, this implementation simple return an email.
+     *     However, business user's should have their names (not emails, because we do not want to allow email address
+     * sharing!).
+     *</p>
+     *
+     * @return display name for user, by default his email
+     */
+    public String getDisplayName() {
+        return email;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

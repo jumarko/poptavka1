@@ -1,19 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter.ClientSettingsViewInterface;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 
 /**
  *
@@ -27,28 +21,13 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     /**************************************************************************/
     public interface ClientSettingsViewInterface extends LazyView {
 
-        void commit();
-
         void setClientSettings(SettingDetail detail);
 
         SettingDetail updateClientSettings(SettingDetail detail);
 
-        boolean isSettingChange();
+        boolean isValid();
 
         Widget getWidgetView();
-    }
-    /**************************************************************************/
-    /* ATTRIBUTES                                                             */
-    /**************************************************************************/
-    //history of changes
-    private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
-    private SettingDetail settingsDetail;
-
-    /**************************************************************************/
-    /* BIND                                                                   */
-    /**************************************************************************/
-    @Override
-    public void bindView() {
     }
 
     /**************************************************************************/
@@ -62,16 +41,10 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     /* METHODS                                                                */
     /**************************************************************************/
     public void onSetClientSettings(SettingDetail detail) {
-        this.settingsDetail = detail;
-
         view.setClientSettings(detail);
     }
 
     public SettingDetail updateClientSettings(SettingDetail detail) {
         return view.updateClientSettings(detail);
-    }
-
-    public boolean isClientSettingChanged() {
-        return !updatedFields.isEmpty();
     }
 }

@@ -1,0 +1,70 @@
+/**
+ * Css Resources for main basic layout for initial views
+ *
+ * @author Jaro
+ *
+ */
+html {
+}
+
+body {
+    /*min-width: 480px;*/
+}
+
+body > div {
+    /*min-width: 480px;*/
+}
+
+
+.homepage {}
+.root-category-cell {}
+
+.scroll-container {}
+
+/******************************************************************************/
+/*  Toolbar styles                                                            */
+/******************************************************************************/
+.toolbar {}
+.toolbar .left-icon {
+    display: block;
+    margin: 11px 10px 0 10px;
+}
+
+.toolbar .header {    
+    padding-left: 10px;
+}
+
+/******************************************************************************/
+/*  Footer View                                                               */
+/******************************************************************************/
+.footer {
+}
+.footer .links {
+    width: auto;
+    margin: 0 4px 6px 0;
+}
+.footer .links .button {
+}
+.footer .links .button:hover {
+}
+.footer .links .separator {
+    padding: 2px 9px;
+}
+.border-separator {
+    display: none;
+}
+.footer .block {
+}
+
+.footer-toggle {
+}
+
+/* Loader Modal Styles */
+.loader-modal {}
+
+/******************************************************************************/
+/*  Common Responsive                                                         */
+/******************************************************************************/
+.hide-small {}
+.expand-small {}
+.half-expand-small {}

@@ -51,14 +51,9 @@ public class NotificationTypeServiceImpl implements NotificationTypeService {
         return notifications;
     }
 
-    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
-
-    /**
-     * Load notifications of given type.
-     * Notifications are fairly static therefore we can cache them for a longer period of time.
-     */
+    @Override
     @Cacheable(cacheName = "cache5h")
-    private List<Notification> getNotifications(NotificationType notificationType) {
+    public List<Notification> getNotifications(NotificationType notificationType) {
         final Search notificationSearch = new Search(Notification.class);
         notificationSearch.addFilterEqual("notificationType", notificationType);
         return  generalService.search(notificationSearch);

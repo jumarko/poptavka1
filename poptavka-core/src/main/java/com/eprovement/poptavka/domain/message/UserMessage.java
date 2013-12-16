@@ -47,13 +47,12 @@ import javax.persistence.NamedQuery;
                         + " from UserMessage userMessage"
                         + " left join userMessage.message.roles toRole\n"
                         + "where userMessage.message.threadRoot = :rootMessage"
-                        + " and toRole.type = 'TO'"
                         + " and ((userMessage.message.sender = :user"
                         + " and toRole.user = :counterparty)"
                         + " or (userMessage.message.sender = :counterparty"
                         + " and toRole.user = :user))"
                         + " and userMessage.user = :user\n"
-                        + "order by userMessage.message.sent desc"),
+                        + "order by userMessage.message.id desc"),
         @NamedQuery(name = "getPotentialOfferConversation",
                 query = " select userMessage.message"
                         + " from UserMessage userMessage"
@@ -71,7 +70,6 @@ import javax.persistence.NamedQuery;
                         + " from UserMessage userMessage"
                         + " inner join userMessage.message.roles role\n"
                         + "where userMessage.user = :user"
-                        + " and role.type = 'TO'"
                         + " and role.user = :user"),
         @NamedQuery(name = "getSentItems",
                 query = "select userMessage"
@@ -166,7 +164,6 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and offer is null"
-                        + " and toRole.type = 'TO'"
                         + " and ((latestUserMessage.message.sender = :user"
                         + " and toRole.user = supplier)"
                         + " or (latestUserMessage.message.sender = supplier"
@@ -188,7 +185,6 @@ import javax.persistence.NamedQuery;
                         + " and rootMessage.demand.client.businessUser = :user"
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
-                        + " and toRole.type = 'TO'"
                         + " and ((latestUserMessage.message.sender = :user"
                         + " and toRole.user = supplier)"
                         + " or (latestUserMessage.message.sender = supplier"
@@ -211,7 +207,6 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and offer.state = :offerState"
-                        + " and toRole.type = 'TO'"
                         + " and ((latestUserMessage.message.sender = :user"
                         + " and toRole.user = supplier)"
                         + " or (latestUserMessage.message.sender = supplier"
@@ -241,7 +236,6 @@ import javax.persistence.NamedQuery;
                         + " and latestUserMessage.user = :user"
                         + " and latestUserMessage.message.firstBorn is null"
                         + " and offer.state.code IN (:offerStates)"
-                        + " and toRole.type = 'TO'"
                         + " and ((latestUserMessage.message.sender = :user"
                         + " and toRole.user = supplier)"
                         + " or (latestUserMessage.message.sender = supplier"

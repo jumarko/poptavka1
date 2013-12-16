@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayDisplayName;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
@@ -12,13 +11,13 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
+public class OfferDetail implements IsSerializable {
 
     /** Enums. **/
     public enum OfferField {
 
         CREATED("created"),
-        FINNISH_DATE("finishDate");
+        FINISH_DATE("finishDate");
 
         public static final String SEARCH_CLASS = "offer";
         private String value;
@@ -45,7 +44,7 @@ public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
     //Supplier info
     private long supplierId;
     private String displayName;
-    private int rating;
+    private Integer rating;
 
     /** for serialization. **/
     public OfferDetail() {
@@ -143,7 +142,6 @@ public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
         this.state = state;
     }
 
-    @Override
     public String getDisplayName() {
         return displayName;
     }
@@ -152,11 +150,11 @@ public class OfferDetail implements IsSerializable, TableDisplayDisplayName {
         this.displayName = displayName;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 

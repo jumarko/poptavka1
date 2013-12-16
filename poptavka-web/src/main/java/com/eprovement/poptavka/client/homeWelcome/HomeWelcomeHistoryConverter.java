@@ -1,12 +1,9 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks.HowItWorksViews;
-import com.eprovement.poptavka.client.root.info.FooterInfo;
-import com.eprovement.poptavka.client.root.info.FooterInfo.FooterInfoViews;
 
 /**
  * History converter class. Handles history for HomeWelcomeModule
@@ -41,16 +38,11 @@ public class HomeWelcomeHistoryConverter implements HistoryConverter<HomeWelcome
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeWelcomeEventBus eventBus) {
+        eventBus.setHistoryStoredForNextOne(false);
         if (HowItWorksViews.HOW_IT_WORKS_DEMAND.getValue().equals(param)) {
-            eventBus.setBody(HowItWorks.createHowItWorksDemand());
+            eventBus.displayHowItWorkdsDemands();
         } else if (HowItWorksViews.HOW_IT_WORKS_SUPPLIER.getValue().equals(param)) {
-            eventBus.setBody(HowItWorks.createHowItWorksSupplier());
-        } else if (FooterInfoViews.ABOUT_US.getValue().equals(param)) {
-            eventBus.setBody(FooterInfo.createAboutUs());
-        } else if (FooterInfoViews.FAQ.getValue().equals(param)) {
-            eventBus.setBody(FooterInfo.createFAQ());
-        } else if (FooterInfoViews.PRIVACY_POLICY.getValue().equals(param)) {
-            eventBus.setBody(FooterInfo.createPrivacyPolicy());
+            eventBus.displayHowItWorkdsSuppliers();
         } else {
             eventBus.goToHomeWelcomeModule();
         }

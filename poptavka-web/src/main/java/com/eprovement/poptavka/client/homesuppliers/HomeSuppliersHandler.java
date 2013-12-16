@@ -3,14 +3,13 @@ package com.eprovement.poptavka.client.homesuppliers;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
-import java.util.LinkedList;
 import java.util.List;
 
 @EventHandler
@@ -30,50 +29,52 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
         homeSuppliersService.getSupplier(supplierID, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
             public void onSuccess(FullSupplierDetail result) {
-                eventBus.selectSupplier(result);
+                eventBus.displaySupplierDetail(result);
             }
         });
     }
 
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Long>(eventBus) {
+        homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Integer>(eventBus) {
             @Override
-            public void onSuccess(Long result) {
-//                grid.createAsyncDataProvider(result.intValue());
-                grid.getDataProvider().updateRowCount(result.intValue(), true);
+            public void onSuccess(Integer result) {
+                grid.getDataProvider().updateRowCount(result, true);
             }
         });
     }
 
     public void onGetData(SearchDefinition searchDefinition) {
         homeSuppliersService.getSuppliers(searchDefinition,
-                new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<FullSupplierDetail> result) {
-                        eventBus.displaySuppliers(result);
-                    }
-                });
+            new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<FullSupplierDetail> result) {
+                    eventBus.displaySuppliers(result);
+                }
+            });
     }
 
     /**************************************************************************/
     /* Get Categories data                                                    */
     /**************************************************************************/
-    public void onGetCategoryAndSetModuleByHistory(final SearchModuleDataHolder searchDataHolder,
-            final LinkedList<TreeItem> tree, final long categoryID, final int page, final long supplierID) {
-        homeSuppliersService.getCategory(categoryID, new SecuredAsyncCallback<CategoryDetail>(eventBus) {
-            @Override
-            public void onSuccess(CategoryDetail result) {
-                eventBus.setModuleByHistory(searchDataHolder, tree, result, page, supplierID);
-            }
-        });
+    /**
+     * Restore module from history.
+     * Given strings represents
+     */
+    public void onSetModuleByHistory(final SearchModuleDataHolder searchDataHolder,
+            String categoryIdStr, String pageStr, String supplierIdStr) {
+        final int categoryId = categoryIdStr.equals("null") ? -1 : Integer.parseInt(categoryIdStr);
+        final int page = pageStr.equals("null") ? -1 : Integer.parseInt(pageStr);
+        final long supplierId = supplierIdStr.equals("null") ? -1 : Long.parseLong(supplierIdStr);
+
+        if (categoryId == -1) {
+            eventBus.goToHomeSuppliersModuleByHistory(searchDataHolder, null, page, supplierId);
+        } else {
+            homeSuppliersService.getCategory(categoryId, new SecuredAsyncCallback<ICatLocDetail>(eventBus) {
+                @Override
+                public void onSuccess(ICatLocDetail result) {
+                    eventBus.goToHomeSuppliersModuleByHistory(searchDataHolder, result, page, supplierId);
+                }
+            });
+        }
     }
-//    public void onGetParentsWithIndexes(long categoryId) {
-//        homeSuppliersService.getCategoryParentsWithIndexes(categoryId,
-//                new SecuredAsyncCallback<LinkedList<CategoryDetail, Integer>>(eventBus) {
-//                    @Override
-//                    public void onSuccess(LinkedList<CategoryDetail, Integer> result) {
-//                        eventBus.openNodesAccoirdingToHistory(result);
-//                    }
-//                });
-//    }
 }

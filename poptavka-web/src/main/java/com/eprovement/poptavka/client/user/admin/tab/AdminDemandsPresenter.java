@@ -4,17 +4,13 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
-import com.eprovement.poptavka.client.common.ChangeMonitor;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategorySelectorView;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorView;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.type.ClientDemandType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -23,23 +19,17 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.CloseEvent;
-import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,13 +40,9 @@ import java.util.List;
 public class AdminDemandsPresenter
         extends LazyPresenter<AdminDemandsPresenter.AdminDemandsInterface, AdminEventBus> {
 
-    private int changeCount = 0;
-    //history of changes
-    private HashMap<Long, ArrayList<ChangeDetail>> updatedFields = new HashMap<Long, ArrayList<ChangeDetail>>();
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
-    //detail related
-    private Boolean detailDisplayed = false;
+    private boolean editingCategories;
 
     /**
      * Interface for widget AdminMessagesView.
@@ -156,59 +142,48 @@ public class AdminDemandsPresenter
         view.getAdminDemandDetail().getEditCatBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initCategoryWidget(
-                        view.getAdminDemandDetail().getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminDemandDetail().getCategories(), true);
-                view.getAdminDemandDetail().getSelectorWidgetPopup().center();
+                editingCategories = true;
+                eventBus.initCatLocSelector(
+                        view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(),
+                        new CatLocSelectorBuilder.Builder()
+                            .initCategorySelector()
+                            .initSelectorManager()
+                            .withCheckboxes()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                            .build(),
+                        Constants.ADMIN_DEMANDS);
+                eventBus.setCatLocs(view.getAdminDemandDetail().getCategories());
+                view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });
         view.getAdminDemandDetail().getEditLocBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.initLocalityWidget(
-                        view.getAdminDemandDetail().getSelectorWidgetPopup(),
-                        Constants.WITH_CHECK_BOXES,
-                        CategoryCell.DISPLAY_COUNT_DISABLED,
-                        view.getAdminDemandDetail().getLocalities(), true);
-                view.getAdminDemandDetail().getSelectorWidgetPopup().center();
+                editingCategories = false;
+                eventBus.initCatLocSelector(
+                        view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(),
+                        new CatLocSelectorBuilder.Builder()
+                            .initLocalitySelector()
+                            .initSelectorManager()
+                            .withCheckboxes()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                            .build(),
+                        -Constants.ADMIN_DEMANDS);
+                view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });
-        view.getAdminDemandDetail().getSelectorWidgetPopup().addCloseHandler(
-                new CloseHandler<PopupPanel>() {
-                    @Override
-                    public void onClose(CloseEvent<PopupPanel> event) {
-                        if (view.getAdminDemandDetail().getSelectorWidgetPopup()
-                                .getWidget() instanceof CategorySelectorView) {
-                            view.getAdminDemandDetail().setCategories(
-                                    ((CategorySelectorView) view.getAdminDemandDetail()
-                                        .getSelectorWidgetPopup().getWidget())
-                                        .getCellListDataProvider().getList());
-                        } else if (view.getAdminDemandDetail().getSelectorWidgetPopup()
-                                .getWidget() instanceof LocalitySelectorView) {
-                            view.getAdminDemandDetail().setLocalities(
-                                    ((LocalitySelectorView) view.getAdminDemandDetail()
-                                        .getSelectorWidgetPopup().getWidget())
-                                        .getCellListDataProvider().getList());
-                        }
-                    }
-                });
-        view.getAdminDemandDetail().setChangeHandler(new ChangeHandler() {
+        view.getAdminDemandDetail().getSelectorWidgetPopup().getSubmitBtn().addClickHandler(new ClickHandler() {
             @Override
-            public void onChange(ChangeEvent event) {
-                addChange((ChangeMonitor) event.getSource());
-            }
-        });
-        view.getDataGrid().setRowStyles(new RowStyles<FullDemandDetail>() {
-            @Override
-            public String getStyleNames(FullDemandDetail rowObject, int rowIndex) {
-//                DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-                //alebo nejaky novy attribute v FullDemandDetail - nieco ako read
-                if (updatedFields.containsKey(rowObject.getDemandId())) {
-                    return Storage.RSCS.common().changed();
+            public void onClick(ClickEvent event) {
+                if (editingCategories) {
+                    eventBus.fillCatLocs(
+                            view.getAdminDemandDetail().getCategories(),
+                            Constants.ADMIN_DEMANDS);
+                } else {
+                    eventBus.fillCatLocs(
+                            view.getAdminDemandDetail().getLocalities(),
+                            -Constants.ADMIN_DEMANDS);
                 }
-                return Storage.RSCS.common().emptyStyle();
             }
         });
     }
@@ -235,8 +210,6 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getEndDate().equals(value)) {
-                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.END_DATE,
-                            object.getDemandId(), object.getEndDate(), value);
                     object.setEndDate(value);
                 }
             }
@@ -251,8 +224,6 @@ public class AdminDemandsPresenter
             @Override
             public void update(int index, FullDemandDetail object, Date value) {
                 if (!object.getValidTo().equals(value)) {
-                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.VALID_TO,
-                            object.getDemandId(), object.getValidTo(), value);
                     object.setValidTo(value);
                 }
             }
@@ -269,8 +240,6 @@ public class AdminDemandsPresenter
                 for (DemandStatus demandStatusType : DemandStatus.values()) {
                     if (demandStatusType.getValue().equals(value)) {
                         if (!object.getDemandStatus().equals(demandStatusType)) {
-                            manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.DEMAND_STATUS,
-                                    object.getDemandId(), object.getDemandStatus(), value);
                             object.setDemandStatus(DemandStatus.valueOf(demandStatusType.name()));
                         }
                     }
@@ -289,8 +258,6 @@ public class AdminDemandsPresenter
                 for (ClientDemandType clientDemandType : ClientDemandType.values()) {
                     if (clientDemandType.getValue().equals(value)) {
                         if (!object.getDemandType().equals(clientDemandType.name())) {
-                            manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.DEMAND_TYPE,
-                                    object.getDemandId(), object.getDemandType(), value);
                             object.setDemandType(clientDemandType.name());
                         }
                     }
@@ -306,33 +273,11 @@ public class AdminDemandsPresenter
         view.getDemandTitleColumn().setFieldUpdater(new FieldUpdater<FullDemandDetail, String>() {
             @Override
             public void update(int index, FullDemandDetail object, String value) {
-                if (!object.getTitle().equals(value)) {
-                    manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField.TITLE,
-                            object.getDemandId(), object.getTitle(), value);
-                    object.setTitle(value);
+                if (!object.getDemandTitle().equals(value)) {
+                    object.setDemandTitle(value);
                 }
             }
         });
-    }
-
-    private void manageUpdatedFieldsOfColumns(FullDemandDetail.DemandField demandField,
-            long demandId, Object originalValue, Object value) {
-        if (!updatedFields.containsKey(demandId)) {
-            ChangeDetail changeDetail = new ChangeDetail(demandField.getValue());
-            changeDetail.setOriginalValue(originalValue);
-            changeDetail.setValue(value);
-            if (updatedFields.containsKey(demandId)) {
-                updatedFields.get(demandId).add(changeDetail);
-                changeCount++;
-            } else {
-                ArrayList<ChangeDetail> changes = new ArrayList<ChangeDetail>();
-                changes.add(changeDetail);
-                updatedFields.put(demandId, changes);
-                changeCount++;
-            }
-        }
-        view.getDataGrid().redraw();
-        view.getChangesLabel().setText(Integer.toString(changeCount));
     }
 
     /**
@@ -363,9 +308,6 @@ public class AdminDemandsPresenter
 
     private void displayDemandDetail(FullDemandDetail demand) {
         view.getAdminDemandDetail().setDemandDetail(demand);
-        if (updatedFields.containsKey(demand.getDemandId())) {
-            view.getAdminDemandDetail().setFieldChanges(updatedFields.get(demand.getDemandId()));
-        }
     }
 
     /**
@@ -377,10 +319,8 @@ public class AdminDemandsPresenter
             public void onClick(ClickEvent event) {
                 if (Window.confirm("Realy commit changes?")) {
                     eventBus.loadingShow("Commiting...");
-                    eventBus.updateDemands(updatedFields);
-                    updatedFields.clear();
-                    view.getAdminDemandDetail().resetChangeMonitors();
-                    changeCount = 0;
+                    //TODO LATER if needed refactor - use editor instead
+                    //eventBus.updateDemands(updatedFields);
                     view.getChangesLabel().setText("0");
                     view.getDataGrid().redraw();
                 }
@@ -395,16 +335,8 @@ public class AdminDemandsPresenter
         view.getRollbackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                for (Long demandId : updatedFields.keySet()) {
-                    for (ChangeDetail change : updatedFields.get(demandId)) {
-                        change.revert();
-                    }
-                    updatedFields.clear();
-                    view.getAdminDemandDetail().revertChangeMonitors();
-                    changeCount = 0;
-                    view.getChangesLabel().setText("0");
-                    view.getDataGrid().redraw();
-                }
+                view.getChangesLabel().setText("0");
+                view.getDataGrid().redraw();
             }
         });
     }
@@ -416,27 +348,11 @@ public class AdminDemandsPresenter
         view.getRefreshBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                if (updatedFields.isEmpty()) {
-                    view.getPager().startLoading();
-//                    eventBus.getDataCount(view.getDataGrid(), new SearchDefinition(searchDataHolder));
-                } else {
-                    Window.alert("You have some uncommited data. Do commit or rollback first");
-                }
+                view.getPager().startLoading();
             }
         });
     }
 
-//    public ArrayList<FullDemandDetail> getDataToUpdate(
-//            Map<FullDemandDetail, List<DemandChangeMonitor>> updatedFields) {
-//        ArrayList<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
-//        for (FullDemandDetail demand : updatedFields.keySet()) {
-//            for (DemandChangeMonitor change : updatedFields.get(demand)) {
-//                demand = demand.updateDemandFieldValue(change.getDemandField(), change.getValue());
-//            }
-//            demands.add(demand);
-//        }
-//        return demands;
-//    }
     public void onResponseUpdateDemands(Boolean result) {
         eventBus.loadingHide();
         if (result) {
@@ -444,36 +360,5 @@ public class AdminDemandsPresenter
         } else {
             Window.alert("Error while commiting");
         }
-    }
-
-    private void addChange(ChangeMonitor source) {
-        source.getChangeDetail().setValue(source.getValue());
-        FullDemandDetail demand = view.getAdminDemandDetail().getDemandDetail();
-        ArrayList<ChangeDetail> changes = (ArrayList<ChangeDetail>) updatedFields.get(demand.getDemandId());
-        if (source.isModified()) {
-            if (updatedFields.containsKey(demand.getDemandId())) {
-                //if contains already - remove before adding new
-                if (changes.contains(source.getChangeDetail())) {
-                    changes.remove(source.getChangeDetail());
-                    changeCount--;
-                }
-                changes.add(source.getChangeDetail());
-            } else {
-                ArrayList<ChangeDetail> changesNew = new ArrayList<ChangeDetail>();
-                changesNew.add(source.getChangeDetailCopy());
-                updatedFields.put(demand.getDemandId(), changesNew);
-            }
-            changeCount++;
-        } else {
-            if (updatedFields.containsKey(demand.getDemandId())) {
-                changes.remove(source.getChangeDetail());
-                if (changes.isEmpty()) {
-                    updatedFields.remove(demand.getDemandId());
-                    changeCount--;
-                }
-            }
-        }
-        view.getDataGrid().redraw();
-        view.getChangesLabel().setText(Integer.toString(changeCount));
     }
 }

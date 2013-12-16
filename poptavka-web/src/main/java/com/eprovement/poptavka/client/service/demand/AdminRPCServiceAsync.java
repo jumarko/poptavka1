@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -12,6 +13,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -82,15 +84,18 @@ public interface AdminRPCServiceAsync {
     void updateMessage(MessageDetail detailObject, AsyncCallback<MessageDetail> callback);
 
     //---------------------- NEW DEMANDS --------------------------------------------
-    void getAdminNewDemandsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
+    void getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus,
+            AsyncCallback<Long> callback);
 
-    void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<FullDemandDetail>> callback);
+    void getAdminDemandsByItsStatus(SearchDefinition searchDefinition, DemandStatus demandStatus,
+            AsyncCallback<List<NewDemandDetail>> callback);
 
-    void getThreadRootMessageId(long demandId, AsyncCallback<Long> callback);
+    void getConversation(long threadRootId, long loggedUserId, long counterPartyUserId,
+            AsyncCallback<List<MessageDetail>> callback);
 
-    void getFullDemandDetail(long demandId, AsyncCallback<FullDemandDetail> callback);
+    void createConversation(long demandId, long userAdminId, AsyncCallback<Long> callback);
 
-    void approveDemands(Set<FullDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
+    void approveDemands(Set<NewDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
     void getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
@@ -130,12 +135,4 @@ public interface AdminRPCServiceAsync {
     void updateProblem(ProblemDetail detailObject, AsyncCallback<ProblemDetail> callback);
 
     void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
-
-    void getConversation(long threadId, long userId, AsyncCallback<List<MessageDetail>> callback);
-
-    void getConversationForAdmin(long demandId, long userAdminId, AsyncCallback<List<MessageDetail>> callback);
-
-    void createConversation(long demandId, long userAdminId, AsyncCallback<Long> callback);
-
-    void sendQuestionMessage(MessageDetail messageToSend, AsyncCallback<MessageDetail> callback);
 }

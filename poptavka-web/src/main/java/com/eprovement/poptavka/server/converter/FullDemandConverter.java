@@ -8,8 +8,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
@@ -32,13 +31,13 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     /* Other converters                                                       */
     /**************************************************************************/
     private final Converter<Supplier, FullSupplierDetail> supplierConverter;
-    private final Converter<Locality, LocalityDetail> localityConverter;
-    private final Converter<Category, CategoryDetail> categoryConverter;
+    private final Converter<Locality, ICatLocDetail> localityConverter;
+    private final Converter<Category, ICatLocDetail> categoryConverter;
 
     private FullDemandConverter(
             Converter<Supplier, FullSupplierDetail> supplierConverter,
-            Converter<Locality, LocalityDetail> localityConverter,
-            Converter<Category, CategoryDetail> categoryConverter) {
+            Converter<Locality, ICatLocDetail> localityConverter,
+            Converter<Category, ICatLocDetail> categoryConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(supplierConverter);
         this.supplierConverter = supplierConverter;
@@ -50,7 +49,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     public FullDemandDetail convertToTarget(Demand source) {
         FullDemandDetail detail = new FullDemandDetail();
         detail.setDemandId(source.getId());
-        detail.setTitle(source.getTitle());
+        detail.setDemandTitle(source.getTitle());
         detail.setDescription(source.getDescription());
         detail.setPrice(source.getPrice());
         detail.setCreated(convertDate(source.getCreatedDate()));

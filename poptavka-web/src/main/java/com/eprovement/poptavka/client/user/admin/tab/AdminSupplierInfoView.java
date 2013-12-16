@@ -4,6 +4,8 @@
  */
 package com.eprovement.poptavka.client.user.admin.tab;
 
+import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -17,11 +19,10 @@ import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.google.gwt.user.client.ui.PopupPanel;
-import java.util.ArrayList;
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.view.client.ListDataProvider;
 import java.util.List;
 
 /**
@@ -35,137 +36,62 @@ public class AdminSupplierInfoView extends Composite {
     interface AdminsupplierInfoViewUiBinder extends
             UiBinder<Widget, AdminSupplierInfoView> {
     }
-    // Supplier detail input fields
-    @UiField
-    TextArea descriptionBox;
-    @UiField
-    TextBox companyName, firstName, lastName, email, phone, overalRating, identifNumber, supplierID;
-    @UiField
-    CheckBox certified;
-    @UiField
-    ListBox categoryList, localityList, businessType, verification;
+    /**************************************************************************/
+    /* Attributes                                                               */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField TextArea descriptionBox;
+    @UiField TextBox companyName, firstName, lastName, email, phone, overalRating, identifNumber, supplierID;
+    @UiField CheckBox certified;
+    @UiField ListBox businessType, verification;
+    @UiField(provided = true) CellList categoryList, localityList;
     // Supplier detail button fields
-    @UiField
-    Button editCatBtn, editLocBtn, createButton, updateButton;
-    private FullSupplierDetail supplierInfo;
-    private ArrayList<CategoryDetail> categories;
-    private ArrayList<LocalityDetail> localities;
-    private PopupPanel selectorWidgetPopup;
+    @UiField Button editCatBtn, editLocBtn, createButton, updateButton;
+    /** Class attributes. **/
+    private ListDataProvider categoryProvider;
+    private ListDataProvider localityProvider;
+    private SimpleConfirmPopup selectorWidgetPopup;
 
-    public PopupPanel getSelectorWidgetPopup() {
-        return selectorWidgetPopup;
-    }
-
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    public Button getUpdateBtn() {
-        return updateButton;
-    }
-
-    public Button getEditCatBtn() {
-        return editCatBtn;
-    }
-
-    public Button getEditLocBtn() {
-        return editLocBtn;
-    }
-
-    public ListBox getCategoryList() {
-        return categoryList;
-    }
-
-    public ListBox getLocalityList() {
-        return localityList;
-    }
-
+    /**************************************************************************/
+    /* INITIALIZATON                                                          */
+    /**************************************************************************/
     public AdminSupplierInfoView() {
         initWidget(uiBinder.createAndBindUi(this));
-        createSelectorWidgetPopup();
     }
 
-    private void createSelectorWidgetPopup() {
-        selectorWidgetPopup = new PopupPanel(true);
-        selectorWidgetPopup.setSize("300px", "300px");
-        selectorWidgetPopup.setGlassEnabled(true);
-        selectorWidgetPopup.hide();
-    }
-
-    public FullSupplierDetail getUpdatedSupplierDetail() {
-        if (supplierInfo == null) {
-            return null;
-        }
-        // Update the detail object.
-        supplierInfo.getUserData().setCompanyName(companyName.getText());
-        supplierInfo.getUserData().setDescription(descriptionBox.getText());
-        supplierInfo.getUserData().setPersonFirstName(firstName.getText());
-        supplierInfo.getUserData().setPersonLastName(lastName.getText());
-        supplierInfo.getUserData().setEmail(email.getText());
-        supplierInfo.getUserData().setPhone(phone.getText());
-        supplierInfo.getUserData().setVerification(verification.getItemText(verification.getSelectedIndex()));
-        supplierInfo.getUserData().setIdentificationNumber(identifNumber.getText());
-        supplierInfo.getUserData().setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
-        supplierInfo.setCertified(certified.getValue());
-        supplierInfo.setCategories(categories);
-        supplierInfo.setLocalities(localities);
-        supplierInfo.setOveralRating(Integer.valueOf(overalRating.getText()));
-
-        return supplierInfo;
-    }
-
-    public ArrayList<CategoryDetail> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<CategoryDetail> categories) {
-        this.categories = new ArrayList<CategoryDetail>(categories);
-        setCategoryBox(categories);
-    }
-
-    public void setCategoryBox(List<CategoryDetail> categoriesList) {
-        categoryList.clear();
-        if (categoriesList != null) {
-            for (CategoryDetail cat : categoriesList) {
-                categoryList.addItem(cat.getName());
-            }
-
-        }
-    }
-
-    public ArrayList<LocalityDetail> getLocalities() {
-        return localities;
-    }
-
-    public void setLocalities(List<LocalityDetail> localities) {
-        this.localities = new ArrayList<LocalityDetail>(localities);
-        setLocalityBox(localities);
-    }
-
-    public void setLocalityBox(List<LocalityDetail> localitiesList) {
-        localityList.clear();
-        if (localitiesList != null) {
-            for (LocalityDetail loc : localitiesList) {
-                localityList.addItem(loc.getName());
-            }
-        }
-    }
-
-    public FullSupplierDetail getSupplierDetail() {
-        return supplierInfo;
+    /**************************************************************************/
+    /* setters                                                               */
+    /**************************************************************************/
+    public void updateSupplierDetail(FullSupplierDetail supplierToUpdate) {
+        supplierToUpdate.getUserData().setCompanyName(companyName.getText());
+        supplierToUpdate.getUserData().setDescription(descriptionBox.getText());
+        supplierToUpdate.getUserData().setPersonFirstName(firstName.getText());
+        supplierToUpdate.getUserData().setPersonLastName(lastName.getText());
+        supplierToUpdate.getUserData().setEmail(email.getText());
+        supplierToUpdate.getUserData().setPhone(phone.getText());
+        supplierToUpdate.getUserData().setVerification(verification.getItemText(verification.getSelectedIndex()));
+        supplierToUpdate.getUserData().setIdentificationNumber(identifNumber.getText());
+        supplierToUpdate.getUserData().setBusinessType(businessType.getItemText(businessType.getSelectedIndex()));
+        supplierToUpdate.setCertified(certified.getValue());
+        supplierToUpdate.setCategories(categoryProvider.getList());
+        supplierToUpdate.setLocalities(localityProvider.getList());
+        supplierToUpdate.setOveralRating(Integer.valueOf(overalRating.getText()));
     }
 
     public void setSupplierDetail(FullSupplierDetail supplier) {
         if (supplier != null) {
-            this.supplierInfo = supplier;
-            this.categories = supplier.getCategories();
-            this.localities = supplier.getLocalities();
+            this.categoryProvider.setList(supplier.getCategories());
+            this.localityProvider.setList(supplier.getLocalities());
 
             updateButton.setEnabled(supplier != null);
             if (supplier != null) {
                 //Company
                 companyName.setText(supplier.getUserData().getCompanyName());
-                overalRating.setText(Integer.toString(supplier.getOveralRating()));
+                if (supplier.getOveralRating() == null) {
+                    overalRating.setText(Storage.MSGS.commonNotRanked());
+                } else {
+                    overalRating.setText(supplier.getOveralRating().toString());
+                }
                 descriptionBox.setText(supplier.getUserData().getDescription());
                 //Contact
                 firstName.setText(supplier.getUserData().getPersonFirstName());
@@ -205,10 +131,38 @@ public class AdminSupplierInfoView extends Composite {
                     i++;
                 }
                 verification.setSelectedIndex(j);
-
-                setCategoryBox(supplier.getCategories());
-                setLocalityBox(supplier.getLocalities());
             }
         }
+    }
+
+    /**************************************************************************/
+    /* Getters                                                               */
+    /**************************************************************************/
+    public SimpleConfirmPopup getSelectorWidgetPopup() {
+        return selectorWidgetPopup;
+    }
+
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    public Button getUpdateBtn() {
+        return updateButton;
+    }
+
+    public Button getEditCatBtn() {
+        return editCatBtn;
+    }
+
+    public Button getEditLocBtn() {
+        return editLocBtn;
+    }
+
+    public List<ICatLocDetail> getCategories() {
+        return categoryProvider.getList();
+    }
+
+    public List<ICatLocDetail> getLocalities() {
+        return localityProvider.getList();
     }
 }

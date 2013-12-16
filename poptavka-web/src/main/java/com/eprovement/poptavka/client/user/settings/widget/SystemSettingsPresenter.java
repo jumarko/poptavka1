@@ -1,21 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter.SystemSettingsViewInterface;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.ArrayList;
 
 /**
  *
@@ -31,46 +23,11 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
 
         void setSystemSettings(SettingDetail detail);
 
-        void setChangeHandler(ChangeHandler changeHandler);
-
         SettingDetail updateSystemSettings(SettingDetail detail);
 
-        void commit();
+        boolean isValid();
 
         Widget getWidgetView();
-    }
-    /**************************************************************************/
-    /* ATTRIBUTES                                                             */
-    /**************************************************************************/
-    //history of changes
-    private ArrayList<ChangeDetail> updatedFields = new ArrayList<ChangeDetail>();
-
-    /**************************************************************************/
-    /* BIND                                                                   */
-    /**************************************************************************/
-    @Override
-    public void bindView() {
-        view.setChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                NotificationItemView source = (NotificationItemView) event.getSource();
-                manageUpdatedField(source.getEnabledChangeDetail());
-                manageUpdatedField(source.getPeriodChangeDetail());
-                eventBus.updateSystemStatus(isSystemSettingsCHanged());
-            }
-        });
-    }
-
-    private void manageUpdatedField(ChangeDetail changeDetail) {
-        if (!changeDetail.getOriginalValue().equals(changeDetail.getValue())) {
-            //if contains already - remove before adding new
-            if (updatedFields.contains(changeDetail)) {
-                updatedFields.remove(changeDetail);
-            }
-            updatedFields.add(changeDetail);
-        } else {
-            updatedFields.remove(changeDetail);
-        }
     }
 
     /**************************************************************************/
@@ -89,9 +46,5 @@ public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInt
 
     public SettingDetail updateSystemSettings(SettingDetail detail) {
         return view.updateSystemSettings(detail);
-    }
-
-    public boolean isSystemSettingsCHanged() {
-        return !updatedFields.isEmpty();
     }
 }

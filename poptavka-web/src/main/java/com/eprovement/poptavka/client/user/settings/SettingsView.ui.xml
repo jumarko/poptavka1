@@ -1,104 +1,49 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:g='urn:import:com.google.gwt.user.client.ui'
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common">
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <ui:style>
-        .header-image {
-        margin: 10px 0 0 14px;
-        }        
-    </ui:style>
-
-    <g:DockLayoutPanel unit="PX" styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-        <g:west size="250">
-            <g:DockLayoutPanel unit="PX">
-                <g:north size="49">
-                    <g:HTMLPanel>
-                        <h2 class='{res.layout.toolbarHeader}'>
-                            <ui:msg key="settingsToolbarLabel">Settings</ui:msg>
-                        </h2>
-                    </g:HTMLPanel>
-                </g:north>
-                <g:center>
-                    <g:HTMLPanel styleName='{res.layout.submenuContainer}'>
-                        <!-- Settings submenu -->
-                        <div ui:field="supMenu" style="display: block;">
-                            <ul class='{res.layout.submenuList}'>
-                                <li>
-                                    <g:HTMLPanel>
-                                        <g:Button ui:field="menuUserBtn" addStyleNames='pull-left'>
-                                            <ui:msg key="menuSettingsUser">User information</ui:msg>
-                                        </g:Button>
-                                        <cm:StatusIconLabel styleName='pull-left {style.header-image}'
-                                                            ui:field='infoStatus1' />
-                                    </g:HTMLPanel>
-                                </li>
-                                <li>
-                                    <g:HTMLPanel>
-                                        <g:Button ui:field="menuClientBtn" addStyleNames='pull-left'>
-                                            <ui:msg key="menuSettingsClient">Client information</ui:msg>
-                                        </g:Button>
-                                        <cm:StatusIconLabel styleName='pull-left {style.header-image}'
-                                                            ui:field='infoStatus2' />
-                                    </g:HTMLPanel>
-                                </li>
-                                <li>
-                                    <g:HTMLPanel>
-                                        <g:Button ui:field="menuSupplierBtn" addStyleNames='pull-left'>
-                                            <ui:msg key="menuSettingsSupplier">Supplier information</ui:msg>
-                                        </g:Button>
-                                        <cm:StatusIconLabel styleName='pull-left {style.header-image}'
-                                                            ui:field='infoStatus3' />
-                                    </g:HTMLPanel>
-                                </li>
-                                <li>
-                                    <g:HTMLPanel>
-                                        <g:Button ui:field="menuSystemBtn" addStyleNames='pull-left'>
-                                            <ui:msg key="menuSettingsSystem">System information</ui:msg>
-                                        </g:Button>
-                                        <cm:StatusIconLabel styleName='pull-left {style.header-image}'
-                                                            ui:field='infoStatus4' />
-                                    </g:HTMLPanel>
-                                </li>
-                            </ul>
-                        </div>
-                    </g:HTMLPanel>
-                </g:center>
-            </g:DockLayoutPanel>
-        </g:west>
-        <g:center>
-            <g:DockLayoutPanel unit="PX" styleName='{res.common.validationContainer}'>
-                <g:west size="20">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </g:west>
-                <g:north size="50" class='{res.layout.toolbarHeader}'>
-                    <g:HTMLPanel styleName='{res.layout.toolbarItemsBlock}'>
-                        <g:Button ui:field='updateButton' styleName='{res.common.toolbarButtonGreen}'>
-                            <ui:msg key='settingsUpdateButton'>Update Profile</ui:msg>
-                        </g:Button>
-                    </g:HTMLPanel>
-                </g:north>
-                <g:center>      
-                    <g:ScrollPanel>              
-                        <b:FluidContainer styleName='settings-container'>
-                            <b:FluidRow>
-                                <g:HTMLPanel styleName='formHeader'></g:HTMLPanel>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:SimplePanel ui:field="contentPanel" styleName='formContainer'/>
-                                </b:Column>
-                            </b:FluidRow>
-                        </b:FluidContainer>                    
-                    </g:ScrollPanel>
-                </g:center>                
-            </g:DockLayoutPanel>
-        </g:center>
-        <g:south size="24">
-            <g:SimplePanel ui:field="footerHolder" styleName='{res.layout.footerDatagridContainer}'/>
-        </g:south>
-    </g:DockLayoutPanel>
+    <g:FlowPanel>
+        <!-- Settings submenu -->
+        <g:HTMLPanel styleName='{res.layout.leftContainer} user' debugId='leftSlidingPanel'>
+            <ul class='{res.layout.submenuList}'>
+                <li>
+                    <g:Button ui:field="menuUserBtn">
+                        <ui:msg key="menuSettingsUser">User information</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="menuClientBtn">
+                        <ui:msg key="menuSettingsClient">Client information</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="menuSupplierBtn">
+                        <ui:msg key="menuSettingsSupplier">Supplier information</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="menuSystemBtn">
+                        <ui:msg key="menuSettingsSystem">System information</ui:msg>
+                    </g:Button>
+                </li>
+                <li>
+                    <g:Button ui:field="menuSecurityBtn">
+                        <ui:msg key="menuSettingsSecurity">Security Settings</ui:msg>
+                    </g:Button>
+                </li>
+            </ul>
+        </g:HTMLPanel>
+        <!--Main Content-->
+        <g:HTMLPanel styleName='{res.layout.contentContainer} user'>
+            <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
+                <g:HTMLPanel>
+                    <g:SimplePanel ui:field="contentContainer" height='auto'/>
+                    <g:SimplePanel ui:field="footerContainer"/>
+                </g:HTMLPanel>
+            </g:ScrollPanel>
+        </g:HTMLPanel>
+    </g:FlowPanel>
 </ui:UiBinder>

@@ -1,0 +1,76 @@
+/******************************************************************************/
+/*  DataGrid styles                                                           */
+/******************************************************************************/
+.dataGridWidget {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridFooter {}
+.dataGridHeader {
+    padding: 5px 0 3px 5px;
+}
+.dataGridHeader.companyHeader {
+    border-radius: 6px 0 0 0;
+}
+.dataGridCell {
+    padding: 2px 0 2px 5px;
+}
+.dataGridFirstColumnFooter {}
+.dataGridFirstColumnHeader {}
+.dataGridLastColumnFooter {}
+.dataGridSortableHeader {}
+.dataGridLastColumnHeader {}
+.dataGridSortedHeaderAscending {}
+.dataGridSortedHeaderDescending {}
+.dataGridEvenRow {}
+.dataGridEvenRowCell {}
+.dataGridOddRow {}
+.dataGridOddRowCell {}
+.dataGridHoveredRow {}
+.dataGridHoveredRowCell {}
+.dataGridKeyboardSelectedRow {}
+.dataGridKeyboardSelectedRowCell {}
+.dataGridSelectedRow {}
+.dataGridSelectedRowCell {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridKeyboardSelectedCell {}
+
+/******************************************************************************/
+/*  Additional styles                                                         */
+/******************************************************************************/
+.unread {}
+
+.col-width-icon,
+.col-width-star {
+    width: 30px;
+}
+.col-width-ratting {
+    width: 65px;
+}
+.col-width-title {}
+.col-width-locality {}
+.col-width-displayName {}
+.col-width-messageText {}
+.col-width-price {
+    width: 80px
+}
+.col-width-createdDate {
+    width: 60px;
+}
+.col-width-receivedDate {
+    width: 70px
+}
+.col-width-date {
+    width: 70px
+}
+.col-width-urgency {}
+.col-width-id {}
+.col-width-sender {}
+.col-width-logo {
+    width: 0;
+}
+
+.cell-style-urgency {}
+.cell-style-star {
+    padding: 2px 0 2px 5px;
+}

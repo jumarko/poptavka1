@@ -34,7 +34,7 @@ public final class UserTestUtils {
         Assert.assertNotNull(userNotificationItems);
         Assert.assertNotNull(expectedNotification);
 
-        Assert.assertTrue(
+        Assert.assertTrue("User does not have expectedNotification=" + expectedNotification,
                 CollectionUtils.exists(userNotificationItems, new Predicate() {
                     @Override
                     public boolean evaluate(Object object) {

@@ -139,7 +139,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         queryParams.put("user", user);
         queryParams.put("offerStates", offerStates);
         List<Object[]> unread = runNamedQuery(
-                "getSupplierConversationsWithAcceptedOffer",
+                "getSupplierConversationsWithOfferState",
                 queryParams);
         Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {

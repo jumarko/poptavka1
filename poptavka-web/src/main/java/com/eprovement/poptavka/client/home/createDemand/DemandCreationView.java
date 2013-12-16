@@ -1,24 +1,23 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.root.footer.FooterView;
-import com.eprovement.poptavka.resources.StyleResource;
-import com.github.gwtbootstrap.client.ui.FluidContainer;
+import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
+import com.github.gwtbootstrap.client.ui.Tooltip;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,56 +30,56 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
 
     interface CreationViewUiBinder extends UiBinder<Widget, DemandCreationView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) Widget footer;
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5;
-    @UiField FluidContainer panel1, panel2;
+    @UiField SimplePanel footerPanel;
+    @UiField FlowPanel panel1, panel2;
     @UiField TabLayoutPanel mainPanel;
-    @UiField Button loginBtn, registerBtn;
-    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3, nextButtonTab4, nextButtonTab5;
-    @UiField Button backButtonTab1, backButtonTab2, backButtonTab3, backButtonTab4, backButtonTab5;
+    @UiField ButtonsPanel buttonsPanel11, buttonsPanel12, buttonsPanel2, buttonsPanel3, buttonsPanel4, buttonsPanel5;
     @UiField HTML headerLabelTab1, headerLabelTab2, headerLabelTab3, headerLabelTab4, headerLabelTab5;
     /** Class attributes. **/
-    private @Inject FooterView footerView;
-    private List<SimplePanel> holderPanels = new ArrayList<SimplePanel>();
+    private List<SimplePanel> holderPanels;
+    private List<Tooltip> tooltips;;
+    private ClickHandler nextClickHandler = new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            selectNextTab();
+        }
+    };
+    private ClickHandler backClickHandler = new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            selectPreviousTab();
+        }
+    };
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
         recalculateTabNumbers();
+        bindHandlers();
 
-        /** filling panels list **/
+        /** filling list **/
         holderPanels = Arrays.asList(contentHolder1, contentHolder2, contentHolder3, contentHolder4, contentHolder5);
+        tooltips = Arrays.asList(buttonsPanel12.getNextBtnTooltip(), buttonsPanel2.getNextBtnTooltip(),
+            buttonsPanel3.getNextBtnTooltip(), buttonsPanel4.getNextBtnTooltip(), buttonsPanel5.getNextBtnTooltip());
 
-        /** style implementation and overflow tweaks **/
-        StyleResource.INSTANCE.common().ensureInjected();
-        StyleResource.INSTANCE.createTabPanel().ensureInjected();
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-        contentHolder3.setSize("100%", "100%");
-    }
 
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    /** NEXT. **/
-    @UiHandler(value = {"nextButtonTab1", "nextButtonTab2", "nextButtonTab3", "nextButtonTab4" })
-    public void nextButtonsClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    /** BACK. **/
-    @UiHandler(value = {"backButtonTab1", "backButtonTab2", "backButtonTab3", "backButtonTab4" })
-    public void backButtonsClickHandler(ClickEvent event) {
-        selectPreviousTab();
+        /** style implementation and overflow tweaks **/
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+        CssInjector.INSTANCE.ensureCreateTabPanelStylesInjected();
     }
 
     /**************************************************************************/
@@ -95,7 +94,6 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     public void setFirstTabVisibility(boolean visible) {
         mainPanel.getTabWidget(0).getParent().setVisible(visible);
         mainPanel.getTabWidget(0).setVisible(visible);
-        backButtonTab2.setVisible(visible);
         recalculateTabNumbers();
     }
 
@@ -134,12 +132,12 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /** BUTTONS. **/
     @Override
     public Button getLoginBtn() {
-        return loginBtn;
+        return buttonsPanel11.getBackBtn();
     }
 
     @Override
     public Button getRegisterBtn() {
-        return registerBtn;
+        return buttonsPanel11.getNextBtn();
     }
 
     /**
@@ -148,7 +146,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
      */
     @Override
     public Button getNextButtonTab1() {
-        return nextButtonTab1;
+        return buttonsPanel12.getNextBtn();
     }
 
     /**
@@ -157,7 +155,7 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
      */
     @Override
     public Button getNextButtonTab5() {
-        return nextButtonTab5;
+        return buttonsPanel5.getNextBtn();
     }
 
     /**
@@ -166,12 +164,22 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
      */
     @Override
     public Button getBackButtonTab1() {
-        return backButtonTab1;
+        return buttonsPanel12.getBackBtn();
+    }
+
+    @Override
+    public SimplePanel getFooterPanel() {
+        return footerPanel;
     }
 
     @Override
     public Widget getWidgetView() {
         return this;
+    }
+
+    @Override
+    public Tooltip getNextBtnTooltip(int order) {
+        return tooltips.get(order);
     }
 
     /**************************************************************************/
@@ -194,6 +202,21 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    private void bindHandlers() {
+        //back click handler
+        buttonsPanel12.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel2.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel3.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel4.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel5.getBackBtn().addClickHandler(backClickHandler);
+        //next click handler
+        buttonsPanel12.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel2.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel3.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel4.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel5.getNextBtn().addClickHandler(nextClickHandler);
+    }
+
     private void selectNextTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }

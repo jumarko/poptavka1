@@ -1,0 +1,147 @@
+@CHARSET "UTF-8";
+
+/******************************************************************************/
+/*  Action box styles                                                         */
+/******************************************************************************/
+.action-box {
+}
+
+/******************************************************************************/
+/*  Pager styles                                                              */
+/******************************************************************************/
+.universal-pager .ws-pager-size-box {
+    display: none;
+}
+
+.small-loader {
+}
+
+.elem-hidden {
+}
+
+.elem-visible {
+}
+
+/** common widgets **/
+.info-message {
+}
+
+.error-message {
+}
+
+
+.disabled-text {
+}
+
+.error-field {
+}
+
+
+.loading-popup {
+}
+
+.hyperlink {
+}
+
+.user {
+}
+
+.user_content {
+}
+
+.empty_style {
+
+}
+
+.textBoxAsLabel {
+}
+
+/* Common buttons */
+.button-empty button {
+}
+
+.button-left-small {
+}
+
+.button-left-medium {
+}
+
+.button-left-large {
+}
+
+.button-right-small {
+}
+
+.button-right-medium {}
+
+.button-right-large {
+}
+
+.button-grey {
+    margin: 0 0 3px 0;
+}
+
+.button-long-grey {
+    margin: 0 0 3px 0;
+}
+
+.button-green {
+    margin: 0 0 3px 0;
+}
+
+.button-ok-green {
+}
+
+.selector-button-brown button {
+}
+
+/* CellBrowser selected item styles  */
+.selected-items-widget {}
+
+/* switch widget styles */
+.switch-left {
+}
+
+.switch-right {
+}
+
+/* error control groups */
+/*.changeMonitorStyle {}*/
+.form-fields {}
+.well-container .gwt-Label {
+    line-height: 24px;
+    margin-top: 7px;
+}
+.well-container.well-form .well-content .span12 {
+    padding: 0 10px;
+}
+/* Validation styles */
+.validation-container .gwt-Label {
+    padding: 10px 0 0 15px;
+    line-height: initial;
+}
+
+/* how it works */
+.how-it-works-container .content-block-center .span6 {
+    width: 100% !important;
+    min-width: 230px;
+}
+.how-it-works-container .container-fluid,
+.how-it-works-container .content-block .content-block-center {
+    padding: 10px;
+}
+
+/* MyListBox - used for custom select-box */
+.myListBox {}
+/* Alert Box styles */
+.alert-container {}
+.selector-data-grid {}
+
+.catLocManager {}
+.catLocManager .gwt-SuggestBox {
+    width: 150px !important;
+}
+.catLocManager .browse-button {
+    margin: 3px 0 0 10px;
+    width: 100px;
+}

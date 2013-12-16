@@ -1,0 +1,133 @@
+@CHARSET "UTF-8";
+
+/******************************************************************************/
+/*  Root View                                                                 */
+/******************************************************************************/
+.header-container {
+}
+
+/******************************************************************************/
+/*  Header View                                                               */
+/******************************************************************************/
+/*.header-bar {
+    
+}*/
+/*
+ *   Logo Styles
+ */
+.logo {
+}
+
+/*
+ *  Menu
+ */
+/*.menu-bar {*/
+/*}*/
+.menu-icon {
+    
+}
+.menu-panel {
+}
+.menu {
+    width:100%;
+}
+
+.menu .home-menu {
+}
+
+.menu .user-menu {
+}
+
+.menu ul {
+}
+
+.menu li {
+}
+
+.menu li button {
+}
+
+.menu .button1 {
+}
+.menu .button2 {
+}
+.menu .button3 {
+}
+.menu .button4 {
+}
+.menu .button5 {
+}
+.menu .button6 {
+}
+.menu .button7 {
+}
+.menu .button8 {
+}
+.menu .button9 {
+}
+
+/*
+*	Search Bar Styles
+*
+*/
+.search-icon {
+}
+.search-panel {
+}
+
+.search-panel .search-textbox[type="text"] {
+}
+.search-panel .advanced-search {
+}
+.search-bar {
+    
+}
+
+/*
+ *  Settings Styles
+ */
+.settings-icon {
+}
+/*
+*	Login styles
+*
+*/
+.login-icon {
+}
+.login-panel {
+}
+.login {
+}
+
+.login-bar {
+}
+
+.login-button {
+}
+
+.login-button a {
+}
+
+.login-button a:hover {
+}
+
+/*
+ *  Logout styles
+ */
+.logout-button {
+}
+
+.logout-button-act {
+}
+
+.logout-menu-bar {
+}
+
+.logout-menu-bar td {
+}
+
+.logout-menu-bar td:hover {
+}
+
+.help-button {
+}

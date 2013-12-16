@@ -1,7 +1,11 @@
 package com.eprovement.poptavka.service.user;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
+import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
@@ -19,10 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  *         Date: 9.5.11
  */
 @DataSet(path = {
+        "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml" },
         dtd = "classpath:test.dtd")
 public class BusinessUserTest extends DBUnitIntegrationTest {
+
+    private static final BusinessUser TEST_USER = new BusinessUser("myemail@email.com", "passwd");
 
     @Autowired
     private GeneralService generalService;
@@ -47,6 +54,35 @@ public class BusinessUserTest extends DBUnitIntegrationTest {
 
     }
 
+    @Test
+    public void userWithoutOriginIsNotExternalUser() throws Exception {
+        assertFalse("user without origin should not be considered as external one",
+                TEST_USER.isUserFromExternalSystem());
+    }
+
+    @Test
+    public void userWithOtherOriginIsNotExternalUser() throws Exception {
+        final Origin origin = new Origin();
+        origin.setUrl("want-something.com");
+        origin.setName("internal user");
+        origin.setDescription("Internal user for want-something.com");
+        origin.setCode("internal");
+        TEST_USER.setOrigin(origin);
+        assertFalse("user with origin other than external should not be considered as external user",
+                TEST_USER.isUserFromExternalSystem());
+    }
+
+    @Test
+    public void userWithProperOriginIsExternalUser() throws Exception {
+        final Origin origin = new Origin();
+        origin.setUrl("partner.com");
+        origin.setName("external user");
+        origin.setDescription("external user from partner.com");
+        origin.setCode(Origin.EXTERNAL_ORIGIN_CODE + ".partner.com");
+        TEST_USER.setOrigin(origin);
+        assertTrue("user with proper origin should be considered as external one",
+                TEST_USER.isUserFromExternalSystem());
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
 
@@ -62,8 +98,8 @@ public class BusinessUserTest extends DBUnitIntegrationTest {
         Assert.assertTrue("User does not have the role: " + businessRoleClass,
                 CollectionUtils.exists(businessUser.getBusinessUserRoles(), new Predicate() {
                     @Override
-                    public boolean evaluate(Object object) {
-                        return businessRoleClass.equals(((BusinessUserRole) object).getClass());
+                    public boolean evaluate(Object user) {
+                        return businessRoleClass.equals((user).getClass());
                     }
                 }));
     }

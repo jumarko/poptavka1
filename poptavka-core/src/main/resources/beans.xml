@@ -21,8 +21,6 @@
         <property name="treeItemDao" ref="treeItemDao" />
     </bean>
 
-    <bean id="auditDao" class="com.eprovement.poptavka.dao.audit.AuditDaoImpl" />
-
     <bean id="treeItemDao" class="com.eprovement.poptavka.dao.common.TreeItemDaoImpl" />
 
     <bean id="localityDao" class="com.eprovement.poptavka.dao.address.LocalityDaoImpl" />
@@ -69,8 +67,8 @@
 
     <bean id="demandService" class="com.eprovement.poptavka.service.demand.DemandServiceImpl">
         <constructor-arg ref="demandDao" />
+        <constructor-arg ref="messageService" />
         <property name="clientService" ref="clientService" />
-        <property name="supplierService" ref="supplierService" />
         <property name="registerService" ref="registerService" />
     </bean>
 
@@ -84,10 +82,6 @@
 
     <bean id="localityService" class="com.eprovement.poptavka.service.address.LocalityServiceImpl">
         <constructor-arg ref="localityDao" />
-    </bean>
-
-    <bean id="auditService" class="com.eprovement.poptavka.service.audit.AuditServiceImpl">
-        <constructor-arg ref="auditDao" />
     </bean>
 
     <bean id="loginService" class="com.eprovement.poptavka.service.user.LoginServiceImpl">
@@ -122,21 +116,29 @@
         <property name="registerService" ref="registerService" />
     </bean>
 
-    <bean id="processCrawledDemandsService" class="com.eprovement.poptavka.service.demand.ProcessCrawledDemandsServiceImpl">
-        <constructor-arg ref="demandConverter" />
-        <constructor-arg ref="demandService" />
-    </bean>
-
     <bean id="notificationTypeService" class="com.eprovement.poptavka.service.notification.NotificationTypeServiceImpl" >
         <constructor-arg ref="generalService"/>
     </bean>
-    <bean id="notificationSender" class="com.eprovement.poptavka.service.notification.MailNotificationSender">
+    <bean id="mailNotificationSender" class="com.eprovement.poptavka.service.notification.MailNotificationSender">
         <constructor-arg index="0" ref="mailService"/>
         <constructor-arg index="1" value="${mail.noreply.address}"/>
     </bean>
+    <bean id="messageNotificationSender" class="com.eprovement.poptavka.service.notification.InternalMessageNotificationSender" >
+        <constructor-arg ref="messageService"/>
+    </bean>
+    <bean id="welcomeMessageSender" class="com.eprovement.poptavka.service.notification.welcome.WelcomeMessageSender">
+        <constructor-arg index="0">
+            <list>
+                <ref bean="mailNotificationSender" />
+                 <!--TODO juraj welcome: right now, the internal welcome message is not sent -> se have to set up system account-->
+                 <!--for these things and then enable messageNotificationSender-->
+                <!--<ref bean="messageNotificationSender" />-->
+            </list>
+        </constructor-arg>
+    </bean>
     <bean id="notificationService" class="com.eprovement.poptavka.service.notification.NotificationServiceImpl">
         <constructor-arg index="0" ref="registerService"/>
-        <constructor-arg index="1" ref="notificationSender"/>
+        <constructor-arg index="1" ref="mailNotificationSender"/>
     </bean>
 
     <bean id="userVerificationService" class="com.eprovement.poptavka.service.user.UserVerificationServiceImpl">
@@ -146,10 +148,6 @@
     </bean>
 
     <!-- Jobs -->
-    <bean id="additionalInfoFiller" class="com.eprovement.poptavka.service.jobs.AdditionalInfoFiller">
-        <property name="demandService" ref="demandService" />
-        <property name="supplierService" ref="supplierService" />
-    </bean>
 
     <!--Jobs for notifications-->
     <bean id="notificationsSenderHelper" class="com.eprovement.poptavka.service.jobs.notification.NotificationSenderHelper">
@@ -173,25 +171,6 @@
 
     <!-- Other -->
     <bean id="applicationContextProvider" class="com.eprovement.poptavka.application.ApplicationContextProvider"/>
-
-    <bean id="demandConverter" class="com.eprovement.poptavka.messaging.crawler.DemandConverter">
-        <constructor-arg ref="generalService" />
-        <constructor-arg ref="demandService" />
-        <constructor-arg ref="localityService" />
-    </bean>
-    <bean id="processCrawledDemandsHandler" class="com.eprovement.poptavka.messaging.crawler.ProcessCrawledDemandsHandler">
-        <constructor-arg ref="messageTemplate" />
-        <constructor-arg ref="processCrawledDemandsService" />
-    </bean>
-
-    <!-- Temporary disable processing of incoming crawled demands until more suitable strategy
-        for communication with crawler is implemented. -->
-    <!--<bean class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer"-->
-        <!--p:connectionFactory-ref="rabbitConnFactory"-->
-        <!--p:queueNames="${amqp.queue}"-->
-        <!--p:messageListener-ref="processCrawledDemandsHandler" />-->
-
-    <!--<context:component-scan base-package="com.eprovement.poptavka"/>-->
 
     <!-- JMX -->
     <context:mbean-server />

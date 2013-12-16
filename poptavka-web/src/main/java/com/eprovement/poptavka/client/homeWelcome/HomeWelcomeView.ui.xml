@@ -1,254 +1,110 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
-    <ui:with field='res'
-             type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:style>
-        .important {
-        font-weight: bold;
-        }
+             xmlns:custom="urn:import:com.eprovement.poptavka.client.common.login">
 
-        .hidden {
-        visibility: hidden;
-        display: none;
-        }
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-        .homepage-container {
-        padding: 0;
-        width:980px;
-        }
-
-        .banner1 {
-        background:url(images/homepage/banner1_bg.png)
-        no-repeat;
-        display: block;
-        float: left;
-        height: 315px;
-        margin: -13px 18px 0 19px;
-        width: 462px;
-        position: relative;
-        }
-        .banner2 {
-        background:url(images/homepage/banner2_bg.png) no-repeat;
-        display: block;
-        float: left;
-        height: 315px;
-        margin:-13px 0 0;
-        width: 462px;
-        position: relative;
-        }
-
-        .banner3 {        
-        background: #e1dcc8;
-        display: block;
-        float: left;
-        height: 252px;
-        margin: 19px 0 0;
-        width: 980px;
-        }
-
-        .header {
-        color: #6F6B59;
-        font-family: "Open Sans";
-        font-size:35px;
-        font-weight:300;
-        left:26px;
-        position:absolute;
-        top:45px;
-        }
-
-        .subheader {
-        color: #6F6B59;
-        font-family: "Open Sans";
-        font-size:14px;
-        font-weight:normal;
-        left:26px;
-        position:absolute;
-        top:88px;
-        }
-
-        .banner-content {
-        font-size: 12px;
-        left: 26px;
-        line-height: 16px;
-        position: absolute;
-        top: 141px;
-        width: 270px;
-        }
-
-        .banner-link {
-        background: url(images/homepage/banner-link-arrow.png) no-repeat 0 10px;
-        border: medium none;
-        color: #6F6B59;
-        font-size: 12px;
-        padding-left: 13px;
-        }
-
-        .banner-link:hover {
-        background: url(images/homepage/banner-link-arrow_hover.png) no-repeat 0 10px;
-        color: #309b08;
-        border:none;
-        }
-
-        .banner-link1-position {
-        position: absolute;
-        top:203px;
-        left:26px;
-        }
-        .banner-link2-position {
-        left: 163px;
-        position: absolute;
-        top: 203px;
-        }
-        .banner-button {
-        background:url(images/homepage/green-banner-button.png)
-        no-repeat;
-        border: medium none;
-        color: #FFFFFF;
-        font-family:inherit;
-        font-size: 19px;
-        font-weight:300;
-        height:49px;
-        left:26px;
-        line-height: 42px;
-        padding:0 0 3px;
-        position:absolute;
-        text-align:center;
-        top: 243px;
-        width: 256px;
-        cursor:pointer;
-        }
-
-        .banner-button:focus {
-        border:none;
-        }
-
-        .category-list {
-        float: left;
-        width: 100%;
-        padding: 20px 0;
-        background: #d9cda1;
-        border-radius: 0 0 5px 5px;
-        }
-    </ui:style>
-    
-    
-    <g:DockLayoutPanel unit="PX"
-                       styleName='{res.layout.bodyFullContainer} {res.layout.bodyNavbar}'>
-        <g:north size="49">
-            <g:HTMLPanel>
-                <h2 class='{res.layout.toolbarHeader}'>
-                    <ui:msg key="menuHome">Home</ui:msg>
-                </h2>
-            </g:HTMLPanel>
-        </g:north>
-        <g:center>
-            <g:ScrollPanel styleName='{res.layout.bodyFullContainer} {res.layout.bodyFullContainerBg}'>
-                <g:HTMLPanel addStyleNames='{res.layout.bodyContent} {style.homepage-container}'>
-                    <g:HTMLPanel styleName="{style.banner1}">
-                        <b:Heading size="4" styleName="{style.header}">
-                            <ui:msg key="iamProfessional">I''m Professional</ui:msg>
+    <g:ScrollPanel>
+        <b:FluidContainer addStyleNames='{res.initial.homepage}'>
+            <b:FluidRow>
+                <b:Column size="12">
+                    <!-- Suppliers -->
+                    <b:Column size="6" styleName="banner1">
+                        <b:Heading size="4" styleName="header">
+                            <ui:msg key="iamProfessional">I'm Professional</ui:msg>
                         </b:Heading>
-                        <g:Label styleName="{style.subheader}">
+                        <g:Label styleName="subheader">
                             <ui:msg key="iamProfessionalNext">looking for new business!</ui:msg>
                         </g:Label>
-                        <g:Label styleName="{style.banner-content}">
-                            <ui:msg key="iamProfessionalDesc">
-                                Are you looking for new business opportunities?
-                                We are providing hundreds of projects on one site.
-                                Let the Clients contact you easily.
-                            </ui:msg>
-                        </g:Label>
+                        <g:HTMLPanel styleName="banner-content">
+                            <g:Label styleName="home-list">
+                                <ui:msg key="iamProfessionalDesc1">
+                                    No wasted advertising
+                                </ui:msg>
+                            </g:Label>
+                            <g:Label styleName="home-list">
+                                <ui:msg key="iamProfessionalDesc2">
+                                    Pick only the jobs you want
+                                </ui:msg>
+                            </g:Label>
+                            <g:Label styleName="home-list">
+                                <ui:msg key="iamProfessionalDesc3">
+                                    Jobs in your area at one place
+                                </ui:msg>
+                            </g:Label>
+                        </g:HTMLPanel>
                         <g:Button ui:field="suppliersBtn"
-                                  addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                                  addStyleNames="banner-link banner-link1-position">
                             <ui:msg key="allProfessionals">All Professionals</ui:msg>
                         </g:Button>
                         <g:Button ui:field="howItWorksSupplierBtn"
-                                  addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                                  addStyleNames="banner-link banner-link2-position">
                             <ui:msg key="howItWorks">How it works?</ui:msg>
                         </g:Button>
                         <g:Button ui:field="registerSupplierBtn"
-                                  addStyleNames="{style.banner-button}">
+                                  addStyleNames="banner-button">
                             <ui:msg key="signUpAsPro">Sign up as Professional</ui:msg>
                         </g:Button>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel styleName="{style.banner2}">
-                        <b:Heading size="4" styleName="{style.header}">
-                            <ui:msg key="placeProject">Place Project</ui:msg>
+                    </b:Column>
+
+                    <!-- Demands -->
+                    <b:Column size="6" styleName="banner2">
+                        <b:Heading size="4" styleName="header">
+                            <ui:msg key="placeProject">Post a Project</ui:msg>
                         </b:Heading>
-                        <g:Label styleName="{style.subheader}">
+                        <g:Label styleName="subheader">
                             <ui:msg key="placeProjectNext">and find Professionals now</ui:msg>
                         </g:Label>
-                        <g:Label styleName="{style.banner-content}">
-                            <ui:msg key="placeProjectDesc">
-                                Is there anything you need to get done?
-                                Find suitable Professionals online and save your time and money.
-                            </ui:msg>
-                        </g:Label>
+                        <g:HTMLPanel styleName="banner-content">
+                            <g:Label styleName="home-list">
+                                <ui:msg key="placeProjectDesc1">
+                                    Find suitable Professionals faster
+                                </ui:msg>
+                            </g:Label>
+                            <g:Label styleName="home-list">
+                                <ui:msg key="placeProjectDesc2">
+                                    Better control over the sales process
+                                </ui:msg>
+                            </g:Label>
+                            <g:Label styleName="home-list">
+                                <ui:msg key="placeProjectDesc3">
+                                    US Professinals only
+                                </ui:msg>
+                            </g:Label>
+                        </g:HTMLPanel>
                         <g:Button ui:field="demandsBtn"
-                                  addStyleNames="{style.banner-link} {style.banner-link1-position}">
+                                  addStyleNames="banner-link banner-link1-position">
                             <ui:msg key="allProjects">All Projects</ui:msg>
                         </g:Button>
                         <g:Button ui:field="howItWorksDemandBtn"
-                                  addStyleNames="{style.banner-link} {style.banner-link2-position}">
+                                  addStyleNames="banner-link banner-link2-position">
                             <ui:msg key="howItWorks">How it works?</ui:msg>
                         </g:Button>
                         <g:Button ui:field="registerDemandBtn"
-                                  addStyleNames="{style.banner-button}">
-                            <ui:msg key="placeProjects">Place Project</ui:msg>
+                                  addStyleNames="banner-button">
+                            <ui:msg key="placeProjects">Post a Project</ui:msg>
                         </g:Button>
-                    </g:HTMLPanel>
-                    <g:HTMLPanel  styleName="{style.banner3}">
-                        <div id="wrapper" class="wrapper">
-                            <div id="my-cute-slider" class="cute-slider" data-width="980" data-height="252">
-                                <ul data-type="slides">
-                                    <li data-delay="6" data-trans3d="tr2,tr20,tr57" data-trans2d="tr1,tr14,tr26">
-                                        <img src="images/homepage/1.jpg" data-thumb="images/homepage/thumbs/1.jpg"/>
-                                        <ul data-type="captions">                                            
-                                        </ul>
-                                    </li>
-                                    <li data-delay="6" data-trans3d="tr4,tr21,tr62" data-trans2d="tr5,tr23,tr30">
-                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/2.jpg" data-thumb="images/homepage/thumbs/2.jpg"/>
-                                        <ul data-type="captions">
-                                        </ul>
-                                    </li>
-                                    <li data-delay="6" data-trans3d="tr17,tr46,tr64" data-trans2d="tr7,tr32,tr40">
-                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/3.jpg" data-thumb="images/homepage/thumbs/3.jpg"/>
-                                        <ul data-type="captions">                                            
-                                        </ul>
-                                    </li>
-                                    <li data-delay="5" data-trans3d="tr8,tr19" data-trans2d="tr15,tr3,tr38">
-                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/4.jpg" data-thumb="images/homepage/thumbs/4.jpg"/>
-                                        <ul data-type="captions">                                            
-                                        </ul>	
-                                    </li>
-                                    <li data-delay="5" data-trans3d="tr5,tr15" data-trans2d="tr15,tr3,tr38">
-                                        <img src="cute-theme/blank.jpg" data-src="images/homepage/5.jpg" data-thumb="images/homepage/thumbs/5.jpg"/>
-                                        <ul data-type="captions">
-                                        </ul>	
-                                    </li>                                 
-                                </ul>
-                                <ul data-type="controls">
-                                    <li data-type="link"> </li>
-                                    <li data-type="slideinfo"> </li>
-                                    <li data-type="next"> </li>
-                                    <li data-type="previous"> </li>
-                                    <li data-type="slidecontrol"> </li>
-                                    <li data-type="bartimer"> </li>				
-                                </ul>
-                            </div>
-                        </div>
-                                             
-                    </g:HTMLPanel>
-                    <g:FlowPanel ui:field="categorySection" styleName="{style.category-list}" >
-                        <c:CellList ui:field="categoryList" />
-                    </g:FlowPanel>
-                    <g:Widget ui:field="footer"/>
-                </g:HTMLPanel>
-            </g:ScrollPanel>
-        </g:center>
-    </g:DockLayoutPanel>
+                    </b:Column>
+                </b:Column>
+            </b:FluidRow>
+
+            <!-- Categories -->
+            <b:FluidRow>
+                <b:Column size="12" styleName="category-list">
+                    <c:CellList ui:field="categoryList" />
+                </b:Column>
+            </b:FluidRow>
+
+            <!-- Footer -->
+            <b:FluidRow>
+                <b:Column size="12">
+                    <g:SimplePanel ui:field="footerContainer"/>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+    </g:ScrollPanel>
+
 </ui:UiBinder>

@@ -108,7 +108,8 @@ public abstract class DBUnitBaseTest {
      * @see @DataSet annotation
      */
     private synchronized void disableForeignKeyChecksIfRequired() throws Exception {
-        if (this.getClass().getAnnotation(DataSet.class).disableForeignKeyChecks()) {
+        final DataSet dataSet = this.getClass().getAnnotation(DataSet.class);
+        if (dataSet != null && dataSet.disableForeignKeyChecks()) {
             // if disabling foreign key checks is required by annotation then do that
             getConnection().getConnection().prepareStatement(DISABLE_FOREIGN_KEY_CHECKS_STATEMENT_H2).execute();
             foreignKeyChecksDisabled = true;

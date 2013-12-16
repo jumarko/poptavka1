@@ -1,11 +1,13 @@
 package com.eprovement.poptavka.client.homeWelcome.texts;
 
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -43,17 +45,18 @@ public class HowItWorks extends Composite {
     interface SupplierBinder extends UiBinder<Widget, HowItWorks> {
     }
     private static SupplierBinder supplierBinder = GWT.create(SupplierBinder.class);
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     @UiField Button registerBtn;
+    @UiField SimplePanel footerContainer;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     protected HowItWorks(UiBinder<Widget, HowItWorks> uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
     }
 
     /**
@@ -80,6 +83,10 @@ public class HowItWorks extends Composite {
     /**************************************************************************/
     public Button getRegisterBtn() {
         return registerBtn;
+    }
+
+    public SimplePanel getFooterContainer() {
+        return footerContainer;
     }
 
     public Widget getWidgetView() {

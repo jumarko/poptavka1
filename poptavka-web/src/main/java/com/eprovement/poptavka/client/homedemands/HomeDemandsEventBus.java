@@ -6,13 +6,13 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
-import com.eprovement.poptavka.client.homesuppliers.TreeItem;
+import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
+import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.mvp4g.client.annotation.Debug;
@@ -21,7 +21,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,14 +28,18 @@ import java.util.List;
  */
 @Events(startPresenter = HomeDemandsPresenter.class, module = HomeDemandsModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
+        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway {
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = HomeDemandsPresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = HomeDemandsPresenter.class)
     void start();
 
     /**
@@ -45,7 +48,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = HomeDemandsPresenter.class)
+    @Event(handlers = HomeDemandsPresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
@@ -60,27 +63,27 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     void goToHomeDemandsModule(SearchModuleDataHolder filterHolder);
 
     @Event(handlers = HomeDemandsPresenter.class, navigationEvent = true)
-    void goToHomeDemandsModuleFromWelcome(int categoryIdx, CategoryDetail category);
+    void goToHomeDemandsModuleFromWelcome(int categoryIdx, ICatLocDetail category);
+
+    @Event(handlers = HomeDemandsPresenter.class)
+    void goToHomeDemandsModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            ICatLocDetail categoryDetail, int page, long supplierID);
 
     /**************************************************************************/
     /* History events                                                          */
     /**************************************************************************/
     @Event(historyConverter = HomeDemandsHistoryConverter.class, name = "token")
     String createTokenForHistory(SearchModuleDataHolder filterHolder,
-            LinkedList<TreeItem> categoryDetail, int page, FullDemandDetail demandDetail);
+            ICatLocDetail categoryDetail, int page, FullDemandDetail demandDetail);
 
     /**************************************************************************/
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = HomeDemandsPresenter.class)
-    void setModuleByHistory(SearchModuleDataHolder searchDataHolder,
-            LinkedList<TreeItem> tree, CategoryDetail categoryDetail, int page, long supplierID);
-
-    @Event(handlers = HomeDemandsPresenter.class)
     void displayDemands(List<FullDemandDetail> result);
 
     @Event(handlers = HomeDemandsPresenter.class)
-    void selectDemand(FullDemandDetail supplierDetail);
+    void displayDemandDetail(FullDemandDetail supplierDetail);
 
     /**************************************************************************/
     /* Business events handled by Handler.                                    */
@@ -97,6 +100,6 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData, 
     void getDemand(long demandId);
 
     @Event(handlers = HomeDemandsHandler.class)
-    void getCategoryAndSetModuleByHistory(SearchModuleDataHolder searchDataHolder,
-            LinkedList<TreeItem> tree, long categoryID, int page, long supplierID);
+    void setModuleByHistory(SearchModuleDataHolder searchDataHolder,
+            String categoryIdStr, String pageStr, String supplierIdStr);
 }

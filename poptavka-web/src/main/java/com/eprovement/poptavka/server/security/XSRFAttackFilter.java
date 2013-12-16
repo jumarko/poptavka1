@@ -20,6 +20,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.web.filter.GenericFilterBean;
 
+/**
+ * TODO LATER: we have to fix this filter since it has never done the right job.
+ * See also: http://blog.technowobble.com/2010/05/gwt-and-spring-security.html.
+ */
 public class XSRFAttackFilter extends GenericFilterBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XSRFAttackFilter.class.getName());
@@ -41,6 +45,7 @@ public class XSRFAttackFilter extends GenericFilterBean {
         // if the user is authenticated, the cookie session id and the id sent as a request param must match
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        // TODO LATER: following code does not work - cookieId is always null - why ?
         if (authentication != null && !sessionId.equals(cookieId)) {
             SecurityContextHolder.clearContext();
             throw new SessionAuthenticationException("Invalid session - you have been logged out!");

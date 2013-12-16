@@ -3,7 +3,6 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <display-name>poptavka</display-name>
     <resource-ref>
         <description>DB Connection</description>
         <res-ref-name>jdbc/poptavkaDB</res-ref-name>
@@ -42,7 +41,7 @@
     <servlet-mapping>
         <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/api/*</url-pattern>
-    <!-- Spring configuration - END -->
+        <!-- Spring configuration - END -->
     </servlet-mapping>
 
     <!-- Enable escaping of form submission contents -->
@@ -87,29 +86,29 @@
 
     <!-- Securing RPC services against XSRF attack using GWT token service -->
     <servlet>
-		<servlet-name>xsrf</servlet-name>
-		<servlet-class>
+        <servlet-name>xsrf</servlet-name>
+        <servlet-class>
 			com.google.gwt.user.server.rpc.XsrfTokenServiceServlet
 		</servlet-class>
-	</servlet>
-	<servlet-mapping>
-	<servlet-name>xsrf</servlet-name>
-		<url-pattern>/gwt/xsrf</url-pattern>
-	</servlet-mapping>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>xsrf</servlet-name>
+        <url-pattern>/gwt/xsrf</url-pattern>
+    </servlet-mapping>
 
-	<context-param>
-		<param-name>gwt.xsrf.session_cookie_name</param-name>
-		<param-value>JSESSIONID</param-value>
-	</context-param>
+    <context-param>
+        <param-name>gwt.xsrf.session_cookie_name</param-name>
+        <param-value>JSESSIONID</param-value>
+    </context-param>
 
-	<servlet>
-		<servlet-name>gwt-request-handler</servlet-name>
-		<servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>gwt-request-handler</servlet-name>
-		<url-pattern>/poptavka/service/*</url-pattern>
-	</servlet-mapping>
+    <servlet>
+        <servlet-name>gwt-request-handler</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>gwt-request-handler</servlet-name>
+        <url-pattern>/poptavka/service/*</url-pattern>
+    </servlet-mapping>
 
     <!--
     Mapping an RPC service defined in handler-servlet.xml
@@ -124,12 +123,30 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>RootRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.root.RootRPCServiceImpl</servlet-class>
+        <servlet-name>ActionBoxRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.actionBox.ActionBoxRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RootRPCService</servlet-name>
-        <url-pattern>/poptavka/service/root</url-pattern>
+        <servlet-name>ActionBoxRPCService</servlet-name>
+        <url-pattern>/poptavka/service/actionBox</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ServiceSelectorRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.serviceSelector.ServiceSelectorRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServiceSelectorRPCService</servlet-name>
+        <url-pattern>/poptavka/service/serviceSelector</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DetailRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.detail.DetailRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DetailRPCService</servlet-name>
+        <url-pattern>/poptavka/service/detail</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -177,7 +194,6 @@
         <url-pattern>/poptavka/service/suppliercreation</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
         <servlet-name>HomeSuppliersRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.homesuppliers.HomeSuppliersRPCServiceImpl</servlet-class>
@@ -224,32 +240,49 @@
         <url-pattern>/poptavka/service/admin</url-pattern>
     </servlet-mapping>
 
-
     <servlet>
-        <servlet-name>LocalityRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.locality.LocalityRPCServiceImpl</servlet-class>
+        <servlet-name>AddressSelectorRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.addressSelector.AddressSelectorRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LocalityRPCService</servlet-name>
-        <url-pattern>/poptavka/service/locality</url-pattern>
+        <servlet-name>AddressSelectorRPCService</servlet-name>
+        <url-pattern>/poptavka/service/addressSelector</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>CategoryRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.category.CategoryRPCServiceImpl</servlet-class>
+        <servlet-name>CatLocSelectorRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.catLocSelector.CatLocSelectorRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CategoryRPCService</servlet-name>
-        <url-pattern>/poptavka/service/category</url-pattern>
+        <servlet-name>CatLocSelectorRPCService</servlet-name>
+        <url-pattern>/poptavka/service/catLocSelector</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.user.UserRPCServiceImpl</servlet-class>
+        <servlet-name>UserRegistrationRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.userRegistration.UserRegistrationRPCServiceImpl</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserRPCService</servlet-name>
-        <url-pattern>/poptavka/service/user</url-pattern>
+        <servlet-name>UserRegistrationRPCService</servlet-name>
+        <url-pattern>/poptavka/service/userRegistration</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.login.LoginRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginRPCService</servlet-name>
+        <url-pattern>/poptavka/service/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginUnsecRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.login.LoginUnsecRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginUnsecRPCService</servlet-name>
+        <url-pattern>/poptavka/service/loginUnsec</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -260,7 +293,7 @@
         <servlet-name>SettingsRPCService</servlet-name>
         <url-pattern>/poptavka/service/settings</url-pattern>
     </servlet-mapping>
-<!-- AJAX Crawlability filter - START -->
+    <!-- AJAX Crawlability filter - START -->
     <filter>
         <filter-name>Crawlfilter</filter-name>
         <filter-class>com.eprovement.poptavka.server.CrawlServlet</filter-class>
@@ -269,9 +302,20 @@
         <filter-name>Crawlfilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!--Gwt caching - sets proper headers to the response-->
+    <filter>
+        <filter-name>CachingFilter</filter-name>
+        <filter-class>com.eprovement.poptavka.server.cache.GwtCacheControlFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CachingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
     <!-- AJAX Crawlability filter - END -->
-
-
     <session-config>
         <session-timeout>
             240

@@ -11,4 +11,15 @@ package com.eprovement.poptavka.client.user.widget.grid;
 public interface TableDisplayUserMessage {
 
     long getUserMessageId();
+    void setUserMessageId(long userMessageId);
+
+    boolean isStarred();
+    void setStarred(boolean isStarred);
+
+    boolean isRead();
+    void setRead(boolean isStarred);
+
+    int getUnreadMessagesCount();
+    void setUnreadMessagesCount(int messageCount);
+
 }

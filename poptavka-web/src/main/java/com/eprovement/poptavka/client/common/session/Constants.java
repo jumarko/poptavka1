@@ -26,88 +26,91 @@ public final class Constants {
     /**************************************************************************/
     /* Action box Contants                                                    */
     /**************************************************************************/
-    public static final int READ = -20;
-    public static final int UNREAD = -21;
-    public static final int STARED = -22;
-    public static final int UNSTARED = -23;
+    public static final int READ = 0;
+    public static final int UNREAD = 1;
+    public static final int STARED = 2;
+    public static final int UNSTARED = 3;
 
     /**************************************************************************/
     /* Common Contants                                                        */
     /**************************************************************************/
-    public static final int NONE = 0;
-    public static final int SKIP = -99;
+    public static final int NONE = 4;
+    public static final int SKIP = 5;
 
     /**************************************************************************/
     /* Module Views Contants                                                  */
     /**************************************************************************/
-    public static final int HOME_WELCOME_MODULE = -1;
-    public static final int HOME_DEMANDS_MODULE = -2;
-    public static final int HOME_SUPPLIERS_MODULE = -3;
+    public static final int HOME_WELCOME_MODULE = 6;
+    public static final int HOME_DEMANDS_MODULE = 7;
+    public static final int HOME_SUPPLIERS_MODULE = 8;
+    public static final int HOME_SEARCH_MODULE = 9;
 
-    public static final int USER_CLIENT_MODULE = -10;
-    public static final int USER_SUPPLIER_MODULE = -11;
-    public static final int USER_DEMANDS_MODULE = -6;
-    public static final int USER_MESSAGES_MODULE = -7;
-    public static final int USER_SETTINGS_MODULE = -8;
-    public static final int USER_ADMININSTRATION_MODULE = -9;
+    public static final int USER_CLIENT_MODULE = 10;
+    public static final int USER_SUPPLIER_MODULE = 11;
+    public static final int USER_DEMANDS_MODULE = 12;
+    public static final int USER_MESSAGES_MODULE = 13;
+    public static final int USER_SETTINGS_MODULE = 14;
+    public static final int USER_ADMININSTRATION_MODULE = 15;
+
+    public static final int CAT_LOC_SELECTOR_MODULE = 70;
 
     /**************************************************************************/
     /* Widget Views Contants                                                  */
     /**************************************************************************/
     /* Home demands module - view types */
-    public static final int HOME_DEMANDS_BY_DEFAULT = 80;
-    public static final int HOME_DEMANDS_BY_WELCOME = 81;
-    public static final int HOME_DEMANDS_BY_SEARCH = 82;
+    public static final int HOME_DEMANDS_BY_DEFAULT = 16;
+    public static final int HOME_DEMANDS_BY_WELCOME = 17;
+    public static final int HOME_DEMANDS_BY_SEARCH = 18;
     /* Home suppliers module - view types */
-    public static final int HOME_SUPPLIERS_BY_DEFAULT = 90;
-    public static final int HOME_SUPPLIERS_BY_SEARCH = 91;
-    public static final int HOME_SUPPLIERS_BY_HISTORY = 92;
+    public static final int HOME_SUPPLIERS_BY_DEFAULT = 19;
+    public static final int HOME_SUPPLIERS_BY_SEARCH = 20;
 
-    public static final int CREATE_SUPPLIER = 1;
-    public static final int CREATE_DEMAND = 2;
+    public static final int CREATE_SUPPLIER = 22;
+    public static final int CREATE_DEMAND = 23;
 
     /* Demands module */
     // Client
-    public static final int CLIENT_DEMANDS_WELCOME = 9;
-    public static final int CLIENT_DEMANDS = 10;
-    public static final int CLIENT_DEMAND_DISCUSSIONS = 11;
-    public static final int CLIENT_OFFERED_DEMANDS = 12;
-    public static final int CLIENT_OFFERED_DEMAND_OFFERS = 13;
-    public static final int CLIENT_ASSIGNED_DEMANDS = 14;
-    public static final int CLIENT_CLOSED_DEMANDS = 15;
-    public static final int CLIENT_RATINGS = 6;
+    public static final int CLIENT_DEMANDS_WELCOME = 24;
+    public static final int CLIENT_DEMANDS = 25;
+    public static final int CLIENT_DEMAND_DISCUSSIONS = 26;
+    public static final int CLIENT_OFFERED_DEMANDS = 27;
+    public static final int CLIENT_OFFERED_DEMAND_OFFERS = 28;
+    public static final int CLIENT_ASSIGNED_DEMANDS = 29;
+    public static final int CLIENT_CLOSED_DEMANDS = 30;
+    public static final int CLIENT_RATINGS = 31;
     // Supplier
-    public static final int SUPPLIER_DEMANDS_WELCOME = 16;
-    public static final int SUPPLIER_POTENTIAL_DEMANDS = 17;
-    public static final int SUPPLIER_OFFERS = 18;
-    public static final int SUPPLIER_ASSIGNED_DEMANDS = 19;
-    public static final int SUPPLIER_CLOSED_DEMANDS = 8;
-    public static final int SUPPLIER_RATINGS = 7;
+    public static final int SUPPLIER_DEMANDS_WELCOME = 32;
+    public static final int SUPPLIER_POTENTIAL_DEMANDS = 33;
+    public static final int SUPPLIER_OFFERS = 34;
+    public static final int SUPPLIER_ASSIGNED_DEMANDS = 35;
+    public static final int SUPPLIER_CLOSED_DEMANDS = 36;
+    public static final int SUPPLIER_RATINGS = 37;
 
     /* Messages module constants */
-    public static final int MESSAGES_INBOX = 20;
-    public static final int MESSAGES_SENT = 21;
-    public static final int MESSAGES_DRAFT = 22;
-    public static final int MESSAGES_TRASH = 23;
+    public static final int MESSAGES_INBOX = 38;
+    public static final int MESSAGES_SENT = 39;
+    public static final int MESSAGES_DRAFT = 40;
+    public static final int MESSAGES_TRASH = 41;
     //
-    public static final int MESSAGES_COMPOSE_NEW = 24;
-    public static final int MESSAGES_COMPOSE_REPLY = 25;
+    public static final int MESSAGES_COMPOSE_NEW = 42;
+    public static final int MESSAGES_COMPOSE_REPLY = 43;
 
     /* Administration module contants */
-    public static final int ADMIN_ACCESS_ROLE = 100;
-    public static final int ADMIN_CLIENTS = 101;
-    public static final int ADMIN_DEMANDS = 102;
-    public static final int ADMIN_EMAILS_ACTIVATION = 103;
-    public static final int ADMIN_INVOICES = 104;
-    public static final int ADMIN_MESSAGES = 105;
-    public static final int ADMIN_NEW_DEMANDS = 113;
-    public static final int ADMIN_OFFERS = 106;
-    public static final int ADMIN_OUR_PAYMENT_DETAILS = 107;
-    public static final int ADMIN_PAYMENT_METHODS = 108;
-    public static final int ADMIN_PERMISSIONS = 109;
-    public static final int ADMIN_PREFERENCES = 110;
-    public static final int ADMIN_PROBLEMS = 111;
-    public static final int ADMIN_SUPPLIERS = 112;
+    public static final int ADMIN_ACCESS_ROLE = 44;
+    public static final int ADMIN_ACTIVE_DEMANDS = 45;
+    public static final int ADMIN_CLIENTS = 46;
+    public static final int ADMIN_DEMANDS = 47;
+    public static final int ADMIN_EMAILS_ACTIVATION = 48;
+    public static final int ADMIN_INVOICES = 49;
+    public static final int ADMIN_MESSAGES = 50;
+    public static final int ADMIN_NEW_DEMANDS = 51;
+    public static final int ADMIN_OFFERS = 52;
+    public static final int ADMIN_OUR_PAYMENT_DETAILS = 53;
+    public static final int ADMIN_PAYMENT_METHODS = 54;
+    public static final int ADMIN_PERMISSIONS = 55;
+    public static final int ADMIN_PREFERENCES = 56;
+    public static final int ADMIN_PROBLEMS = 57;
+    public static final int ADMIN_SUPPLIERS = 58;
 
     public static ArrayList<Integer> getHomeConstants() {
         ArrayList<Integer> admins = new ArrayList<Integer>();
@@ -166,18 +169,22 @@ public final class Constants {
     /**************************************************************************/
     /* Category tree view Model                                               */
     /**************************************************************************/
-    public static final int WITHOUT_CHECK_BOXES = 1000;
-    public static final int WITH_CHECK_BOXES = 1001;
-    public static final int WITH_CHECK_BOXES_ONLY_ON_LEAFS = 1002;
+    public static final int WITHOUT_CHECK_BOXES = 59;
+    public static final int WITH_CHECK_BOXES = 60;
+    public static final int WITH_CHECK_BOXES_ONLY_ON_LEAFS = 61;
+    // DisplayCountOfWhat
+    public static final int DISPLAY_COUNT_OF_DEMANDS = 62;
+    public static final int DISPLAY_COUNT_OF_SUPPLIERS = 63;
+    public static final int DISPLAY_COUNT_DISABLED = 64;
 
     /**************************************************************************/
     /* Constants for subject name in Send us an email widget                  */
     /**************************************************************************/
-    public static final int SUBJECT_REPORT_USER = 4;
-    public static final int SUBJECT_REPORT_ISSUE = 3;
-    public static final int SUBJECT_PARTNERSHIP = 2;
-    public static final int SUBJECT_HELP = 1;
-    public static final int SUBJECT_GENERAL_QUESTION = 0;
+    public static final int SUBJECT_REPORT_USER = 65;
+    public static final int SUBJECT_REPORT_ISSUE = 66;
+    public static final int SUBJECT_PARTNERSHIP = 67;
+    public static final int SUBJECT_HELP = 68;
+    public static final int SUBJECT_GENERAL_QUESTION = 69;
 
     /**************************************************************************/
     /* Address selector                                                       */
@@ -185,17 +192,6 @@ public final class Constants {
     public static final int MIN_CHARS_TO_SEARCH = 3;
     public static final String COUNTRY = "United States";
     public static final String DISTRICT = "";
-
-    /**************************************************************************/
-    /* Column widths                                                          */
-    /**************************************************************************/
-    public static final String COL_WIDTH_TITLE = "100%";
-    public static final String COL_WIDTH_PRICE = "120px";
-    public static final String COL_WIDTH_DATE = "100px";
-    public static final String COL_WIDTH_RATING = "80px";
-    public static final String COL_WIDTH_ICON = "40px";
-    public static final String COL_WIDTH_URGENT = "65px";
-    public static final String COL_WIDTH_ID = "50px";
 
     /**************************************************************************/
     /* Other Constants                                                        */
@@ -213,7 +209,8 @@ public final class Constants {
     public static final String ACT = "act";
     public static final int ENTER_KEY_CODE = 13;
     public static final int THANK_YOU_POPUP_DISPLAY_TIME = 3000;
-    public static final int SUGGESTBOX_DELAY = 1500;
+    public static final int VALIDATION_TOOLTIP_DISPLAY_TIME = 5000;
+    public static final int SUGGESTBOX_DELAY = 600;
     public static final int REGISTER_MAX_CATEGORIES = 5;
     public static final int REGISTER_MAX_LOCALITIES = 5;
     public static final String PATH_TO_BUSINESS_DATA = "businessUser.businessUserData.";
@@ -221,4 +218,11 @@ public final class Constants {
 
     public static final int SHORT_PASSWORD = 5;
     public static final int LONG_PASSWORD = 8;
+    public static final int FEEDBACK_COMMENT_MAX_LENGTH = 255;
+
+    public static final String[] PAGER_SIZE_ITEMS = {"10", "20", "30"};
+    public static final int PAGER_SIZE_DEFAULT = 10;
+
+    public static final String SLIDE_PX_SUBMENU = "250px";
+    public static final String SLIDE_PX_DETAIL = "350px";
 }

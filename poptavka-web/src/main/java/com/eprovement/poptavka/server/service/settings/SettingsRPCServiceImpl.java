@@ -16,6 +16,8 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.product.Service;
+import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
@@ -27,8 +29,8 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.SupplierDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
@@ -46,10 +48,11 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
     private GeneralService generalService;
     private Encryptor encryptor;
-    private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Locality, ICatLocDetail> localityConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
     private Converter<Address, AddressDetail> addressConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
+    private Converter<Service, ServiceDetail> serviceConverter;
 
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -63,13 +66,13 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
@@ -83,6 +86,12 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     public void setBusinessUserConverter(
             @Qualifier("businessUserConverter") Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
         this.businessUserConverter = businessUserConverter;
+    }
+
+    @Autowired
+    public void setServiceConverter(
+            @Qualifier("serviceConverter") Converter<Service, ServiceDetail> serviceConverter) {
+        this.serviceConverter = serviceConverter;
     }
 
     @Override
@@ -106,9 +115,10 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             if (role instanceof Supplier) {
                 Supplier supplier = (Supplier) role;
                 SupplierDetail supplierDetail = new SupplierDetail();
-                supplierDetail.setOverallRating(supplier.getOveralRating());
+                supplierDetail.setOveralRating(supplier.getOveralRating());
                 supplierDetail.setLocalities(localityConverter.convertToTargetList(supplier.getLocalities()));
                 supplierDetail.setCategories(categoryConverter.convertToTargetList(supplier.getCategories()));
+                supplierDetail.setServices(convertServices(supplier.getBusinessUser().getUserServices()));
                 settingsDetail.setSupplier(supplierDetail);
             }
 
@@ -169,15 +179,17 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
 
         List<BusinessUserRole> roles = user.getBusinessUserRoles();
         for (BusinessUserRole role : roles) {
+            /** CLIENT DATA. **/
             if (role instanceof Client) {
                 Client client = (Client) role;
                 client.setOveralRating(settingsDetail.getClientRating());
 
             }
+            /** SUPPLIER DATA. **/
             if (role instanceof Supplier) {
                 Supplier supplier = (Supplier) role;
-                if (settingsDetail.getSupplier().getOverallRating() != null) {
-                    supplier.setOveralRating(settingsDetail.getSupplier().getOverallRating());
+                if (settingsDetail.getSupplier().getOveralRating() != null) {
+                    supplier.setOveralRating(settingsDetail.getSupplier().getOveralRating());
                 }
                 supplier.setLocalities(localityConverter.convertToSourceList(
                         settingsDetail.getSupplier().getLocalities()));
@@ -186,18 +198,23 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
             }
 
         }
+        /** CONTACT DATA. **/
         user.getBusinessUserData().setPersonFirstName(settingsDetail.getUser().getPersonFirstName());
         user.getBusinessUserData().setPersonLastName(settingsDetail.getUser().getPersonLastName());
         user.getBusinessUserData().setPhone(settingsDetail.getUser().getPhone());
-        user.getBusinessUserData().setIdentificationNumber(settingsDetail.getUser().getIdentificationNumber());
+        /** COMPANY DATA. **/
         user.getBusinessUserData().setCompanyName(settingsDetail.getUser().getCompanyName());
+        user.getBusinessUserData().setTaxId(settingsDetail.getUser().getTaxId());
+        user.getBusinessUserData().setIdentificationNumber(settingsDetail.getUser().getIdentificationNumber());
+        /** ADDITIONAL DATA. **/
         user.getBusinessUserData().setWebsite(settingsDetail.getUser().getWebsite());
         user.getBusinessUserData().setDescription(settingsDetail.getUser().getDescription());
-        user.getBusinessUserData().setTaxId(settingsDetail.getUser().getTaxId());
+        /** ADDRESS DATA. **/
         List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail addressDetail : settingsDetail.getUser().getAddresses()) {
             addresses.add(addressConverter.convertToSource(addressDetail));
         }
+        user.setAddresses(addresses);
 
         /** NOTIFICATIONS. **/
         List<NotificationItem> notificationsItems = new ArrayList<NotificationItem>();
@@ -236,5 +253,13 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         user.setPassword(newPassword);
         generalService.save(user);
         return true;
+    }
+
+    private List<ServiceDetail> convertServices(List<UserService> services) {
+        List<ServiceDetail> servicesDetails = new ArrayList<ServiceDetail>();
+        for (UserService userService : services) {
+            servicesDetails.add(serviceConverter.convertToTarget(userService.getService()));
+        }
+        return servicesDetails;
     }
 }

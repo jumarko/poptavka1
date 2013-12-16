@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:bb="urn:import:com.github.gwtbootstrap.client.ui.base"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <g:HTMLPanel debugId='searchElement'>
+        <b:Tooltip text="Search" placement="BOTTOM">
+            <bb:IconAnchor ui:field='searchAnchor' icon="SEARCH" iconSize="TWO_TIMES" styleName='{res.header.searchIcon}'/>
+        </b:Tooltip>
+        <g:SimplePanel ui:field="searchPanel" addStyleNames='{res.header.searchPanel}'/>
+    </g:HTMLPanel>
+</ui:UiBinder>

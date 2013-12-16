@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
+import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.product.Service;
@@ -20,8 +21,9 @@ import com.eprovement.poptavka.util.notification.NotificationUtils;
 import com.google.common.base.Preconditions;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.lang.Validate.notNull;
+import static org.apache.commons.lang.Validate.notEmpty;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Propagation;
@@ -29,7 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
@@ -56,17 +61,21 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
     private final RegisterService registerService;
     private final NotificationUtils notificationUtils;
     protected final NotificationTypeService notificationTypeService;
+    private final Class<? extends BusinessUserRole> businessUserRoleClass;
 
     private UserVerificationService userVerificationService;
 
 
-    public BusinessUserRoleServiceImpl(GeneralService generalService, RegisterService registerService,
+    public BusinessUserRoleServiceImpl(Class<? extends BusinessUserRole> businessUserRoleClass,
+                                       GeneralService generalService, RegisterService registerService,
             UserVerificationService userVerificationService, NotificationTypeService notificationTypeService) {
-        Validate.notNull(generalService, "generalService cannot be null");
-        Validate.notNull(registerService, "registerService cannot be null");
-        Validate.notNull(userVerificationService, "userVerificationService cannot be null!");
-        Validate.notNull(notificationTypeService, "notificationTypeService cannot be null!");
+        notNull(businessUserRoleClass, "businessUserRoleClass cannot be null");
+        notNull(generalService, "generalService cannot be null");
+        notNull(registerService, "registerService cannot be null");
+        notNull(userVerificationService, "userVerificationService cannot be null!");
+        notNull(notificationTypeService, "notificationTypeService cannot be null!");
 
+        this.businessUserRoleClass = businessUserRoleClass;
         this.generalService = generalService;
         this.registerService = registerService;
         this.userVerificationService = userVerificationService;
@@ -89,8 +98,8 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
      * If new {@link BusinessUserRole} should be assigned to the existing {@link BusinessUser} then that
      * {@link BusinessUser} must be explicitly set to <code>businessUserRole</code> object.
      *
-     * @param businessUserRole
-     * @return
+     * @param businessUserRole business user role to be created
+     * @return business user role which has been created
      */
     @Override
     @Transactional
@@ -129,42 +138,41 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
 
     /**
-     * Checks whether given <code>businessUser</code> has role specified by <code>userRoleClass</code>.
-     *
-     * @param businessUser  user which should be checked, can be null -> in that case, false is returned immediately.
-     * @param userRoleClass
-     * @return true  if given user has specified role, false otherwise.
-     */
-    public static boolean isUserAtRole(BusinessUser businessUser,
-            final Class<? extends BusinessUserRole> userRoleClass) {
-        if (businessUser == null) {
-            return false;
-        }
-        List<BusinessUserRole> businessUserRoles = businessUser.getBusinessUserRoles();
-        return CollectionUtils.exists(businessUserRoles, new Predicate() {
-
-            @Override
-            public boolean evaluate(Object object) {
-                return object.getClass().equals(userRoleClass);
-            }
-        });
-    }
-
-
-    /**
      * Checks if client with {@code email} already exists.
      *
-     * @param email
+     * @param email email to be checked
      * @return true if no client with given {@code email} has been already registered, false otherwise
      */
     @Override
     public boolean checkFreeEmail(String email) {
-        Validate.notEmpty(email, "Empty email does not mail sense)");
+        notEmpty(email, "Empty email does not make sense)");
         final Search freeMailCheck = new Search(User.class);
         freeMailCheck.addFilterEqual("email", email);
-        final boolean isFree = getGeneralService().count(freeMailCheck) == 0;
+        return getGeneralService().count(freeMailCheck) == 0;
+    }
 
-        return isFree;
+    /**
+     * Finds business user by his email.
+     *
+     * @param email user's email
+     * @return business user by specified email or null if no such user exists
+     */
+    @Override
+    public BUR getByEmail(String email) {
+        notEmpty(email, "Empty email does not make sense)");
+        final Search getByEmail = new Search(businessUserRoleClass);
+        getByEmail.addFilterEqual("businessUser.email", email);
+        final List<BUR> users = getGeneralService().search(getByEmail);
+
+        if (CollectionUtils.isEmpty(users)) {
+            return null;
+        }
+
+        if (users.size() > 1) {
+            throw new IllegalStateException("Multiple users with the same email=" + email + " exist! Cannot happen!");
+        }
+
+        return users.get(0);
     }
 
 
@@ -185,7 +193,21 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
      * @return all notifications for concrete business user role
      * @see com.eprovement.poptavka.service.notification.NotificationTypeService
      */
-    protected abstract List<Notification> getNotifications();
+    protected abstract List<Notification> getNotificationsWithDefaultPeriod();
+
+    protected abstract Map<Notification, Period> getNotificationsWithCustomPeriod();
+
+    /**
+     * Loads welcome notification from DB that has the same code as {@code expectedWelcomeNotification}.
+     * @param expectedWelcomeNotification represents notification which we want to load from DB, identified by code
+     * @return notification from DB corresponding to the {@code expectedWelcomeNotification} (they have the same code).
+     */
+    protected final Notification getWelcomeNotification(Registers.Notification expectedWelcomeNotification) {
+        final Notification notification =
+                getRegisterService().getValue(expectedWelcomeNotification.getCode(), Notification.class);
+        notNull(notification, "no notification corresponding to the " + expectedWelcomeNotification + " exists!");
+        return notification;
+    }
 
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
@@ -193,10 +215,12 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         if (isNewBusinessUser(businessUserRole)) {
             final BusinessUser savedBusinessUserEntity = generalService.save(businessUserRole.getBusinessUser());
             businessUserRole.setBusinessUser(savedBusinessUserEntity);
-
-            // TODO RELEASE juraj: move out of this class to the SupplierRPCService and ClientRPCService??
-            // ivlcek: I think we can keep it here so that notification is not sent 2x for Client and again for Supplier
-            userVerificationService.sendNewActivationCodeAsync(savedBusinessUserEntity);
+            if (!savedBusinessUserEntity.isUserFromExternalSystem()) {
+                // do not send activation email to users which has been automatically registered from external systems
+                userVerificationService.sendNewActivationCodeAsync(savedBusinessUserEntity);
+            } else {
+                LOGGER.info("action=send_activation_email status=skip reason=external_user user={} ", businessUserRole);
+            }
         }
     }
 
@@ -206,21 +230,39 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
 
     private void createDefaultNotifications(BusinessUserRole businessUserRole) {
-        final List<NotificationItem> notificationItems = new ArrayList<>();
-        for (Notification supplierNotification : getNotifications()) {
-            notificationItems.add(
-                    notificationUtils.createNotificationItemWithDefaultPeriod(supplierNotification.getCode(), true));
+        final Set<NotificationItem> notificationItems = new HashSet<>();
+        if (businessUserRole.getBusinessUser().isUserFromExternalSystem()) {
+            // external users have only one type of notification since we do not want to send them other emails
+            // until they get an offer and register themselves at our system as regular users
+            notificationItems.add(notificationUtils.createNotificationItemWithDefaultPeriod(
+                    Registers.Notification.NEW_MESSAGE.getCode(), true));
+        } else {
+            for (Notification notification : getNotificationsWithDefaultPeriod()) {
+                notificationItems.add(
+                        notificationUtils.createNotificationItemWithDefaultPeriod(notification.getCode(), true));
+            }
+            for (Map.Entry<Notification, Period> customNotification : getNotificationsWithCustomPeriod().entrySet()) {
+                notNull(customNotification, "notification should not be null");
+                notificationItems.add(notificationUtils.createNotificationItem(customNotification.getKey().getCode(),
+                        customNotification.getValue(), true));
+            }
         }
-        LOGGER.info("action=supplier_create_default_notifications supplier={} notifications={}",
+
+        LOGGER.info("action=businessUserRole_create_default_notifications businessUserRole={} notifications={}",
                 businessUserRole, notificationItems);
-        businessUserRole.getBusinessUser().getSettings().setNotificationItems(notificationItems);
+        if (businessUserRole.getBusinessUser().getSettings().getNotificationItems() != null) {
+            // add existing notification items
+            notificationItems.addAll(businessUserRole.getBusinessUser().getSettings().getNotificationItems());
+        }
+
+        businessUserRole.getBusinessUser().getSettings().setNotificationItems(new ArrayList<>(notificationItems));
     }
 
 
 
     private void createDefaultAccessRole(BusinessUserRole businessUserRole) {
-        Validate.notNull(businessUserRole);
-        Validate.notNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
+        notNull(businessUserRole);
+        notNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
         if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
             final List<AccessRole> defaultAccessRoles = getDefaultAccessRoles();
             LOGGER.info("action=create_default_access_roles business_user_role={} roles={}",

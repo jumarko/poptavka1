@@ -25,7 +25,7 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetAllValuesForRegister() {
         final List<Notification> allNotifications = this.registerService.getAllValues(Notification.class);
         Assert.assertNotNull(allNotifications);
-        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(7));
+        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(9));
     }
 
     @Test

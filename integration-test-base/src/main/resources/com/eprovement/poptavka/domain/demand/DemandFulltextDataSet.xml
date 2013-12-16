@@ -13,7 +13,7 @@
             DESCRIPTION="Sháním zachovalé auto Ford Focus II Kombi, rok výroby od 2006 vyšší. Barva ideálně černá nebo modrá. Maximální počet najetých km 150 000.
             Palivo: diesel. Požaduju evidenci servisní historie!"
             PRICE="110000" STATUS="NEW" />
-    <DEMAND ID="113" TYPE_ID="1" TITLE="Poptávka FAKE Poptávka" DESCRIPTION="Požaduju hledám auto bla bla ideálně maximálně, dodávku." PRICE="120000" />
+    <DEMAND ID="113" TYPE_ID="1" TITLE="Poptávka FAKE Poptávka" DESCRIPTION="Požaduju hledám auto bla bla ideálně maximálně, dodávku." PRICE="120000" STATUS="TO_BE_CHECKED"/>
 
 
     <!--########################################## demands for localities ###########################################-->

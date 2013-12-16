@@ -36,4 +36,9 @@
     <!-- city for township - REMOVED -->
     <!-- <LOCALITY TYPE="CITY" TREEID="7" LEVEL="4" ID="1211" NAME="locality1211" PARENT_ID="1" LEFTBOUND="9" RIGHTBOUND="10"/> -->
 
+
+    <!--Region abbreviations mapping-->
+    <REGIONABBREVIATION ID="1" ABBREVIATION="LL" REGION_ID="1" />
+    <REGIONABBREVIATION ID="2" ABBREVIATION="MM" REGION_ID="2" />
+
 </dataset>

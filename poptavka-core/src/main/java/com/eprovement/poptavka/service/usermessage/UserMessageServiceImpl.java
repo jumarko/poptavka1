@@ -9,8 +9,10 @@ import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
@@ -396,6 +398,14 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         if (userMessage != null) {
             return userMessage;
         }
+        MessageUserRole messageUserRole = new MessageUserRole();
+        messageUserRole.setMessage(message);
+        messageUserRole.setUser(user);
+        messageUserRole.setType(MessageUserRoleType.BCC);
+        List<MessageUserRole> messageUserRoles = new ArrayList<>();
+        messageUserRoles.add(messageUserRole);
+        message.setRoles(messageUserRoles);
+        generalService.merge(message);
         return createUserMessage(message, user);
     }
 

@@ -2,6 +2,7 @@ package com.eprovement.poptavka.domain.demand;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.user.Client;
@@ -16,6 +17,7 @@ import org.hibernate.search.annotations.Boost;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -198,6 +200,7 @@ public class Demand extends DomainObject {
     @Cascade(CascadeType.ALL)
     private Client client;
 
+    @NotEmpty
     @ManyToMany
     @NotAudited
     @JoinTable(
@@ -207,6 +210,7 @@ public class Demand extends DomainObject {
     )
     private List<Locality> localities;
 
+    @NotEmpty
     @ManyToMany
     @NotAudited
     @JoinTable(
@@ -239,18 +243,13 @@ public class Demand extends DomainObject {
     @NotAudited
     private List<Offer> offers;
 
-    //----------------------------------  Attributes for demands gathered from external systems ------------------------
-    //----------------------------------  such as epoptavka.cz, aaapoptavka.cz, etc. -----------------------------------
-
-    /** Arbitrary category specification for demands gathered from external system. */
-    private String foreignCategory;
-
-    /** Arbitrary URL that represents the link to the original demand gathered from external system. */
-    private String foreignLink;
-
     @OneToOne
     @NotAudited
-    private DemandOrigin origin;
+    private Origin origin;
+
+
+    //--------------------------------------------------- GETTERS and SETTERS ------------------------------------------
+
 
     public String getTitle() {
         return title;
@@ -405,27 +404,12 @@ public class Demand extends DomainObject {
         this.offers = offers;
     }
 
-    public String getForeignCategory() {
-        return foreignCategory;
-    }
 
-    public void setForeignCategory(String foreignCategory) {
-        this.foreignCategory = foreignCategory;
-    }
-
-    public String getForeignLink() {
-        return foreignLink;
-    }
-
-    public void setForeignLink(String foreignLink) {
-        this.foreignLink = foreignLink;
-    }
-
-    public DemandOrigin getOrigin() {
+    public Origin getOrigin() {
         return origin;
     }
 
-    public void setOrigin(DemandOrigin origin) {
+    public void setOrigin(Origin origin) {
         this.origin = origin;
     }
 

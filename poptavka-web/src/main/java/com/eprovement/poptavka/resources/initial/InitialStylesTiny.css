@@ -1,0 +1,103 @@
+@CHARSET "UTF-8";
+
+/**
+ * Css Resources for main basic layout for initial views
+ *
+ * @author Jaro
+ *
+ */
+html {
+}
+
+body {
+    /*min-width: 480px;*/
+}
+
+body > div {
+    /*min-width: 480px;*/
+}
+
+
+.homepage {
+    margin: 0;
+    width: 100%;
+}
+.homepage .header {
+    font-size: 30px;
+}
+.homepage .banner1 {
+    margin: 0;
+    width: 100%;
+    background-position: top center;
+}
+.homepage .banner2 {
+    margin: 0;
+    width: 100%;
+    background-position: top center;
+}
+.homepage .banner-link2-position {
+    top:225px;
+    left:26px;
+}
+.homepage .banner-button {
+    background:url(images/button-right-large.png) no-repeat;
+    top: 255px;
+    font-size: 17px;
+    width: 226px;
+}
+
+.root-category-cell {
+    max-width: 100%;
+    margin: 0;
+}
+.root-category-cell .category-name {
+    font-size: 15px;
+}
+
+.scroll-container {}
+
+/******************************************************************************/
+/*  Toolbar styles                                                            */
+/******************************************************************************/
+.toolbar {}
+.toolbar .header {    
+    display: none;
+}
+.toolbar .right-icon {}
+
+/******************************************************************************/
+/*  Footer View                                                               */
+/******************************************************************************/
+.footer {
+}
+.footer .links {
+    width: auto;
+    margin: 0 11px 6px 0;
+}
+.footer .links .button {
+    padding: 2px 6px;
+}
+.footer .links .button:hover {
+}
+.footer .links .separator {
+    /*padding: 2px 5px;*/
+}
+.border-separator {
+    display: none;
+}
+.toolbar .item {
+    margin: 6px 5px 0 0;
+}
+
+.footer-toggle {
+}
+
+/* Loader Modal Styles */
+.loader-modal {}
+
+/******************************************************************************/
+/*  Common Responsive                                                         */
+/******************************************************************************/
+.hide-small {}
+.expand-small {}
+.half-expand-small {}

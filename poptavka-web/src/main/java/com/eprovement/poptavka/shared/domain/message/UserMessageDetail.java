@@ -34,22 +34,23 @@ public class UserMessageDetail implements IsSerializable {
     private String senderEmail;
     private int messageCount;
 
+    public static final ProvidesKey<UserMessageDetail> KEY_PROVIDER = new ProvidesKey<UserMessageDetail>() {
+        @Override
+        public Object getKey(UserMessageDetail item) {
+            return item == null ? null : item.getId();
+        }
+    };
+
+    /**************************************************************************/
+    /* Constructora                                                           */
+    /**************************************************************************/
     public UserMessageDetail() {
+        // for serialization
     }
 
-    public UserMessageDetail(UserMessageDetail detail) {
-        this.updateWholeUserMessage(detail);
-    }
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeUserMessage(UserMessageDetail detail) {
-        id = detail.getId();
-        isRead = detail.isRead();
-        isStarred = detail.isStarred();
-        messageDetail = detail.getMessageDetail();
-        senderEmail = detail.getSenderEmail();
-    }
-
+    /**************************************************************************/
+    /* Getter & Setters                                                       */
+    /**************************************************************************/
     public Long getId() {
         return id;
     }
@@ -103,10 +104,4 @@ public class UserMessageDetail implements IsSerializable {
                 + "starred: " + isStarred
                 + "messageDetail" + messageDetail.toString();
     }
-    public static final ProvidesKey<UserMessageDetail> KEY_PROVIDER = new ProvidesKey<UserMessageDetail>() {
-        @Override
-        public Object getKey(UserMessageDetail item) {
-            return item == null ? null : item.getId();
-        }
-    };
 }

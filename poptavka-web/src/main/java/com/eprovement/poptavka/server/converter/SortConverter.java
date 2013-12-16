@@ -26,8 +26,10 @@ public final class SortConverter {
 
     public Sort[] convertToSourceList(Class<?> searchClass, Collection<SortPair> detailObjects) {
         final ArrayList<Sort> domainObjects = new ArrayList<Sort>();
-        for (SortPair detailObject : detailObjects) {
-            domainObjects.add(convertToSource(searchClass, detailObject));
+        if (detailObjects != null) {
+            for (SortPair detailObject : detailObjects) {
+                domainObjects.add(convertToSource(searchClass, detailObject));
+            }
         }
         return domainObjects.toArray(new Sort[domainObjects.size()]);
     }

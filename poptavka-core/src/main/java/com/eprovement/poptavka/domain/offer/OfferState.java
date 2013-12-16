@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 /**
  * Wrapper for the enum representing a life-cycle state of an offer
- * 
+ *
  * @author Vojtech Hubr
  *         Date 12.4.11
 

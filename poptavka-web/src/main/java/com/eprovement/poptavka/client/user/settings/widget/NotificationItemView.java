@@ -4,152 +4,88 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.ui.WSListBox;
+import com.eprovement.poptavka.client.common.ui.WSListBoxData;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.dom.client.HasChangeHandlers;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
  *
  * @author mato
  */
-public class NotificationItemView extends Composite implements HasChangeHandlers {
+public class NotificationItemView extends Composite {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    private static NotificationItemView.NotificationItemVIewUiBinder uiBinder = GWT
-            .create(NotificationItemView.NotificationItemVIewUiBinder.class);
+    private static NotificationItemVIewUiBinder uiBinder = GWT.create(NotificationItemVIewUiBinder.class);
+
+    interface NotificationItemVIewUiBinder extends UiBinder<Widget, NotificationItemView> {
+    }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField HTMLPanel panel;
-    @UiField Anchor revert;
     @UiField Label name;
-    @UiField CheckBox enabled;
-    @UiField(provided = true) ListBox period;
-
-    private static final String ENABLED = "enabled";
-    private static final String PERIOD = "period";
-    private boolean originalEnabled;
-    private int originalPeriodIdx;
+    @UiField HTMLPanel notificationChoicePanel;
+    @UiField Button onBtn;
+    @UiField Button offBtn;
+    @UiField(provided = true) WSListBox period;
+    private boolean onSelected;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    public NotificationItemView() {
-        period = new ListBox();
-        for (Period item : Period.values()) {
-            period.addItem(item.getValue());
-        }
+    public NotificationItemView(NotificationDetail item) {
+        createPeriodListBox(item.getPeriod().getValue());
+
         initWidget(uiBinder.createAndBindUi(this));
+
+        name.setText(item.getName());
+        onSelected = item.isEnabled();
+        period.setSelected(item.getPeriod().getValue());
 
         StyleResource.INSTANCE.common().ensureInjected();
     }
 
-    /**************************************************************************/
-    /* Has handlers                                                           */
-    /**************************************************************************/
-    @Override
-    public HandlerRegistration addChangeHandler(ChangeHandler handler) {
-        return addDomHandler(handler, ChangeEvent.getType());
-    }
-
-    interface NotificationItemVIewUiBinder extends
-            UiBinder<Widget, NotificationItemView> {
-    }
-
-    /**************************************************************************/
-    /* Change monitoring methods                                              */
-    /**************************************************************************/
-    public void commit() {
-        originalEnabled = enabled.getValue();
-        originalPeriodIdx = period.getSelectedIndex();
-        setChangedStyles(false);
+    private void createPeriodListBox(String periodName) {
+        WSListBoxData demandTypeData = new WSListBoxData();
+        int key = 0;
+        int selectIdx = 0;
+        for (Period item : Period.values()) {
+            if (item.getValue().equals(periodName)) {
+                selectIdx = key;
+            }
+            demandTypeData.insertItem(item.getValue(), key++);
+        }
+        period = WSListBox.createListBox(demandTypeData, selectIdx);
     }
 
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
-    @UiHandler("enabled")
-    public void addEnabledClickHandler(ClickEvent event) {
-        setChangedStyles(isNotificationChange());
+    @UiHandler("onBtn")
+    public void onBtnClickHandler(ClickEvent e) {
+        onSelected = false;
+        notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchRight());
+        notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchLeft());
     }
 
-    @UiHandler("period")
-    public void addPeriodChangeHandler(ChangeEvent event) {
-        setChangedStyles(isNotificationChange());
-    }
-
-    @UiHandler("revert")
-    public void revertClickHandler(ClickEvent e) {
-        revert();
-        DomEvent.fireNativeEvent(Document.get().createChangeEvent(), this);
-    }
-
-    /**************************************************************************/
-    /* Methods                                                                */
-    /**************************************************************************/
-    public void revert() {
-        if (isNotificationChange()) {
-            enabled.setValue(originalEnabled);
-            period.setSelectedIndex(originalPeriodIdx);
-            reset();
-        }
-    }
-
-    public void reset() {
-        setChangedStyles(false);
-    }
-
-    /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    /** Setters. **/
-    public void setEnabledBothValues(boolean value) {
-        originalEnabled = value;
-        enabled.setValue(value);
-    }
-
-    public void setEnableValue(boolean value) {
-        enabled.setValue(value);
-    }
-
-    public void setPerioddBothValues(int value) {
-        originalPeriodIdx = value;
-        period.setSelectedIndex(value);
-    }
-
-    public void setPeriodValue(int value) {
-        period.setSelectedIndex(value);
-    }
-
-    private void setChangedStyles(boolean changed) {
-        if (changed) {
-            panel.setStyleName(Storage.RSCS.common().changed());
-            revert.setVisible(true);
-        } else {
-            panel.removeStyleName(Storage.RSCS.common().changed());
-            revert.setVisible(false);
-        }
+    @UiHandler("offBtn")
+    public void offBtnClickHandler(ClickEvent e) {
+        onSelected = true;
+        notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchRight());
+        notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchLeft());
     }
 
     /**************************************************************************/
@@ -159,38 +95,11 @@ public class NotificationItemView extends Composite implements HasChangeHandlers
         return name;
     }
 
-    public boolean getOriginalEnabled() {
-        return originalEnabled;
-    }
-
     public boolean getEnabled() {
-        return enabled.getValue();
+        return onSelected;
     }
 
-    public int getOriginalPeriod() {
-        return originalPeriodIdx;
-    }
-
-    public int getPeriod() {
-        return period.getSelectedIndex();
-    }
-
-    public ChangeDetail getEnabledChangeDetail() {
-        ChangeDetail changeDetail = new ChangeDetail(ENABLED);
-        changeDetail.setOriginalValue(originalEnabled);
-        changeDetail.setValue(enabled.getValue());
-        return changeDetail;
-    }
-
-    public ChangeDetail getPeriodChangeDetail() {
-        ChangeDetail changeDetail = new ChangeDetail(PERIOD);
-        changeDetail.setOriginalValue(originalPeriodIdx);
-        changeDetail.setValue(period.getSelectedIndex());
-        return changeDetail;
-    }
-
-    public boolean isNotificationChange() {
-        return (originalEnabled != enabled.getValue())
-                || (originalPeriodIdx != period.getSelectedIndex());
+    public String getPeriod() {
+        return period.getSelected();
     }
 }

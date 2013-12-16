@@ -1,0 +1,99 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common.monitors"
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <b:FluidContainer addStyleNames='{res.common.formFields}'>
+        <b:FluidRow>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <b:FluidContainer addStyleNames='{res.common.wellContainer}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='formPasswordChange'>Change password</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="12" addStyleNames='well-padding'>
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key='formPasswordCurrent'>Current password:</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="8">
+                                    <cm:ValidationMonitor ui:field='passwordCurrentMonitor'>
+                                        <g:PasswordTextBox />
+                                    </cm:ValidationMonitor>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key="formPassword">New password</ui:msg>:
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="8">
+                                    <cm:ValidationMonitor ui:field="passwordNewMonitor">
+                                        <g:PasswordTextBox />
+                                    </cm:ValidationMonitor>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key="formPasswordConfirm">New password Again</ui:msg>:
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="8">
+                                    <cm:ValidationMonitor ui:field="passwordNewConfirmMonitor">
+                                        <g:PasswordTextBox />
+                                    </cm:ValidationMonitor>
+                                </b:Column>
+                            </b:FluidRow>
+                            <b:FluidRow>
+                                <b:Column size="12">
+                                    <g:Button ui:field="changeBtn" styleName='{res.common.buttonGreen}'>
+                                        <ui:msg key="commonBtnChange">Change</ui:msg>
+                                    </g:Button>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </b:Column>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <b:FluidContainer addStyleNames='{res.common.wellContainer}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='formEmailChange'>Change email (not implemented yet)</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="12" addStyleNames='well-padding'>
+                            <b:FluidRow>
+                                <b:Column size="4">
+                                    <g:Label>
+                                        <ui:msg key='formEmail'>Email:</ui:msg>
+                                    </g:Label>
+                                </b:Column>
+                                <b:Column size="8">
+                                    <cm:ValidationMonitor ui:field='emailMonitor'>
+                                        <g:TextBox enabled='false' readOnly="true"/>
+                                    </cm:ValidationMonitor>
+                                </b:Column>
+                            </b:FluidRow>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

@@ -1,0 +1,60 @@
+/******************************************************************************/
+/*  DataGrid styles                                                           */
+/******************************************************************************/
+.dataGridWidget {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridFooter {}
+.dataGridHeader {}
+.dataGridHeader.companyHeader {
+    border-radius: 0;
+}
+.dataGridCell {}
+.dataGridFirstColumnFooter {}
+.dataGridFirstColumnHeader {}
+.dataGridLastColumnFooter {}
+.dataGridSortableHeader {}
+.dataGridLastColumnHeader {}
+.dataGridSortedHeaderAscending {}
+.dataGridSortedHeaderDescending {}
+.dataGridEvenRow {}
+.dataGridEvenRowCell {}
+.dataGridOddRow {}
+.dataGridOddRowCell {}
+.dataGridHoveredRow {}
+.dataGridHoveredRowCell {}
+.dataGridKeyboardSelectedRow {}
+.dataGridKeyboardSelectedRowCell {}
+.dataGridSelectedRow {}
+.dataGridSelectedRowCell {}
+.dataGridFirstColumn {}
+.dataGridLastColumn {}
+.dataGridKeyboardSelectedCell {}
+
+/******************************************************************************/
+/*  Additional styles                                                         */
+/******************************************************************************/
+.unread {}
+
+.col-width-icon {}
+.col-width-star {}
+.col-width-ratting {}
+.col-width-title {}
+.col-width-locality {}
+.col-width-displayName {}
+.col-width-messageText {}
+.col-width-price {}
+.col-width-createdDate {
+    width: 60px;
+}
+.col-width-receivedDate {}
+.col-width-date {}
+.col-width-urgency {}
+.col-width-id {}
+.col-width-sender {}
+.col-width-logo {
+    width: 50px;
+}
+
+.cell-style-urgency {}
+.cell-style-star {}

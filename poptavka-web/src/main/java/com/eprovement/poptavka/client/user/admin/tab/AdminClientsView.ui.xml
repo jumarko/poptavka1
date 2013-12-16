@@ -4,8 +4,7 @@
   xmlns:g="urn:import:com.google.gwt.user.client.ui"
   xmlns:c="urn:import:com.google.gwt.user.cellview.client"
   xmlns:ug="urn:import:com.eprovement.poptavka.client.user.widget.grid"
-  xmlns:detail="urn:import:com.eprovement.poptavka.client.user.admin.tab"
-  xmlns:d="urn:import:com.eprovement.poptavka.client.user.widget.detail">
+  xmlns:detail="urn:import:com.eprovement.poptavka.client.user.admin.tab">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource'/>
 

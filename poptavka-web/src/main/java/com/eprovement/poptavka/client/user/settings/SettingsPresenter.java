@@ -5,7 +5,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
+import com.eprovement.poptavka.client.user.settings.SettingsPresenter.SttingsViewInterface;
+import com.eprovement.poptavka.client.user.settings.toolbar.SettingsToolbarView;
 import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.widget.SecuritySettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
@@ -13,6 +18,8 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -24,40 +31,39 @@ import com.mvp4g.client.view.LazyView;
 
 @Presenter(view = SettingsView.class)
 public class SettingsPresenter
-        extends LazyPresenter<SettingsPresenter.HomeSettingsViewInterface, SettingsEventBus>
+        extends LazyPresenter<SttingsViewInterface, SettingsEventBus>
         implements NavigationConfirmationInterface {
 
-    private UserSettingsPresenter userPresenter = null;
-    private ClientSettingsPresenter clientPresenter = null;
-    private SupplierSettingsPresenter supplierPresenter = null;
-    private SystemSettingsPresenter systemPresenter = null;
+    private UserSettingsPresenter userPresenter;
+    private ClientSettingsPresenter clientPresenter;
+    private SupplierSettingsPresenter supplierPresenter;
+    private SystemSettingsPresenter systemPresenter;
+    private SecuritySettingsPresenter securityPresenter;
     //
     private SettingDetail settingsDetail;
-    private boolean isUserChange = false;
-    private boolean isClientChange = false;
-    private boolean isSupplierChange = false;
-    private boolean isSystemChange = false;
 
     //IsWidget musi byt kvoli funkcii ChildAutoDisplay
-    public interface HomeSettingsViewInterface extends LazyView, IsWidget {
+    public interface SttingsViewInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         /** Setters. **/
-        void updateUserStatus(boolean isChange);
-
-        void updateClientStatus(boolean isChange);
-
-        void updateSupplierStatus(boolean isChange);
-
-        void updateSystemStatus(boolean isChange);
-
         void setClientButtonVisibility(boolean visible);
+
+        void settingsUserStyleChange();
+
+        void settingsClientStyleChange();
+
+        void settingsSupplierStyleChange();
+
+        void settingsSystemsStyleChange();
+
+        void settingsSecurityStyleChange();
 
         /** Getters. **/
         SimplePanel getContentPanel();
 
-        SimplePanel getFooterHolder();
+        SimplePanel getFooterContainer();
 
-        Button getUpdateButton();
+        Widget getWidgetView();
 
         Button getMenuUserBtn();
 
@@ -67,12 +73,7 @@ public class SettingsPresenter
 
         Button getMenuSystemBtn();
 
-        void showNofity(String message, Boolean updated);
-
-        //widget
-        void initWidgetDefaults();
-
-        Widget getWidgetView();
+        Button getMenuSecurityBtn();
     }
 
     /**************************************************************************/
@@ -88,8 +89,8 @@ public class SettingsPresenter
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        eventBus.setFooter(view.getFooterHolder());
-        view.initWidgetDefaults();
+        eventBus.setFooter(view.getFooterContainer());
+        eventBus.setToolbarContent("My Profile", view.getToolbarContent(), true);
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
@@ -97,14 +98,16 @@ public class SettingsPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        if (isUserChange || isClientChange || isSupplierChange || isSystemChange) {
-            //Window shouldn't be used inside a presenter
-            //this is just to give a simple example
+        String navigationLeaveModule = event.toString().substring(0, event.toString().indexOf("$"));
+        //check if contains service selector, in case of SupplierSettings widget where
+        //ServiceSelector is presented and it fires navigation event on forward but it is still part of setting module
+        if (!navigationLeaveModule.contains("ServiceSelector")) {
             if (Window.confirm(Storage.MSGS.settingsNotificationLeavingPage())) {
+                //Leaving without saving - reset validation
                 event.fireEvent();
             }
         } else {
-            event.fireEvent();
+            //if same module but different method do nothing
         }
     }
 
@@ -113,10 +116,21 @@ public class SettingsPresenter
     /**************************************************************************/
     @Override
     public void bindView() {
-        view.getUpdateButton().addClickHandler(new ClickHandler() {
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                updateProfile();
+                if (isValid()) {
+                    updateProfile();
+                } else {
+                    ((SettingsToolbarView) view.getToolbarContent()).getUpdateBtnTooltip().show();
+                    Timer timer = new Timer() {
+                        @Override
+                        public void run() {
+                            ((SettingsToolbarView) view.getToolbarContent()).getUpdateBtnTooltip().hide();
+                        }
+                    };
+                    timer.schedule(5000);
+                }
             }
         });
         view.getMenuUserBtn().addClickHandler(new ClickHandler() {
@@ -141,6 +155,12 @@ public class SettingsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 initSystemSettings(view.getContentPanel());
+            }
+        });
+        view.getMenuSecurityBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                initSecuritySettings(view.getContentPanel());
             }
         });
     }
@@ -177,34 +197,10 @@ public class SettingsPresenter
     public void onResponseUpdateSettings(Boolean updated) {
         eventBus.loadingHide();
         if (updated) {
-            view.showNofity(Storage.MSGS.settingsUpdatedOK(), updated);
+            eventBus.showThankYouPopup(SafeHtmlUtils.fromString(Storage.MSGS.settingsUpdatedOK()), null);
         } else {
-            view.showNofity(Storage.MSGS.settingsUpdatedNotOK(), updated);
+            eventBus.showThankYouPopup(SafeHtmlUtils.fromString(Storage.MSGS.settingsUpdatedNotOK()), null);
         }
-        userPresenter.getView().commit();
-        clientPresenter.getView().commit();
-        supplierPresenter.getView().commit();
-        systemPresenter.getView().commit();
-    }
-
-    public void onUpdateUserStatus(boolean isChange) {
-        isUserChange = isChange;
-        view.updateUserStatus(isChange);
-    }
-
-    public void onUpdateClientStatus(boolean isChange) {
-        isClientChange = isChange;
-        view.updateClientStatus(isChange);
-    }
-
-    public void onUpdateSupplierStatus(boolean isChange) {
-        isSupplierChange = isChange;
-        view.updateSupplierStatus(isChange);
-    }
-
-    public void onUpdateSystemStatus(boolean isChange) {
-        isSystemChange = isChange;
-        view.updateSystemStatus(isChange);
     }
 
     /**************************************************************************/
@@ -213,9 +209,11 @@ public class SettingsPresenter
     public void initUserSettings(SimplePanel holder) {
         if (userPresenter == null) {
             userPresenter = eventBus.addHandler(UserSettingsPresenter.class);
-            userPresenter.onSetUserSettings(settingsDetail);
         }
         userPresenter.initUserSettings(holder);
+        userPresenter.onSetUserSettings(settingsDetail);
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(true);
+        view.settingsUserStyleChange();
     }
 
     public void initClientSettings(SimplePanel holder) {
@@ -224,6 +222,8 @@ public class SettingsPresenter
             clientPresenter.onSetClientSettings(settingsDetail);
         }
         clientPresenter.initUserSettings(holder);
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(true);
+        view.settingsClientStyleChange();
     }
 
     public void initSupplierSettings(SimplePanel holder) {
@@ -232,6 +232,8 @@ public class SettingsPresenter
             supplierPresenter.onSetSupplierSettings(settingsDetail);
         }
         supplierPresenter.initUserSettings(holder);
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(true);
+        view.settingsSupplierStyleChange();
     }
 
     public void initSystemSettings(SimplePanel holder) {
@@ -240,69 +242,57 @@ public class SettingsPresenter
             systemPresenter.onSetSystemSettings(settingsDetail);
         }
         systemPresenter.initSystemSettings(holder);
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(true);
+        view.settingsSystemsStyleChange();
+    }
+
+    public void initSecuritySettings(SimplePanel holder) {
+        if (securityPresenter == null) {
+            securityPresenter = eventBus.addHandler(SecuritySettingsPresenter.class);
+            securityPresenter.onSetSecuritySettings(settingsDetail);
+        }
+        securityPresenter.initSecuritySettings(holder);
+        ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(false);
+        view.settingsSecurityStyleChange();
     }
 
     /**************************************************************************/
     /* Update settings methods                                                */
     /**************************************************************************/
-    /**
-     * Update that part of SettingsDetail that belongs to UserSettings widget.
-     */
-    private boolean updateUserSettings() {
-        if (userPresenter != null && userPresenter.isSettingChanged()) {
-            settingsDetail = userPresenter.updateUserSettings(settingsDetail);
-            return true;
+    private boolean isValid() {
+        boolean valid = true;
+        if (userPresenter != null) {
+            valid = userPresenter.getView().isValid() && valid;
+            valid = ((ProvidesValidate) userPresenter.getView().getAddressHolder().getWidget()).isValid() && valid;
         }
-        return false;
-    }
-
-    /**
-     * Update that part of SettingsDetail that belongs to ClientSettings widget.
-     */
-    private boolean updateClientSettings() {
-        //check if clientSettings was event loaded
-        if (clientPresenter != null && clientPresenter.isClientSettingChanged()) {
-            settingsDetail = clientPresenter.updateClientSettings(settingsDetail);
-            return true;
+        if (clientPresenter != null) {
+            valid = clientPresenter.getView().isValid() && valid;
         }
-        return false;
-    }
-
-    /**
-     * Update that part of SettingsDetail that belongs to SupplierSettings widget.
-     */
-    private boolean updateSupplierSettings() {
-        //check if supplierSettings was event loaded
-        if (supplierPresenter != null && supplierPresenter.isSupplierSettingChanged()) {
-            settingsDetail = supplierPresenter.updateSupplierSettings(settingsDetail);
-            return true;
+        if (supplierPresenter != null) {
+            valid = supplierPresenter.getView().isValid() && valid;
         }
-        return false;
-    }
-
-    /**
-     * Update that part of SettingsDetail that belongs to SystemSettings widget.
-     */
-    private boolean updateSystemSettings() {
-        //check if supplierSettings was event loaded
-        if (systemPresenter != null && systemPresenter.isSystemSettingsCHanged()) {
-            settingsDetail = systemPresenter.updateSystemSettings(settingsDetail);
-            return true;
+        if (systemPresenter != null) {
+            valid = systemPresenter.getView().isValid() && valid;
         }
-        return false;
+        return valid;
     }
 
     private void updateProfile() {
         eventBus.loadingShow(Storage.MSGS.progressUpdatingProfile());
-        boolean update = updateUserSettings();
-        update = update || updateClientSettings();
-        update = update || updateSupplierSettings();
-        update = update || updateSystemSettings();
-        if (update) {
-            eventBus.requestUpdateSettings(settingsDetail);
-        } else {
-            eventBus.loadingHide();
-            view.showNofity(Storage.MSGS.settingsNothingToUpdate(), true);
+
+        if (userPresenter != null) {
+            userPresenter.updateUserSettings(settingsDetail);
         }
+        if (clientPresenter != null) {
+            clientPresenter.updateClientSettings(settingsDetail);
+        }
+        if (supplierPresenter != null) {
+            supplierPresenter.updateSupplierSettings(settingsDetail);
+        }
+        if (systemPresenter != null) {
+            systemPresenter.updateSystemSettings(settingsDetail);
+        }
+
+        eventBus.requestUpdateSettings(settingsDetail);
     }
 }

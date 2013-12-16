@@ -1,12 +1,15 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
+import com.eprovement.poptavka.client.user.widget.grid.columns.AddressColumn.TableDisplayAddress;
+import com.eprovement.poptavka.client.user.widget.grid.columns.LogoColumn.TableDisplayLogo;
+import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
+import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.google.gwt.view.client.ProvidesKey;
 
 
 import java.util.ArrayList;
@@ -16,7 +19,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
+public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
+    TableDisplayAddress, TableDisplayLogo {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -40,22 +44,29 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
 
     private long supplierId;
     /** BusinessUserDetail. **/
-    private BusinessUserDetail userData;
+    private BusinessUserDetail userData = new BusinessUserDetail();
     /** Class lists. **/
     @Valid
     @Size(min = 1)
-    private ArrayList<LocalityDetail> localities;
+    private ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
     @Valid
     @Size(min = 1)
-    private ArrayList<CategoryDetail> categories;
+    private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
     @Valid
     @Size(min = 1)
     private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
     /** Others. **/
     private boolean certified = false;
-    @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
-    @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
-    private int overalRating = -1;
+    @Min(value = 0, message = "{ratingMin}", groups = SearchGroup.class)
+    @Max(value = 100, message = "{ratingMax}", groups = SearchGroup.class)
+    private Integer overalRating;
+    /** Key provider **/
+    public static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+        @Override
+        public Object getKey(FullSupplierDetail item) {
+            return item == null ? null : item.getSupplierId();
+        }
+    };
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -75,20 +86,20 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
         this.supplierId = supplierId;
     }
 
-    public ArrayList<LocalityDetail> getLocalities() {
+    public ArrayList<ICatLocDetail> getLocalities() {
         return localities;
     }
 
-    public void setLocalities(Collection<LocalityDetail> localities) {
-        this.localities = new ArrayList<LocalityDetail>(localities);
+    public void setLocalities(Collection<ICatLocDetail> localities) {
+        this.localities = new ArrayList<ICatLocDetail>(localities);
     }
 
-    public ArrayList<CategoryDetail> getCategories() {
+    public ArrayList<ICatLocDetail> getCategories() {
         return categories;
     }
 
-    public void setCategories(Collection<CategoryDetail> categories) {
-        this.categories = new ArrayList<CategoryDetail>(categories);
+    public void setCategories(Collection<ICatLocDetail> categories) {
+        this.categories = new ArrayList<ICatLocDetail>(categories);
     }
 
     public ArrayList<ServiceDetail> getServices() {
@@ -116,12 +127,17 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating {
     }
 
     @Override
-    public int getOveralRating() {
+    public ArrayList<AddressDetail> getAddresses() {
+        return userData.getAddresses();
+    }
+
+    @Override
+    public Integer getOveralRating() {
         return overalRating;
     }
 
-    public void setOveralRating(int overallRating) {
-        this.overalRating = overallRating;
+    public void setOveralRating(Integer overalRating) {
+        this.overalRating = overalRating;
     }
 
     /**************************************************************************/

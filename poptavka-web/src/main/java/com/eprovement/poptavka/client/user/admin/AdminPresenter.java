@@ -2,10 +2,10 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
+import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
-import com.eprovement.poptavka.client.user.admin.tab.AdminNewDemandsPresenter;
+import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,16 +23,16 @@ import com.mvp4g.client.view.LazyView;
 
 @Presenter(view = AdminView.class)
 public class AdminPresenter
-        extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus>
-        implements NavigationConfirmationInterface {
+    extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus>
+    implements NavigationConfirmationInterface {
 
-    public interface AdminModuleInterface extends LazyView, IsWidget {
-
-        Widget getWidgetView();
+    public interface AdminModuleInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         void setContent(Widget contentWidget);
 
         Button getDemandsButton();
+
+        Button getActiveDemandsBtn();
 
         Button getClientsButton();
 
@@ -58,17 +58,26 @@ public class AdminPresenter
 
         Button getProblemButton();
 
-        SimplePanel getContentPanel();
+        SimplePanel getContentContainer();
+
+        Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private AdminNewDemandsPresenter newDemands;
-    private AdminDetailsWrapperPresenter detailSection;
     private LoadingDiv loading;
 
+    /**************************************************************************/
+    /* Bind handlers                                                          */
+    /**************************************************************************/
     @Override
     public void bindView() {
+        view.getActiveDemandsBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToAdminModule(null, Constants.ADMIN_ACTIVE_DEMANDS);
+            }
+        });
         view.getDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -166,7 +175,8 @@ public class AdminPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
-        eventBus.userMenuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
+        eventBus.setToolbarContent("Admin Menu", view.getToolbarContent(), true);
+        eventBus.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
     }
 
     @Override
@@ -185,9 +195,13 @@ public class AdminPresenter
         view.getWidgetView().setStyleName(Storage.RSCS.common().user());
 
         eventBus.loadingHide();
+        ((AdminToolbarView) view.getToolbarContent()).resetBasic();
         switch (loadWidget) {
             case Constants.ADMIN_ACCESS_ROLE:
                 eventBus.initAccessRoles(filter);
+                break;
+            case Constants.ADMIN_ACTIVE_DEMANDS:
+                initActiveDemands(filter);
                 break;
             case Constants.ADMIN_CLIENTS:
                 eventBus.initClients(filter);
@@ -227,6 +241,7 @@ public class AdminPresenter
                 break;
             default: //welcome
                 Storage.setCurrentlyLoadedView(Constants.NONE);
+                ((AdminToolbarView) view.getToolbarContent()).resetFull();
                 view.setContent(new AdminModuleWelcomeView());
                 break;
         }
@@ -238,7 +253,7 @@ public class AdminPresenter
     public void onToggleLoading() {
         if (loading == null) {
             GWT.log("  - loading created");
-            loading = new LoadingDiv(view.getContentPanel().getParent());
+            loading = new LoadingDiv(view.getContentContainer().getParent());
         } else {
             GWT.log("  - loading removed");
             loading.getElement().removeFromParent();
@@ -250,25 +265,14 @@ public class AdminPresenter
         view.setContent(content);
     }
 
-    /**
-     * Request AdminEventBus to create AdminDetailWrapperPresenter.
-     */
-    public void onRequestAdminDetailWrapperPresenter() {
-        if (detailSection != null) {
-            eventBus.removeHandler(detailSection);
-        }
-        detailSection = eventBus.addHandler(AdminDetailsWrapperPresenter.class);
-        eventBus.responseAdminDetailWrapperPresenter(detailSection);
-    }
-
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    private void initActiveDemands(SearchModuleDataHolder filter) {
+        eventBus.initActiveDemands(filter);
+    }
+
     private void initNewDemands(SearchModuleDataHolder filter) {
-        if (newDemands != null) {
-            eventBus.removeHandler(newDemands);
-        }
-        newDemands = eventBus.addHandler(AdminNewDemandsPresenter.class);
-        newDemands.initNewDemands(filter);
+        eventBus.initNewDemands(filter);
     }
 }

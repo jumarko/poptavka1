@@ -13,20 +13,15 @@ import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.domain.message.Message;
-import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
@@ -49,11 +44,10 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private DemandService demandService;
     private LocalityService localityService;
     private ClientService clientService;
-    private MessageService messageService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
-    private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Locality, ICatLocDetail> localityConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
 
     @Autowired
     public void setDemandService(DemandService demandService) {
@@ -72,11 +66,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     @Autowired
-    public void setMessageService(MessageService messageService) {
-        this.messageService = messageService;
-    }
-
-    @Autowired
     public void setDemandConverter(
             @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
         this.demandConverter = demandConverter;
@@ -90,13 +79,13 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
@@ -106,12 +95,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
      * @param detail object created by user in DemandCreation view
      * @param cliendId is used in case the Demand is created by registered and
      * logged in client
-     * @return
+     * @return crated demand detail
      */
     @Override
     public FullDemandDetail createNewDemand(FullDemandDetail detail, Long cliendId) throws RPCException {
         final Demand demand = new Demand();
-        demand.setTitle(detail.getTitle());
+        demand.setTitle(detail.getDemandTitle());
         demand.setDescription(detail.getDescription());
         demand.setType(this.demandService.getDemandType(detail.getDemandType()));
         demand.setPrice(detail.getPrice());
@@ -120,7 +109,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
             demand.setMaxSuppliers(detail.getMaxSuppliers());
         }
         demand.setMinRating(detail.getMinRating());
-        demand.setStatus(DemandStatus.NEW);
         demand.setEndDate(detail.getEndDate());
         demand.setValidTo(detail.getValidTo());
         demand.setClient(this.clientService.getById(cliendId));
@@ -131,15 +119,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setCategories(categoryConverter.convertToSourceList(detail.getCategories()));
 
         final Demand newDemandFromDB = demandService.create(demand);
-
-        // create demand thread root message
-        UserMessage demandUserMessage = messageService.newThreadRoot(clientService.getById(cliendId).getBusinessUser());
-        Message demandMessage = demandUserMessage.getMessage();
-        demandMessage.setDemand(demand);
-        demandMessage.setBody(demand.getDescription());
-        demandMessage.setSubject(demand.getTitle());
-        demandMessage.setThreadRoot(demandMessage);
-        messageService.update(demandMessage);
 
         return demandConverter.convertToTarget(newDemandFromDB);
     }
@@ -157,13 +136,16 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         Preconditions.checkNotNull(clientDetail);
         final Client newClient = new Client();
         /** Person is mandatory for person client and for company client as well. **/
-        final BusinessUserData businessUserData = new BusinessUserData.Builder().companyName(
-                clientDetail.getCompanyName()).
-                personFirstName(clientDetail.getPersonFirstName()).
-                personLastName(clientDetail.getPersonLastName()).
-                phone(clientDetail.getPhone()).
-                identificationNumber(clientDetail.getIdentificationNumber()).
-                taxId(clientDetail.getTaxId()).website(clientDetail.getWebsite()).build();
+        final BusinessUserData businessUserData = new BusinessUserData.Builder()
+                .companyName(clientDetail.getCompanyName())
+                .description(clientDetail.getDescription())
+                .personFirstName(clientDetail.getPersonFirstName())
+                .personLastName(clientDetail.getPersonLastName())
+                .phone(clientDetail.getPhone())
+                .identificationNumber(clientDetail.getIdentificationNumber())
+                .taxId(clientDetail.getTaxId())
+                .website(clientDetail.getWebsite())
+                .build();
 
         newClient.getBusinessUser().setBusinessUserData(businessUserData);
 

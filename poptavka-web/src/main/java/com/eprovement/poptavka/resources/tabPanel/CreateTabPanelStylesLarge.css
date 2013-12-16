@@ -1,0 +1,219 @@
+@CHARSET "UTF-8";
+
+.height-registration-extended {
+    height: 1130px;
+}
+.height-registration {
+    height: 770px;
+}
+.height-selector {
+    height: 620px;
+}
+.height-advanced {
+    height: 500px;
+}
+.height-basic {
+    height: 450px;
+}
+
+.createTabPanel {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.createTabPanel .infoLabel1 {
+    color: #6F6B59;
+    font-size: 36px;
+    line-height: 115px;
+    padding-top: 25px;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.createTabPanel .infoLabel2 {
+    color: #6F6B59;
+    font-size: 18px;
+    font-weight: lighter;
+    line-height: 30px;
+    padding: 23px 30px 20px;
+}
+
+.createTabPanel .buttonsBorderRow {
+    background: url(images/buttons-border.gif) repeat-y 562px;
+    height: 106px;
+    padding-top: 45px;
+    margin-top: 45px;
+}
+
+.createTabPanel .buttonsBorderRow .span3:first-child {
+    margin-left: 333px;
+}
+
+.createTabPanel .buttonsBorderRow .span4:first-child {
+    margin-left: 245px;
+}
+
+.createTabPanel .formHeader {
+    background: #e2ddca;
+    height: 20px;
+    /*margin: 20px 0 0 0;*/
+    border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+
+.createTabPanel .contentContainer {
+    background: #e2ddca;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.createTabPanel .selectionContainer {
+    height: 400px;
+}
+
+.createTabPanel .formFooter {
+    background: #e2ddca;
+    height: 60px;
+    padding: 15px 40px 0; 
+}
+
+.createTabPanel .formFooter .gwt-Label {
+    width: 50%;
+    color: #6f6b59;
+    padding: 15px 0 0;
+    float: left;
+}
+
+.createTabPanel .formFooter .buttonsContainer {
+    width: 218px;
+    float: right;
+}
+
+.createTabPanel .formFooter .buttonsContainer button {
+    float: right;
+}
+
+.createTabPanel .formFooter input[type="checkbox"] {
+    margin: 3px 10px 0 0;
+}
+
+.createTabPanel .formFooter a.gwt-Anchor {
+    margin: 3px 10px 0 0;
+    cursor: pointer;
+    color: #177f03;
+}
+
+.createTabPanel .formFooter2 {
+    height: 36px;
+    padding: 0 40px;    
+}
+
+.createTabPanel .gwt-TabLayoutPanelTab-selected .customHeader {
+    background: url(images/create-tab-arrow-hover.png) no-repeat top right;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: normal;
+}
+
+.createTabPanel .gwt-TabLayoutPanelContentContainer {
+    background: transparent;
+    border: none;
+    /*border-bottom: 1px solid #d4d4d4;*/
+}
+
+.createTabPanel .gwt-TabLayoutPanelTabs {
+    width: 975px;
+    height: 59px;
+    border-radius: 5px 5px 0 0;
+}
+
+.gwt-TabLayoutPanelTab {
+    float: left;
+}
+
+.createTabPanel .customHeader {
+    background: url(images/create-tab-arrow.png) no-repeat right top;
+    color: #665D3C;
+    font-size: 16px;
+    font-weight:300;
+    height: 59px;
+    line-height: 59px;
+    margin-right: -8px;
+    position: relative;
+    text-align: center;
+    width: 246px;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+}
+
+.fourStepTabPanel .customHeader  {
+    width: 305px;    
+}
+
+
+.buttons-panel.small {
+    width: 225px;
+    float: right;
+}
+.buttons-panel.middle {
+    width: 488px;
+    margin: 60px auto 0 auto;
+}
+.buttons-panel.large {
+    width: 615px;
+    margin: 60px auto 0 auto;
+}
+.buttons-panel .button {
+    border: medium none;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight:300;
+    padding: 0 0 4px 0;
+    float: right;
+}
+.buttons-panel .button.left-large {
+    background: url(images/button-left-large.png) no-repeat;
+    height: 50px;
+    width: 236px;
+}
+.buttons-panel .button.left-middle {
+    background: url(images/button-left-medium.png) no-repeat;
+    height: 50px;
+    width: 166px;
+}
+.buttons-panel .button.left-small {
+    background: url(images/button-left-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+    margin-right: 10px;
+}
+.buttons-panel .button.right-large {
+    background: url(images/button-right-large.png) no-repeat;
+    height: 50px;
+    width: 236px;
+}
+.buttons-panel .button.right-middle {
+    background: url(images/button-right-medium.png) no-repeat;
+    height: 50px;
+    width: 166px;
+}
+.buttons-panel .button.right-small {
+    background: url(images/button-right-small.png) no-repeat;
+    height: 43px;
+    width: 101px;
+}
+.buttons-panel .buttons-separator {
+    background: url(images/buttons-border.gif) repeat-y;
+    height: 110px;
+    width: 2px;
+    position: relative;
+    top: -27px;
+    margin: 0 70px;
+    float: right;
+}

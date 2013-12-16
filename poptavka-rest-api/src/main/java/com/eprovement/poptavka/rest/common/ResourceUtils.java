@@ -24,7 +24,7 @@ public final class ResourceUtils {
      * @see #generateSelfLinks
      */
     public static Map<String, String> generateCollectionLinks(String baseResourceUri) {
-        final HashMap<String, String> links = new HashMap<String, String>();
+        final HashMap<String, String> links = new HashMap<>();
         links.put("self", generateCollectionLink(baseResourceUri));
         return links;
     }
@@ -34,16 +34,16 @@ public final class ResourceUtils {
     }
 
     /**
-     * Generate links containing link named "self" which references to object with id {@code objectId}.
+     * Generate links containing link named "self" which references to {@code domainObject}
      * E.g. if baseResourceUri is "/demands/
      *
      * @param baseResourceUri base Uri under which the object with id {@code objectId} can be found starting with "/"
-     * @param objectId id of unique object
+     * @param domainObject object for which the link should be generated
      * @return links containing self link to object
      */
     public static Map<String, String> generateSelfLinks(String baseResourceUri, DomainObject domainObject) {
         Validate.notNull(domainObject);
-        final HashMap<String, String> links = new HashMap<String, String>();
+        final Map<String, String> links = new HashMap<>();
         links.put("self", generateSelfLink(baseResourceUri, domainObject));
         return links;
     }
@@ -56,6 +56,6 @@ public final class ResourceUtils {
     public static String generateSelfLink(String baseResourceUri, String id) {
         Validate.notEmpty(baseResourceUri, " baseResourceUri could not be empty!");
         Validate.notNull(id, "id cannot be null!");
-        return REST_API_PREFIX + "/" + baseResourceUri + "/" + id;
+        return REST_API_PREFIX + baseResourceUri + "/" + id;
     }
 }

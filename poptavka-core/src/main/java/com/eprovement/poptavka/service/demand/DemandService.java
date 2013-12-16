@@ -10,7 +10,6 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
@@ -29,11 +28,22 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
     int ESTIMATED_NUMBER_OF_LOCALITIES = 10000;
     int ESTIMATED_NUMBER_OF_CATEGORIES = 10000;
 
+    /**
+     * Creates new demand associated to the {@code creator}.
+     * <p>
+     *     Some default values can be filled if they are not specified in <code>demand</code> object.
+     *     <ul>
+     *        <li>Demand#type -- set to "normal" if it is not specified (null)</li>
+     *     </ul>
+     * @param demand demand to be created
+     * @return created demand with NEW status
+     */
+    Demand create(Demand demand);
 
     /**
      * Load all types available for demands.
      *
-     * @retun all demand's types
+     * @return all demand's types
      */
     List<DemandType> getDemandTypes();
 
@@ -45,26 +55,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @throws IllegalArgumentException if given code is empty
      */
     DemandType getDemandType(String code);
-
-
-    /**
-     * Load all demand origins available for demands.
-     *
-     * @retun all possible demand's origins
-     * @see com.eprovement.poptavka.domain.demand.DemandOrigin
-     */
-    List<DemandOrigin> getDemandOrigins();
-
-    /**
-     * Load specific demand origin that is uniquely identified by its code.
-     *
-     * @param code unique code of Demand origin
-     * @return demand origin with given code or null if no such demand origin exists
-     * @throws IllegalArgumentException if given code is empty
-     *
-     * @see DemandOrigin
-     */
-    DemandOrigin getDemandOrigin(String code);
 
     /**
      * Load all demands associated to the given locality (-ies).

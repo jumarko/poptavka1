@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.client.common.validation.DateEqualOrGreater;
+import com.eprovement.poptavka.client.common.validation.Extended;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.validation.constraints.Digits;
@@ -31,15 +32,18 @@ public class OfferMessageDetail extends MessageDetail {
     /* Attibutes                                                              */
     /**************************************************************************/
     private long supplierId;
+
     @NotBlank(message = "{bodyNotBlank}")
-    @Size(min = 2, max = 1500, message = "{bodySize}")
+    @Size(max = 1500, message = "{bodySize}", groups = Extended.class)
     private String body;
+
     @NotNull(message = "{priceNotNull}")
-    @Min(value = 0, message = "{priceMin}")
-    @Digits(integer = 12, fraction = 0, message = "{priceDigits}")
+    @Min(value = 0, message = "{priceMin}", groups = Extended.class)
+    @Digits(integer = 12, fraction = 0, message = "{priceDigits}", groups = Extended.class)
     private BigDecimal price;
+
     @NotNull(message = "{finishDateNotNull}")
-    @DateEqualOrGreater(message = "{finishDateEqualOrGreater}")
+    @DateEqualOrGreater(message = "{finishDateEqualOrGreater}", groups = Extended.class)
     private Date finishDate;
 
     public long getSupplierId() {

@@ -13,7 +13,7 @@ import com.mvp4g.client.view.LazyView;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = LoadingPopupView.class, multiple = true)
+@Presenter(view = LoadingPopupView.class)
 public class LoadingPopupPresenter
         extends LazyPresenter<LoadingPopupPresenter.LoadingPopupViewInterface, RootEventBus> {
 
@@ -22,11 +22,11 @@ public class LoadingPopupPresenter
         LoadingPopupView getWidget();
     }
 
-    public void show(String message) {
+    public void onLoadingShow(String message) {
         view.getWidget().show(message);
     }
 
-    public void hide() {
+    public void onLoadingHide() {
         view.getWidget().hide();
     }
 }

@@ -3,20 +3,24 @@
  */
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.root.gateways.SearchModuleGateway;
+import com.eprovement.poptavka.client.root.gateways.LoginGateway;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 
-public interface BaseChildEventBus {
+public interface BaseChildEventBus extends SearchModuleGateway, LoginGateway, InfoWidgetsGateway {
 
     @Event(forwardToParent = true)
     void setBody(IsWidget widget);
 
     @Event(forwardToParent = true)
-    void setFooter(SimplePanel footerHolder);
+    void setToolbarContent(String title, Widget toolbarContent, boolean hasAnimationLayout);
 
     @Event(forwardToParent = true)
-    void setUpSearchBar(IsWidget searchView);
+    void setFooter(SimplePanel footerPanel);
 
     @Event(forwardToParent = true)
     void loadingShow(String loadingMessage);
@@ -25,22 +29,7 @@ public interface BaseChildEventBus {
     void loadingHide();
 
     @Event(forwardToParent = true)
-    void login(int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void loginFromSession(int widgetToLoad);
-
-    @Event(forwardToParent = true)
     void menuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void userMenuStyleChange(int loadedModule);
-
-    @Event(forwardToParent = true)
-    void displayError(int errorResponseCode, String errorId);
-
-    @Event(forwardToParent = true)
-    void sendUsEmail(int subject, String errorId);
 
     @Event(forwardToParent = true)
     void sendStatusMessage(String statusMessageBody);

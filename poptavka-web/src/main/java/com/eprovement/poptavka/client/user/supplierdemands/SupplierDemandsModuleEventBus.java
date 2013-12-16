@@ -4,18 +4,17 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
+import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
+import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsWelcomePresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffersPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatingsPresenter;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
@@ -23,7 +22,6 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDe
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -34,13 +32,14 @@ import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class)
-public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,
+        BaseChildEventBus, DetailModuleGateway, ActionBoxGateway {
 
     /**
      * First event to be handled.
      */
     @Start
-    @Event(handlers = SupplierDemandsModulePresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class)
     void start();
 
     /**
@@ -48,17 +47,8 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
      * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
-    @Event(handlers = SupplierDemandsModulePresenter.class)
+    @Event(handlers = SupplierDemandsModulePresenter.class, navigationEvent = true)
     void forward();
-
-    /**************************************************************************/
-    /* Parent events + DetailsWrapper related                                 */
-    /**************************************************************************/
-    @Event(forwardToParent = true)
-    void requestDetailWrapperPresenter();
-
-    @Event(handlers = SupplierDemandsModulePresenter.class)
-    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
 
     /**************************************************************************/
     /* History events                                                         */
@@ -67,6 +57,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     String createTokenForHistory();
 
     /**************************************************************************/
+
     /* Navigation events.                                                     */
     /**************************************************************************/
     //Module navigation
@@ -81,6 +72,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     //Init by default
     //--------------------------------------------------------------------------
+    @Event(handlers = SupplierDemandsWelcomePresenter.class)
+    void initSupplierDemandsWelcome();
+
     @Event(handlers = SupplierDemandsPresenter.class)
     void initSupplierDemands(SearchModuleDataHolder filter);
 
@@ -90,8 +84,11 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void initSupplierAssignedDemands(SearchModuleDataHolder filter);
 
-    @Event(handlers = SupplierDemandsWelcomePresenter.class)
-    void initSupplierDemandsWelcome();
+    @Event(handlers = SupplierAssignedDemandsPresenter.class)
+    void initSupplierClosedDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = SupplierRatingsPresenter.class)
+    void initSupplierRatings(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -114,9 +111,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
-    @Event(forwardToParent = true)
-    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
-
     /**************************************************************************/
     /* Business events handled by SupplierDemandsModulePresenter.             */
     /**************************************************************************/
@@ -128,12 +122,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /**************************************************************************/
     @Event(handlers = SupplierDemandsWelcomePresenter.class)
     void loadSupplierDashboardDetail(SupplierDashboardDetail result);
-
-    @Event(handlers = SupplierDemandsModulePresenter.class)
-    void startSupplierNotificationTimer();
-
-    @Event(handlers = SupplierDemandsModulePresenter.class)
-    void stopSupplierNotificationTimer();
 
     /**************************************************************************/
     /* Business events handled by SupplierDemandsPresenter.                   */
@@ -159,7 +147,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /* Business events handled by SupplierRatingsPresenter.                   */
     /**************************************************************************/
     @Event(handlers = SupplierRatingsPresenter.class)
-    void displaySupplierRatings(List<DemandRatingsDetail> result);
+    void displaySupplierRatings(List<RatingDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -176,9 +164,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     //--------------------------------------------------------------------------
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void updateUnreadMessagesCount();
-
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void updateOfferStatus(OfferDetail offerDetail);
 
     //Getters
     //--------------------------------------------------------------------------

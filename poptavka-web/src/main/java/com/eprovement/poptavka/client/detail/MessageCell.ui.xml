@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+    <ui:with field="res" type="com.eprovement.poptavka.resources.StyleResource" />
+
+    <ui:with field="cssColor" type="java.lang.String" />
+    <ui:with field="sender" type="java.lang.String" />
+    <ui:with field="sent" type="java.lang.String" />
+    <ui:with field="body" type="java.lang.String" />
+
+    <div class='{res.details.conversationDetail}'>
+        <div class='{res.details.conversationLeftBlock}'>
+            <span class='{cssColor}'>
+                <ui:text from='{sender}' />
+            </span>
+            <span class='{res.details.conversationDetailTime}'>
+                <ui:text from='{sent}' />
+            </span>
+        </div>
+        <pre ui:field='bodySpan' class='{res.details.conversationDetailContent} {res.details.conversationEllipsis}'>
+            <ui:text from='{body}' />
+        </pre>
+    </div>
+</ui:UiBinder>

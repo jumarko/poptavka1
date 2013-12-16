@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <b:FluidContainer>
+        <b:FluidRow>
+            <g:HTMLPanel >
+                <b:Alert close="false" styleName='{res.common.alertContainer}'>
+                    <g:HTML ui:field="messageThankYou" addStyleNames="text"/>
+                </b:Alert>
+            </g:HTMLPanel>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

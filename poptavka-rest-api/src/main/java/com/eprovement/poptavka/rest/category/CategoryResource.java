@@ -1,8 +1,6 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.rest.category;
 
+import com.eprovement.poptavka.rest.common.dto.CategoryDto;
 import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.rest.common.resource.AbstractPageableResource;
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(CategoryResource.CATEGORY_RESOURCE_URI)
 public class CategoryResource extends AbstractPageableResource<Category, CategoryDto> {
 
-    static final String CATEGORY_RESOURCE_URI = "/categories";
+    public static final String CATEGORY_RESOURCE_URI = "/categories";
 
     private final CategoryService categoryService;
     private final Converter<Category, CategoryDto> categorySerializer;
@@ -41,7 +39,7 @@ public class CategoryResource extends AbstractPageableResource<Category, Categor
 
     @Override
     public Collection<CategoryDto> convertToDtos(Collection<Category> domainObjectsPage) {
-        final ArrayList<CategoryDto> categoryDtosPage = new ArrayList<CategoryDto>();
+        final ArrayList<CategoryDto> categoryDtosPage = new ArrayList<>();
         for (Category category : domainObjectsPage) {
             final CategoryDto categoryDto = this.categorySerializer.convert(category);
             setLinks(categoryDto, category);

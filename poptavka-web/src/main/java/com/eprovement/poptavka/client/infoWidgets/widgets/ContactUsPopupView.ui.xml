@@ -1,0 +1,85 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common.monitors">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    
+    <ui:style>
+        .description-label {
+            line-height: 20px !important;
+        }
+    </ui:style>
+
+    <b:FluidContainer addStyleNames='{res.common.formFields}'>
+        <b:FluidRow>
+            <b:Column size='12'>
+                <g:Label styleName="modal-header">
+                    <ui:msg key="footerContactUs">Contact us</ui:msg>
+                </g:Label>
+            </b:Column>
+        </b:FluidRow>
+
+        <b:WellForm>
+            <b:FluidRow>
+                <b:Column size="4">
+                    <g:Label>
+                        <ui:msg key="emailDialogTo">To: </ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <g:Label styleName='support-label'>
+                        <ui:msg key="emailDialogCustomerSupport">Customer support</ui:msg>
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="4">
+                    <g:Label>
+                        <ui:msg key="emailDialogSubject">Subject</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <cmn:WSListBox ui:field="subject" styleName='selector-box full-width' />
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="4">
+                    <g:Label>
+                        <ui:msg key="emailDialogEnterYourEmail">Enter your email address</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <cm:ValidationMonitor ui:field="emailMonitor">
+                        <b:TextBox styleName='full-width' placeholder="Email"/>
+                    </cm:ValidationMonitor>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="4">
+                    <g:Label addStyleNames="{style.description-label}">
+                        <ui:msg key="emailDialogQuestionOrConcern">Enter your question / concern</ui:msg>
+                    </g:Label>
+                    <g:Label styleName='description'>
+                        <ui:msg key="emailDialogMaximumChars">Maximum 1000 characters.</ui:msg>
+                    </g:Label>
+                </b:Column>
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <cm:ValidationMonitor ui:field="msgBodyMonitor">
+                        <b:TextArea height="150px" styleName='full-width' placeholder="Description"/>
+                    </cm:ValidationMonitor>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size="12">
+                    <g:Button ui:field="sendButton" styleName="{res.common.buttonOkGreen}"/>
+                    <g:Button ui:field="closeButton" styleName="{res.common.buttonGrey}">
+                        <ui:msg key="commonBtnClose">Close</ui:msg>
+                    </g:Button>
+                </b:Column>
+            </b:FluidRow>
+        </b:WellForm>
+    </b:FluidContainer>
+</ui:UiBinder>

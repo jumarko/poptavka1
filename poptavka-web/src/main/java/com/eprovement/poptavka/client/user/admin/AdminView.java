@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.root.footer.FooterView;
+import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,14 +19,12 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
 
     interface AdminModuleViewUiBinder extends UiBinder<Widget, AdminView> {
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) Widget footer;
-    @UiField SimplePanel contentPanel;
-    @UiField Button newDemandsBtn;
+    @UiField SimplePanel contentContainer;
+    @UiField Button newDemandsBtn, activeDemandsBtn;
     //TODO LATER Martin - finnish admin interface for other tables
     //Temporary initialzie manually because in uiBinder are those buttons commented
     Button demandsButton = new Button();
@@ -43,29 +41,33 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     Button problemsButton = new Button();
     //ourPaymentDetailsButton,
     /** Class attributes. **/
-    private @Inject FooterView footerView;
+    @Inject
+    private AdminToolbarView toolbar;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
-        StyleResource.INSTANCE.common().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
+
+        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     /**************************************************************************/
-    /* Getters & Setters                                                      */
+    /* Setters                                                                */
     /**************************************************************************/
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
     @Override
     public void setContent(Widget contentWidget) {
-        contentPanel.setWidget(contentWidget);
+        contentContainer.setWidget(contentWidget);
+    }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    @Override
+    public Button getActiveDemandsBtn() {
+        return activeDemandsBtn;
     }
 
     @Override
@@ -138,7 +140,17 @@ public class AdminView extends OverflowComposite implements AdminPresenter.Admin
     }
 
     @Override
-    public SimplePanel getContentPanel() {
-        return contentPanel;
+    public SimplePanel getContentContainer() {
+        return contentContainer;
+    }
+
+    @Override
+    public AdminToolbarView getToolbarContent() {
+        return toolbar;
+    }
+
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 }

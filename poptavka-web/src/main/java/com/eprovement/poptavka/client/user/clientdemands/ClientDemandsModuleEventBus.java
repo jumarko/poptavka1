@@ -4,19 +4,18 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
+import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
+import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsWelcomePresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPresenter;
-import com.eprovement.poptavka.client.user.widget.DetailsWrapperPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -26,7 +25,6 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -37,13 +35,17 @@ import java.util.List;
 
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
-public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,
+        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway, ActionBoxGateway {
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
     /**
      * First event to be handled.
      */
     @Start
-    @Event(handlers = ClientDemandsModulePresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class)
     void start();
 
     /**
@@ -51,7 +53,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
      * in this method we should remove forward event to save the number of method invocations.
      */
     @Forward
-    @Event(handlers = ClientDemandsModulePresenter.class)
+    @Event(handlers = ClientDemandsModulePresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
@@ -62,20 +64,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(handlers = ClientDemandsModulePresenter.class)
     void loadingDivHide();
-
-    @Event(forwardToParent = true)
-    void requestDetailWrapperPresenter();
-
-    @Event(handlers = ClientDemandsModulePresenter.class)
-    void responseDetailWrapperPresenter(DetailsWrapperPresenter detailSection);
-
-    @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
 
     /**************************************************************************/
     /* History events                                                         */
@@ -110,6 +98,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientAssignedDemandsPresenter.class)
     void initClientAssignedDemands(SearchModuleDataHolder filter);
 
+    @Event(handlers = ClientAssignedDemandsPresenter.class)
+    void initClientClosedDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = ClientRatingsPresenter.class)
+    void initClientRatings(SearchModuleDataHolder filter);
+
     /**************************************************************************/
     /* Navigation Parent events */
     /**************************************************************************/
@@ -131,20 +125,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
-    @Event(forwardToParent = true)
-    void initActionBox(SimplePanel holderWidget, UniversalAsyncGrid grid);
     /**************************************************************************/
     /* Business events handled by ClientDemandsModulePresenter.               */
     /**************************************************************************/
     // Forward methods don't need history converter because they have its owns
     @Event(handlers = ClientDemandsModulePresenter.class)
     void displayView(IsWidget content);
-
-    @Event(handlers = ClientDemandsModulePresenter.class)
-    void startClientNotificationTimer();
-
-    @Event(handlers = ClientDemandsModulePresenter.class)
-    void stopClientNotificationTimer();
 
     /**************************************************************************/
     /* Business events handled by ClientWelcomePresenter.                     */
@@ -186,7 +172,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ClientAssignedDemandsPresenter.             */
     /**************************************************************************/
     @Event(handlers = ClientRatingsPresenter.class)
-    void displayClientRatings(List<DemandRatingsDetail> result);
+    void displayClientRatings(List<RatingDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -237,9 +223,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getData(SearchDefinition searchDefinition);
 
-    /**************************************************************************/
-    /* Button actions - messaging.                                            */
-    /**************************************************************************/
     /**************************************************************************/
     /* Client Demands MENU                                                    */
     /**************************************************************************/

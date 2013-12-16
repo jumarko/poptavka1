@@ -2,7 +2,7 @@ package com.eprovement.poptavka.domain.enums;
 
 /**
  * Demand (project) life-cycle status (state)
- * 
+ *
  * @author Juraj Martinka
  *         Date: 31.1.11
  */

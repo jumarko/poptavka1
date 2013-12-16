@@ -11,6 +11,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 
 /**
+ * Notification item represents user's notification setting.
+ * It contains {@code period} and {@code notification} which means: "I want to get notification per {@code period}
+ * about events represented by {@code notification}".
+ *
+ * <p>
+ *     Custom equals is implemented to ensure that no two same notification settings are set for user.
+ *     See {@link com.eprovement.poptavka.service.user.BusinessUserRoleServiceImpl}.
+ * </p>
  * @author Juraj Martinka
  *         Date: 11.4.11
  */
@@ -50,5 +58,39 @@ public class NotificationItem extends DomainObject {
         sb.append(", notification=").append(notification);
         sb.append('}');
         return sb.toString();
+    }
+
+    /**
+     * CUstom equals method because we need to ensure that each notification setting is saved only once per user.
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final NotificationItem that = (NotificationItem) o;
+
+        if (notification != null ? !notification.equals(that.notification) : that.notification != null) {
+            return false;
+        }
+        if (period != that.period) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (period != null ? period.hashCode() : 0);
+        result = 31 * result + (notification != null ? notification.hashCode() : 0);
+        return result;
     }
 }

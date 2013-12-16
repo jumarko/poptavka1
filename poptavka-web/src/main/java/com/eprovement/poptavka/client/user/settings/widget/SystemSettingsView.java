@@ -1,47 +1,39 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.user.settings.widget;
 
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
+import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *
  * @author Martin Slavkovsky
  */
-public class SystemSettingsView extends Composite implements SystemSettingsPresenter.SystemSettingsViewInterface {
+public class SystemSettingsView extends Composite
+        implements SystemSettingsPresenter.SystemSettingsViewInterface, ProvidesValidate {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
     /**************************************************************************/
-    private static SystemSettingsView.UserSettingsViewUiBinder uiBinder = GWT
-            .create(SystemSettingsView.UserSettingsViewUiBinder.class);
+    private static UserSettingsViewUiBinder uiBinder = GWT.create(UserSettingsViewUiBinder.class);
 
-    interface UserSettingsViewUiBinder extends
-            UiBinder<Widget, SystemSettingsView> {
+    interface UserSettingsViewUiBinder extends UiBinder<Widget, SystemSettingsView> {
     }
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    VerticalPanel notifications;
-    /** Class attributes. **/
-    private ClickHandler clickHandler;
-    private ChangeHandler changeHandler;
+    @UiField FluidContainer fluidContainer;
+    @UiField FlowPanel notifications;
+    /** Constants. **/
+    private static final int ITEM_HEIGHT = 50;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -52,31 +44,15 @@ public class SystemSettingsView extends Composite implements SystemSettingsPrese
     }
 
     /**************************************************************************/
-    /* Change monitoring methods                                              */
-    /**************************************************************************/
-    @Override
-    public void commit() {
-        for (int i = 0; i < notifications.getWidgetCount(); i++) {
-            NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
-            notificationWidget.commit();
-        }
-    }
-
-    /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
     @Override
     public void setSystemSettings(SettingDetail detail) {
         //notifications
-        List<Period> periodList = Arrays.asList(Period.values());
         for (NotificationDetail item : detail.getNotifications()) {
-            NotificationItemView notificationWidget = new NotificationItemView();
-            notificationWidget.getName().setText(item.getName());
-            notificationWidget.setEnabledBothValues(item.isEnabled());
-            notificationWidget.setPerioddBothValues(periodList.indexOf(item.getPeriod()));
-            notificationWidget.addChangeHandler(changeHandler);
-            notifications.add(notificationWidget);
+            notifications.add(new NotificationItemView(item));
         }
+        fluidContainer.setHeight(((detail.getNotifications().size() + 1) * ITEM_HEIGHT) + "px");
     }
 
     @Override
@@ -88,23 +64,20 @@ public class SystemSettingsView extends Composite implements SystemSettingsPrese
 
             notificationDetail.setEnabled(notificationWidget.getEnabled());
             notificationDetail.setName(notificationWidget.getName().getText());
-            notificationDetail.setPeriod(Period.values()[notificationWidget.getPeriod()]);
+            notificationDetail.setPeriod(Period.valueOf(notificationWidget.getPeriod()));
         }
 
         return detail;
     }
 
     /**************************************************************************/
-    /* SETTERS                                                                */
-    /**************************************************************************/
-    @Override
-    public void setChangeHandler(ChangeHandler changeHandler) {
-        this.changeHandler = changeHandler;
-    }
-
-    /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

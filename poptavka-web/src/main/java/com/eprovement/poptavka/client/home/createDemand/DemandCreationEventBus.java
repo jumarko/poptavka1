@@ -6,9 +6,10 @@
  */
 package com.eprovement.poptavka.client.home.createDemand;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
+import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
+import com.eprovement.poptavka.client.root.gateways.LoginGateway;
+import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -16,12 +17,9 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.List;
 
 /**
  *
@@ -29,14 +27,15 @@ import java.util.List;
  */
 @Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEventBus {
+public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEventBus,
+    CatLocSelectorGateway, UserRegistrationGateway, LoginGateway {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = DemandCreationPresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = DemandCreationPresenter.class)
     void start();
 
     /**
@@ -45,7 +44,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = DemandCreationPresenter.class)
+    @Event(handlers = DemandCreationPresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
@@ -54,7 +53,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**
      * The only entry point to this module due to code-spliting feature.
      */
-    @Event(handlers = DemandCreationPresenter.class,
+    @Event(handlers = DemandCreationPresenter.class, navigationEvent = true,
     historyConverter = DemandCreationHistoryConverter.class, name = "createDemand")
     String goToCreateDemandModule();
 
@@ -70,22 +69,8 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     @Event(forwardToParent = true, navigationEvent = true)
     void goToClientDemandsModule(SearchModuleDataHolder filterm, int loadWidget);
 
-    @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
-        List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel holderWidget, int checkboxes, int displayCountsOfWhat,
-        List<LocalityDetail> localitiesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initActivationCodePopup(BusinessUserDetail client, int widgetToLoad);
-
-    @Event(forwardToParent = true)
-    void initUserRegistrationForm(SimplePanel holderPanel);
-
     /**************************************************************************/
-    /* Business events handled by DemandCreatoinPresenter.                    */
+    /* Business events handled by DemandCreationPresenter.                    */
     /**************************************************************************/
     @Event(handlers = DemandCreationPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
@@ -97,7 +82,7 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     void restoreDefaultFirstTab();
 
     @Event(handlers = DemandCreationPresenter.class)
-    void notifyAddressWidgetListeners(AddressSelectorPresenter.AddressSelectorInterface addressWidget);
+    void setUserRegistrationHeight(boolean company);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */

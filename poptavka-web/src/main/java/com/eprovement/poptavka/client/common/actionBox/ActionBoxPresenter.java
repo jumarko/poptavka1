@@ -1,21 +1,16 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.client.common.actionBox;
 
-import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +23,7 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 @Presenter(view = ActionBoxView.class, multiple = true)
-public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionBoxViewInterface, RootEventBus> {
+public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionBoxViewInterface, ActionBoxEventBus> {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -48,19 +43,6 @@ public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionB
     /* Attributes                                                             */
     /**************************************************************************/
     private UniversalAsyncGrid grid;
-
-    /**************************************************************************/
-    /* Initialization                                                         */
-    /**************************************************************************/
-    /**
-     * ActionBox initialization requires grid from which user messages ids are retrieved.
-     * Therefore table's row interpretation must be detail object that implements
-     * TableDisplayUserMessage interface and must have MultiSelectionModel.
-     * @param grid
-     */
-    public void initActionBox(UniversalAsyncGrid grid) {
-        this.grid = grid;
-    }
 
     /**************************************************************************/
     /* Business events                                                        */
@@ -96,8 +78,15 @@ public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionB
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
-    public void updateStar(long objectId, boolean value) {
-        eventBus.requestStarStatusUpdate(Arrays.asList(objectId), value);
+    /**
+     * ActionBox initialization requires grid from which user messages ids are retrieved.
+     * Therefore table's row interpretation must be detail object that implements
+     * TableDisplayUserMessage interface and must have MultiSelectionModel.
+     * @param grid
+     */
+    public void onInitActionBox(SimplePanel holder, UniversalAsyncGrid grid) {
+        this.grid = grid;
+        holder.setWidget(view);
     }
 
     public void onResponseReadStatusUpdate() {

@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.resources.StyleResource;
+import com.google.gwt.user.client.ui.HTMLPanel;
 
 /**
  * NEW
@@ -99,7 +101,15 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         }
         displayed = true;
 
-        popup.getElement().setInnerText(getExplanationText(demandStauts));
+        popup.clear();
+        HTMLPanel htmlPanel2 = new HTMLPanel(getExplanationText(demandStauts));
+        htmlPanel2.addStyleName("container-fluid");
+        htmlPanel2.addStyleName("short-message");
+        HTMLPanel htmlPanel1 = new HTMLPanel("");
+        //popup.getElement().setInnerText(getExplanationText(demandStauts));
+        htmlPanel1.add(htmlPanel2);
+        htmlPanel1.setStylePrimaryName(StyleResource.INSTANCE.modal().commonModalStyle());
+        popup.add(htmlPanel1);
         popup.setPopupPosition(event.getClientX() + 32, event.getClientY() + 32);
         popup.show();
     }

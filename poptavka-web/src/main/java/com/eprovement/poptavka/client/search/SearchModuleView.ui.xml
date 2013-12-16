@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <ui:style>
+        .important {
+        font-weight: bold;
+        font-style: italic;
+        }
+
+        
+    </ui:style>
+
+    <g:HTMLPanel>
+        <g:FlowPanel>
+            <b:TextBox ui:field="searchContent" styleName='search-textbox' placeholder="{msgs.searchContent}" />
+            <g:Button ui:field="searchBtn" styleName='search-button' />
+                <!--<b:Icon type="SEARCH" size="TWO_TIMES"/>-->
+            <!--</g:Button>-->
+        </g:FlowPanel>
+
+        <g:Button ui:field="advSearchBtn" styleName='advanced-search'>
+            <ui:msg key="searchBtnAdvanced">Advanced</ui:msg>
+        </g:Button>
+    </g:HTMLPanel>
+</ui:UiBinder>

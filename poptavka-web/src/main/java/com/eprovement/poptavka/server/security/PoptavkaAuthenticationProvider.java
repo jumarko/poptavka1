@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.LoginException;
 import com.eprovement.poptavka.service.user.LoginService;
+import org.hibernate.validator.constraints.impl.EmailValidator;
 
 /**
  * Custom implementation of authenticationProvider. This class represents authentication mechanism.
@@ -53,6 +54,12 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         // refactor this with StringUtils.isEmpty
         if (username == null || username.isEmpty()) {
             throw new UsernameNotFoundException("Username not provided");
+        }
+
+        // validate email for security reasons
+        EmailValidator emailValidator = new EmailValidator();
+        if (!emailValidator.isValid(username, null)) {
+            throw new UsernameNotFoundException("Invalid username");
         }
 
         if (password == null || password.isEmpty()) {

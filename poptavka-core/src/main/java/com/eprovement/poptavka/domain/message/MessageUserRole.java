@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 
 /**
  * Associates a user with a message and assigns him/her a role
- * 
+ *
  * @author Vojtech Hubr
  *         Date 12.4.11
  */

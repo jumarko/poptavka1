@@ -1,7 +1,7 @@
 package com.eprovement.poptavka.shared.domain;
 
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayRating;
+import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -46,7 +46,7 @@ public class FullClientDetail implements IsSerializable, TableDisplayRating {
     /** Others. **/
     @Min(value = 0, message = "{userMinRating}", groups = SearchGroup.class)
     @Max(value = 100, message = "{userMaxRating}", groups = SearchGroup.class)
-    private int overalRating = -1;
+    private Integer overalRating;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -99,12 +99,12 @@ public class FullClientDetail implements IsSerializable, TableDisplayRating {
     }
 
     @Override
-    public int getOveralRating() {
+    public Integer getOveralRating() {
         return overalRating;
     }
 
-    public void setOveralRating(int overallRating) {
-        this.overalRating = overallRating;
+    public void setOveralRating(Integer overalRating) {
+        this.overalRating = overalRating;
     }
 
     /**************************************************************************/

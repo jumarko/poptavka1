@@ -1,0 +1,34 @@
+.height-registration-extended {}
+.height-registration {}
+.height-selector {}
+.height-advanced {}
+.height-basic {}
+.createTabPanel {
+    width: 100%;
+}
+
+.createTabPanel .formHeader {
+    width: 100%;
+    margin-right: 0;
+}
+.fourStepTabPanel {}
+.buttons-panel {}
+
+.createTabPanel .gwt-TabLayoutPanelTab {
+    width: 21%;
+    margin-right: -2%;
+}
+
+.fourStepTabPanel .gwt-TabLayoutPanelTab {
+    width: 26%;
+    margin-right: -2%;   
+}
+
+.createTabPanel .gwt-TabLayoutPanelTabs {
+    width:100% !important;    
+}
+
+.createTabPanel .customHeader {
+    width:95%;
+    padding-left: 5%;
+}

@@ -1,0 +1,35 @@
+.common-modal-style {}
+
+/* Login Modal Styles */
+.login-modal {}
+
+/* Advanced search modal styles */ 
+.advanced-search-popup {
+    margin: -255px 0 0 0;
+    width: 100%;
+    left: -11px;
+}
+
+.advanced-search-tabPanel {}
+
+.small-loader-modal {}
+
+.suggest-modal {}
+
+/* Feedback search modal styles */ 
+.feedback-modal {}
+
+/* Contact Us Modal */
+.contactUs-modal {}
+
+/* Category and Locality Modal Styles */
+.cell-browser-selection-modal {
+    margin: -350px 0 0 0;
+    width: 100%;
+    left: -2px;
+}
+/* Activation Code Modal Styles */
+.activation-code {}
+
+/* Thank You Modal Styles */
+.thankyou {}

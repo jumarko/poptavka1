@@ -1,0 +1,39 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+
+    <g:FlowPanel styleName="{res.initial.toolbar}">
+
+        <!--Back button-->
+        <g:Button ui:field="backBtn" styleName='button-back item' title="{msgs.clientDemandsBackBtn}" visible="false"/>
+        <!--<g:Button ui:field="backBtn" styleName='{res.common.toolbarButtonBack}' title="{msgs.clientOffersBackBtn}" visible="false"/>-->
+        
+        <!--Action box-->
+        <g:SimplePanel ui:field="actionBox" addStyleNames='item' visible="false" />
+        <!-- Use addStyleNames in this kind of scenarios where you have container for widget.
+        Because if that widget that goes to container has defined style, it will be overrided
+        by this one. -->
+        
+        <!--Buttons-->
+        <g:Button ui:field="editBtn" styleName='button-grey item' visible="false">
+            <ui:msg key="commonBtnEdit">Edit</ui:msg>
+        </g:Button>
+        <g:Button ui:field="deleteBtn" styleName='button-grey item' visible="false">
+            <ui:msg key="commonBtnDelete">Delete</ui:msg>
+        </g:Button>
+        <g:Button ui:field="acceptBtn" styleName='button-green item' title="{msgs.tooltipAccept}" visible="false">
+            <ui:msg key="clientOffersAcceptBtn">Accept</ui:msg>
+        </g:Button>
+        <g:Button ui:field="closeBtn" styleName="button-green item" title="{msgs.tooltipClose}" visible="false">
+            <ui:msg key="clientAssignedDemandsCloseBtn">Close</ui:msg>
+        </g:Button>
+
+        <!--Pager-->
+        <s:UniversalPagerWidget ui:field='pager' addStyleNames='item' visible='false'/>
+
+    </g:FlowPanel>
+</ui:UiBinder>

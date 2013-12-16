@@ -4,11 +4,11 @@
     
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:MenuBar vertical="false" addStyleNames='{res.common.toolbarButtonGrey}'>
+    <g:MenuBar vertical="false" addStyleNames='button-grey'>
         <g:MenuItem>
             <ui:msg key="commonListDefault">Action</ui:msg>
             <img src="images/button-dropdown-icon.png"/>
-            <g:MenuBar vertical="true" styleName='{res.common.toolbarMenubar} action-button'>
+            <g:MenuBar vertical="true" styleName='{res.common.actionBox}'>
                 <g:MenuItem ui:field="actionRead">
                     <ui:msg key="commonListRead">read</ui:msg>
                 </g:MenuItem>

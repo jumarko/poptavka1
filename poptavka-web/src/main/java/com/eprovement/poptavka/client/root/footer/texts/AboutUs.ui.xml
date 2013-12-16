@@ -1,0 +1,162 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+    
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:style>
+        .members-container {
+        background: none;
+        border:none;
+        margin: 20px 0;
+        }
+
+        .members-block {
+        background: none repeat scroll 0 0 #E1DCC8;
+        border-bottom: 1px solid #ABA798;
+        border-left: 1px solid #D1CCBB;
+        border-right: 1px solid #D1CCBB;
+        box-shadow: 1px 1px 2px 0 #CCCCCC;
+        height: 150px;
+        padding: 8px;
+        border-radius: 5px;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        }
+
+        .members-inside-block {
+        height: 100%;
+        position: relative;
+        }
+
+        .members-block h4 {
+        text-align: left;
+        padding: 10px;
+        font-size:19px;
+        }
+
+        .members-inside-block img {
+        background: #E1DCC8;
+        box-shadow: 0 0 2px #666666;
+        height: 110px;
+        padding: 5px;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        width: 100px;
+        }
+
+        .members-content {
+        background: none repeat scroll 0 0 #FAF7EB;
+        border-bottom: 1px solid #ABA798;
+        border-left: 1px solid #D1CCBB;
+        border-radius: 0 0 5px 5px;
+        border-right: 1px solid #D1CCBB;
+        padding: 10px 131px 10px 10px;
+        height: 78px;
+        color: #887c7f;
+        }
+    </ui:style>
+
+    <g:ScrollPanel>
+        <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
+            <h1>
+                <ui:msg key="aboutUsAboutWSTitle">About Want-Something.com</ui:msg>
+            </h1>
+            <g:Label>
+                <ui:msg key="aboutUsAboutWS">Want-Someting.com makes it simple to get
+                    things done. The right professionals are matched with the right customers quickly and
+                    effectively so that each Pro can get the jobs that they are best at and each customer
+                    can get the right Pro for the job.</ui:msg>
+            </g:Label>
+            <h3>
+                <ui:msg key="aboutUsVisionTitle">Vision</ui:msg>
+            </h3>
+            <g:Label>
+                <ui:msg key="aboutUsVision">Your whole business depends on connecting with prospects and
+                    customers. We make this happen in an effective and fashionable way so that you can do what
+                    you do best.</ui:msg>
+            </g:Label>
+            <br />
+            <g:Label>
+                <ui:msg key="aboutUsEstablished">Want-Something.com was established in 2013 to making it easy
+                    to get things done.</ui:msg>
+            </g:Label>
+            <b:FluidContainer styleName='{style.members-container}'>
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:HTMLPanel styleName='{style.members-block}'>
+                            <g:HTMLPanel styleName='{style.members-inside-block}'>
+                                <h4>
+                                    <ui:msg key="aboutUsIvanVlcek">Ivan Vlcek</ui:msg>
+                                </h4>
+                                <g:HTMLPanel styleName='{style.members-content}'>
+                                    <ui:msg key="aboutUsTeamLeader">Team leader and developer</ui:msg>
+                                </g:HTMLPanel>
+                                <img src="images/team-members/ivan.jpg" alt="Ivan" />
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                    <b:Column size="4">
+                        <g:HTMLPanel styleName='{style.members-block}'>
+                            <g:HTMLPanel styleName='{style.members-inside-block}'>
+                                <h4>
+                                    <ui:msg key="aboutUsJurajMartinka">Juraj Martinka</ui:msg>
+                                </h4>
+                                <g:HTMLPanel styleName='{style.members-content}'>
+                                    <ui:msg key="aboutUsBackendDeveloper">Backend developer</ui:msg>
+                                </g:HTMLPanel>
+                                <img src="images/team-members/juraj.jpg" />
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                    <b:Column size="4">
+                        <g:HTMLPanel styleName='{style.members-block}'>
+                            <g:HTMLPanel styleName='{style.members-inside-block}'>
+                                <h4>
+                                    <ui:msg key="aboutUsVojtechHubr">Vojtech Hubr</ui:msg>
+                                </h4>
+                                <g:HTMLPanel styleName='{style.members-content}'>
+                                    <ui:msg key="aboutUsBackendDeveloper">Backend developer</ui:msg>
+                                </g:HTMLPanel>
+                                <img src="images/team-members/vojto.jpg" />
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="12"></b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:HTMLPanel styleName='{style.members-block}'>
+                            <g:HTMLPanel styleName='{style.members-inside-block}'>
+                                <h4>
+                                    <ui:msg key="aboutUsMartinSlavkovsky">Martin Slavkovsky</ui:msg>
+                                </h4>
+                                <g:HTMLPanel styleName='{style.members-content}'>
+                                    <ui:msg key="aboutUsFrontendDeveloper">Frontend developer</ui:msg>
+                                </g:HTMLPanel>
+                                <img src="images/team-members/martin.jpg" />
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                    <b:Column size="4">
+                        <g:HTMLPanel styleName='{style.members-block}'>
+                            <g:HTMLPanel styleName='{style.members-inside-block}'>
+                                <h4>
+                                    <ui:msg key="aboutUsJaroslavKrivus">Jaroslav Krivus</ui:msg>
+                                </h4>
+                                <g:HTMLPanel styleName='{style.members-content}'>
+                                    <ui:msg key="aboutUsFrontendDeveloper">Frontend developer</ui:msg>
+                                </g:HTMLPanel>
+                                <img src="images/team-members/jaro.jpg" />
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:FluidRow>
+            </b:FluidContainer>
+            <g:SimplePanel ui:field="footer" />
+        </g:HTMLPanel>
+    </g:ScrollPanel>
+</ui:UiBinder>

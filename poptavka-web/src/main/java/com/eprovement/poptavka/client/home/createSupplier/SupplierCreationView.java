@@ -1,17 +1,16 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.root.footer.FooterView;
+import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.github.gwtbootstrap.client.ui.Tooltip;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -21,15 +20,11 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,37 +42,54 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    /** Class attributes. **/
-    private @Inject FooterView footerView;
-    private List<SimplePanel> holderPanels;
     /** UiBinder attributes. **/
-    @UiField(provided = true) Widget footer;
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
+    @UiField SimplePanel footerPanel;
     @UiField TabLayoutPanel mainPanel;
     @UiField HorizontalPanel agreementPanel;
     @UiField CheckBox agreedCheck;
-    @UiField Button nextButtonTab1, nextButtonTab2, nextButtonTab3,
-    registerBtn, backButtonTab2, backButtonTab3, backButtonTab4;
+    @UiField ButtonsPanel buttonsPanel1, buttonsPanel2, buttonsPanel3, buttonsPanel4;
     @UiField Anchor conditionLink;
+    /** Class attributes. **/
+    private List<SimplePanel> holderPanels;
+    private List<Tooltip> tooltips;
+    private ClickHandler nextClickHandler = new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            selectNextTab();
+        }
+    };
+    private ClickHandler backClickHandler = new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            selectPreviousTab();
+        }
+    };
+
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
-
         initWidget(uiBinder.createAndBindUi(this));
+        buttonsPanel1.getBackBtn().setVisible(false);
+        bindHandlers();
 
         /** filling panels list **/
         holderPanels = Arrays.asList(contentHolder1, contentHolder2, contentHolder3, contentHolder4);
+        tooltips = Arrays.asList(buttonsPanel1.getNextBtnTooltip(), buttonsPanel2.getNextBtnTooltip(),
+            buttonsPanel3.getNextBtnTooltip(), buttonsPanel4.getNextBtnTooltip());
 
-        /** style implementation and overflow tweaks **/
-        StyleResource.INSTANCE.common().ensureInjected();
-        StyleResource.INSTANCE.createTabPanel().ensureInjected();
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
+
+        /** style implementation and overflow tweaks **/
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+        CssInjector.INSTANCE.ensureCreateTabPanelStylesInjected();
     }
 
     /**************************************************************************/
@@ -86,18 +98,6 @@ public class SupplierCreationView extends OverflowComposite
     @UiHandler("agreedCheck")
     public void agreedCheckChanged(ClickEvent event) {
         agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
-    }
-
-    /** NEXT. **/
-    @UiHandler(value = {"nextButtonTab1", "nextButtonTab2", "nextButtonTab3" })
-    public void nextButtonsClickHandler(ClickEvent event) {
-        selectNextTab();
-    }
-
-    /** BACK. **/
-    @UiHandler(value = {"backButtonTab2", "backButtonTab3", "backButtonTab4" })
-    public void backButtonsClickHandler(ClickEvent event) {
-        selectPreviousTab();
     }
 
     /**************************************************************************/
@@ -116,11 +116,16 @@ public class SupplierCreationView extends OverflowComposite
 
     /** BUTTONS. **/
     @Override
-    public HasClickHandlers getRegisterButton() {
-        return registerBtn;
+    public Button getRegisterButton() {
+        return buttonsPanel4.getNextBtn();
     }
 
     /** OTHERS. **/
+    @Override
+    public Tooltip getNextBtnTooltip(int order) {
+        return tooltips.get(order);
+    }
+
     @Override
     public Anchor getConditionLink() {
         return conditionLink;
@@ -131,6 +136,7 @@ public class SupplierCreationView extends OverflowComposite
         return agreedCheck;
     }
 
+    @Override
     public void showConditions() {
         final PopupPanel panel = new PopupPanel(true, false);
         HTMLPanel contentPanel =
@@ -141,11 +147,13 @@ public class SupplierCreationView extends OverflowComposite
         closeButton.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
         contentPanel.add(content, "text");
         contentPanel.add(closeButton, "button");
+        contentPanel.addStyleName("container-fluid");
         panel.setWidget(contentPanel);
         panel.setWidth("580px");
         panel.setAnimationEnabled(true);
         panel.setAutoHideEnabled(true);
         panel.setGlassEnabled(true);
+        panel.addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
 
 
         closeButton.addClickHandler(new ClickHandler() {
@@ -167,19 +175,14 @@ public class SupplierCreationView extends OverflowComposite
         if (agreedCheck.getValue()) {
             return agreedCheck.getValue();
         } else {
-            new AggreementDialogBox(Storage.MSGS.supplierCreationAgreementMessage());
             agreementPanel.setStyleName(StyleResource.INSTANCE.common().errorField());
             return false;
         }
     }
 
     @Override
-    public boolean isServiceSelected() {
-        if (((ServicesSelectorView) contentHolder4.getWidget()).getSelectedService() == null) {
-            new AggreementDialogBox(Storage.MSGS.supplierCreationSelectService());
-            return false;
-        }
-        return true;
+    public SimplePanel getFooterPanel() {
+        return footerPanel;
     }
 
     @Override
@@ -190,43 +193,24 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    private void bindHandlers() {
+        //back click handler
+        buttonsPanel1.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel2.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel3.getBackBtn().addClickHandler(backClickHandler);
+        buttonsPanel4.getBackBtn().addClickHandler(backClickHandler);
+        //next click handler
+        buttonsPanel1.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel2.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel3.getNextBtn().addClickHandler(nextClickHandler);
+        buttonsPanel4.getNextBtn().addClickHandler(nextClickHandler);
+    }
+
     private void selectNextTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }
 
     private void selectPreviousTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
-    }
-}
-class AggreementDialogBox extends PopupPanel {
-
-    public AggreementDialogBox(String message) {
-        // Create a table to layout the content
-        VerticalPanel vp = new VerticalPanel();
-
-        // Add some text to the top of the dialog
-        vp.add(new Label(message));
-
-        // Add a close button at the bottom of the dialog
-        Button closeButton = new Button(Storage.MSGS.commonBtnClose(), new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                hide();
-            }
-        });
-        closeButton.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
-        vp.add(closeButton);
-
-        if (LocaleInfo.getCurrentLocale().isRTL()) {
-            vp.setCellHorizontalAlignment(closeButton, HasHorizontalAlignment.ALIGN_LEFT);
-        } else {
-            vp.setCellHorizontalAlignment(closeButton, HasHorizontalAlignment.ALIGN_RIGHT);
-        }
-
-        setWidget(vp);
-
-        setGlassEnabled(true);
-        setAnimationEnabled(true);
-        center();
     }
 }

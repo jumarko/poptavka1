@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 /**
  * Locality where the project is to be realized
- * 
+ *
  * @author Juraj Martinka
  *         Date: 13.2.11
  */
@@ -25,7 +25,8 @@ import javax.persistence.Table;
         @NamedQuery(name = "getDemandsCountForLocality",
                 query = "select count(distinct demandLocality.demand)"
                         + " from DemandLocality demandLocality"
-                        + " where demandLocality.locality.leftBound between :leftBound and :rightBound"),
+                        + " where demandLocality.demand.status IN('ACTIVE', 'OFFERED') "
+                        + "     and demandLocality.locality.leftBound between :leftBound and :rightBound"),
         /**
          * In one query compute demands count for each locality and return it as a list of pairs
          * <localityId, demandsCountForLocality>.

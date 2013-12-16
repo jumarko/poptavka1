@@ -3,11 +3,6 @@
 <dataset>
     <!--############################################ demands ########################################################-->
 
-    <DEMANDORIGIN ID="1" CODE="epoptavka.cz" DESCRIPTION="poptavky povodom z epoptavka.cz" NAME="epoptavka.cz" URL="http://epoptavka.cz"/>
-    <DEMANDORIGIN ID="2" CODE="poptavam.com" DESCRIPTION="Poptavky povodom z poptavam.com" NAME="poptavam.com" URL="http://poptavam.com"/>
-    <DEMANDORIGIN ID="3" CODE="isvzus.cz" DESCRIPTION="Poptavky z verejneho  informacneho portalu" NAME="isvzus.cz" URL="http://www.isvzus.cz"/>
-
-
     <DEMANDTYPE ID="1" CODE="normal" />
     <DEMANDTYPE ID="2" CODE="attractive" />
     <DEMANDTYPE ID="3" CODE="all" />

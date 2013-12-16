@@ -1,0 +1,87 @@
+.common-modal-style {}
+
+/* Login Modal Styles */
+.login-modal {}
+
+/* Advanced search modal styles */ 
+.advanced-search-popup {
+    margin: 0;
+    width: auto;
+    height: 445px;
+    left: 20px;
+}
+.advanced-search-popup .advanced-toolbar {
+    display: none;
+}
+.advanced-search-popup .advanced-buttons {
+    right: 30px;
+    bottom: 45px;
+}
+.advanced-search-tabPanel .container-fluid {
+    /*background: none;*/
+    margin: 23px 10px;
+    padding: 15px 0;
+}
+.advanced-search-tabPanel .row-fluid {
+    margin-bottom: 0;
+}
+.advanced-search-tabPanel .well-content .well-padding {
+    padding: 0 10px;
+}
+
+
+.small-loader-modal {}
+
+.suggest-modal {}
+
+/* Feedback search modal styles */ 
+.feedback-modal {
+    margin-left: 0;
+    width: auto;
+    left: 0;
+    right: 0;
+}
+.feedback-modal .feedback-well {
+    height: 75px;
+    padding: 5px 20px;
+}
+.feedback-modal .feedback-well:hover,
+.feedback-modal .feedback-well.act {
+    border: 1px solid #199204;
+    background: url(images/feedback-selection_bg_large.gif) repeat-x;
+}
+.feedback-modal .span-title {
+    float: right;
+    text-align: right;
+}
+.feedback-modal .span-area {
+    height: 200px;
+}
+/* Contact Us Modal */
+.contactUs-modal {
+    margin-left: 0;
+    width: auto;
+}
+.contactUs-modal .span4 {
+    display: none;
+}
+
+/* Category and Locality Modal Styles */
+.cell-browser-selection-modal {
+    margin: 0;
+    /*width: auto;*/
+    /*height: 445px;*/
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.cell-browser-selection-modal .modal-body {
+    padding: 10px;
+}
+/* Activation Code Modal Styles */
+.activation-code {}
+
+/* Thank You Modal Styles */
+.thankyou .text {
+    font-size: 17px;
+}

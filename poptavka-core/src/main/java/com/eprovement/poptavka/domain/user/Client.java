@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Client demands to have projects realized
- * 
+ *
  * @author Juraj Martinka
  */
 @Entity
@@ -22,8 +22,8 @@ public class Client extends BusinessUserRole {
     @OneToMany(mappedBy = "client")
     private List<Demand> demands;
 
-    /** Total rating of supplier for all his "processed" demands .*/
-    private Integer overalRating = Integer.valueOf(0);
+    /** Total rating of client for all his "processed" demands .*/
+    private Integer overalRating = 0;
 
     @OneToOne(mappedBy = "client")
     @NotAudited

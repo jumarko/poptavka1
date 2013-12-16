@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -27,6 +29,7 @@ public class Address extends DomainObject {
     private AddressType addressType;
 
     @ManyToOne
+    @NotNull
     private Locality city;
 
     @NotBlank

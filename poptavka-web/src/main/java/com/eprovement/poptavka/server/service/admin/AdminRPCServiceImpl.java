@@ -19,6 +19,7 @@ import com.eprovement.poptavka.domain.invoice.PaymentMethod;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
+import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.settings.Preference;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Problem;
@@ -27,15 +28,16 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.domain.user.rights.Permission;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.SearchConverter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -49,6 +51,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -86,6 +89,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private GeneralService generalService;
     private DemandService demandService;
     private MessageService messageService;
+    private OfferService offerService;
     private UserMessageService userMessageService;
     private PotentialDemandService potentialDemandService;
     private Converter<Demand, FullDemandDetail> fullDemandConverter;
@@ -101,9 +105,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Preference, PreferenceDetail> preferenceConverter;
     private Converter<Problem, ProblemDetail> problemConverter;
     private Converter<Message, MessageDetail> messageConverter;
-    private Converter<Locality, LocalityDetail> localityConverter;
-    private Converter<Category, CategoryDetail> categoryConverter;
-    private Converter<Search, SearchDefinition> searchConverter;
+    private Converter<Locality, ICatLocDetail> localityConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
+    private SearchConverter searchConverter;
     private Converter<UserMessage, MessageDetail> userMessageConverter;
 
     @Autowired
@@ -119,6 +123,11 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Autowired
     public void setMessageService(MessageService messageService) {
         this.messageService = messageService;
+    }
+
+    @Autowired
+    public void setOfferService(OfferService offerService) {
+        this.offerService = offerService;
     }
 
     @Autowired
@@ -167,8 +176,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     }
 
     @Autowired
-    public void setSearchConverter(
-            @Qualifier("searchConverter") Converter<Search, SearchDefinition> searchConverter) {
+    public void setSearchConverter(@Qualifier("searchConverter") SearchConverter searchConverter) {
         this.searchConverter = searchConverter;
     }
 
@@ -203,13 +211,13 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, LocalityDetail> localityConverter) {
+            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
@@ -239,9 +247,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminDemandsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        searchConverter.convertToSource(searchDefinition);
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Demand.class);
+        Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -249,8 +255,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullDemandDetail> getAdminDemands(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Demand.class);
+        Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
         return fullDemandConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -301,11 +306,11 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                     break;
                 case CATEGORIES:
                     demand.setCategories(categoryConverter.convertToSourceList(
-                            (ArrayList<CategoryDetail>) change.getValue()));
+                            (ArrayList<ICatLocDetail>) change.getValue()));
                     break;
                 case LOCALITIES:
                     demand.setLocalities(localityConverter.convertToSourceList(
-                            (ArrayList<LocalityDetail>) change.getValue()));
+                            (ArrayList<ICatLocDetail>) change.getValue()));
                     break;
                 case EXCLUDE_SUPPLIER:
                     demand.setExcludedSuppliers(supplierConverter.convertToSourceList(
@@ -328,8 +333,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminClientsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Client.class);
+        Search search = searchConverter.convertToSource(Client.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -337,8 +341,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ClientDetail> getAdminClients(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Client.class);
+        Search search = searchConverter.convertToSource(Client.class, searchDefinition);
         return clientConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -365,8 +368,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminSuppliersCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Supplier.class);
+        Search search = searchConverter.convertToSource(Supplier.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -374,8 +376,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<FullSupplierDetail> getAdminSuppliers(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Supplier.class);
+        Search search = searchConverter.convertToSource(Supplier.class, searchDefinition);
         return supplierConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -396,8 +397,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOffersCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Offer.class);
+        Search search = searchConverter.convertToSource(Offer.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -405,8 +405,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<OfferDetail> getAdminOffers(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Offer.class);
+        Search search = searchConverter.convertToSource(Offer.class, searchDefinition);
         return offerConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -427,9 +426,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                 offerDetail.getDisplayName())) {
             offer.getSupplier().getBusinessUser().getBusinessUserData().setCompanyName(offerDetail.getDisplayName());
         }
-        //TODO RELEASE Martin - how to update OfferState? ivlcek: insert OfferService by Dependency Injection and:
-        // OfferState newOfferState = offerService.getOfferState(offerDetail.getState().getValue());
-        // offer.setState(newOfferState);
+        OfferState newOfferState = offerService.getOfferState(offerDetail.getState().getValue());
+        offer.setState(newOfferState);
         if (!offer.getPrice().equals(offerDetail.getPrice())) {
             offer.setPrice((BigDecimal) offerDetail.getPrice());
         }
@@ -446,8 +444,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminAccessRolesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(AccessRole.class);
+        Search search = searchConverter.convertToSource(AccessRole.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -455,8 +452,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<AccessRoleDetail> getAdminAccessRoles(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(AccessRole.class);
+        Search search = searchConverter.convertToSource(AccessRole.class, searchDefinition);
         return accessRoleConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -487,8 +483,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminEmailsActivationCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(ActivationEmail.class);
+        Search search = searchConverter.convertToSource(ActivationEmail.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -496,8 +491,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ActivationEmailDetail> getAdminEmailsActivation(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(ActivationEmail.class);
+        Search search = searchConverter.convertToSource(ActivationEmail.class, searchDefinition);
         return activationEmailConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -525,8 +519,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminInvoicesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Invoice.class);
+        Search search = searchConverter.convertToSource(Invoice.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -534,8 +527,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<InvoiceDetail> getAdminInvoices(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Invoice.class);
+        Search search = searchConverter.convertToSource(Invoice.class, searchDefinition);
         return invoiceConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -599,8 +591,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminMessagesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Message.class);
+        Search search = searchConverter.convertToSource(Message.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -608,8 +599,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<MessageDetail> getAdminMessages(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Message.class);
+        Search search = searchConverter.convertToSource(Message.class, searchDefinition);
         return messageConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -642,46 +632,43 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminNewDemandsCount(SearchDefinition searchDefinition) throws
+    public Long getAdminDemandsByItsStatusCount(
+            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.addFilterEqual("status", DemandStatus.NEW);
-        search.setSearchClass(Demand.class);
+        Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
+        search.addFilterEqual("status", demandStatus);
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws
+    public List<NewDemandDetail> getAdminDemandsByItsStatus(
+            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.addFilterEqual("status", DemandStatus.NEW);
-        search.setSearchClass(Demand.class);
-        return fullDemandConverter.convertToTargetList(generalService.search(search));
+        Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
+        search.addFilterEqual("status", demandStatus);
+        final List<Demand> demands = generalService.search(search);
+        final List<NewDemandDetail> demandDetails = new ArrayList<NewDemandDetail>();
+        for (Demand demand : demands) {
+            NewDemandDetail detail = new NewDemandDetail();
+            detail.setSenderId(demand.getClient().getBusinessUser().getId());
+            detail.setCreated(demand.getCreatedDate());
+            detail.setDemandId(demand.getId());
+            detail.setLocalities(localityConverter.convertToTargetList(demand.getLocalities()));
+            detail.setThreadRootId(messageService.getThreadRootMessage(demand).getId());
+            detail.setDemandTitle(demand.getTitle());
+            detail.setValidTo(demand.getValidTo());
+            demandDetails.add(detail);
+        }
+        return demandDetails;
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public long getThreadRootMessageId(long demandId) throws
-            RPCException, ApplicationSecurityException {
-        Demand demand = demandService.getById(demandId);
-        Message message = messageService.getThreadRootMessage(demand);
-        return message.getId();
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public FullDemandDetail getFullDemandDetail(long demandId) throws
-            RPCException, ApplicationSecurityException {
-        return fullDemandConverter.convertToTarget(generalService.find(Demand.class, demandId));
-    }
-
-    @Override
-    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void approveDemands(Set<FullDemandDetail> demandsToApprove) throws
+    public void approveDemands(Set<NewDemandDetail> demandsToApprove) throws
             RPCException, ApplicationSecurityException {
         LOGGER.info("action=approve_demands status=start");
-        for (FullDemandDetail demandDetail : demandsToApprove) {
+        for (NewDemandDetail demandDetail : demandsToApprove) {
             try {
                 final Demand demand = demandService.getById(demandDetail.getDemandId());
                 demandService.activateDemand(demand);
@@ -704,8 +691,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(OurPaymentDetails.class);
+        Search search = searchConverter.convertToSource(OurPaymentDetails.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -713,8 +699,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentDetail> getAdminOurPaymentDetails(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(OurPaymentDetails.class);
+        Search search = searchConverter.convertToSource(OurPaymentDetails.class, searchDefinition);
         return paymentConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -774,8 +759,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPaymentMethodsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(PaymentMethod.class);
+        Search search = searchConverter.convertToSource(PaymentMethod.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -783,8 +767,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PaymentMethodDetail> getAdminPaymentMethods(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(PaymentMethod.class);
+        Search search = searchConverter.convertToSource(PaymentMethod.class, searchDefinition);
         return paymentMethodConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -821,8 +804,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPermissionsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Permission.class);
+        Search search = searchConverter.convertToSource(Permission.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -830,8 +812,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PermissionDetail> getAdminPermissions(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Permission.class);
+        Search search = searchConverter.convertToSource(Permission.class, searchDefinition);
         return permissionConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -861,8 +842,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPreferencesCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Preference.class);
+        Search search = searchConverter.convertToSource(Preference.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -870,8 +850,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<PreferenceDetail> getAdminPreferences(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Preference.class);
+        Search search = searchConverter.convertToSource(Preference.class, searchDefinition);
         return preferenceConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -901,8 +880,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminProblemsCount(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Problem.class);
+        Search search = searchConverter.convertToSource(Problem.class, searchDefinition);
         return (long) generalService.count(search);
     }
 
@@ -910,8 +888,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<ProblemDetail> getAdminProblems(SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
-        Search search = searchConverter.convertToSource(searchDefinition);
-        search.setSearchClass(Problem.class);
+        Search search = searchConverter.convertToSource(Problem.class, searchDefinition);
         return problemConverter.convertToTargetList(generalService.search(search));
     }
 
@@ -962,64 +939,27 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      * Gets all inbox and sent user messages UsereMessage of given user and thread root.
      * Once loaded, all user messages are set as read, see isRead attribute of UserMessage.
      *
-     * @param threadId is root message id
-     * @param userId can be either supplier's or client's user Id
+     * @param threadRootId is root message id
+     * @param loggedUserId can be either supplier's or client's user Id
      * @return list of all messages in this thread
      * @throws RPCException
      */
     @Override
-    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getConversation(long threadId, long userId) throws
-            RPCException, ApplicationSecurityException {
-        final List<UserMessage> userMessages = getConversationUserMessages(threadId, userId);
-        // set all user messages as read
-        for (UserMessage userMessage : userMessages) {
-            userMessage.setRead(true);
-            userMessageService.update(userMessage);
-        }
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public List<MessageDetail> getConversation(long threadRootId, long loggedUserId, long counterPartyUserId)
+        throws RPCException, ApplicationSecurityException {
+        final List<UserMessage> userMessages = getConversationUserMessages(
+                threadRootId, loggedUserId, counterPartyUserId);
         return userMessageConverter.convertToTargetList(userMessages);
     }
 
-    /**
-     * Retrieve conversation between Operator and <code>Client</code> regarding particular demand. If there are no
-     * <oode>UserMessage</code>-s for Operator/Admin empty conversation i.e. empty list is returned. In this case
-     * the Operator/Admin must invoke <code>createConversation</code> that will create a new <code>UserMessage</code>.
-     *
-     * @param demandId which conversation should be loaded
-     * @param userAdminId id of Admin or Operator user
-     * @return List of <code>MessageDetail</code> objects
-     * @throws RPCException
-     * @throws ApplicationSecurityException
-     */
-    @Override
-    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<MessageDetail> getConversationForAdmin(long demandId, long userAdminId) throws RPCException,
-        ApplicationSecurityException {
-        Demand demand = demandService.getById(demandId);
-        Message threadRootMessage = messageService.getThreadRootMessage(demand);
-        final List<UserMessage> userMessages = getConversationUserMessages(threadRootMessage.getId(), userAdminId);
-        // set all user messages as read
-        for (UserMessage userMessage : userMessages) {
-            userMessage.setRead(true);
-            generalService.save(userMessage);
-        }
-        return userMessageConverter.convertToTargetList(userMessages);
-    }
+    private List<UserMessage> getConversationUserMessages(long threadRootId, long loggedUserId,
+            long counterPartyUserId) {
+        Message threadRoot = messageService.getById(threadRootId);
 
-    /**
-     * Loads all UserMessages for conversation panel and sets them as read.
-     *
-     * @param threadId if of thread root message for whole conversation
-     * @param userId user which user messages will be retrieved
-     * @return list of <code>UserMessage</code>-s
-     */
-    private List<UserMessage> getConversationUserMessages(long threadId, long userId) {
-        Message threadRoot = messageService.getById(threadId);
-        User user = this.generalService.find(User.class, userId);
-        final Search searchDefinition = new Search(UserMessage.class);
-        searchDefinition.addSort("message.created", true);
-        return this.messageService
-                .getConversationUserMessages(threadRoot, user, searchDefinition);
+        User user = this.generalService.find(User.class, loggedUserId);
+        User counterparty = this.generalService.find(User.class, counterPartyUserId);
+        return userMessageService.getConversation(user, counterparty, threadRoot);
     }
 
     /**
@@ -1044,19 +984,4 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return threadRootMessage.getId();
     }
 
-    /**
-     * Send message.
-     * @param questionMessageToSend
-     * @return message
-     */
-    @Override
-    public MessageDetail sendQuestionMessage(MessageDetail questionMessageToSend) throws RPCException {
-        Message message = messageService.newReply(this.messageService.getById(
-                questionMessageToSend.getParentId()),
-                this.generalService.find(User.class, questionMessageToSend.getSenderId())).getMessage();
-        message.setBody(questionMessageToSend.getBody());
-        message.setSubject(questionMessageToSend.getSubject());
-        messageService.send(message);
-        return messageConverter.convertToTarget(message);
-    }
 }

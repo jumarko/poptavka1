@@ -9,7 +9,6 @@ import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import com.eprovement.poptavka.client.service.demand.MessagesRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.UserRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
@@ -23,8 +22,6 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
     @Inject
     private MessagesRPCServiceAsync messagesService;
-    @Inject
-    private UserRPCServiceAsync userService;
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface.                          */

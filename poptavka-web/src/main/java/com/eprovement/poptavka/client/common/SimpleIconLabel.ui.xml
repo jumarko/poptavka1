@@ -7,7 +7,7 @@
 
     <g:HTMLPanel ui:field="wrapper">
         <div ui:field='inliner'>
-            <g:Image ui:field="image" styleName='' resource="{res.images.infoIcon16}"/>
+            <g:Image ui:field="image" resource="{res.images.infoIcon16}"/>
             <span ui:field="message" />
         </div>
     </g:HTMLPanel>

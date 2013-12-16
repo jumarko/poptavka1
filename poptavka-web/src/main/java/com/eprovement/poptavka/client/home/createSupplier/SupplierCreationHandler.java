@@ -33,7 +33,10 @@ public class SupplierCreationHandler extends BaseEventHandler<SupplierCreationEv
             @Override
             public void onSuccess(FullSupplierDetail supplier) {
                 eventBus.loadingHide();
-                eventBus.initActivationCodePopup(newSupplier.getUserData(), Constants.SUPPLIER_DEMANDS_WELCOME);
+                eventBus.autoLogin(
+                        newSupplier.getUserData().getEmail(),
+                        newSupplier.getUserData().getPassword(),
+                        Constants.SUPPLIER_DEMANDS_WELCOME);
             }
         });
     }

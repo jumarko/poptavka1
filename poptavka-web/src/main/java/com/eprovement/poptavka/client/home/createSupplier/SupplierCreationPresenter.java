@@ -1,25 +1,24 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
-import com.eprovement.poptavka.client.common.address.AddressSelectorPresenter.AddressSelectorInterface;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategorySelectorPresenter.CategorySelectorInterface;
-import com.eprovement.poptavka.client.common.locality.LocalitySelectorPresenter.LocalitySelectorInterface;
-import com.eprovement.poptavka.client.common.services.ServicesSelectorView;
+import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.userRegistration.UserRegistrationFormView;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.domain.enums.ServiceType;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -30,7 +29,6 @@ import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 @Presenter(view = SupplierCreationView.class, multiple = true)
@@ -54,10 +52,14 @@ public class SupplierCreationPresenter
 
         SimplePanel getHolderPanel(int order);
 
+        SimplePanel getFooterPanel();
+
         /** Buttons. **/
-        HasClickHandlers getRegisterButton();
+        Button getRegisterButton();
 
         /** Other. **/
+        Tooltip getNextBtnTooltip(int order);
+
         Anchor getConditionLink();
 
         CheckBox getAgreedCheck();
@@ -65,8 +67,6 @@ public class SupplierCreationPresenter
         void showConditions();
 
         boolean isAgreementChecked();
-
-        boolean isServiceSelected();
 
         Widget getWidgetView();
     }
@@ -82,14 +82,17 @@ public class SupplierCreationPresenter
         LOGGER.info("SupplierCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setUpSearchBar(null);
+        eventBus.setToolbarContent("Became Professional", null, false);
+        eventBus.setFooter(view.getFooterPanel());
+        eventBus.resetSearchBar(null);
         if (Storage.getUser() == null) {
             eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
         } else {
-            eventBus.userMenuStyleChange(Constants.CREATE_SUPPLIER);
+            eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);
         }
         maxSelectedTab = 1;
         view.getAgreedCheck().setValue(false);
+        view.getRegisterButton().setEnabled(true);
     }
 
     @Override
@@ -105,7 +108,8 @@ public class SupplierCreationPresenter
      */
     public void onGoToCreateSupplierModule() {
         view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
-        eventBus.initUserRegistrationForm(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
+        eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
+        setHeightRegistration();
         //remove widgets to force widget to init them again
         view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
         view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
@@ -134,6 +138,7 @@ public class SupplierCreationPresenter
                     if (view.getMainPanel().getSelectedIndex() < eventItem) {
                         //if present tab is valid, continue
                         if (!canContinue(view.getMainPanel().getSelectedIndex())) {
+                            displayTooltip();
                             event.cancel();
                         }
                         //define how far am i allowed to click
@@ -160,31 +165,48 @@ public class SupplierCreationPresenter
 
     private void addMainPanelSelectionHandlerInner(SelectionEvent<Integer> event) {
         switch (event.getSelectedItem()) {
+            case FIRST_TAB_USER_REGISTRATION:
+                LOGGER.info(" -> Login Or Registration Selection Form");
+                eventBus.checkCompanySelected();
+                break;
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
-                    eventBus.initCategoryWidget(
+                    eventBus.initCatLocSelector(
                             view.getHolderPanel(SECOND_TAB_CATEGORY),
-                            Constants.WITH_CHECK_BOXES_ONLY_ON_LEAFS,
-                            CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                            null, true);
+                            new CatLocSelectorBuilder.Builder()
+                                .initCategorySelector()
+                                .initSelectorManager()
+                                .withCheckboxesOnLeafsOnly()
+                                .displayCountOfSuppliers()
+                                .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                                .build(),
+                            Constants.CREATE_SUPPLIER);
                 }
+                setHeightSelector();
                 break;
             case THIRD_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
-                    eventBus.initLocalityWidget(
+                    eventBus.initCatLocSelector(
                             view.getHolderPanel(THIRD_TAB_LOCALITY),
-                            Constants.WITH_CHECK_BOXES,
-                            CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                            null, true);
+                            new CatLocSelectorBuilder.Builder()
+                                .initLocalitySelector()
+                                .initSelectorManager()
+                                .withCheckboxesOnLeafsOnly()
+                                .displayCountOfSuppliers()
+                                .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                                .build(),
+                            -Constants.CREATE_SUPPLIER);
                 }
+                setHeightSelector();
                 break;
             case FOURTH_TAB_SERVICES:
                 LOGGER.info(" -> init Service Form supplierService");
                 if (view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget() == null) {
-                    eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICES));
+                    eventBus.initServicesWidget(ServiceType.SUPPLIER, view.getHolderPanel(FOURTH_TAB_SERVICES));
                 }
+                setHeightServices();
                 break;
             default:
                 break;
@@ -197,9 +219,11 @@ public class SupplierCreationPresenter
             public void onClick(ClickEvent event) {
                 if (canContinue(FOURTH_TAB_SERVICES)) {
                     LOGGER.fine("register him!");
+                    view.getRegisterButton().setEnabled(false);
                     registerSupplier();
                 } else {
                     LOGGER.fine("cannot continue");
+                    displayTooltip();
                 }
             }
         });
@@ -215,24 +239,24 @@ public class SupplierCreationPresenter
 
     }
 
+    public void onSetUserRegistrationHeight(boolean company) {
+        if (company) {
+            setHeightRegistrationExtended();
+        } else {
+            setHeightRegistration();
+        }
+    }
+
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
     private void registerSupplier() {
-        UserRegistrationFormView accountInfo =
-                (UserRegistrationFormView) view.getHolderPanel(FIRST_TAB_USER_REGISTRATION).getWidget();
-        CategorySelectorInterface cats =
-                (CategorySelectorInterface) view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget();
-        LocalitySelectorInterface locs =
-                (LocalitySelectorInterface) view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget();
-        ServicesSelectorView service =
-                (ServicesSelectorView) view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget();
-
         FullSupplierDetail newSupplier = new FullSupplierDetail();
-        newSupplier.setUserData(accountInfo.createBusinessUserDetail());
-        newSupplier.setLocalities(locs.getCellListDataProvider().getList());
-        newSupplier.setCategories(cats.getCellListDataProvider().getList());
-        newSupplier.setServices(Arrays.asList(service.getSelectedService()));
+
+        eventBus.fillBusinessUserDetail(newSupplier.getUserData());
+        eventBus.fillCatLocs(newSupplier.getCategories(), Constants.CREATE_SUPPLIER);
+        eventBus.fillCatLocs(newSupplier.getLocalities(), -Constants.CREATE_SUPPLIER);
+        eventBus.fillServices(newSupplier.getServices());
 
         eventBus.registerSupplier(newSupplier);
         //signal event
@@ -242,19 +266,49 @@ public class SupplierCreationPresenter
     private boolean canContinue(int step) {
         boolean valid = true;
         if (step == FOURTH_TAB_SERVICES) {
-            valid = view.isAgreementChecked() && view.isServiceSelected();
+            valid = view.isAgreementChecked();
         }
 
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
-        LOGGER.fine(widget.getClass().getName());
         return valid && widget.isValid();
     }
 
-    /**
-     * Perform some additional action after Address selector widget has loaded.
-     * In this case, disabled change monitoring for Address selector widget.
-     */
-    public void onNotifyAddressWidgetListeners(AddressSelectorInterface addressWidget) {
-        addressWidget.setChangeMonitorsEnabled(false);
+    private void displayTooltip() {
+        view.getNextBtnTooltip(view.getMainPanel().getSelectedIndex()).show();
+        Timer timer = new Timer() {
+
+            @Override
+            public void run() {
+                view.getNextBtnTooltip(view.getMainPanel().getSelectedIndex()).hide();
+            }
+        };
+        timer.schedule(Constants.VALIDATION_TOOLTIP_DISPLAY_TIME);
+    }
+
+    private void setHeightServices() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
+    }
+
+    private void setHeightSelector() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());
+    }
+
+    private void setHeightRegistration() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistration());
+    }
+
+    private void setHeightRegistrationExtended() {
+        clearHeight();
+        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistrationExtended());
+    }
+
+    private void clearHeight() {
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightSelector());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistration());
+        view.getMainPanel().removeStyleName(StyleResource.INSTANCE.createTabPanel().heightRegistrationExtended());
     }
 }

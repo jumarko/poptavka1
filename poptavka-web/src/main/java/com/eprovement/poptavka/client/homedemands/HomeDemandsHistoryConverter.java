@@ -2,13 +2,12 @@ package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.homesuppliers.TreeItem;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
-import java.util.LinkedList;
 
 /**
  * History converter class. Handles history for HomeDemandsModule.
@@ -18,35 +17,38 @@ import java.util.LinkedList;
 @History(type = HistoryConverterType.DEFAULT, name = "demands")
 public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemandsEventBus> {
 
-    private static final String HOME = "home";
-    private static final String USER = "user";
+    private static final String LOCATION_HOME = "home";
+    private static final String LOCATION_USER = "user";
+    private static final String KEY_CATEGORY = "catId";
+    private static final String KEY_PAGE = "page";
+    private static final String KEY_SUPPLIER = "supId";
     private static final String VALUE_SEPARATOR = "=";
     private static final String ITEM_SEPARATOR = ";";
-    private static final String LIST_BRACKET_LEFT = "(";
-    private static final String LIST_BRACKET_RIGHT = ")";
-    private static final String LIST_ITEM_SEPARATOR = ",";
-    private static final String LIST_ITEM_IDX_SEPARATOR = ":";
+    //please notice, if choosing "" as NO_VALUE, parse function must be updated
+    //due to possible NullPointerException. See convertFromToken in this class
+    //and setModuleByHistory in Handler class.
+    private static final String NO_VALUE = "null";
 
     public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
-            LinkedList<TreeItem> openedHierarchy, int page, FullDemandDetail demandDetail) {
+            ICatLocDetail category, int page, FullDemandDetail demandDetail) {
         StringBuilder token = new StringBuilder();
         //Location
-        token.append(Storage.getUser() == null ? HOME : USER);
+        token.append(Storage.getUser() == null ? LOCATION_HOME : LOCATION_USER);
         token.append(ITEM_SEPARATOR);
         //Category
-        token.append("tree");
+        token.append(KEY_CATEGORY);
         token.append(VALUE_SEPARATOR);
-        token.append(convertCateoryMapToToken(openedHierarchy));
+        token.append(category == null ? NO_VALUE : category.getId());
         //Page
         token.append(ITEM_SEPARATOR);
-        token.append("page");
+        token.append(KEY_PAGE);
         token.append(VALUE_SEPARATOR);
         token.append(page);
         //Supplier
         token.append(ITEM_SEPARATOR);
-        token.append("supId");
+        token.append(KEY_SUPPLIER);
         token.append(VALUE_SEPARATOR);
-        token.append(demandDetail == null ? "-1" : demandDetail.getDemandId());
+        token.append(demandDetail == null ? NO_VALUE : demandDetail.getDemandId());
         return token.toString();
     }
 
@@ -61,63 +63,24 @@ public class HomeDemandsHistoryConverter implements HistoryConverter<HomeDemands
      */
     @Override
     public void convertFromToken(String methodName, String param, HomeDemandsEventBus eventBus) {
-        if (param.startsWith(USER)) {
+        if (param.startsWith(LOCATION_USER)) {
             eventBus.setHistoryStoredForNextOne(false);
             eventBus.loginFromSession(Constants.SKIP);
+            param = param.substring(LOCATION_USER.length() + ITEM_SEPARATOR.length(), param.length());
+        } else {
+            param = param.substring(LOCATION_HOME.length() + ITEM_SEPARATOR.length(), param.length());
         }
         Storage.setCalledDueToHistory(true);
-        param = param.substring(6, param.length());
         //When back & forward events -> don't need to call goToHomeSupplierModule
         // - it would create new universalAsyncTable, ...
         // - just use what is already created - events will fire appropiate actions
-        //parse param
+        //parse param (i.e.: "catId=16;page=0;supId=134")
         String[] params = param.split(ITEM_SEPARATOR);
-        LinkedList<TreeItem> tree = convertCategoryTokenToMap(params[0].split(VALUE_SEPARATOR)[1]);
-        if (tree.isEmpty()) {
-            eventBus.setModuleByHistory(null, tree, null,
-                    Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
-                    Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
-        } else {
-            eventBus.getCategoryAndSetModuleByHistory(
-                    null, tree, tree.getLast().getCategoryId(),
-                    Integer.valueOf(params[1].split(VALUE_SEPARATOR)[1]),
-                    Long.valueOf(params[2].split(VALUE_SEPARATOR)[1]));
-        }
-    }
-
-    private LinkedList<TreeItem> convertCategoryTokenToMap(String token) {
-        LinkedList<TreeItem> tree = new LinkedList<TreeItem>();
-        StringBuilder str = new StringBuilder(token);
-        str.deleteCharAt(0);
-        str.deleteCharAt(str.length() - 1);
-        if (!str.toString().isEmpty()) {
-            String[] items = str.toString().split(LIST_ITEM_SEPARATOR);
-            int level = 1;
-            for (String item : items) {
-                tree.add(
-                        new TreeItem(Long.valueOf(item.split(LIST_ITEM_IDX_SEPARATOR)[0]),
-                        Long.valueOf(item.split(LIST_ITEM_IDX_SEPARATOR)[0]),
-                        level, Integer.valueOf(item.split(":")[1])));
-                level++;
-            }
-        }
-        return tree;
-    }
-
-    private String convertCateoryMapToToken(LinkedList<TreeItem> openedHierarcy) {
-        StringBuilder str = new StringBuilder();
-        str.append(LIST_BRACKET_LEFT);
-        if (openedHierarcy != null && !openedHierarcy.isEmpty()) {
-            for (TreeItem item : openedHierarcy) {
-                str.append(item.getCategoryId());
-                str.append(LIST_ITEM_IDX_SEPARATOR);
-                str.append(item.getIndex());
-                str.append(LIST_ITEM_SEPARATOR);
-            }
-            str.deleteCharAt(str.length() - 1);
-        }
-        str.append(LIST_BRACKET_RIGHT);
-        return str.toString();
+        //params == (i.e.: ["catId=16","page=0","supId=134"]
+        eventBus.setModuleByHistory(null,
+            params[0].split(VALUE_SEPARATOR)[1],
+            params[1].split(VALUE_SEPARATOR)[1],
+            params[2].split(VALUE_SEPARATOR)[1]);
     }
 
     @Override

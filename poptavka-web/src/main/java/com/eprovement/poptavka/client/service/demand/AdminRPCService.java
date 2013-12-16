@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.service.demand;
 
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -12,6 +13,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -97,17 +99,20 @@ public interface AdminRPCService extends RemoteService {
     void updateMessage(MessageDetail detailObject) throws RPCException, ApplicationSecurityException;
 
     //---------------------- NEW DEMANDS --------------------------------------------
-    Long getAdminNewDemandsCount(SearchDefinition searchDefinition) throws
+    Long getAdminDemandsByItsStatusCount(
+            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException;
 
-    List<FullDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition) throws RPCException,
-            ApplicationSecurityException;
+    List<NewDemandDetail> getAdminDemandsByItsStatus(
+            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+            RPCException, ApplicationSecurityException;
 
-    long getThreadRootMessageId(long demandId) throws RPCException, ApplicationSecurityException;
+    List<MessageDetail> getConversation(long threadRootId, long loggedUserId, long counterPartyUserId)
+        throws RPCException;
 
-    FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException;
+    Long createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
 
-    void approveDemands(Set<FullDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
+    void approveDemands(Set<NewDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
     Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws RPCException,
@@ -154,13 +159,4 @@ public interface AdminRPCService extends RemoteService {
     void updateProblem(ProblemDetail detailObject) throws RPCException, ApplicationSecurityException;
 
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
-
-    List<MessageDetail> getConversation(long threadId, long userId) throws RPCException;
-
-    List<MessageDetail> getConversationForAdmin(long demandId, long userAdminId) throws RPCException,
-            ApplicationSecurityException;
-
-    Long createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
-
-    MessageDetail sendQuestionMessage(MessageDetail messageToSend) throws RPCException, ApplicationSecurityException;
 }

@@ -1,16 +1,15 @@
 package com.eprovement.poptavka.service.address;
 
-import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.address.LocalityDao;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.googlecode.ehcache.annotations.Cacheable;
+import java.util.List;
 import org.apache.commons.lang.Validate;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Provides methods for handling addresses and localities.
@@ -30,11 +29,37 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "cache5h")
+    @Cacheable(cacheName = "localityCache")
     public Locality getLocality(Long id) {
         return getDao().getLocality(id);
     }
 
+    @Override
+    @Cacheable(cacheName = "localityCache")
+    public Locality findCityByName(String region, String cityName) {
+        Validate.notEmpty(region, "region cannot be empty!");
+        Validate.notEmpty(cityName, "cityName cannot be empty!");
+        return getDao().findCityByName(findRegion(region), cityName);
+    }
+
+    @Override
+    @Cacheable(cacheName = "localityCache")
+    public Locality findDistrictByName(String region, String districtName) {
+        Validate.notEmpty(region, "region cannot be empty!");
+        Validate.notEmpty(districtName, "districtName cannot be empty!");
+        return getDao().findDistrictByName(findRegion(region), districtName);
+    }
+
+    @Override
+    @Cacheable(cacheName = "regionCache")
+    public Locality findRegion(String region) {
+        Validate.notEmpty(region, "region cannot be empty!");
+        final Locality regionByAbbr = getDao().findRegionByAbbreviation(region);
+        if (regionByAbbr != null) {
+            return regionByAbbr;
+        }
+        return getDao().findRegionByName(region);
+    }
 
     @Override
     @Cacheable(cacheName = "localityCache")
@@ -81,15 +106,31 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
         throw new TreeItemModificationException();
     }
 
+    /**
+     *  {@inheritDoc}
+     */
     @Override
-    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String namePrefix,
-            LocalityType type) {
-        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, namePrefix, type);
+    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring) {
+        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, nameSubstring);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring) {
+        return getDao().getLocalitiesByMinLength(minLength, nameSubstring);
     }
 
     @Override
-    public List<Locality> getLocalitiesByMinLength(int minLength, String namePrefix,
+    public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring,
             LocalityType type) {
-        return getDao().getLocalitiesByMinLength(minLength, namePrefix, type);
+        return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, nameSubstring, type);
+    }
+
+    @Override
+    public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring,
+            LocalityType type) {
+        return getDao().getLocalitiesByMinLength(minLength, nameSubstring, type);
     }
 }

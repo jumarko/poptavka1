@@ -1,8 +1,7 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.root.footer.FooterView;
-import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,7 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
 public class ClientDemandsModuleView extends Composite
-        implements ClientDemandsModulePresenter.ClientDemandsLayoutInterface {
+        implements ClientDemandsModulePresenter.ClientDemandsViewInterface {
 
     private static ClientDemandsLayoutViewUiBinder uiBinder = GWT.create(ClientDemandsLayoutViewUiBinder.class);
 
@@ -25,21 +24,18 @@ public class ClientDemandsModuleView extends Composite
     /* Attrinbutes                                                            */
     /**************************************************************************/
     /** UiBinder attribute. **/
-    @UiField(provided = true) Widget footer;
-    @UiField SimplePanel contentPanel;
+    @UiField SimplePanel contentContainer;
     @UiField Button clientNewDemands, clientOffers, clientAssignedDemands, clientClosedDemands, clientRatings;
-    /** Class attributes. **/
-    private @Inject FooterView footerView;
+    /** Class attribute. **/
+    @Inject
+    private ClientToolbarView toolbar;
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.detailViews().ensureInjected();
     }
 
     /**************************************************************************/
@@ -153,8 +149,13 @@ public class ClientDemandsModuleView extends Composite
     }
 
     @Override
-    public SimplePanel getContentPanel() {
-        return contentPanel;
+    public ClientToolbarView getToolbarContent() {
+        return toolbar;
+    }
+
+    @Override
+    public SimplePanel getContentContainer() {
+        return contentContainer;
     }
 
     @Override

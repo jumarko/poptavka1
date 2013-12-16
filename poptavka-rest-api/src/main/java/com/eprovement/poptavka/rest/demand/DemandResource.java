@@ -1,21 +1,15 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.rest.demand;
 
-import com.google.common.base.Preconditions;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.rest.ResourceNotFoundException;
 import com.eprovement.poptavka.rest.common.ResourceUtils;
 import com.eprovement.poptavka.rest.common.resource.AbstractPageableResource;
 import com.eprovement.poptavka.service.demand.DemandService;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import com.google.common.base.Preconditions;
 import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
@@ -27,20 +21,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @Controller
 @RequestMapping(DemandResource.DEMAND_RESOURCE_URI)
 public class DemandResource extends AbstractPageableResource<Demand, DemandDto> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DemandResource.class);
+
     static final String DEMAND_RESOURCE_URI = "/demands";
 
     private final DemandService demandService;
-    private final Converter<Demand, DemandDto> demandSerializer;
-    private final Converter<DemandDto, Demand> demandDeserializer;
+    private final DemandSerializer demandSerializer;
+    private final DemandDeserializer demandDeserializer;
 
     @Autowired
     public DemandResource(DemandService demandService,
-            Converter<Demand, DemandDto> demandSerializer,
-            Converter<DemandDto, Demand> demandDeserializer) {
+            DemandSerializer demandSerializer,
+            DemandDeserializer demandDeserializer) {
         super(Demand.class, DEMAND_RESOURCE_URI);
 
         Validate.notNull(demandService);
@@ -55,7 +56,7 @@ public class DemandResource extends AbstractPageableResource<Demand, DemandDto> 
 
     @Override
     public Collection<DemandDto> convertToDtos(Collection<Demand> domainObjects) {
-        final List<DemandDto> demandsDtos = new ArrayList<DemandDto>();
+        final List<DemandDto> demandsDtos = new ArrayList<>();
         for (Demand demand : domainObjects) {
             final DemandDto demandDto = this.demandSerializer.convert(demand);
             setLinks(demandDto, demand);
@@ -65,46 +66,40 @@ public class DemandResource extends AbstractPageableResource<Demand, DemandDto> 
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, headers = "application/json")
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public@ResponseBody DemandDto createDemand(@Valid DemandDto demandDto,
-            BindingResult result, HttpServletResponse response) throws BindException {
-
-        if (result.hasErrors()) {
-            throw new BindException(result);
+    public @ResponseBody DemandDto createDemand(@RequestBody DemandDto demandDto, HttpServletResponse response) {
+        try {
+            final Demand demand = this.demandDeserializer.convert(demandDto);
+            final Demand createdDemand = this.demandService.create(demand);
+            response.setHeader("Location", ResourceUtils.generateSelfLink(DEMAND_RESOURCE_URI, createdDemand));
+            final DemandDto createdDemandDto = this.demandSerializer.convert(createdDemand);
+            setLinks(createdDemandDto, createdDemand);
+            return createdDemandDto;
+        } catch (Exception e) {
+            LOGGER.error("action=createDemand status=error", e);
+            throw e;
         }
-        final Demand createdDemand = this.demandService.create(this.demandDeserializer.convert(demandDto));
-        response.setHeader("Location", ResourceUtils.generateSelfLink(DEMAND_RESOURCE_URI, createdDemand));
-        final DemandDto createdDemandDto = this.demandSerializer.convert(createdDemand);
-        setLinks(createdDemandDto, createdDemand);
-        return createdDemandDto;
     }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public
-    @ResponseBody DemandDto getDemandById(@PathVariable Long id) {
+    public @ResponseBody DemandDto getDemandById(@PathVariable String id) {
         Preconditions.checkNotNull(id);
-        final Demand demand = this.demandService.getById(id);
+
+        final Demand demand = demandService.getById(Long.valueOf(id));
+
+        if (demand == null) {
+            throw new ResourceNotFoundException("No demand with id=" + id + " has been found!");
+        }
+
         final DemandDto demandDto = this.demandSerializer.convert(demand);
         setLinks(demandDto, demand);
         return demandDto;
     }
 
 
-//
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-//    public Demand getDemandByFilter(@PathVariable DemandFilter demandFilter) {
-//        Preconditions.checkNotNull(id);
-//        return this.demandService.getById(id);
-//    }
-//
-//
-
-
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.PUT,
-            headers = "application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateDemand(@RequestBody DemandDto demandDto, BindingResult result, HttpServletResponse response)
         throws BindException {

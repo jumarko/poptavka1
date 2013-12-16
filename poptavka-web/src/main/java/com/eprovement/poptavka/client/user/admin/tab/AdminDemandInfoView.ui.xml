@@ -1,41 +1,39 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-        xmlns:cm='urn:import:com.eprovement.poptavka.client.common'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-        xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
-        xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	ui:generateLocales='default'>
+             xmlns:cm='urn:import:com.eprovement.poptavka.client.common.monitors'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <ui:style>
-		.header {
-			font-size: 110%;
-			font-weight: bold;
-			color: #555;
-		}
+        .header {
+        font-size: 110%;
+        font-weight: bold;
+        color: #555;
+        }
 
-		.label {
-			font-weight: bold;
-		}
+        .label {
+        font-weight: bold;
+        }
 
-		.decorationPanel {
-			width: 100%;
-		}
+        .decorationPanel {
+        width: 100%;
+        }
 
-		.titleBox {
-			width: 100%;
-			height: 55px;
-		}
+        .titleBox {
+        width: 100%;
+        height: 55px;
+        }
 
-		.descriptionBox {
-			width: 100%;
-			height: 150px;
-		}
+        .descriptionBox {
+        width: 100%;
+        height: 150px;
+        }
 
-		.priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
-			{
+        .priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
+        {
 
-		}
+        }
     </ui:style>
 
     <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
@@ -50,17 +48,17 @@
                     <tr>
                         <td colspan="2" class='{style.label}'>
                             <ui:msg key='formTitle'>Title:</ui:msg>
-                            <cm:ChangeMonitor ui:field='titleBox'>
+                            <cm:ValidationMonitor ui:field='titleMonitor'>
                                 <g:TextBox  styleName='{style.titleBox}'/>
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" class='{style.label}'>
                             <ui:msg key='formDescription'>Description:</ui:msg>
-                            <cm:ChangeMonitor ui:field='descriptionBox' >
+                            <cm:ValidationMonitor ui:field='descriptionMonitor' >
                                 <g:TextArea styleName='{style.descriptionBox}' />
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -68,9 +66,9 @@
                             <ui:msg key='formPrice'>Price:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='priceBox'>
+                            <cm:ValidationMonitor ui:field='priceMonitor'>
                                 <g:TextBox styleName='{style.priceBox}' />
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -78,9 +76,9 @@
                             <ui:msg key='formEndDate'>End Date:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='endDateBox'>
+                            <cm:ValidationMonitor ui:field='endDateMonitor'>
                                 <d:DateBox styleName='{style.endDateBox}' />
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -88,9 +86,9 @@
                             <ui:msg key='formExpirationDate'>Expiration:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='expirationBox'>
+                            <cm:ValidationMonitor ui:field='expirationMonitor'>
                                 <d:DateBox styleName='{style.expirationBox}' />
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -106,9 +104,9 @@
                             <ui:msg key='formMaxOffers'>Max Offers:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='maxOffers' >
+                            <cm:ValidationMonitor ui:field='maxOffersMonitor' >
                                 <g:TextBox styleName='{style.maxOffers}'/>
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -116,28 +114,26 @@
                             <ui:msg key='formRating'>MinRating:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='minRating'>
+                            <cm:ValidationMonitor ui:field='minRatingMonitor'>
                                 <g:TextBox styleName='{style.minRating}'/>
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
                         <td  colspan="2" class='{style.label}'>
-                            <g:Label>
-                                <ui:msg key="formExcludedSuppliers">Excluded supplier list</ui:msg>
-                            </g:Label>
+                            <ui:msg key="formExcludedSuppliers">Excluded supplier list</ui:msg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td  colspan="2" class='{style.label}'>
+                            <g:Button ui:field='editExcludedSupplierBtn'>
+                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
+                            </g:Button>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="2" align='right'>
-                            <g:VerticalPanel>
-                                <cm:ChangeMonitor ui:field = "excludedSupplierList">
-                                    <c:CellList ui:field="excludedSupplierCellList" />
-                                </cm:ChangeMonitor>
-                                <g:Button ui:field='editExcludedSupplierBtn'>
-                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
-                                </g:Button>
-                            </g:VerticalPanel>
+                            <c:CellList ui:field="excludedSupplierList" />
                         </td>
                     </tr>
                     <tr>
@@ -145,9 +141,9 @@
                             <ui:msg key='formDemandType'>Demand Type:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='demandType'>
+                            <cm:ValidationMonitor ui:field='demandTypeMonitor'>
                                 <g:ListBox styleName='{style.demandType}'/>
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -155,9 +151,9 @@
                             <ui:msg key='formDemandStatus'>Demand Status:</ui:msg>
                         </td>
                         <td>
-                            <cm:ChangeMonitor ui:field='demandStatus'>
+                            <cm:ValidationMonitor ui:field='demandStatusMonitor'>
                                 <g:ListBox styleName='{style.demandStatus}'/>
-                            </cm:ChangeMonitor>
+                            </cm:ValidationMonitor>
                         </td>
                     </tr>
                     <tr>
@@ -166,15 +162,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td  colspan="2" class='{style.label}'>
+                            <g:Button ui:field='editCatBtn'>
+                                <ui:msg key='commonBtnEdit'>Edit</ui:msg>
+                            </g:Button>
+                        </td>
+                    </tr>
+                    <tr>
                         <td colspan="2" align='right'>
-                            <g:VerticalPanel>
-                                <cm:ChangeMonitor ui:field = "categoryList">
-                                    <c:CellList ui:field="categoryCellList" />
-                                </cm:ChangeMonitor>
-                                <g:Button ui:field='editCatBtn'>
-                                    <ui:msg key='commonBtnEdit'>Edit</ui:msg>
-                                </g:Button>
-                            </g:VerticalPanel>
+                            <c:CellList ui:field="categoryList" />
                         </td>
                     </tr>
                     <tr>
@@ -184,14 +180,14 @@
                     </tr>
                     <tr>
                         <td colspan="2" align='right'>
-                            <g:VerticalPanel>
-                                <cm:ChangeMonitor ui:field = "localityList">
-                                    <c:CellList ui:field="localityCellList" />
-                                </cm:ChangeMonitor>
-                                <g:Button ui:field='editLocBtn'>
+                            <c:CellList ui:field="localityList" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align='right'>
+                            <g:Button ui:field='editLocBtn'>
                                     <ui:msg key='commonBtnEdit'>Edit</ui:msg>
-                                </g:Button>
-                            </g:VerticalPanel>
+                            </g:Button>
                         </td>
                     </tr>
                     <tr>

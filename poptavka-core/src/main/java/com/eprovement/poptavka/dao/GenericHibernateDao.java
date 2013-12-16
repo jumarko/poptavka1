@@ -153,7 +153,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * {@inheritDoc}
      */
     public List<T> findByIds(long[] ids, boolean lck) {
-        final List<T> result = new java.util.ArrayList<T>(ids.length);
+        final List<T> result = new java.util.ArrayList<>(ids.length);
         for (final long id : ids) {
             final T entity = findById(id, lck);
             result.add(entity);
@@ -404,14 +404,14 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     /**
      * {@inheritDoc}
      */
-    public List runNamedQuery(String name, Map<String, Object> params) {
+    public List runNamedQuery(String name, Map<String, ?> params) {
         Query query = getEntityManager().createNamedQuery(name);
         if (query == null) {
             throw new IllegalStateException("Query doesn't exist!");
         }
 
         if (params != null) {
-            for (Map.Entry<String, Object> param : params.entrySet()) {
+            for (Map.Entry<String, ?> param : params.entrySet()) {
                 query.setParameter(param.getKey(), param.getValue());
             }
         }
@@ -422,7 +422,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     /**
      * {@inheritDoc}
      */
-    public List runNamedQuery(String name, Map<String, Object> params,
+    public List runNamedQuery(String name, Map<String, ?> params,
             ResultCriteria resultCriteria) {
         Query query = getEntityManager().createNamedQuery(name);
         if (query == null) {
@@ -430,7 +430,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
         }
 
         if (params != null) {
-            for (Map.Entry<String, Object> param : params.entrySet()) {
+            for (Map.Entry<String, ?> param : params.entrySet()) {
                 query.setParameter(param.getKey(), param.getValue());
             }
         }
@@ -461,8 +461,8 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
     /**
      * {@inheritDoc}
      */
-    public Object runNamedQueryForSingleResult(String name, Map<String, Object> params) {
-        final List<Object> resultList = runNamedQuery(name, params);
+    public Object runNamedQueryForSingleResult(String name, Map<String, ?> params) {
+        final List<?> resultList = runNamedQuery(name, params);
         final int count = resultList.size();
         if (count == 0) {
             return null;
@@ -480,8 +480,8 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * {@inheritDoc}
      */
     public Object runNamedQueryForSingleResult(String name,
-            Map<String, Object> params, ResultCriteria resultCriteria) {
-        final List<Object> resultList = runNamedQuery(name, params, resultCriteria);
+            Map<String, ?> params, ResultCriteria resultCriteria) {
+        final List<?> resultList = runNamedQuery(name, params, resultCriteria);
         final int count = resultList.size();
         if (count == 0) {
             return null;
@@ -512,7 +512,7 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * @return
      */
     static public <T> Set<T> toSet(Collection col, final Class<? extends T> cls) {
-        final Set<T> set = new HashSet<T>();
+        final Set<T> set = new HashSet<>();
         for (Object o : col) {
             final T t = (T) o;
             set.add(t);
@@ -524,14 +524,14 @@ public class GenericHibernateDao<T extends DomainObject> implements GenericDao<T
      * Creates the new result list used to store dao method results.
      */
     protected List<T> createResultList() {
-        return new java.util.LinkedList<T>();
+        return new java.util.LinkedList<>();
     }
 
     /**
      * Creates the new result set used to store dao method results.
      */
     protected Set<T> createResultSet() {
-        return new java.util.HashSet<T>();
+        return new java.util.HashSet<>();
     }
 
     /**

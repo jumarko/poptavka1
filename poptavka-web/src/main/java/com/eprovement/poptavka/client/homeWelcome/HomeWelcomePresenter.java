@@ -5,10 +5,12 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks.HowItWorksViews;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
@@ -21,6 +23,12 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         IHomeWelcomePresenter, NavigationConfirmationInterface {
 
     /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private HowItWorks howItWorksDemands;
+    private HowItWorks howItWorksSuppliers;
+
+    /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
@@ -28,8 +36,9 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     }
 
     public void onForward() {
-        eventBus.setUpSearchBar(null);
+        eventBus.setFooter(view.getFooterContainer());
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+        eventBus.resetSearchBar(null);
         view.getCategorySelectionModel().clear();
     }
 
@@ -43,6 +52,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     public void onGoToHomeWelcomeModule() {
         eventBus.getRootCategories();
+        eventBus.setToolbarContent("Home", null, false);
     }
 
     @Override
@@ -83,40 +93,20 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         });
     }
 
-    private void addHowItWorksSupplierBtnClickHandler() {
-        view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                HowItWorks howItWorks = HowItWorks.createHowItWorksSupplier();
-                howItWorks.getRegisterBtn().addClickHandler(new ClickHandler() {
-
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        eventBus.goToCreateSupplierModule();
-                    }
-                });
-                History.newItem(Constants.PATH_TO_TOKEN_FOR_VIEWS.concat(
-                        HowItWorksViews.HOW_IT_WORKS_SUPPLIER.getValue()));
-                eventBus.setBody(howItWorks);
-            }
-        });
-    }
-
     private void addHowItWorksDemandBtnClickHandler() {
         view.getHowItWorksDemandBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                HowItWorks howItWorks = HowItWorks.createHowItWorksDemand();
-                howItWorks.getRegisterBtn().addClickHandler(new ClickHandler() {
+                onDisplayHowItWorkdsDemands();
+            }
+        });
+    }
 
-                    @Override
-                    public void onClick(ClickEvent event) {
-                        eventBus.goToCreateDemandModule();
-                    }
-                });
-                History.newItem(Constants.PATH_TO_TOKEN_FOR_VIEWS.concat(
-                        HowItWorksViews.HOW_IT_WORKS_DEMAND.getValue()));
-                eventBus.setBody(howItWorks);
+    private void addHowItWorksSupplierBtnClickHandler() {
+        view.getHowItWorksSupplierBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                onDisplayHowItWorkdsSuppliers();
             }
         });
     }
@@ -144,7 +134,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                CategoryDetail selected = (CategoryDetail) view.getCategorySelectionModel().getSelectedObject();
+                ICatLocDetail selected = (ICatLocDetail) view.getCategorySelectionModel().getSelectedObject();
 
                 if (selected != null) {
                     int idx = view.getDataProvider().getList().indexOf(selected);
@@ -162,11 +152,80 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
      * where number of columns depends on constant: COLUMNS.
      * @param rootCategories - root categories to be displayed
      */
-    public void onDisplayCategories(ArrayList<CategoryDetail> rootCategories) {
+    public void onDisplayCategories(ArrayList<ICatLocDetail> rootCategories) {
         view.displayCategories(rootCategories);
     }
-    /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
-    /**************************************************************************/
 
+    /**
+     * Display HowItWorks widget for demands.
+     */
+    public void onDisplayHowItWorkdsDemands() {
+        eventBus.createCustomToken(HowItWorksViews.HOW_IT_WORKS_DEMAND.getValue());
+
+        if (howItWorksDemands == null) {
+            createHowItWorks(HowItWorksViews.HOW_IT_WORKS_DEMAND);
+        } else {
+            eventBus.setBody(howItWorksDemands);
+        }
+        eventBus.setToolbarContent("How does it work for Projects", null, false);
+        eventBus.setFooter(howItWorksDemands.getFooterContainer());
+    }
+
+    /**
+     * Display HowItWorkds widget for suppliers.
+     */
+    public void onDisplayHowItWorkdsSuppliers() {
+        eventBus.createCustomToken(HowItWorksViews.HOW_IT_WORKS_SUPPLIER.getValue());
+
+        if (howItWorksSuppliers == null) {
+            createHowItWorks(HowItWorksViews.HOW_IT_WORKS_SUPPLIER);
+        } else {
+            eventBus.setBody(howItWorksSuppliers);
+        }
+        eventBus.setToolbarContent("How does it work for Professionals", null, false);
+        eventBus.setFooter(howItWorksSuppliers.getFooterContainer());
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void createHowItWorks(final HowItWorksViews view) {
+        GWT.runAsync(HowItWorks.class, new RunAsyncCallback() {
+            @Override
+            public void onFailure(Throwable reason) {
+                Window.alert("Failed creating How it works for demands.");
+            }
+
+            @Override
+            public void onSuccess() {
+                if (view.equals(HowItWorksViews.HOW_IT_WORKS_DEMAND)) {
+                    createHowItWorksDemands();
+                } else {
+                    createHowItWorksSuppliers();
+                }
+            }
+        });
+    }
+
+    private void createHowItWorksDemands() {
+        howItWorksDemands = HowItWorks.createHowItWorksDemand();
+        howItWorksDemands.getRegisterBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateDemandModule();
+            }
+        });
+        eventBus.setBody(howItWorksDemands);
+    }
+
+    private void createHowItWorksSuppliers() {
+        howItWorksSuppliers = HowItWorks.createHowItWorksSupplier();
+        howItWorksSuppliers.getRegisterBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToCreateSupplierModule();
+            }
+        });
+        eventBus.setBody(howItWorksSuppliers);
+    }
 }

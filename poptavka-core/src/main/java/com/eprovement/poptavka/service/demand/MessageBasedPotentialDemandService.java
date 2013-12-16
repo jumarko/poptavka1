@@ -115,7 +115,7 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
             messageUserRoles.add(messageUserRole);
         }
 
-        threadRootMessage.getRoles().addAll(messageUserRoles);
+        threadRootMessage.setRoles(messageUserRoles);
         threadRootMessage.setMessageState(MessageState.COMPOSED);
         threadRootMessage = messageService.update(threadRootMessage);
         return threadRootMessage;

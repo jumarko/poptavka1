@@ -1,130 +1,67 @@
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.common.category.CategoryCell;
-import com.eprovement.poptavka.client.common.category.CategoryTreeViewModel;
-import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.root.footer.FooterView;
-import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.resources.celltree.CustomCellTree;
-import com.eprovement.poptavka.resources.datagrid.AsyncDataGrid;
-import com.eprovement.poptavka.client.user.widget.detail.UserDetailView;
+import com.eprovement.poptavka.client.common.session.CssInjector;
+import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersPresenter.HomeSuppliersViewInterface;
+import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
-import com.eprovement.poptavka.shared.domain.AddressDetail;
+import com.eprovement.poptavka.client.user.widget.grid.columns.AddressColumn;
+import com.eprovement.poptavka.client.user.widget.grid.columns.LogoColumn;
+import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.cell.client.ImageResourceCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.StyleInjector;
-import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
-import com.google.inject.Inject;
-import com.mvp4g.client.view.ReverseViewInterface;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Home suppliers module's view.
  *
  * @author Martin Slavkovsky
  */
-public class HomeSuppliersView extends OverflowComposite
-        implements ReverseViewInterface<HomeSuppliersPresenter>, HomeSuppliersPresenter.SuppliersViewInterface {
+public class HomeSuppliersView extends OverflowComposite implements HomeSuppliersViewInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    interface SuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
+    interface HomeSuppliersViewUiBinder extends UiBinder<Widget, HomeSuppliersView> {
     }
-    private static SuppliersViewUiBinder uiBinder = GWT.create(SuppliersViewUiBinder.class);
-    /**************************************************************************/
-    /* Home Supplier presenter                                                */
-    /**************************************************************************/
-    private HomeSuppliersPresenter homeSuppliersPresenter;
+    private static HomeSuppliersViewUiBinder uiBinder = GWT.create(HomeSuppliersViewUiBinder.class);
 
-    @Override
-    public void setPresenter(HomeSuppliersPresenter presenter) {
-        this.homeSuppliersPresenter = presenter;
-    }
-
-    @Override
-    public HomeSuppliersPresenter getPresenter() {
-        return homeSuppliersPresenter;
-    }
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
-    @UiField(provided = true) CellTree cellTree;
+    /** UiBinder attributes. **/
     @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
-    @UiField(provided = true) UniversalPagerWidget pager;
-    @UiField(provided = true) Widget footer;
-    @UiField DockLayoutPanel detailPanel;
-    @UiField Label reklama, filterLabel;
-    @UiField UserDetailView userDetailView;
-    /** Class Attributes. **/
-    private @Inject FooterView footerView;
-    private static final Logger LOGGER = Logger.getLogger("SupplierCreationView");
-    private final SingleSelectionModel<CategoryDetail> selectionCategoryModel =
-            new SingleSelectionModel<CategoryDetail>(CategoryDetail.KEY_PROVIDER);
-    /** Constants. **/
-    private static final String ADDRESS_COL_WIDTH = "120px";
-    private static final String LOGO_COL_WIDTH = "70px";
-    /** The key provider that provides the unique ID of a FullSupplierDetail. */
-    private static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
-        @Override
-        public Object getKey(FullSupplierDetail item) {
-            return item == null ? null : item.getSupplierId();
-        }
-    };
+    @UiField SimplePanel detailPanel, footerPanel, categoryTreePanel;
+    @UiField Label filterLabel;
+    /** Class attributes. **/
+    private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
+    private static final DataGridResources GRSCS = GWT.create(DataGridResources.class);
+    private UniversalPagerWidget pager;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
     @Override
     public void createView() {
-        footer = footerView;
-
         initTableAndPager();
-        initCellTree();
         initWidget(uiBinder.createAndBindUi(this));
-
-        LOGGER.info("CreateView pre DisplaySuppliers");
-
-        StyleResource.INSTANCE.layout().ensureInjected();
-    }
-
-    public void initCellTree() {
-        //Workaround for issue: CellTree disappeared when clicking but outside tree nodes
-        CellTree.Resources resource = GWT.create(CustomCellTree.class);
-        StyleInjector.injectAtEnd("." + resource.cellTreeStyle().cellTreeTopItem() + " {margin-top: 0px;}");
-        cellTree = new CellTree(new CategoryTreeViewModel(
-                selectionCategoryModel,
-                homeSuppliersPresenter.getCategoryService(),
-                homeSuppliersPresenter.getEventBus(),
-                Constants.WITHOUT_CHECK_BOXES,
-                CategoryCell.DISPLAY_COUNT_OF_SUPPLIERS,
-                homeSuppliersPresenter.getCategoryLoadingHandler()), null, resource);
-        cellTree.setAnimationEnabled(true);
     }
 
     private void initTableAndPager() {
@@ -137,14 +74,15 @@ public class HomeSuppliersView extends OverflowComposite
         // Set a key provider that provides a unique key for each contact. If key is
         // used to identify contacts when fields (such as the name and address)
         // change.
-        DataGrid.Resources resource = GWT.create(AsyncDataGrid.class);
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(initSort(), pager.getPageSize(), resource);
+        CssInjector.INSTANCE.ensureGridStylesInjected(GRSCS);
+        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(initSort(), pager.getPageSize(), GRSCS);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         // Selection handler
-        dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(KEY_PROVIDER));
+        dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(FullSupplierDetail.KEY_PROVIDER));
 
         // bind pager to grid
+        pager.addStyleName("item");
         pager.setDisplay(dataGrid);
 
         // Initialize the columns.
@@ -158,56 +96,42 @@ public class HomeSuppliersView extends OverflowComposite
 
         // Company logo
         /**************************************************************************/
-        Column<FullSupplierDetail, ImageResource> logoCol =
-                new Column<FullSupplierDetail, ImageResource>(new ImageResourceCell()) {
-                    @Override
-                    public ImageResource getValue(FullSupplierDetail object) {
-                        //return eventBus.getSupplerLogo(object.getLogoId()); -- returns ImageResource
-                        return Storage.RSCS.images().contactImage();
-                    }
-                };
-        //set column style
-        logoCol.setSortable(false);
-        logoCol.setCellStyleNames(Storage.RSCS.grid().cellTableLogoColumn());
-        dataGrid.addColumn(logoCol, Storage.MSGS.columnLogo());
-        dataGrid.setColumnWidth(logoCol, LOGO_COL_WIDTH);
+        dataGrid.addColumn(
+            MSGS.columnLogo(),
+            GRSCS.dataGridStyle().colWidthLogo(),
+            new LogoColumn());
 
         // Company name.
         /**************************************************************************/
         //IdentityColumn - A passthrough column, useful for giving cells access to the entire row object.
         Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
         companyNameCol.setSortable(false);
-        dataGrid.addColumn(companyNameCol, Storage.MSGS.columnSupplierName());
-        dataGrid.setColumnWidth(companyNameCol, Constants.COL_WIDTH_TITLE);
+        dataGrid.addColumn(
+            MSGS.columnSupplierName(),
+            GRSCS.dataGridStyle().colWidthTitle(),
+            companyNameCol);
+        dataGrid.getHeader(dataGrid.getColumnIndex(companyNameCol)).setHeaderStyleNames("companyHeader");
 
         // SupplierRating.
         /**************************************************************************/
-        dataGrid.addRatingColumn();
+        dataGrid.addColumn(
+            MSGS.columnRating(),
+            GRSCS.dataGridStyle().colWidthRatting(),
+            new RatingColumn(null));
 
         // Address.
         /**************************************************************************/
-        dataGrid.addColumn(new TextCell(), Storage.MSGS.columnAddress(), false, ADDRESS_COL_WIDTH,
-                new UniversalAsyncGrid.GetValue() {
-                    @Override
-                    public String getValue(Object object) {
-                        StringBuilder str = new StringBuilder();
-                        for (AddressDetail addr : ((FullSupplierDetail) object).getUserData().getAddresses()) {
-                            str.append(addr.getCity());
-                            str.append(", ");
-                        }
-                        if (!str.toString().isEmpty()) {
-                            str.delete(str.length() - 2, str.length());
-                        }
-                        return str.toString();
-                    }
-                });
+        dataGrid.addColumn(
+            MSGS.columnAddress(),
+            GRSCS.dataGridStyle().colWidthLocality(),
+            new AddressColumn(null));
     }
 
     private SortDataHolder initSort() {
         List<SortPair> sortColumns = Arrays.asList(
                 null, //Logo
                 new SortPair(UserField.COMPANY_NAME),
-                new SortPair(UserField.OVERALL_RATING),
+                new SortPair(SupplierField.OVERALL_RATING),
                 null); //Address
         List<SortPair> defaultSort = Arrays.asList(
                 new SortPair(SupplierField.OVERALL_RATING));
@@ -217,17 +141,6 @@ public class HomeSuppliersView extends OverflowComposite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
-    /** CellTree. **/
-    @Override
-    public CellTree getCellTree() {
-        return cellTree;
-    }
-
-    @Override
-    public SingleSelectionModel getSelectionCategoryModel() {
-        return selectionCategoryModel;
-    }
-
     /** Table. **/
     @Override
     public UniversalAsyncGrid<FullSupplierDetail> getDataGrid() {
@@ -245,22 +158,27 @@ public class HomeSuppliersView extends OverflowComposite
         return filterLabel;
     }
 
-    /** Detail. **/
-    @Override
-    public void displaySuppliersDetail(FullSupplierDetail fullSupplierDetail) {
-        reklama.setVisible(false);
-        detailPanel.setVisible(true);
-
-        userDetailView.setSupplierDetail(fullSupplierDetail);
-    }
-
-    @Override
-    public void hideSuppliersDetail() {
-        reklama.setVisible(true);
-        detailPanel.setVisible(false);
-    }
-
     /** Other. **/
+    @Override
+    public SimplePanel getCategoryTreePanel() {
+        return categoryTreePanel;
+    }
+
+    @Override
+    public SimplePanel getDetailPanel() {
+        return detailPanel;
+    }
+
+    @Override
+    public SimplePanel getFooterPanel() {
+        return footerPanel;
+    }
+
+    @Override
+    public Widget getToolbarContent() {
+        return pager;
+    }
+
     @Override
     public Widget getWidgetView() {
         return this;

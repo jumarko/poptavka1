@@ -53,7 +53,7 @@ public class SupplierDemandsModuleHistoryConverter implements HistoryConverter<S
     /**************************************************************************/
     @Override
     public void convertFromToken(String historyName, String param, SupplierDemandsModuleEventBus eventBus) {
-        eventBus.userMenuStyleChange(Constants.USER_SUPPLIER_MODULE);
+        eventBus.menuStyleChange(Constants.USER_SUPPLIER_MODULE);
         eventBus.supplierMenuStyleChange(getCurrentViewConstant(param));
         //If application is called by URL, log in user and forward him to overview (goToClientDemandModule.Welcome)
         if (Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL()) {

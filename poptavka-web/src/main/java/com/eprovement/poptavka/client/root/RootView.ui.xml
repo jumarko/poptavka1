@@ -1,33 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
-    <ui:style>
-        .menu-bar-styles {
-        position: absolute;
-        top: 18px;
-        left: 210px;
-        z-index: 100;
-        }
-    </ui:style>
-
-    <g:DockLayoutPanel ui:field="layoutMaster" unit="PX">
-        <g:north size="134">
-            <g:HTMLPanel ui:field='headerHolder' styleName='{res.layout.headerContainer}'>
-                <g:Button ui:field='logo' styleName='{res.layout.logo}' />
-                <g:SimplePanel ui:field='header' styleName='{res.layout.headerContent}' />
-                <g:HTMLPanel styleName='{style.menu-bar-styles}'>
-                    <g:SimplePanel ui:field="menu" styleName='{res.layout.menu}' />
-                    <g:SimplePanel ui:field="searchBar" styleName='{res.layout.searchBar}' />
-                </g:HTMLPanel>
-            </g:HTMLPanel>
-        </g:north>
-        <g:center>
-            <g:SimplePanel ui:field='body'/>
-        </g:center>
-    </g:DockLayoutPanel>
+    <g:HTMLPanel>
+        <g:SimplePanel ui:field='header' styleName='{res.layout.headerContainer}'/>
+        <g:SimplePanel ui:field='toolbar' styleName='{res.layout.toolbarContainer}' debugId='toolbarContainer'/>
+        <!--Resize layout because we need to handle resizing event.
+            BodyContainer style must use absolute positioning because we need browser
+            to calculate height each time browser resizes for scroll panels to behave correctly-->
+        <g:ResizeLayoutPanel ui:field='body' styleName='{res.layout.bodyContainer}' debugId='bodyContainer'/>
+    </g:HTMLPanel>
 </ui:UiBinder>

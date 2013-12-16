@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common.monitors">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+
+    <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields}' debugId="addressInfoForm">
+        <b:FluidRow addStyleNames='well-header'>
+            <b:Column size="12">
+                <b:Heading size="4">
+                    <ui:msg key="formAddress">Address</ui:msg>
+                </b:Heading>
+            </b:Column>
+        </b:FluidRow>
+        <b:FluidRow addStyleNames='well-content'>
+            <b:Column size="12" addStyleNames='well-padding'>
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:Label>
+                            <ui:msg key="formCity">City</ui:msg>*
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="8">
+                        <cm:ValidationMonitor ui:field='cityMonitor'>
+                            <g:SuggestBox title="suggestBoxCity" ui:field="cityBox" limit="7" debugId="citySuggestBox"/>
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
+
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:Label>
+                            <ui:msg key="formZipCode">Zip Code</ui:msg>*
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="8">
+                        <cm:ValidationMonitor ui:field='zipcodeMonitor'>
+                            <g:TextBox ui:field='zipcodeMonitorBox' debugId="zipCodeBox"/>
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
+
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:Label>
+                            <ui:msg key="formStreet">Street</ui:msg>*
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="8">
+                        <cm:ValidationMonitor ui:field='streetMonitor'>
+                            <g:TextBox ui:field='streetMonitorBox' debugId="streetBox"/>
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

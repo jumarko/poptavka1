@@ -1,78 +1,59 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
+             xmlns:cm="urn:import:com.eprovement.poptavka.client.common.monitors"
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 		
-    <ui:style>
-        .rangeBox {
-        width: 50px;
-        margin-right: 10px;
-        margin-left: 10px;
-        }
-    </ui:style>
+    <b:FluidContainer addStyleNames='{res.common.formFields} {res.common.wellContainer}'>
+        <b:FluidRow addStyleNames='well-content'>
+            <b:Column size="12" addStyleNames='well-padding'>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formCompanyName">Company name:</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
+                        <cm:ValidationMonitor ui:field="companyMonitor">
+                            <b:TextBox placeholder="Company name" styleName='full-width' />
+                        </cm:ValidationMonitor>
+                    </b:Column>
+                </b:FluidRow>
 
-    <g:HTMLPanel>
-        <b:FluidContainer addStyleNames='{res.common.validationContainer}'>
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formCompanyName">Company name:</ui:msg>
-                    </g:Label>
-                    <b:TextBox ui:field="companyName" placeholder="{msgs.columnText}" styleName='full-width' />
-                </b:Column>
-            </b:FluidRow>
-
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formRating">Rating:</ui:msg>
-                    </g:Label>                                                                   
-                    <g:HTMLPanel styleName="input-append">
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formRating">Rating:</ui:msg>
+                        </g:Label>                                                                   
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="ratingMonitorFrom">
-                            <cm:MyIntegerBox styleName="{style.rangeBox} append-star" placeholder="0" />
+                            <cmn:WSIntegerBox styleName="append-star" placeholder="0" />
                         </cm:ValidationMonitor>
-                    </g:HTMLPanel>                            
-                    <g:HTMLPanel styleName="input-append">
+                    </b:Column>
+                    <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="ratingMonitorTo">
-                            <cm:MyIntegerBox styleName="{style.rangeBox} append-star" placeholder="100" />
+                            <cmn:WSIntegerBox styleName="append-star" placeholder="100" />
                         </cm:ValidationMonitor>
-                    </g:HTMLPanel>                                            
-                </b:Column>
-            </b:FluidRow>
+                    </b:Column>
+                </b:FluidRow>
 
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <g:Label>
-                        <ui:msg key="formDescription">Supplier description</ui:msg>:
-                    </g:Label>
-                    <b:TextBox ui:field="supplierDescription" placeholder="{msgs.columnText}" styleName='full-width' />
-                </b:Column>
-            </b:FluidRow>
-
-            <b:FluidRow>
-                <b:Column size="1">
-                    <g:HTMLPanel></g:HTMLPanel>
-                </b:Column>
-                <b:Column size="11">
-                    <b:Button ui:field="clearBtn" styleName='{res.common.buttonGrey} clear-button'>
-                        <ui:msg key="commonBtnClear">Clear</ui:msg>
-                    </b:Button>
-                </b:Column>
-            </b:FluidRow>
-        </b:FluidContainer>
-    </g:HTMLPanel>
+                <b:FluidRow>
+                    <b:Column size="2" addStyleNames='{res.initial.hideOnSmall}'>
+                        <g:Label>
+                            <ui:msg key="formDescription">Supplier description</ui:msg>:
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
+                        <b:TextBox ui:field="supplierDescription" placeholder="Description" styleName='full-width' />
+                    </b:Column>
+                </b:FluidRow>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
 </ui:UiBinder>

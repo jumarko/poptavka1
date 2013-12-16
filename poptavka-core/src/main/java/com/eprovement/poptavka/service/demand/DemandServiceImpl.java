@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.eprovement.poptavka.service.demand;
 
 import com.eprovement.poptavka.dao.demand.DemandDao;
@@ -9,17 +5,18 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
-import com.eprovement.poptavka.domain.demand.DemandOrigin;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.domain.message.Message;
+import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
+import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
-import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
@@ -44,46 +41,57 @@ import java.util.Set;
  */
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
-    /** Default number of max count of suppliers to which the demand is sent. */
-    private static final Integer DEFAULT_MAX_SUPPLIERS = Integer.valueOf(50);
-
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandServiceImpl.class);
 
+    private final MessageService messageService;
     private ClientService clientService;
-    private SupplierService supplierService;
     private RegisterService registerService;
 
-    public DemandServiceImpl(DemandDao demandDao) {
+
+    public DemandServiceImpl(DemandDao demandDao, MessageService messageService) {
+        Validate.notNull(demandDao, "demandDao cannot be null!");
+        Validate.notNull(messageService, "messageService cannot be null!");
         setDao(demandDao);
+        this.messageService = messageService;
     }
 
-    /**
-     * Create new demand.
-     * <p>
-     *     Some default values can be filled if they are not specified in <code>demand</code> object.
-     *     <ul>
-     *        <li>Demand#type -- set to "normal" if it is not specified (null)</li>
-     *     </ul>
-     * @param demand
-     * @return
-     */
     @Override
     @Transactional
     public Demand create(Demand demand) {
-        LOGGER.info("Action=demand_create status=start demand={}", demand);
+        Validate.notNull(demand, "demand cannot be null");
+        Validate.notNull(demand.getClient(), "demand's client cannot be null");
+
+        LOGGER.info("action=create_demand status=start demand={}", demand);
         if (demand.getType() == null) {
-            LOGGER.debug("Action=demand_create No demand type specified. Setting demand type  to default NORMAL");
+            LOGGER.debug("action=create_demand No demand type specified. Setting demand type  to default NORMAL");
             demand.setType(getDemandType(DemandTypeType.NORMAL.getValue()));
         }
+        demand.setStatus(DemandStatus.NEW);
+
 
         if (isNewClient(demand)) {
-            LOGGER.info("Action=demand_create demand={} creating new client={}", demand.getClient().getId());
+            LOGGER.info("action=create_demand demand={} creating new client={}", demand.getClient().getId());
             this.clientService.create(demand.getClient());
         }
 
         final Demand createdDemand = super.create(demand);
-        LOGGER.info("Action=demand_create status=finish demand={}", demand);
+
+        createDemandThreadRootMesssage(demand);
+
+        LOGGER.info("action=create_demand status=finish demand={}", demand);
         return createdDemand;
+    }
+
+    private void createDemandThreadRootMesssage(Demand demand) {
+        LOGGER.debug("action=create_demand_thread_root status=start demand={}", demand);
+        final UserMessage demandUserMessage = messageService.newThreadRoot(demand.getClient().getBusinessUser());
+        final Message demandMessage = demandUserMessage.getMessage();
+        demandMessage.setDemand(demand);
+        demandMessage.setBody(demand.getDescription());
+        demandMessage.setSubject(demand.getTitle());
+        demandMessage.setThreadRoot(demandMessage);
+        messageService.update(demandMessage);
+        LOGGER.debug("action=create_demand_thread_root status=finish demand={}", demand);
     }
 
     //----------------------------------  Methods for DemandType-s -----------------------------------------------------
@@ -98,20 +106,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     public DemandType getDemandType(String code) {
         Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand type is empty!");
         return this.registerService.getValue(code, DemandType.class);
-    }
-
-    //----------------------------------  Methods for DemandOrigin-s ---------------------------------------------------
-    @Override
-    @Transactional(readOnly = true)
-    public List<DemandOrigin> getDemandOrigins() {
-        return this.registerService.getAllValues(DemandOrigin.class);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public DemandOrigin getDemandOrigin(String code) {
-        Preconditions.checkArgument(StringUtils.isNotBlank(code), "Code for demand origin is empty!");
-        return this.registerService.getValue(code, DemandOrigin.class);
     }
 
     //----------------------------------  Methods for Demands ----------------------------------------------------------
@@ -133,7 +127,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             }
         };
 
-        return new LinkedHashSet<Demand>(applyOrderByCriteria(demandProvider, resultCriteria));
+        return new LinkedHashSet<>(applyOrderByCriteria(demandProvider, resultCriteria));
     }
 
     /** {@inheritDoc} */
@@ -143,7 +137,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         // convert to suitable Map: <locality, demandsCountForLocality>
         final Map<Locality, Long> demandsCountForLocalitiesMap =
-                new HashMap<Locality, Long>(ESTIMATED_NUMBER_OF_LOCALITIES);
+                new HashMap<>(ESTIMATED_NUMBER_OF_LOCALITIES);
         for (Map<String, Object> demandsCountForLocality : demandsCountForAllLocalities) {
             demandsCountForLocalitiesMap.put((Locality) demandsCountForLocality.get("locality"),
                     (Long) demandsCountForLocality.get("demandsCount"));
@@ -175,9 +169,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Locality locality) {
         Validate.notNull(locality, "locality cannot be null!");
-        return locality.getAdditionalInfo() != null
-                ? locality.getAdditionalInfo().getDemandsCount()
-                : getDao().getDemandsCountQuick(locality);
+        return getDao().getDemandsCountQuick(locality);
     }
 
     /** {@inheritDoc} */
@@ -208,7 +200,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         // convert to suitable Map: <locality, demandsCountForLocality>
         final Map<Category, Long> demandsCountForCategoriesMap =
-                new HashMap<Category, Long>(ESTIMATED_NUMBER_OF_CATEGORIES);
+                new HashMap<>(ESTIMATED_NUMBER_OF_CATEGORIES);
         for (Map<String, Object> demandsCountForCategory : demandsCountForAllCategories) {
             demandsCountForCategoriesMap.put((Category) demandsCountForCategory.get("category"),
                     (Long) demandsCountForCategory.get("demandsCount"));
@@ -239,9 +231,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public long getDemandsCountQuick(Category category) {
         Validate.notNull(category, "category cannot be null!");
-        return category.getAdditionalInfo() != null
-                ? category.getAdditionalInfo().getDemandsCount()
-                : getDao().getDemandsCountQuick(category);
+        return getDao().getDemandsCountQuick(category);
     }
 
     /** {@inheritDoc} */
@@ -304,7 +294,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         LOGGER.debug("action=get_client_demands_with_offer_count status=start client{}", client);
 
         final List<Demand> demands = getDao().getClientDemandsWithOffer(client);
-        LOGGER.debug("action=get_client_demands_with_offer_count status=finish client{} demands_count_size={}",
+        LOGGER.debug("action=get_client_demands_with_offer_count status=finish client={} demands_count_size={}",
                 client, demands);
         return demands;
     }
@@ -362,10 +352,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
-    }
-
-    public void setSupplierService(SupplierService supplierService) {
-        this.supplierService = supplierService;
     }
 
     public void setRegisterService(RegisterService registerService) {

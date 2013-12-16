@@ -47,15 +47,11 @@
     overflow: hidden;
 }
 
-.cellBrowserOpenItem td, .cellBrowserSelectedItem td {
+.cellBrowserOpenItem, .cellBrowserSelectedItem {
     color: #f8f4e4;
 }
 
 .cellBrowserWidget .gwt-Anchor {
     color: #195800;
     margin: 0 5px;
-}
-
-.cellBrowserWidget td:first-child .gwt-Anchor {
-    margin-left: 10px;
 }

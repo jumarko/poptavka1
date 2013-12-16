@@ -1,39 +1,37 @@
 <!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'
-    xmlns:lsv='urn:import:com.eprovement.poptavka.client.common.locality'
-	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-	ui:generateLocales='default'>
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
     <ui:style>
-		.header {
-			font-size: 110%;
-			font-weight: bold;
-			color: #555;
-		}
+        .header {
+        font-size: 110%;
+        font-weight: bold;
+        color: #555;
+        }
 
-		.label {
-			font-weight: bold;
-		}
+        .label {
+        font-weight: bold;
+        }
 
-		.decorationPanel {
-			width: 100%;
-		}
+        .decorationPanel {
+        width: 100%;
+        }
 
-		.titleBox {
-			width: 100%;
-			height: 55px;
-		}
+        .titleBox {
+        width: 100%;
+        height: 55px;
+        }
 
-		.descriptionBox {
-			width: 100%;
-			height: 150px;
-		}
+        .descriptionBox {
+        width: 100%;
+        height: 150px;
+        }
 
-		.priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
-			{
+        .priceBox,.categoryBox,.expirationBox,.endDateBox,.clientID,.maxOffers,.minRating,.demandType,.demandStatus
+        {
 
-		}
+        }
     </ui:style>
 
     <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
@@ -156,13 +154,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td  colspan="2" class='{style.label}'>
+                        <g:Button ui:field='editCatBtn'>
+                            <ui:msg key='commonBtnEdit'>Edit</ui:msg>
+                        </g:Button>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2" align='right'>
-                        <g:VerticalPanel>
-                            <g:ListBox ui:field = "categoryList" visibleItemCount='5' width="330px"/>
-                            <g:Button ui:field='editCatBtn'>
-                                <ui:msg key='commonBtnEdit'>Edit</ui:msg>
-                            </g:Button>
-                        </g:VerticalPanel>
+                        <c:CellList ui:field="categoryList" />
                     </td>
                 </tr>
                 <tr>
@@ -172,17 +172,14 @@
                 </tr>
                 <tr>
                     <td colspan="2" align='right'>
-                        <g:VerticalPanel>
-                            <g:ListBox ui:field = "localityList" visibleItemCount='5' width = '330'/>
-                            <g:Button ui:field='editLocBtn'>
-                                <ui:msg key='commonBtnEdit'>Edit</ui:msg>
-                            </g:Button>
-                        </g:VerticalPanel>
+                        <c:CellList ui:field="localityList" />
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <lsv:LocalitySelectorView/>
+                    <td colspan="2" align='right'>
+                        <g:Button ui:field='editLocBtn'>
+                            <ui:msg key='commonBtnEdit'>Edit</ui:msg>
+                        </g:Button>
                     </td>
                 </tr>
                 <tr>

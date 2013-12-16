@@ -4,7 +4,7 @@ package com.eprovement.poptavka.domain.enums;
  * A message can be in one of the following main states. In general, the state
  * is independent of where the message is filed. The user may for instance
  * file a sent message in the Inbox, but its state will show that it has been sent.
- * 
+ *
  * @author Vojtech Hubr
  *         Date 12.4.11
  */

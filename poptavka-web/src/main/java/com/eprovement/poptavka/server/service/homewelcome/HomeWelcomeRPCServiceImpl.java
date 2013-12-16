@@ -5,7 +5,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.demand.CategoryService;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +29,11 @@ public class HomeWelcomeRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /* Converters                                                             */
     /**************************************************************************/
-    private Converter<Category, CategoryDetail> categoryConverter;
+    private Converter<Category, ICatLocDetail> categoryConverter;
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, CategoryDetail> categoryConverter) {
+            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
@@ -41,7 +41,7 @@ public class HomeWelcomeRPCServiceImpl extends AutoinjectingRemoteService
     /* Methods                                                                */
     /**************************************************************************/
     @Override
-    public ArrayList<CategoryDetail> getRootCategories() throws RPCException {
+    public ArrayList<ICatLocDetail> getRootCategories() throws RPCException {
         return categoryConverter.convertToTargetList(categoryService.getRootCategories());
     }
 }

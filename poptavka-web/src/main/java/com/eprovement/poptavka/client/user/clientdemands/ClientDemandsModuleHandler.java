@@ -6,7 +6,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
@@ -274,9 +274,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     private void getClientRatings(SearchDefinition searchDefinition) {
         clientDemandsService.getClientRatings(
                 Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<DemandRatingsDetail>>(eventBus) {
+                new SecuredAsyncCallback<List<RatingDetail>>(eventBus) {
                     @Override
-                    public void onSuccess(List<DemandRatingsDetail> result) {
+                    public void onSuccess(List<RatingDetail> result) {
                         eventBus.displayClientRatings(result);
                     }
                 });

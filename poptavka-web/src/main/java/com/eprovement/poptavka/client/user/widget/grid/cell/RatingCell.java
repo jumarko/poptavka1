@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 public class RatingCell extends AbstractCell<Integer> {
 
     private ImageResourceRenderer renderer;
-    private static final ImageResource RATING_STAR = Storage.RSCS.images().starGold();
+    private static final ImageResource RATING_STAR = Storage.RSCS.images().ratingStar();
 
     public RatingCell() {
         if (renderer == null) {
@@ -37,8 +37,8 @@ public class RatingCell extends AbstractCell<Integer> {
             return;
         }
 
-        sb.appendHtmlConstant("<div style=\"font-weight:bold;font-size:100%;color:#F7BD00;"
-                + "text-shadow:0.5px 0 #FFCC00;float:left\">");
+        sb.appendHtmlConstant("<div style=\"font-weight:normal;font-size:100%;color:#6F6B59;"
+                + ";float:left\">");
         sb.append(renderer.render(RATING_STAR));
         sb.appendEscaped("   " + Integer.toString(value));
         sb.appendHtmlConstant("</div>");

@@ -3,102 +3,83 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
-             xmlns:cm="urn:import:com.eprovement.poptavka.client.common"
-             ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
-             ui:generateLocales='default'>
+             xmlns:f="urn:import:com.eprovement.poptavka.client.common.forms">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     
     <ui:style>
         .button-position {
-        margin: 0 7px 0 23px;
-        }        
+        margin: 6px 25px;
+        float: right;
+        }
     </ui:style>
 
-    <b:FluidContainer>
+    <b:FluidContainer addStyleNames='{res.common.formFields}'>
         <b:FluidRow>
-            <b:Column size="6">
-                <b:WellForm>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
-                                /
-                                <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
-                            </b:Heading>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="2">
-                            <g:Label>
-                                <ui:msg key='formRating'>Rating:</ui:msg>
-                            </g:Label>
-                        </b:Column>
-                        <b:Column size="10">
-                            <g:Label ui:field='supplierRating' title="{msgs.settingsRatingTooltip}" />
-                        </b:Column>                
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:Label>
-                                <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
-                            </g:Label>                            
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="2">
-                            <g:Button ui:field="editCatBtn" styleName='{res.common.toolbarButtonGrey} {style.button-position}'>
-                                <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                            </g:Button>
-                        </b:Column>                            
-                        <b:Column size="10">
-                            <cm:ListChangeMonitor ui:field='categoriesMonitor'>
-                                <c:CellList ui:field="categories" styleName='{res.detailViews.detailCategoryLabel}' />
-                            </cm:ListChangeMonitor>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <g:Label>
-                                <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
-                            </g:Label>                            
-                        </b:Column>
-                    </b:FluidRow>        
-                    <b:FluidRow>
-                        <b:Column size="2">
-                            <g:Button ui:field="editLocBtn" styleName='{res.common.toolbarButtonGrey} {style.button-position}'>
-                                <ui:msg key="commonBtnEdit">Edit</ui:msg>
-                            </g:Button>
-                        </b:Column>
-                        <b:Column size="10">
-                            <cm:ListChangeMonitor ui:field='localitiesMonitor'>
-                                <c:CellList ui:field="localities" styleName='{res.detailViews.detailCategoryLabel}'/>
-                            </cm:ListChangeMonitor>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:WellForm>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <!--    Categories  -->
+                <b:FluidRow>
+                    <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key='supplierSettingsCategories'>Categories(only suppliers):</ui:msg>
+                                </b:Heading>
+                                <g:Button ui:field="editCatBtn" styleName='{res.common.buttonGrey} {style.button-position}'>
+                                    <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12" addStyleNames='well-padding'>
+                                <c:CellList ui:field="categories" styleName='{res.details.detailCategoryLabel}' />
+                            </b:Column>
+                        </b:FluidRow>
+                    </g:HTMLPanel>
+                </b:FluidRow>
+                <!--    Localities  -->
+                <b:FluidRow>
+                    <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key='supplierSettingsLocalities'>Localities(only suppliers):</ui:msg>
+                                </b:Heading>
+                                <g:Button ui:field="editLocBtn" styleName='{res.common.buttonGrey} {style.button-position}'>
+                                    <ui:msg key="commonBtnEdit">Edit</ui:msg>
+                                </g:Button>
+                            </b:Column>
+                        </b:FluidRow>
+                        
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12" addStyleNames='well-padding'>
+                                <c:CellList ui:field="localities" styleName='{res.details.detailCategoryLabel}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                    </g:HTMLPanel>
+                </b:FluidRow>
             </b:Column>
-            <b:Column size="6">
-                <b:WellForm>
-                    <b:FluidRow>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <ui:msg key='supplierServices'>Services:</ui:msg>
-                            </b:Heading>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow>
-                        <b:Column size="1"></b:Column>
-                        <b:Column size="10">
-                            <g:SimplePanel ui:field="servicePanel" />
-                            <g:Anchor ui:field="revert" visible="false">
-                                <ui:msg key="commonBtnRevert">Revert</ui:msg>
-                            </g:Anchor>
-                        </b:Column>
-                        <b:Column size="1"></b:Column>
-                    </b:FluidRow>
-                </b:WellForm>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <b:FluidRow>
+                    <f:RatingInfoForm ui:field='ratingInfoForm'/>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key='supplierServices'>Services:</ui:msg>
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12" addStyleNames='well-padding'>
+                                <g:SimplePanel ui:field="servicePanel" />
+                            </b:Column>
+                        </b:FluidRow>
+                    </g:HTMLPanel>
+                </b:FluidRow>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

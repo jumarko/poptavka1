@@ -1,0 +1,37 @@
+package com.eprovement.poptavka.resources.tabPanel;
+
+import com.google.gwt.resources.client.CssResource;
+
+/**
+ *
+ * GWT Wrapper for base app layout.
+ *
+ * @author Jaro
+ *
+ */
+public interface CreateTabPanelStyles extends CssResource {
+
+    @ClassName("height-registration-extended")
+    String heightRegistrationExtended();
+
+    @ClassName("height-registration")
+    String heightRegistration();
+
+    @ClassName("height-selector")
+    String heightSelector();
+
+    @ClassName("height-advanced")
+    String heightAdvanced();
+
+    @ClassName("height-basic")
+    String heightBasic();
+
+    @ClassName("createTabPanel")
+    String createTabPanel();
+
+    @ClassName("fourStepTabPanel")
+    String fourStepTabPanel();
+
+    @ClassName("buttons-panel")
+    String buttonsPanel();
+}

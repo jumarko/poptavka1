@@ -5,6 +5,13 @@
 package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
+import com.eprovement.poptavka.client.user.widget.grid.columns.FinishDateColumn.TableDisplayFinishDate;
+import com.eprovement.poptavka.client.user.widget.grid.columns.OfferReceivedDateColumn.TableDisplayOfferReceivedDate;
+import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
+import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -13,9 +20,11 @@ import java.util.Date;
 
 /**
  *
- * @author ivlcek
+ * @author ivlcek, Martin Slavkovsky
  */
-public class ClientOfferedDemandOffersDetail implements IsSerializable, IUniversalDetail {
+public class ClientOfferedDemandOffersDetail implements IsSerializable, IUniversalDetail,
+    TableDisplayUserMessage, TableDisplayPrice, TableDisplayDemandTitle, TableDisplayRating,
+    TableDisplayDisplayName, TableDisplayOfferReceivedDate, TableDisplayFinishDate {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -33,17 +42,16 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     private String demandTitle;
     private Integer rating;
     private Date receivedDate;
-    private Date deliveryDate;
-    private int messageCount;
-
+    private Date finishDate;
+    private int unreadMessagesCount;
     //Keyprovider
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
-            new ProvidesKey<IUniversalDetail>() {
-                @Override
-                public Object getKey(IUniversalDetail item) {
-                    return item == null ? null : item.getOfferId();
-                }
-            };
+        new ProvidesKey<IUniversalDetail>() {
+            @Override
+            public Object getKey(IUniversalDetail item) {
+                return item == null ? null : item.getOfferId();
+            }
+        };
 
     /**************************************************************************/
     /* Constructors                                                           */
@@ -56,65 +64,56 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     /* Getters & Setters                                                      */
     /**************************************************************************/
     /**
-     * @return the demandId
+     * Demand id pair.
      */
     @Override
     public long getDemandId() {
         return demandId;
     }
 
-    /**
-     * @param demandId the demandId to set
-     */
     public void setDemandId(long demandId) {
         this.demandId = demandId;
     }
 
     /**
-     * @return the offerId
+     * Offer id pair.
      */
     @Override
     public long getOfferId() {
         return offerId;
     }
 
-    /**
-     * @param offerId the offerId to set
-     */
     public void setOfferId(long offerId) {
         this.offerId = offerId;
     }
 
     /**
-     * @return the threadRootId
+     * Message's thread root id.
      */
     @Override
     public long getThreadRootId() {
         return threadRootId;
     }
 
-    /**
-     * @param threadRootId the threadRootId to set
-     */
     public void setThreadRootId(long threadRootId) {
         this.threadRootId = threadRootId;
     }
 
     /**
-     * @return the supplierId
+     * Supplier id pair.
      */
     @Override
     public long getSupplierId() {
         return supplierId;
     }
 
-    /**
-     * @param supplierId the supplierId to set
-     */
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
     }
 
+    /**
+     * Display name pair.
+     */
     @Override
     public String getDisplayName() {
         return displayName;
@@ -125,165 +124,135 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     }
 
     /**
-     * @return the price
+     * Offer price pair.
      */
     @Override
     public BigDecimal getPrice() {
         return price;
     }
 
-    /**
-     * @param price the price to set
-     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     /**
-     * @return the rating
+     * Client rating pair.
      */
     @Override
-    public int getOveralRating() {
+    public Integer getOveralRating() {
         return rating;
     }
 
-    /**
-     * @param rating the rating to set
-     */
     public void setRating(int rating) {
         this.rating = rating;
     }
 
     /**
-     * @return the receivedDate
+     * Offer received date pair.
      */
     @Override
-    public Date getReceivedDate() {
+    public Date getOfferReceivedDate() {
         return receivedDate;
     }
 
-    /**
-     * @param receivedDate the receivedDate to set
-     */
     public void setReceivedDate(Date receivedDate) {
         this.receivedDate = receivedDate;
     }
 
     /**
-     * @return the deliveryDate
+     * Demand finish date pair.
      */
     @Override
-    public Date getDeliveryDate() {
-        return deliveryDate;
+    public Date getFinishDate() {
+        return finishDate;
     }
 
-    /**
-     * @param deliveryDate the deliveryDate to set
-     */
     public void setDeliveryDate(Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
+        this.finishDate = deliveryDate;
     }
 
     /**
-     * @return the messageCount
+     * Unread messages count pair.
      */
     @Override
-    public int getMessageCount() {
-        return messageCount;
+    public int getUnreadMessagesCount() {
+        return unreadMessagesCount;
+    }
+
+    public void setUnreadMessagesCount(int unreadMessagesCount) {
+        this.unreadMessagesCount = unreadMessagesCount;
     }
 
     /**
-     * @param messageCount the messageCount to set
+     * Is messsage starred pair.
      */
-    @Override
-    public void setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
-    }
-
     @Override
     public boolean isStarred() {
         return isStarred;
     }
 
-    @Override
-    public void setIsStarred(boolean value) {
+    public void setStarred(boolean value) {
         this.isStarred = value;
     }
 
-    @Override
-    public Date getEndDate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public long getClientId() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public long getMessageId() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    /**
+     * Message sender id pair.
+     */
     @Override
     public long getSenderId() {
         return this.senderId;
     }
 
-    @Override
-    public Date getMessageSent() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
     }
 
+    /**
+     * User message id pair.
+     */
     @Override
     public long getUserMessageId() {
         return userMessageId;
     }
 
-    @Override
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
 
+    /**
+     * Demand title pair.
+     */
     @Override
-    public Date getValidTo() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
-    public void setTitle(String title) {
-        demandTitle = title;
-    }
-
-    @Override
-    public String getTitle() {
+    public String getDemandTitle() {
         return demandTitle;
     }
 
-    @Override
-    public String toString() {
-        return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-                + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
-                + senderId + ", isStarred=" + isStarred + ", supplierName="
-                + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
-                + ", deliveryDate=" + deliveryDate + ", messageCount=" + messageCount + ", isRead="
-                + isRead + '}';
+    public void setDemandTitle(String title) {
+        demandTitle = title;
     }
 
+    /**
+     * Is message read pair.
+     */
     @Override
     public boolean isRead() {
         return isRead;
     }
 
-    @Override
-    public void setIsRead(boolean isRead) {
+    public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
 
     /**
-     * @param senderId the senderId to set
+     * To string method.
      */
-    public void setSenderId(long senderId) {
-        this.senderId = senderId;
+    @Override
+    public String toString() {
+        return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
+            + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
+            + senderId + ", isStarred=" + isStarred + ", supplierName="
+            + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
+            + ", deliveryDate=" + finishDate + ", messageCount=" + unreadMessagesCount + ", isRead="
+            + isRead + '}';
     }
 }

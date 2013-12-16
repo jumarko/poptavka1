@@ -1,8 +1,9 @@
 package com.eprovement.poptavka.client.user.admin;
 
+import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.root.BaseChildEventBus;
-import com.eprovement.poptavka.client.root.footer.FooterPresenter;
-import com.eprovement.poptavka.client.user.admin.detail.AdminDetailsWrapperPresenter;
+import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
+import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
@@ -19,8 +20,6 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminProblemsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminSuppliersPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.CategoryDetail;
-import com.eprovement.poptavka.shared.domain.LocalityDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ClientDetail;
@@ -33,12 +32,12 @@ import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -54,14 +53,16 @@ import java.util.Set;
 
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
-public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseChildEventBus {
+public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
+        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway,
+        InfoWidgetsGateway {
 
     /**
      * Start event is called only when module is instantiated first time.
      * We can use it for history initialization.
      */
     @Start
-    @Event(handlers = AdminPresenter.class, bind = FooterPresenter.class)
+    @Event(handlers = AdminPresenter.class)
     void start();
 
     /**
@@ -70,10 +71,11 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
      * We can use forward event to switch css style for selected menu button.
      */
     @Forward
-    @Event(handlers = AdminPresenter.class)
+    @Event(handlers = AdminPresenter.class, navigationEvent = true)
     void forward();
 
     /**************************************************************************/
+
     /* Navigation events.                                                     */
     /**************************************************************************/
     /**
@@ -92,14 +94,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void atAccount();
 
     @Event(forwardToParent = true)
-    void initCategoryWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-            List<CategoryDetail> categoriesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
-    void initLocalityWidget(SimplePanel embedToWidget, int checkboxes, int displayCountsOfWhat,
-            List<LocalityDetail> categoriesToSet, boolean selectionRestriction);
-
-    @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     /**************************************************************************/
@@ -111,6 +105,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void displayView(Widget content);
 
     /** Submodule Initializatin section. **/
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void initNewDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void initActiveDemands(SearchModuleDataHolder filter);
+
     @Event(handlers = AdminDemandsPresenter.class)
     void initDemands(SearchModuleDataHolder filter);
 
@@ -219,7 +219,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void displayAdminTabMessages(List<MessageDetail> messages);
 
     @Event(handlers = AdminNewDemandsPresenter.class)
-    void displayAdminNewDemands(List<FullDemandDetail> demands);
+    void displayAdminNewDemands(List<NewDemandDetail> demands);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void displayAdminTabPaymentMethods(List<PaymentMethodDetail> clients);
@@ -296,57 +296,11 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     void responseUpdateDemands(Boolean result);
 
     @Event(handlers = AdminHandler.class)
-    void requestApproveDemands(UniversalAsyncGrid grid, Set<FullDemandDetail> demandsToApprove);
+    void requestApproveDemands(UniversalAsyncGrid grid, Set<NewDemandDetail> demandsToApprove);
 
     /**************************************************************************/
-    /* AdminDetailWrapperPresentera.                                          */
+    /* Business events handled by New Admin presenter                         */
     /**************************************************************************/
-    /**
-     * Request/Response method pair for admin details wrapper.
-     * @param demandDetail
-     */
-    @Event(handlers = AdminPresenter.class)
-    void requestAdminDetailWrapperPresenter();
-
-    //pozor staci ak sa prezenter zavola raz a uz je aktivny
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void responseAdminDetailWrapperPresenter(AdminDetailsWrapperPresenter detailSection);
-
-    /**
-     * Request/Response method pair.
-     * Get <b>Thread root message id</b>.
-     * @param demandDetail
-     */
-    @Event(handlers = AdminHandler.class)
-    void requestThreadRootId(long demandId);
-
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void responseThreadRootId(long threadRootId);
-
-    /**
-     * Request/Response method pair.
-     * Send <b>Message</b> and notify user.
-     * @param supplierId
-     * @param supplierDetail
-     */
-    @Event(handlers = AdminHandler.class)
-    void requestSendAdminMessage(MessageDetail messageToSend);
-
-    @Event(handlers = AdminDetailsWrapperPresenter.class)
-    void responseSendAdminMessage(MessageDetail messageToSend);
-
-    /**
-     * Request/Response method pair.
-     * Fetch and display <b>Demand</b> detail
-     * @param supplierId
-     * @param supplierDetail
-     */
-    @Event(handlers = AdminHandler.class)
-    void requestDemandDetail(Long demandId);
-
-    @Event(handlers = AdminDetailsWrapperPresenter.class, passive = true)
-    void responseDemandDetail(FullDemandDetail demandDetail);
-
     /**
      * Request/Response method pair.
      * Create conversation and return its threadRootId
@@ -359,29 +313,14 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData, BaseCh
     @Event(handlers = AdminNewDemandsPresenter.class)
     void responseCreateConversation(long threadRootId);
 
-    /*
-     * Request/Response method pair
-     * Fetch and display chat(conversation) for admin new demands list
-     * @param messageId
-     * @param userMessageId
-     * @param userId
-     */
-    @Event(handlers = AdminHandler.class)
-    void requestConversation(Long threadId);
-
-    @Event(handlers = AdminDetailsWrapperPresenter.class)
-    void responseConversation(List<MessageDetail> chatMessages);
-
     /**
      * Request/Response method pair.
-     * Fetch and display chat(<b>conversation</b>) for admin conversations
-     * @param threadId
-     * @param userId
-     * @param chatMessages
+     * Get conversation if exist.
      */
     @Event(handlers = AdminHandler.class)
-    void requestConversationForAdmin(Long userId);
+    void requestConversation(long threadRootId, long loggedUserId, long counterPartyUserId);
 
     @Event(handlers = AdminNewDemandsPresenter.class)
-    void responseConversationForAdmin(List<MessageDetail> chatMessages);
+    void responseConversation(List<MessageDetail> chatMessages);
+
 }

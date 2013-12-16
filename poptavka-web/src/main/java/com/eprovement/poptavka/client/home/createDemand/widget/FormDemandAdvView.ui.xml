@@ -6,60 +6,84 @@
     
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
-
+    
     <ui:style>
-        .form {
-        padding-top: 20px !important;
+        .tooltip-icon {
+        float: left;
+        margin: 20px 0 0 10px;
+        cursor:help;
+        }
+        .demandTypeChoicePanel {
+        margin: 0 auto;
         }
     </ui:style>
 
-    <b:FluidContainer>
+    <b:FluidContainer addStyleNames='{res.common.formFields}'>
         <b:FluidRow>
-            <b:Column size="12">
-                <b:WellForm addStyleNames='{style.form}'>
-                    <b:FluidRow>
-                        <!-- *************************** URGENCY *************************** -->
-                        <b:Column size="6">                            
-                            <co:UrgencySelectorView ui:field="urgencySelector" advancedView="false"/>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='urgencyLevelLabel'>Urgency level</ui:msg>
+                            </b:Heading>
                         </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="12">
+                            <co:UrgencySelectorView ui:field="urgencySelector" advanced="false" title='true' debugId="urgencySelector"/>
+                        </b:Column>
+                    </b:FluidRow>
+                </g:HTMLPanel>
+            </b:Column>
                         
-                        <b:Column size="6">
-                            <b:FluidRow styleName='hide'>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formMaxOffers">Max offers Count</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="8">
-                                    <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow>
-                                <b:Column size="4">
-                                    <g:Label>
-                                        <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="2">
-                                    <g:Label>
-                                        <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                                <b:Column size="2">
-                                    <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
-                                        <g:Button ui:field="normalBtn"></g:Button>
-                                        <g:Button ui:field="attractiveBtn"></g:Button>
-                                    </g:HTMLPanel>
-                                </b:Column>
-                                <b:Column size="2">
-                                    <g:Label>
-                                        <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-                        </b:Column>                        
-                    </b:FluidRow>                                      
-                </b:WellForm>
+            <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
+                <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key="formDemandAdvDemandType">Demand Type</ui:msg>
+                            </b:Heading>
+                            <b:Tooltip text="{msgs.tooltipDemandType}" placement='BOTTOM'>
+                                <b:Image resource="{res.images.helpIcon}" addStyleNames="{style.tooltip-icon}"/>
+                            </b:Tooltip>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="12" addStyleNames='well-padding'>
+                            <b:Column size="4">
+                                <g:Label addStyleNames='pull-right'>
+                                    <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                            <b:Column size="4">
+                                <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                                    <g:Button ui:field="normalBtn"></g:Button>
+                                    <g:Button ui:field="attractiveBtn"></g:Button>
+                                </g:HTMLPanel>
+                            </b:Column>
+                            <b:Column size="4">
+                                <g:Label>
+                                    <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
+                                </g:Label>
+                            </b:Column>
+                        </b:Column>
+                    </b:FluidRow>
+                </g:HTMLPanel>
+            </b:Column>
+        </b:FluidRow>
+        <b:FluidRow styleName='hide'>
+            <b:Column size='6'>
+                <b:FluidRow>
+                    <b:Column size="4">
+                        <g:Label>
+                            <ui:msg key="formMaxOffers">Max offers Count</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                    <b:Column size="8">
+                        <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
+                    </b:Column>
+                </b:FluidRow>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

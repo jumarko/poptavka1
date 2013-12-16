@@ -6,63 +6,38 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
-import com.eprovement.poptavka.client.user.widget.detail.RatingDetailView;
-import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
+import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.DemandRatingsDetail;
+import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
+import com.eprovement.poptavka.shared.domain.RatingDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
+import java.util.Arrays;
 import java.util.List;
 
-@Presenter(view = ClientRatingsView.class, multiple = true)
-public class ClientRatingsPresenter extends LazyPresenter<
-        ClientRatingsPresenter.ClientRatingsLayoutInterface, ClientDemandsModuleEventBus> {
-
-    public interface ClientRatingsLayoutInterface extends LazyView, IsWidget {
-
-        UniversalAsyncGrid getDataGrid();
-
-        SimplePager getPager();
-
-        RatingDetailView getRatingDetail();
-
-        SimplePanel getDetailPanel();
-
-        IsWidget getWidgetView();
-    }
-    /**************************************************************************/
-    /* Attributes                                                             */
-    /**************************************************************************/
-    private SearchModuleDataHolder searchDataHolder;
-
-    /**************************************************************************/
-    /* General Module events                                                  */
-    /**************************************************************************/
-    public void onStart() {
-        // nothing
-    }
-
-    public void onForward() {
-        // nothing
-    }
+@Presenter(view = AbstractClientView.class)
+public class ClientRatingsPresenter extends AbstractClientPresenter {
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
     @Override
     public void bindView() {
-        addTableSelectionModelClickHandler();
+        view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                initDetailSection((RatingDetail) ((SingleSelectionModel) view.getParentTable()
+                            .getSelectionModel()).getSelectedObject());
+            }
+        });
     }
 
     /**************************************************************************/
@@ -73,13 +48,16 @@ public class ClientRatingsPresenter extends LazyPresenter<
         Storage.setCurrentlyLoadedView(Constants.CLIENT_RATINGS);
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_RATINGS);
         eventBus.createTokenForHistory();
-        eventBus.setUpSearchBar(new Label("Client's ratings attibure's selector will be here."));
+        eventBus.resetSearchBar(new Label("Client's ratings attibure's selector will be here."));
         searchDataHolder = filter;
+
+        eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
+        setParentTableVisible(true);
 
         eventBus.displayView(view.getWidgetView());
         eventBus.loadingDivHide();
         //init wrapper widget
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        view.getParentTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     /**************************************************************************/
@@ -89,26 +67,35 @@ public class ClientRatingsPresenter extends LazyPresenter<
      * Response method for onInitSupplierList()
      * @param data
      */
-    public void onDisplayClientRatings(List<IUniversalDetail> data) {
+    public void onDisplayClientRatings(List<RatingDetail> data) {
         GWT.log("++ onResponseClientsRatings");
 
-        view.getDataGrid().getDataProvider().updateRowData(
-                view.getDataGrid().getStart(), data);
+        view.getParentTable().getDataProvider().updateRowData(view.getParentTable().getStart(), data);
     }
 
     /**************************************************************************/
-    /* Bind View helper methods                                               */
+    /* Helper methods                                                         */
     /**************************************************************************/
-    public void addTableSelectionModelClickHandler() {
-        view.getDataGrid().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                DemandRatingsDetail selected = (DemandRatingsDetail) ((SingleSelectionModel) view.getDataGrid()
-                        .getSelectionModel()).getSelectedObject();
-                view.getDetailPanel().setVisible(false);
-                view.getRatingDetail().setVisible(true);
-                view.getRatingDetail().setDemanRatingDetail(selected);
-            }
-        });
+    private void initDetailSection(RatingDetail selectedDetail) {
+        eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
+            .addRatingTab(selectedDetail.getDemandId())
+            .selectTab(DetailModuleBuilder.RATING_TAB)
+            .build());
+    }
+
+    @Override
+    protected UniversalAsyncGrid initParentTable() {
+        return new UniversalGridFactory.Builder<RatingDetail>()
+            .addColumnDemandTitle(null)
+            .addColumnPrice(null)
+            .addSelectionModel(new SingleSelectionModel(), RatingDetail.KEY_PROVIDER)
+            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .build();
+    }
+
+    @Override
+    protected UniversalAsyncGrid initChildTable() {
+        //return empty table
+        return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>().build();
     }
 }

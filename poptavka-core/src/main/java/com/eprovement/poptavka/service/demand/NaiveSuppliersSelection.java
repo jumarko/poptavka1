@@ -205,14 +205,14 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
      * @param suppliers
      */
     private void removeAdminSuppliers(Set<Supplier> suppliers) {
-        LOGGER.debug("action=remove_admin_suppliers status=start");
+        LOGGER.debug("action=remove_admin_suppliers status=startn suppliers.size=" + suppliers.size());
         CollectionUtils.filter(suppliers, new Predicate() {
             @Override
             public boolean evaluate(Object o) {
                 return ! AccessRole.isAdmin(((Supplier) o).getBusinessUser());
             }
         });
-        LOGGER.debug("action=remove_excluded_suppliers status=finish");
+        LOGGER.debug("action=remove_excluded_suppliers status=finish suppliers.size=" + suppliers.size());
     }
 
     /**

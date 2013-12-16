@@ -48,25 +48,74 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     Locality getLocality(Long id);
 
     /**
+     * Finds region by its full name or abbreviation.
+     * In USA region represents the region. There is as well a unique two-letter abbreviation for each region.
+     *
+     * Abbreviation is typically case insensitive, name is case sensitive.
+     *
+     * @param region name of region (state) or its abbreviation
+     * @return locality representing given region or null if no such region has been found
+     */
+    Locality findRegion(String region);
+
+    /**
+     * Finds city by its name and region (state) to which its belongs.
+     * Region is required because there can be multiple cities with same names in one region (e.g. in USA).
+     *
+     * @param regionName name of region in which the city is located
+     * @param cityName name of city
+     * @return found city or null if no such city exists
+     */
+    Locality findCityByName(String regionName, String cityName);
+
+    /**
+     * Finds district by its name and region (state) to which its belongs.
+     * Region is required because there are multiple districts (counties) with same names in one region (e.g. in USA).
+     *
+     * @param regionName name of region in which the district is located
+     * @param districtName name of district (county in USA)
+     * @return found city or null if no such district exists
+     */
+    Locality findDistrictByName(String regionName, String districtName);
+
+    /**
      * Gets a list of localities whose name is shorter than <code>maxlengthExcl</code> and
-     * is prefixed with <code>namePrefix</code> and whose type is <code>type</code>
+     * contains <code>nameSubstring</code>
      * @param maxLengthExcl all <code>Locality</code>-ies' names returned must be shorter than the given length
-     * @param namePrefix a <code>String</code> that all the localities' names must be prefixed with
+     * @param nameSubstring a <code>String</code> that all the localities' names must contain
+     * @return a <code>List<code> of localities satisfying criteria
+     */
+    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring);
+
+    /**
+     * Gets a list of localities whose name is the same length or longer than <code>minLength</code> and
+     * contains <code>nameSubstring</code>
+     * @param minLength all <code>Locality</code>-ies' names returned must be at least of the given length
+     * @param nameSubstring a <code>String</code> that all the localities' names must contain
+     * @return a <code>List<code> of localities satisfying criteria
+     */
+    List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring);
+
+    /**
+     * Gets a list of localities whose name is shorter than <code>maxlengthExcl</code> and
+     * contains <code>nameSubstring</code> and whose type is <code>type</code>
+     * @param maxLengthExcl all <code>Locality</code>-ies' names returned must be shorter than the given length
+     * @param nameSubstring a <code>String</code> that all the localities' names must contain
      * @param type just <code>Locality</code>-ies of the given type will be returned
      * @return a <code>List<code> of localities satisfying criteria
      */
-    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String namePrefix,
+    List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring,
             LocalityType type);
 
     /**
      * Gets a list of localities whose name is the same length or longer than <code>minLength</code> and
-     * is prefixed with <code>namePrefix</code> and whose type is <code>type</code>
+     * contains <code>nameSubstring</code> and whose type is <code>type</code>
      * @param minLength all <code>Locality</code>-ies' names returned must be at least of the given length
-     * @param namePrefix a <code>String</code> that all the localities' names must be prefixed with
+     * @param nameSubstring a <code>String</code> that all the localities' names must contain
      * @param type just <code>Locality</code>-ies of the given type will be returned
      * @return a <code>List<code> of localities satisfying criteria
      */
-    List<Locality> getLocalitiesByMinLength(int minLength, String namePrefix,
+    List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring,
             LocalityType type);
 
     /**

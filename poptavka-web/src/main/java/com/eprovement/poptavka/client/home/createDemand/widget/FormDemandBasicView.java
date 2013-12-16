@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
-import com.eprovement.poptavka.client.common.ValidationMonitor;
+import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import javax.validation.groups.Default;
 
 public class FormDemandBasicView extends Composite
         implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate {
@@ -47,19 +46,19 @@ public class FormDemandBasicView extends Composite
 
     private void initValidationMonitors() {
         titleMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, Default.class, DemandField.TITLE.getValue());
+                FullDemandDetail.class, DemandField.TITLE.getValue());
         priceMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, Default.class, DemandField.PRICE.getValue());
+                FullDemandDetail.class, DemandField.PRICE.getValue());
         endDateMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, Default.class, DemandField.END_DATE.getValue());
+                FullDemandDetail.class, DemandField.END_DATE.getValue());
         descriptionMonitor = new ValidationMonitor<FullDemandDetail>(
-                FullDemandDetail.class, Default.class, DemandField.DESCRIPTION.getValue());
+                FullDemandDetail.class, DemandField.DESCRIPTION.getValue());
         monitors = new ArrayList<ValidationMonitor>(
                 Arrays.asList(titleMonitor, priceMonitor, endDateMonitor, descriptionMonitor));
     }
 
     private void initEndDateDatePricker() {
-        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.DATE_FORMAT_LONG));
+        ((DateBox) endDateMonitor.getWidget()).setFormat(new DateBox.DefaultFormat(Storage.get().getDateTimeFormat()));
         ((DateBox) endDateMonitor.getWidget()).getDatePicker().getParent().addHandler(
                 new CloseHandler<PopupPanel>() {
                 @Override
@@ -74,7 +73,7 @@ public class FormDemandBasicView extends Composite
     /**************************************************************************/
     @Override
     public FullDemandDetail updateBasicDemandInfo(FullDemandDetail demandToUpdate) {
-        demandToUpdate.setTitle((String) titleMonitor.getValue());
+        demandToUpdate.setDemandTitle((String) titleMonitor.getValue());
         demandToUpdate.setPrice((BigDecimal) priceMonitor.getValue());
         demandToUpdate.setEndDate((Date) endDateMonitor.getValue());
         demandToUpdate.setDescription((String) descriptionMonitor.getValue());

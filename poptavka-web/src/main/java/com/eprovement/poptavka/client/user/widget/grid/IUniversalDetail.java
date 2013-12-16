@@ -4,8 +4,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 
 /**
  * This interface represent universal detail used in UniversalTableWidget.
@@ -14,56 +13,19 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public interface IUniversalDetail extends TableDisplayRating, TableDisplayDisplayName,
-        TableDisplayUserMessage {
+public interface IUniversalDetail extends TableDisplayDetailModule {
+//public interface IUniversalDetail extends TableDisplayRating, TableDisplayDisplayName,
+//        TableDisplayUserMessage, TableDisplayDemandTitle, TableDisplayPrice, TableDisplayDemandStatus,
+//        TableDisplayOfferReceivedDate, TableDisplayFinishDate, TableDisplayValidTo, TableDisplayEndDate {
 
     // Client part & Supplier part
     //--------------------------------------------------------------------------
-    long getClientId();
-
-    long getSupplierId();
+//    long getClientId();
 
     // Message part
     //--------------------------------------------------------------------------
-    long getMessageId();
+//    long getMessageId();
 
-    long getThreadRootId();
-
-    long getSenderId();
-
-    Date getMessageSent();
-
-    // UserMessage part
-    //--------------------------------------------------------------------------
-    void setUserMessageId(long userMessageId);
-
-    boolean isStarred();
-
-    boolean isRead();
-
-    void setIsStarred(boolean isStarred);
-
-    void setIsRead(boolean isStarred);
-
-    int getMessageCount();
-
-    void setMessageCount(int messageCount);
-
-    Date getDeliveryDate();
-
-    // Demand part
-    //--------------------------------------------------------------------------
-    long getDemandId();
-
-    Date getValidTo();
-
-    Date getEndDate();
-
-    Date getReceivedDate();
-
-    String getTitle();
-
-    BigDecimal getPrice();
 
     // Offer part
     //--------------------------------------------------------------------------
