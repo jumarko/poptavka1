@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.security;
 
 import org.springframework.security.core.Authentication;
@@ -9,11 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Handles successfull authentication.
  * @author Juraj Martinka Date: 21.8.11
  */
 public class PoptavkaAuthenticationSuccessHandler implements
         AuthenticationSuccessHandler {
 
+    /**
+     * Sends an successfull status on successfull authentication.
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
             HttpServletResponse response,

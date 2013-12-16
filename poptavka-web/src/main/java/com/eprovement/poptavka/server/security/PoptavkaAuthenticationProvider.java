@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.security;
 
 import org.apache.commons.logging.Log;
@@ -24,7 +27,9 @@ import org.hibernate.validator.constraints.impl.EmailValidator;
  */
 public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
 
-    private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthenticationProvider.class);
+    /**************************************************************************/
+    /* RPC Services                                                           */
+    /**************************************************************************/
     private LoginService loginService;
 
     @Autowired
@@ -32,11 +37,26 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
         this.loginService = loginService;
     }
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthenticationProvider.class);
+
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates PoptavkaAuthenticationProvider instance.
+     * @param loginService the LoginService instance
+     */
     public PoptavkaAuthenticationProvider(LoginService loginService) {
         super();
         this.loginService = loginService;
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
     /**
      * Method used to authenticate user.
      *
@@ -88,8 +108,4 @@ public class PoptavkaAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<? extends Object> authentication) {
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
-//  @Override
-//  public boolean supports(Class<?> authentication) {
-//      return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
-//  }
 }

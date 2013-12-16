@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.security;
 
 import java.io.IOException;
@@ -10,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 /**
+ * Poptavka Authentication EntryPoint.
  * @author Juraj Martinka Date: 21.8.11
  */
 public class PoptavkaAuthenticationEntryPoint implements AuthenticationEntryPoint {

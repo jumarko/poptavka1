@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.security;
 
@@ -21,6 +20,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
+ * Security Filter agains XSRF attacks.
  * TODO LATER: we have to fix this filter since it has never done the right job.
  * See also: http://blog.technowobble.com/2010/05/gwt-and-spring-security.html.
  */
