@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
@@ -21,6 +24,11 @@ import com.google.gwt.view.client.ListDataProvider;
 import java.util.List;
 
 /**
+ * View consists of forms for editing categories, localities and services.
+ * Also contains form for displaying supplier's rating.
+ * <b><i>Note:</i></b>
+ * For updating categories and localities a CatLocSelector widget is used.
+ * The widget is displayed in SimpleConfirmPopup.
  *
  * @author Martin Slavkovsky
  */
@@ -59,6 +67,9 @@ public class SupplierSettingsView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates SupplierSettings view's compontents.
+     */
     @Override
     public void createView() {
         categories = new CellList<ICatLocDetail>(new CatLogSimpleCell());
@@ -77,6 +88,10 @@ public class SupplierSettingsView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets SupplierSettings profile data.
+     * @param detail carrying supplier's profile data
+     */
     @Override
     public void setSupplierSettings(SettingDetail detail) {
         if (detail.getSupplier() != null
@@ -91,43 +106,67 @@ public class SupplierSettingsView extends Composite
     /* GETTERS                                                                */
     /**************************************************************************/
     /** PANELS. **/
+    /**
+     * @return the SimpleConfirmPopup
+     */
     @Override
     public SimpleConfirmPopup getSelectorPopup() {
         return selectorPopup;
     }
 
+    /**
+     * @return the services container
+     */
     @Override
     public SimplePanel getServicePanel() {
         return servicePanel;
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the edit categories button
+     */
     @Override
     public Button getEditCatBtn() {
         return editCatBtn;
     }
 
+    /**
+     * @return the edit localities button
+     */
     @Override
     public Button getEditLocBtn() {
         return editLocBtn;
     }
 
     /** OTHERES. **/
+    /**
+     * @return list of updated categories
+     */
     @Override
     public List<ICatLocDetail> getCategories() {
         return this.categoryProvider.getList();
     }
 
+    /**
+     * @return list of updated localities
+     */
     @Override
     public List<ICatLocDetail> getLocalities() {
         return this.localityProvider.getList();
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return !categoryProvider.getList().isEmpty() && !localityProvider.getList().isEmpty();
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public SupplierSettingsView getWidgetView() {
         return this;

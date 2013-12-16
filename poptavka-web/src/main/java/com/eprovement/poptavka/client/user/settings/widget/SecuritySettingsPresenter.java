@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -23,6 +26,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 /**
+ * SecuritySettings widget is part of Settings module's widgets.
+ * Displays security settings.
  *
  * @author Martin Slavkovsky
  */
@@ -58,6 +63,9 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
+    /**
+     * Binds validation handlers and change button handler.
+     */
     @Override
     public void bindView() {
         view.getChangeBtn().addClickHandler(new ClickHandler() {
@@ -109,6 +117,10 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Inits SecuritySettings widget.
+     * @param holder panel
+     */
     public void initSecuritySettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
     }
@@ -116,10 +128,18 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     /**************************************************************************/
     /* METHODS                                                                */
     /**************************************************************************/
+    /**
+     * Sets security settings data.
+     * @param detail carrieng security data
+     */
     public void onSetSecuritySettings(SettingDetail detail) {
         view.setSecuritySettings(detail);
     }
 
+    /**
+     * Notifies user when password has been changed.
+     * @param result true if successfully changed, false otherwise
+     */
     public void onResponseResetPassword(boolean result) {
         if (result) {
             Window.alert(Storage.MSGS.userSettingsPasswordChangedSucceeded());
@@ -129,6 +149,10 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
         }
     }
 
+    /**
+     * Notifies user when new and current passwords are the same.
+     * @param correct true if same, false otherwise
+     */
     public void onResponseCheckCurrentPassword(boolean correct) {
         view.setCurrentPasswordStyles(correct);
         if (correct) {
@@ -141,7 +165,7 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     /* Helper methods                                                         */
     /**************************************************************************/
     /**
-     * Validate password field.
+     * Validates password field.
      */
     private void initVisualPasswordCheck() {
         int passwordLength = ((String) view.getPasswordNewMonitor().getValue()).length();
@@ -156,7 +180,7 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     }
 
     /**
-     * Validate password confirm field.
+     * Validates password confirm field.
      */
     private void initVisualPasswordConfirmCheck() {
         if (!(view.getPasswordNewMonitor().getValue()).equals(view.getPasswordNewConfirmMonitor().getValue())) {

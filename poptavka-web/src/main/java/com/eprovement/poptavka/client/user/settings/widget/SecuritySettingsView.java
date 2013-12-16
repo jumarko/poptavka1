@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -14,7 +17,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- *
+ * View consists of forms for changing password and email (not implemented yet).
  * @author Martin Slavkovsky
  */
 public class SecuritySettingsView extends Composite
@@ -27,6 +30,7 @@ public class SecuritySettingsView extends Composite
 
     interface UserSettingsViewUiBinder extends UiBinder<Widget, SecuritySettingsView> {
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -38,12 +42,18 @@ public class SecuritySettingsView extends Composite
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates SecuritySettings view's compontents.
+     */
     @Override
     public void createView() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Inits validation monitors.
+     */
     private void initValidationMonitors() {
         emailMonitor = createBusinessUserValidationMonitor(BusinessUserDetail.UserField.EMAIL);
         passwordCurrentMonitor = createBusinessUserValidationMonitor(BusinessUserDetail.UserField.PASSWORD);
@@ -51,6 +61,11 @@ public class SecuritySettingsView extends Composite
         passwordNewConfirmMonitor = createBusinessUserValidationMonitor(BusinessUserDetail.UserField.PASSWORD);
     }
 
+    /**
+     * Creates validation monitors
+     * @param field - validation field
+     * @return created validation monitor
+     */
     private ValidationMonitor createBusinessUserValidationMonitor(BusinessUserDetail.UserField fieldField) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, fieldField.getValue());
     }
@@ -58,11 +73,19 @@ public class SecuritySettingsView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets security settings data.
+     * @param detail object carring security data
+     */
     @Override
     public void setSecuritySettings(SettingDetail detail) {
         emailMonitor.setValue(detail.getUser().getEmail());
     }
 
+    /**
+     * Sets password validation monitor styles.
+     * @param correct true if valid, false if invalid
+     */
     @Override
     public void setCurrentPasswordStyles(boolean correct) {
         if (correct) {
@@ -73,6 +96,9 @@ public class SecuritySettingsView extends Composite
         }
     }
 
+    /**
+     * Resets validation monitors' styles.
+     */
     @Override
     public void setDefaultPasswordsStyles() {
         passwordCurrentMonitor.resetValidation();
@@ -86,31 +112,50 @@ public class SecuritySettingsView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the email validation monitor
+     */
     @Override
     public ValidationMonitor getEmailMonitor() {
         return emailMonitor;
     }
 
+    /**
+     * @return the current password validation monitor
+     */
     @Override
     public ValidationMonitor getPasswordCurrentMonitor() {
         return passwordCurrentMonitor;
     }
 
+    /**
+     * @return the new password validation monitor
+     */
     @Override
     public ValidationMonitor getPasswordNewMonitor() {
         return passwordNewMonitor;
     }
 
+    /**
+     * @return the new password confirm validation monitor
+     */
     @Override
     public ValidationMonitor getPasswordNewConfirmMonitor() {
         return passwordNewConfirmMonitor;
     }
 
+    /**
+     * @return the change button
+     */
     @Override
     public Button getChangeBtn() {
         return changeBtn;
     }
 
+    /**
+     * Validates if password change form is valid.
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isNewPasswordValid() {
         boolean valid = true;
@@ -120,6 +165,9 @@ public class SecuritySettingsView extends Composite
         return valid;
     }
 
+    /**
+     * @return widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

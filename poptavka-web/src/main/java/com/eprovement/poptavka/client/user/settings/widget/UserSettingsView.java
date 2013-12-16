@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.forms.AdditionalInfoForm;
@@ -14,6 +17,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * View consists of forms for updating Address info, Company info, Contanct info, Additional info.
  *
  * @author Martin Slavkovsky
  */
@@ -29,6 +33,7 @@ public class UserSettingsView extends Composite
     interface UserSettingsViewUiBinder extends
             UiBinder<Widget, UserSettingsView> {
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -37,11 +42,13 @@ public class UserSettingsView extends Composite
     @UiField CompanyInfoForm companyInfoForm;
     @UiField ContactInfoForm contactInfoForm;
     @UiField AdditionalInfoForm additionalInfoForm;
-    /** Class attributes. **/
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates UserSettings view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -52,6 +59,10 @@ public class UserSettingsView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets user's profile data.
+     * @param detail object carrying user's profile data
+     */
     @Override
     public void setUserSettings(SettingDetail detail) {
         companyInfoForm.getParent().setVisible(!detail.getUser().getCompanyName().isEmpty());
@@ -65,6 +76,11 @@ public class UserSettingsView extends Composite
         additionalInfoForm.getDescription().setValue(detail.getUser().getDescription());
     }
 
+    /**
+     * Updates user's profile data of given object for current widget's data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     @Override
     public SettingDetail updateUserSettings(SettingDetail detail) {
         detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
@@ -82,11 +98,17 @@ public class UserSettingsView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the address container.
+     */
     @Override
     public SimplePanel getAddressHolder() {
         return addressHolder;
     }
 
+    /**
+     * @{@inheritDoc}
+     */
     @Override
     public boolean isValid() {
         boolean valid = true;
@@ -103,6 +125,9 @@ public class UserSettingsView extends Composite
         return valid;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

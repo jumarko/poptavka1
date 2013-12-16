@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -16,8 +19,11 @@ import com.eprovement.poptavka.client.common.session.Storage;
 @History(type = HistoryConverterType.DEFAULT, name = "settings")
 public class SettingsHistoryConverter implements HistoryConverter<SettingsEventBus> {
 
+    /**************************************************************************/
+    /* ConvertToToken events                                                  */
+    /**************************************************************************/
     /**
-     * Creates token(URL) for goToSettingsModule method.
+     * Creates token(URL) for goToSettingsModule module.
      *
      * @param categoryDetail - processing category
      * @return token string like module/method?param
@@ -26,7 +32,11 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
         return "";
     }
 
+    /**************************************************************************/
+    /* ConvertFromToken events                                                  */
+    /**************************************************************************/
     /**
+     * Convert history token into action.
      * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
      * or by clicking on <b>hyperlink</b> with set token.
      *
@@ -47,6 +57,9 @@ public class SettingsHistoryConverter implements HistoryConverter<SettingsEventB
         eventBus.goToSettingsModule();
     }
 
+    /**************************************************************************/
+    /* Other events                                                           */
+    /**************************************************************************/
     @Override
     public boolean isCrawlable() {
         return false;

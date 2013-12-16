@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
@@ -21,6 +24,10 @@ import com.mvp4g.client.annotation.Start;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.mvp4g.client.event.EventBusWithLookup;
 
+/**
+ * Provides settings interface for user to change his user data, settings, etc.
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SettingsPresenter.class, module = SettingsModule.class)
 public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus,
