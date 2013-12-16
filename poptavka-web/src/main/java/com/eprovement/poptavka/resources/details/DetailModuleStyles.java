@@ -1,12 +1,14 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.details;
 
 import com.google.gwt.resources.client.CssResource;
+
 /**
- *
- * GWT Wrapper for base app layout.
+ * Defines styles for Detail module views.
  *
  * @author Jaro
- *
  */
 public interface DetailModuleStyles extends CssResource {
 

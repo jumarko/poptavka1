@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.cellbrowser;
 
 import com.google.gwt.resources.client.CssResource.NotStrict;
@@ -6,6 +9,11 @@ import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.resources.client.ImageResource.RepeatStyle;
 import com.google.gwt.user.cellview.client.CellBrowser;
 
+/**
+ * Defines CellBroser styles for CatLocSelector module - CellBrowser widget.
+ *
+ * @author Jaro
+ */
 public interface CustomCellBrowser extends CellBrowser.Resources {
     /**
      * An image indicating a closed branch.

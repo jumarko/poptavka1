@@ -1,10 +1,15 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.modals;
 
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.ClassName;
+
 /**
+ * Defines styles for modals.
  *
- * @author Archo, Martin Slavkovsky
+ * @author Jaro
  */
 public interface ModalStyles extends CssResource {
 

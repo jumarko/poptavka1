@@ -1,20 +1,18 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.header;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * Styles for Headers.
- * @author Martin Slavkovsky
+ * Defines styles for header.
+ *
+ * @author Jaro
  */
 public interface HeaderStyles extends CssResource {
 
     /** Header Views. **/
-    /** Home Menu Styles. **/
-//    @ClassName("menu-bar")
-//    String menuBar();
-//    @ClassName("header-bar")
-//    String headerBar();
-
     //Menu
     @ClassName("menu-icon")
     String menuIcon();

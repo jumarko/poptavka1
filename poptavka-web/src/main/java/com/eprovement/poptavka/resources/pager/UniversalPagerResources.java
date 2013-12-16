@@ -1,9 +1,17 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.pager;
 
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.SimplePager.Style;
 import com.google.gwt.resources.client.ImageResource;
 
+/**
+ * Defines Pager styles for UniversalPagerWidget.
+ *
+ * @author Jaro
+ */
 public interface UniversalPagerResources extends SimplePager.Resources {
     @Override
     @Source("first.png")

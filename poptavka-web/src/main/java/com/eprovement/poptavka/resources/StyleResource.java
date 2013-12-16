@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources;
 
 import com.eprovement.poptavka.resources.details.DetailModuleStyles;
