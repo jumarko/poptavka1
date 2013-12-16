@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.supplierdemands;
 
@@ -39,8 +38,6 @@ import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,14 +45,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- *
+ * This RPC handles all requests from SupplierDemands module.
  * @author Martin Slavkovsky
  */
 @Configurable
 public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteService
         implements SupplierDemandsModuleRPCService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SupplierDemandsModuleRPCServiceImpl.class);
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     //Services
     private GeneralService generalService;
     private UserMessageService userMessageService;
@@ -66,7 +65,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     private SearchConverter searchConverter;
 
     /**************************************************************************/
-    /* Autowired methods                                                      */
+    /* Autowire services and converters                                       */
     /**************************************************************************/
     //Services
     @Autowired
@@ -102,7 +101,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         this.searchConverter = searchConverter;
     }
 
-    //************************ SUPPLIER - My Demands **************************/
+    /**************************************************************************/
+    /* Potential Demands                                                      */
+    /**************************************************************************/
     /**
      * Get demands of categories that I am interested in.
      * When a demand is created it is assigned to certain categories.
@@ -176,7 +177,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return supplierPotentialDemands;
     }
 
-    //************************ SUPPLIER - My Offers ***************************/
+    /**************************************************************************/
+    /*  Offers                                                                */
+    /**************************************************************************/
     /**
      * Gets count of supplier's offers in state PENDING.
      * @param supplierId
@@ -246,7 +249,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return listSod;
     }
 
-    //******************* SUPPLIER - My Assigned Demands **********************/
+    /**************************************************************************/
+    /*  Assigned Demands                                                      */
+    /**************************************************************************/
     /**
      * Gets count of supplier's offers in state ACCEPTED.
      * @param supplierId
@@ -315,7 +320,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return listSod;
     }
 
-    //******************* SUPPLIER - My Closed Demands **********************/
+    /**************************************************************************/
+    /*  Closed Demands                                                        */
+    /**************************************************************************/
     /**
      * Get supplier's closed demands count.
      * When supplier's work has been accepted, demand changed his status to Closed.
@@ -389,7 +396,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return listSod;
     }
 
-    //******************** SUPPLIER - My Ratings ******************************/
+    /**************************************************************************/
+    /*  Ratings                                                               */
+    /**************************************************************************/
     /**
      * Get ratings of my closed demands.
      *
@@ -449,12 +458,26 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
     /**************************************************************************/
     /* Other getter methods                                                   */
     /**************************************************************************/
+    /**
+     * Get full demand detail.
+     * @param demandId
+     * @return full demand detail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException, ApplicationSecurityException {
         return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
     }
 
+    /**
+     * Get full supplier detail.
+     * @param supplierId
+     * @return get full supplier detail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException, ApplicationSecurityException {
@@ -585,6 +608,12 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         return cdd;
     }
 
+    /**
+     * Finnish offer.
+     * @param offerId
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     private void finishOffer(long offerId) throws RPCException, ApplicationSecurityException {
         Offer offer = (Offer) generalService.find(Offer.class, offerId);
         Demand demand = offer.getDemand();
@@ -594,6 +623,14 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         generalService.save(offer);
     }
 
+    /**
+     * Ender feedback for client.
+     * @param demandID
+     * @param clientRating
+     * @param clientMessage
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     private void enterFeedbackForClient(final long demandID, final Integer clientRating, final String clientMessage)
         throws RPCException, ApplicationSecurityException {
         final Demand demand = generalService.find(Demand.class, demandID);

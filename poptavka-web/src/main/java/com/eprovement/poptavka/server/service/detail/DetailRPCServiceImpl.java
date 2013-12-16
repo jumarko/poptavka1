@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.detail;
 
@@ -42,7 +41,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 
 /**
- *
+ * This RPC handles all requests for Detail module.
  * @author Martin Slavkovsky
  */
 @Configurable
@@ -175,6 +174,13 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         return userMessageConverter.convertToTargetList(userMessages);
     }
 
+    /**
+     * Get conversation user messages.
+     * @param threadRootId
+     * @param loggedUserId
+     * @param counterPartyUserId
+     * @return list of user messages
+     */
     private List<UserMessage> getConversationUserMessages(long threadRootId, long loggedUserId,
         long counterPartyUserId) {
         Message threadRoot = messageService.getById(threadRootId);
@@ -205,6 +211,11 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
     }
 
+    /**
+     * Get messages ids.
+     * @param messages
+     * @return list of message ids.
+     */
     private List<Long> getMessageIds(List<MessageDetail> messages) {
         List<Long> messageIds = new ArrayList<Long>(messages.size());
         for (MessageDetail message : messages) {
@@ -258,6 +269,12 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         return getMessageDetail(replyMessage);
     }
 
+    /**
+     * Creates offer from message.
+     * @param offerMessageToSend
+     * @param message
+     * @return created offer
+     */
     private Offer createOfferFromMessage(OfferMessageDetail offerMessageToSend, Message message) {
         final Offer offer = new Offer();
         offer.setSupplier(generalService.find(Supplier.class, offerMessageToSend.getSupplierId()));
@@ -285,6 +302,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         return new ReplyMessage(replyMessage, replyUserMessage);
     }
 
+    //TODO refactor and comment
     private static final class ReplyMessage {
 
         private final Message message;
@@ -298,6 +316,11 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         }
     }
 
+    /**
+     * Creates message from given ReplyMessage.
+     * @param replyMessage
+     * @return message detail
+     */
     private MessageDetail getMessageDetail(ReplyMessage replyMessage) {
         final MessageDetail messageDetail = messageConverter.convertToTarget(replyMessage.message);
         messageDetail.setUserMessageId(replyMessage.userMessage.getId());

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -7,15 +10,15 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-
-
 /**
  * Expose Spring services to GWT app.
  * From http://pgt.de/2009/07/17/non-invasive-gwt-and-spring-integration-reloaded/
  */
 public abstract class AutoinjectingRemoteService extends RemoteServiceServlet {
 
-
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);

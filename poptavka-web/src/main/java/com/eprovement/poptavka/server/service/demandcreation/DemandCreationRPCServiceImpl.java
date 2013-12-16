@@ -1,7 +1,5 @@
 /*
- * RPC trieda, ktora tvori rozhranie medzi GWT a Hibernate. Stara sa o metody z modulu
- * DemandCreation. Vsetky metody pre tento modul budu v tejto RPC metode. Detail objekty
- * sa mozu zdielat medzi viacerymi RPC servisami.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.demandcreation;
 
@@ -32,15 +30,21 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- *
  * This RPC handles all requests for DemandCreation module such as registration of new Client and creating new Demand.
- * @author ivlcek
+ * <b><i>Note:<\i><\b>
+ * RPC class, which creates interface between GWT a Hibernate. It handlers all request from module DemandCreation.
+ * All methods for this module will be in this RPC lass.
+ * Detail objects can be shared between more RPC services.
  *
+ * @author ivlcek
  */
 @Configurable
 public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         implements DemandCreationRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private DemandService demandService;
     private LocalityService localityService;
     private ClientService clientService;
@@ -49,6 +53,9 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<Locality, ICatLocDetail> localityConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setDemandService(DemandService demandService) {
         this.demandService = demandService;
@@ -89,6 +96,9 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         this.categoryConverter = categoryConverter;
     }
 
+    /**************************************************************************/
+    /* Business events`                                                       */
+    /**************************************************************************/
     /**
      * Create new entity Demand based on the passed FullDemandDetail object.
      *
@@ -128,8 +138,10 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /**
-     * Vytvorenie noveho klienta.
-     *
+     * Creates new client.
+     * @param clientDetail object
+     * @return business user detail
+     * @throws RPCException
      */
     @Override
     public BusinessUserDetail createNewClient(BusinessUserDetail clientDetail) throws RPCException {
@@ -160,7 +172,14 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         return businessUserConverter.convertToTarget(newClientFromDB.getBusinessUser());
     }
 
-    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Updates client's addresses.
+     * @param clientDetail
+     * @param newClient to be updated
+     */
     private void setAddresses(BusinessUserDetail clientDetail, Client newClient) {
         final List<Address> addresses = new ArrayList<Address>();
         if (clientDetail.getAddresses() != null) {
@@ -177,6 +196,12 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         newClient.getBusinessUser().setAddresses(addresses);
     }
 
+    /**
+     * Checks mail availability.
+     * @param email to be checked
+     * @return true if available, false otherwise
+     * @throws RPCException
+     */
     @Override
     public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);

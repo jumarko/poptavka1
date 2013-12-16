@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service.addressSelector;
 
 import com.eprovement.poptavka.client.service.demand.AddressSelectorRPCService;
@@ -16,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-
+/**
+ * This RPC handles all requests for AddressSelector module.
+ * @author Martin Slavkovsky
+ */
 @Configurable
 public class AddressSelectorRPCServiceImpl extends AutoinjectingRemoteService implements AddressSelectorRPCService {
 
@@ -46,6 +52,15 @@ public class AddressSelectorRPCServiceImpl extends AutoinjectingRemoteService im
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Request for city with their state suggestions.
+     * Returns cities which length is greater or equal than given wordLength restriction.
+     * @param requestId
+     * @param cityLike string
+     * @param wordLength - city length restriction
+     * @return suggestions
+     * @throws RPCException
+     */
     @Override
     public SuggestionResponse<AddressSuggestionDetail> getCityWithStateSuggestions(
             int requestId, String cityLike, int wordLength) throws RPCException {
@@ -56,6 +71,15 @@ public class AddressSelectorRPCServiceImpl extends AutoinjectingRemoteService im
         return new SuggestionResponse(requestId, suggestions);
     }
 
+    /**
+     * Request for short city with their state suggestions.
+     * Short cities are those which length is smaller than given wordLength restriction.
+     * @param requestId
+     * @param cityLike
+     * @param wordLength - city length restriction
+     * @return suggestions
+     * @throws RPCException
+     */
     @Override
     public SuggestionResponse<AddressSuggestionDetail> getShortCityWithStateSuggestions(
             int requestId, String cityLike, int wordLength) throws RPCException {

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service.mail;
 
 import com.eprovement.poptavka.validation.EmailValidator;
@@ -17,7 +20,7 @@ import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 
 /**
- * RPC service implementation for sending mails
+ * RPC service implementation for sending mails.
  *
  * @author kolkar
  *
@@ -26,15 +29,25 @@ import com.eprovement.poptavka.shared.exceptions.RPCException;
 public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
         MailRPCService {
 
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(MailRPCServiceImpl.class);
-
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailRPCServiceImpl.class);
     private static final String DEFAULT_NOTIFICATION_MAIL_SENDER = "noreply@want-something.com";
-
     private MailService mailService;
     private String notificationMailSender = DEFAULT_NOTIFICATION_MAIL_SENDER;
 
+    /**************************************************************************/
+    /* Autowired methods                                                      */
+    /**************************************************************************/
+    @Autowired
+    public void setMailService(MailService mailService) {
+        this.mailService = mailService;
+    }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
     /**
      * Send notification email to the given recipient ({@code emailDialogDetail#getRecipient}).
      * <p>
@@ -70,11 +83,10 @@ public class MailRPCServiceImpl extends AutoinjectingRemoteService implements
         return true;
     }
 
-    @Autowired
-    public void setMailService(MailService mailService) {
-        this.mailService = mailService;
-    }
-
+    /**
+     * Sets notification mail.
+     * @param notificationMailSender
+     */
     @Value("${mail.noreply.address}")
     public void setNotificationMailSender(String notificationMailSender) {
         Validate.isTrue(EmailValidator.getInstance().isValid(notificationMailSender),

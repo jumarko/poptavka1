@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.serviceSelector;
 
@@ -21,20 +20,23 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- *
+ * This RPC handles all requests from ServiceSelector module.
  * @author Martin Slavkovsky
  */
 @Configurable
 public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
         implements ServiceSelectorRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** Services. **/
     private GeneralService generalService;
-
-    //Converters
+    /** Converters. **/
     private Converter<Service, ServiceDetail> serviceConverter;
 
     /**************************************************************************/
-    /* Autowired methods                                                      */
+    /* Autowire services and converters                                       */
     /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -52,6 +54,12 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /* Supplier Service methods                                               */
     /**************************************************************************/
+    /**
+     * Request supplier services
+     * @param serviceType
+     * @return list of service details
+     * @throws RPCException
+     */
     @Override
     public ArrayList<ServiceDetail> getSupplierServices(ServiceType serviceType) throws RPCException {
         Search supplierServicesSearch = new Search(Service.class);

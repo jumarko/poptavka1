@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service.settings;
 
 import com.eprovement.poptavka.application.security.Encryptor;
@@ -42,10 +45,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+/**
+ * This RPC handles all requests from Settings module.
+ * @author Martin Slavkovsky
+ */
 @Configurable
 public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         implements SettingsRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private GeneralService generalService;
     private Encryptor encryptor;
     private Converter<Locality, ICatLocDetail> localityConverter;
@@ -54,6 +64,9 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private Converter<Service, ServiceDetail> serviceConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
@@ -94,6 +107,16 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         this.serviceConverter = serviceConverter;
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Get user settings.
+     * @param userId
+     * @return settings detail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public SettingDetail getUserSettings(long userId) throws RPCException, ApplicationSecurityException {
@@ -171,6 +194,13 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         return unreadMessagesDetail;
     }
 
+    /**
+     * Updates settings data.
+     * @param settingsDetail
+     * @return true if updated, false otherwise
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public Boolean updateSettings(SettingDetail settingsDetail) throws RPCException, ApplicationSecurityException {
@@ -232,6 +262,14 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         return true;
     }
 
+    /**
+     * Check if new and current password matches.
+     * @param userId
+     * @param password
+     * @return true if matches, false otherwise
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public Boolean checkCurrentPassword(long userId, String password) throws
@@ -255,6 +293,11 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         return true;
     }
 
+    /**
+     * Convert services
+     * @param services
+     * @return list of service details
+     */
     private List<ServiceDetail> convertServices(List<UserService> services) {
         List<ServiceDetail> servicesDetails = new ArrayList<ServiceDetail>();
         for (UserService userService : services) {

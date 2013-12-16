@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.admin;
 
@@ -75,16 +74,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-/*
- * TODO LATER Martin Vsetky count zrobit inak, ked sa bude riesit tento modul. Vsetky
- * updaty dorobit.
- */
 /**
+ * This RPC handles all requests for Admin module.
+ * TODO LATER Martin implement all features if needed.
  * @author Martin Slavkovsky
  */
 @Configurable
 public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements AdminRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminRPCServiceImpl.class);
     private GeneralService generalService;
     private DemandService demandService;
@@ -110,6 +110,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private SearchConverter searchConverter;
     private Converter<UserMessage, MessageDetail> userMessageConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
@@ -237,12 +240,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         this.userMessageConverter = userMessageConverter;
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** DEMAND SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Demand section                                                         */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminDemandsCount(SearchDefinition searchDefinition) throws
@@ -323,12 +323,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return demand;
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** CLIENT SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Client section                                                         */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminClientsCount(SearchDefinition searchDefinition) throws
@@ -358,12 +355,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(client);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** SUPPLIER SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Supplier sectoin                                                       */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminSuppliersCount(SearchDefinition searchDefinition) throws
@@ -388,11 +382,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(supplier);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** OFFER SECTION.*******************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Offer sectoin                                                          */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOffersCount(SearchDefinition searchDefinition) throws
@@ -434,12 +426,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(offer);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** ACCESS ROLE SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Access role sectoin                                                    */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminAccessRolesCount(SearchDefinition searchDefinition) throws
@@ -473,12 +462,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(accessRole);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** EMAIL ACTIVATION SECTION.
-     * *******************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Detail activation sectoin                                              */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminEmailsActivationCount(SearchDefinition searchDefinition) throws
@@ -509,12 +495,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(emailActivation);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** INVOICE SECTION.
-     * ****************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Invoice sectoin                                                        */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminInvoicesCount(SearchDefinition searchDefinition) throws
@@ -581,12 +564,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(invoice);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** MESSAGE SECTION.
-     * ****************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Message sectoin                                                        */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminMessagesCount(SearchDefinition searchDefinition) throws
@@ -681,12 +661,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         LOGGER.info("action=approve_demands status=start");
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** OUR PAYMENT DETAIL SECTION.
-     * *****************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Our payment detail sectoin                                             */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition) throws
@@ -749,12 +726,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(ourPaymentDetails);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** PAYMENT METHOD SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Payment methods sectoin                                                */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPaymentMethodsCount(SearchDefinition searchDefinition) throws
@@ -794,12 +768,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(paymentMethod);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** PERMISSION SECTION.
-     * *************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Permission sectoin                                                     */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPermissionsCount(SearchDefinition searchDefinition) throws
@@ -832,12 +803,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(permission);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** PREFERENCE SECTION.
-     * *************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Preference sectoin                                                     */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminPreferencesCount(SearchDefinition searchDefinition) throws
@@ -870,12 +838,9 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         generalService.save(preference);
     }
 
-    /**
-     * ********************************************************************************************
-     * ********************** PROBLEM SECTION.
-     * ************************************************
-     * ********************************************************************************************
-     */
+    /**************************************************************************/
+    /* Problem sectoin                                                        */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminProblemsCount(SearchDefinition searchDefinition) throws

@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.simpleservice;
 
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.access.annotation.Secured;
 
 /**
+ * TODO Martin remove this class
  * The server side implementation of the simple RPC service.
  */
 @Configurable

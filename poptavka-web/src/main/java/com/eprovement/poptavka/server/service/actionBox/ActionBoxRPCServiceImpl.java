@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.actionBox;
 
@@ -18,18 +17,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- *
+ * This RPC handles all requests for ActionBox module.
  * @author Martin Slavkovsky
  */
 @Configurable
 public class ActionBoxRPCServiceImpl extends AutoinjectingRemoteService
         implements ActionBoxRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private GeneralService generalService;
     private UserMessageService userMessageService;
 
     /**************************************************************************/
-    /* Autowired methods                                                      */
+    /* Autowired services                                                     */
     /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
@@ -42,10 +44,10 @@ public class ActionBoxRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /**************************************************************************/
-    /* Messages methods                                                       */
+    /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Change 'read' status of sent messages to chosen value.
+     * Changes 'read' status of sent messages to chosen value.
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
@@ -58,7 +60,7 @@ public class ActionBoxRPCServiceImpl extends AutoinjectingRemoteService
     }
 
     /**
-     * COMMON. Change 'star' status of sent messages to chosen value
+     * Changes 'star' status of sent messages to chosen value.
      */
     @Override
     public void setMessageStarStatus(List<Long> userMessageIds, boolean isStarred) throws RPCException {
