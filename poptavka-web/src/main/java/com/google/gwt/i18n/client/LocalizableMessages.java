@@ -219,6 +219,11 @@ public interface LocalizableMessages extends Messages {
     String userHeaderLogOut();
     String userHeaderMyProfile();
 
+    /** ToolbarView.ui **/
+    String toolbarLeftMenu();
+    String toolbarRightMenu();
+    String toolbarSettings();
+
     /** FooterView.ui. **/
     String footerAboutUs();
     String footerCompanyName();
@@ -266,6 +271,7 @@ public interface LocalizableMessages extends Messages {
     String activationNewCodeSending();
     String activationNewCodeSent();
     String activationPassed();
+    String activationPopupTitle();
 
     /** DetailsWrapperView.ui. **/
     String detailsWrapperTabClientDetail();

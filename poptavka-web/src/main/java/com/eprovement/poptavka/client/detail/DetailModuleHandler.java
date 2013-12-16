@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -14,14 +17,26 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
+/**
+ * Handler for Detail module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private DetailRPCServiceAsync service;
 
-    /*
-     * DevelDetailWrapper widget methods
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Request for demand detail.
+     * @param demandId
      */
     public void onRequestDemandDetail(Long demandId) {
         service.getFullDemandDetail(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
@@ -32,6 +47,10 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
         });
     }
 
+    /**
+     * Request for client detail.
+     * @param clientId
+     */
     public void onRequestClientDetail(Long clientId) {
         service.getFullClientDetail(clientId, new SecuredAsyncCallback<FullClientDetail>(eventBus) {
             @Override
@@ -41,6 +60,10 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
         });
     }
 
+    /**
+     * Request for supplier detail.
+     * @param supplierId
+     */
     public void onRequestSupplierDetail(Long supplierId) {
         service.getFullSupplierDetail(supplierId, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
             @Override
@@ -50,6 +73,10 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
         });
     }
 
+    /**
+     * Request for rating detail.
+     * @param demandId
+     */
     public void onRequestRatingDetail(Long demandId) {
         service.getFullRatingDetail(demandId, new SecuredAsyncCallback<FullRatingDetail>(eventBus) {
             @Override
@@ -92,9 +119,7 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
     }
 
     /**
-     * Send message. IMPORTANT: further implementation of other parts will show, if we need more than this method for
-     * chat related stuff
-     *
+     * Send question message.
      * @param messageToSend
      */
     public void onSendQuestionMessage(MessageDetail messageToSend) {
@@ -106,6 +131,10 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
         });
     }
 
+    /**
+     * Send offer message.
+     * @param offerMessageToSend
+     */
     public void onSendOfferMessage(OfferMessageDetail offerMessageToSend) {
         service.sendOfferMessage(offerMessageToSend, new SecuredAsyncCallback<MessageDetail>(eventBus) {
             @Override

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
@@ -63,14 +66,14 @@ public class HomeDemandsPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** Class attributes. **/
     private SearchModuleDataHolder searchDataHolder;
     private ICatLocDetail selectedCategory;
-    //FLAGS
-    //--------------------------------------------------------------------------
+    /** Flag attributes. **/
     private long selectedDemandId = -1;
     private long selectedDemandIdByHistory = -1;
     private boolean calledFromHistory;
@@ -93,18 +96,18 @@ public class HomeDemandsPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        // nothing by default
     }
 
+    /**
+     * Sets body and toolbar, footer.
+     * Inits Detail module and category selector.
+     */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Categories", view.getToolbarContent(), true);
         eventBus.setFooter(view.getFooterPanel());
-        if (Storage.getUser() == null) {
-            eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
-        } else {
-            eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
-        }
+        eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
         eventBus.initCatLocSelector(
                 view.getCategoryTreePanel(),
@@ -121,7 +124,7 @@ public class HomeDemandsPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/

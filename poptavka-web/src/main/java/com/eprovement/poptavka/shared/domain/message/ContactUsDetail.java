@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.shared.domain.message;
 
@@ -15,7 +14,7 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Martin
  */
-public class EmailDialogDetail implements IsSerializable {
+public class ContactUsDetail implements IsSerializable {
 
     /** Enums. **/
     public enum Field {
@@ -50,7 +49,7 @@ public class EmailDialogDetail implements IsSerializable {
     @Size(max = 1000, message = "{emailDialogMessageSize}", groups = Extended.class)
     private String message;
 
-    public EmailDialogDetail() {
+    public ContactUsDetail() {
     }
 
     public String getRecipient() {

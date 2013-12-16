@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service.login;
 
 import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCService;
@@ -22,9 +25,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- * All methods in this RPC service require access of authenticated user, which means that by the time any of these
- * methods is carried out there is a Authentication object in SecurityContextHolder that contains userId reference of
- * logged user.
+ * This RPC handles all unsecured requests from Login module.
  *
  * @author ivlcek
  */
@@ -68,6 +69,12 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Request business user detail by its email.
+     * @param email
+     * @return business user detail
+     * @throws RPCException
+     */
     @Override
     public BusinessUserDetail getBusinessUserByEmail(String email) throws RPCException {
         final Search search = new Search(BusinessUser.class);
@@ -92,6 +99,13 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
     /**************************************************************************/
     /* Activation methods                                                     */
     /**************************************************************************/
+    /**
+     * Activates user.
+     * @param user
+     * @param activationCode of user
+     * @return the userActivationResult
+     * @throws RPCException
+     */
     @Override
     public UserActivationResult activateUser(BusinessUserDetail user, String activationCode) throws RPCException {
         final BusinessUser businessUser = findUserByEmail(user.getEmail());
@@ -108,6 +122,12 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
         return UserActivationResult.OK;
     }
 
+    /**
+     * Sends activation code again.
+     * @param user
+     * @return true if successfully sent, false otherwise
+     * @throws RPCException
+     */
     @Override
     public boolean sendActivationCodeAgain(BusinessUserDetail user) throws RPCException {
         // we must search business user by email because detail object doesn't have to proper ID already assigned.
@@ -120,6 +140,11 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Finds user by email.
+     * @param email of user
+     * @return business user
+     */
     private BusinessUser findUserByEmail(String email) {
         final Search search = new Search(BusinessUser.class);
         search.addFilterEqual("email", email);

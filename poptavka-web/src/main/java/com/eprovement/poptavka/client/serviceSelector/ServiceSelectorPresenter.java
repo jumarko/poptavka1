@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
@@ -13,10 +16,18 @@ import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ServiceSelector presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = ServiceSelectorView.class, multiple = true)
 public class ServiceSelectorPresenter extends LazyPresenter<
         ServiceSelectorPresenter.SupplierServiceInterface, ServiceSelectorEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface SupplierServiceInterface extends LazyView {
 
         void initTableColumns(Column<ServiceDetail, Boolean> radioBtnColumn);
@@ -25,6 +36,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -35,16 +47,21 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        //nothing by default
     }
 
     public void onForward() {
-        //nothing
+        //nothing by default
     }
 
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Initialize ServiceSelector widget.
+     * @param serviceType - the ServiceType
+     * @param embedToWidget - holder panel
+     */
     public void onInitServicesWidget(ServiceType serviceType, SimplePanel embedToWidget) {
         switch (serviceType) {
             case CLIENT:
@@ -62,6 +79,10 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind handlers                                                          */
     /**************************************************************************/
+    /**
+     * Creates FieldUpdater for table to handle selection.
+     * Cannot use selection model because selection manager is used to manages radio buttons.
+     */
     @Override
     public void bindView() {
         fieldUpdater = new FieldUpdater<ServiceDetail, Boolean>() {
@@ -121,6 +142,9 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     /**************************************************************************/
     /* Getter                                                                 */
     /**************************************************************************/
+    /**
+     * @return the selected service detail
+     */
     public ServiceDetail getSelected() {
         return selected;
     }

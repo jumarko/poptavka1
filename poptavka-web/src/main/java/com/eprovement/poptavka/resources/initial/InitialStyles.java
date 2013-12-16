@@ -1,11 +1,14 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.initial;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * GWT Wrapper for base app layout.
+ * Defines styles that are needed at the app startup.
  *
- * @author Beho, Jaro
+ * @author Jaro
  */
 public interface InitialStyles extends CssResource {
 

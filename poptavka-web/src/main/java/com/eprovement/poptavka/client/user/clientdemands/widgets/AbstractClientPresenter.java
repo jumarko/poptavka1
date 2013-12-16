@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -25,12 +28,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Common logic for ClientDemands module.
  *
  * @author Martin Slakvovsky
  */
 public abstract class AbstractClientPresenter
     extends LazyPresenter<IAbstractClientView, ClientDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface IAbstractClientView extends LazyView, IsWidget {
 
         void initTables(UniversalAsyncGrid parentTable, UniversalAsyncGrid childTable);
@@ -57,21 +64,6 @@ public abstract class AbstractClientPresenter
         void setChildTableVisible(boolean visible);
 
         void setDemandTitleLabel(String text);
-    }
-
-    /**************************************************************************/
-    /* General Widget events                                                  */
-    /**************************************************************************/
-    @Override
-    public void createPresenter() {
-        view.initTables(initParentTable(), initChildTable());
-    }
-
-    @Override
-    public void bindView() {
-        addParentTableSelectionHandler();
-        addChildTableSelectionModelHandler();
-        eventBus.setFooter(view.getFooterContainer());
     }
 
     /**************************************************************************/
@@ -117,10 +109,35 @@ public abstract class AbstractClientPresenter
         };
 
     /**************************************************************************/
+    /* General Widget events                                                  */
+    /**************************************************************************/
+    /**
+     * Inits table when creating presenter.
+     */
+    @Override
+    public void createPresenter() {
+        view.initTables(initParentTable(), initChildTable());
+    }
+
+    /**
+     * Binds tables handlers.
+     */
+    @Override
+    public void bindView() {
+        addParentTableSelectionHandler();
+        addChildTableSelectionModelHandler();
+        eventBus.setFooter(view.getFooterContainer());
+    }
+
+    /**************************************************************************/
     /* Protected methods                                                      */
     /**************************************************************************/
     // Table visibility
     //--------------------------------------------------------------------------
+    /**
+     * Sets parent table visibility.
+     * @param visible true to show, false to hide
+     */
     protected void setParentTableVisible(boolean visible) {
         if (visible) {
             view.getToolbar().bindPager(view.getParentTable());
@@ -129,6 +146,10 @@ public abstract class AbstractClientPresenter
         view.setParentTableVisible(visible);
     }
 
+    /**
+     * Sets child table visibility.
+     * @param visible true to show, false to hide
+     */
     protected void setChildTableVisible(boolean visible) {
         if (visible) {
             view.getToolbar().bindPager(view.getChildTable());
@@ -177,6 +198,10 @@ public abstract class AbstractClientPresenter
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Binds parent table selection handler.
+     * Inits detail section and displays child table if needed.
+     */
     private void addParentTableSelectionHandler() {
         if (view.getParentTable().getColumnCount() != 0) {
             view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {

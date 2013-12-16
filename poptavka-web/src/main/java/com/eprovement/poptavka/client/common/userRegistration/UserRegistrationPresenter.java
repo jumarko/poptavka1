@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.userRegistration;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -14,6 +17,11 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Used registration presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = UserRegistrationView.class, multiple = true)
 public class UserRegistrationPresenter
         extends LazyPresenter<UserRegistrationPresenter.AccountFormInterface, UserRegistrationEventBus> {
@@ -87,15 +95,30 @@ public class UserRegistrationPresenter
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Shows email check validation.
+     * @param isAvailable true if available, false otherwise
+     */
     public void onCheckFreeEmailResponse(Boolean isAvailable) {
         view.initVisualFreeEmailCheck(isAvailable);
     }
 
+    /**
+     * Fills given business user detail with current widget's detail.
+     * @param userDetail to be updated
+     */
     public void onFillBusinessUserDetail(BusinessUserDetail userDetail) {
         eventBus.fillAddresses(userDetail.getAddresses());
         view.createBusinessUserDetail(userDetail);
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Binds person buttons handler.
+     * Hides CompanyInfo form.
+     */
     private void addPersonButtonClickHandler() {
         view.getPersonBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -106,6 +129,10 @@ public class UserRegistrationPresenter
         });
     }
 
+    /**
+     * Binds compoany buttons handler.
+     * Shows CompanyInfo form.
+     */
     private void addCompanyButtonClickHandler() {
         view.getCompanyBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -116,6 +143,9 @@ public class UserRegistrationPresenter
         });
     }
 
+    /**
+     * Check if company button is selected.
+     */
     public void onCheckCompanySelected() {
         eventBus.setUserRegistrationHeight(view.getCompanySelected());
     }

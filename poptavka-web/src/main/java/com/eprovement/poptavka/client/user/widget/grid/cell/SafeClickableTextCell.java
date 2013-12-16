@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
@@ -18,18 +17,36 @@ import com.google.gwt.text.shared.SafeHtmlRenderer;
  */
 public class SafeClickableTextCell extends ClickableTextCell {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /**
+     * Converts string to safe html text.
+     */
     public static final SafeHtmlRenderer RENDERER = new SafeHtmlRenderer<String>() {
+        /**
+         * @{inheritDoc}
+         */
         @Override
         public SafeHtml render(String object) {
             return SafeHtmlUtils.fromTrustedString(object);
         }
 
+        /**
+         * @{inheritDoc}
+         */
         @Override
         public void render(String object, SafeHtmlBuilder builder) {
             builder.appendHtmlConstant(object);
         }
     };
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates ClickableText cell.
+     */
     public SafeClickableTextCell() {
         super(RENDERER);
     }

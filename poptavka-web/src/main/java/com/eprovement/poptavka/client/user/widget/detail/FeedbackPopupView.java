@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.detail;
 
@@ -29,11 +28,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * Popup for entering feedback information.
  *
  * @author Martin Slavkovsky
  */
 public class FeedbackPopupView extends Modal implements ProvidesValidate {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static FeedbackPopupViewUiBinder uiBinder = GWT.create(FeedbackPopupViewUiBinder.class);
 
     interface FeedbackPopupViewUiBinder extends UiBinder<Widget, FeedbackPopupView> {
@@ -66,8 +69,12 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
     public static final int SUPPLIER = 1;
 
     /**************************************************************************/
-    /* Constructor                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates FeedbackPopup view's components.
+     * @param rateWhat CLIENT, SUPPLIER constants
+     */
     public FeedbackPopupView(int rateWhat) {
         add(uiBinder.createAndBindUi(this));
 
@@ -87,6 +94,9 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
+    /**
+     * Binds handlers for popup buttons.
+     */
     public void bindHandlers() {
         rateRow1.addDomHandler(new ClickHandler() {
             @Override
@@ -134,16 +144,36 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
     }
 
     /**************************************************************************/
-    /* GETTERS & SETTERS                                                      */
+    /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets display name text.
+     * @param displayName text
+     */
+    public void setDisplayName(String displayName) {
+        this.displayName.setText(displayName + " ?");
+    }
+
+    /**************************************************************************/
+    /* GETTERS                                                                */
+    /**************************************************************************/
+    /**
+     * @return the rate button
+     */
     public Button getRateBtn() {
         return rateBtn;
     }
 
+    /**
+     * @return the rating value
+     */
     public int getRating() {
         return rating;
     }
 
+    /**
+     * @return the rating comment
+     */
     public String getComment() {
         if (commentArea.getText().isEmpty()) {
             return comment;
@@ -152,17 +182,23 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
         }
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName.setText(displayName + " ?");
-    }
-
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return !errorPanel.isVisible();
     }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Sets rate.
+     * @param rateWell - one of default rate choices
+     * @param rating value
+     * @param comment of rating
+     */
     private void setRate(WellForm rateWell, int rating, String comment) {
         unSelectRateOptions();
         rateWell.addStyleName(Constants.ACT);
@@ -171,6 +207,9 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
         this.comment = comment;
     }
 
+    /**
+     * Unselects rate options.
+     */
     private void unSelectRateOptions() {
         rateBtn.setVisible(false);
         rateWell1.removeStyleName(Constants.ACT);

@@ -1,8 +1,16 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.images;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
+/**
+ * Defines imges resources.
+ *
+ * @author Jaro
+ */
 public interface Images extends ClientBundle {
 
     @Source("zoom-in.gif")

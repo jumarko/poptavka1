@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.clientdemands;
 
@@ -59,13 +58,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- *
+ * This RPC handles all requests for ClientDemands module.
  * @author Martin Slavkovsky
  */
 @Configurable
 public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteService
         implements ClientDemandsModuleRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     public static final String QUERY_TO_POTENTIAL_DEMAND_SUBJECT = "Dotaz na Vasu zadanu poptavku";
     //Services
     private ClientService clientService;
@@ -83,7 +85,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
 
     /**************************************************************************/
-    /* Autowired methods                                                      */
+    /* Autowire services and converters                                       */
     /**************************************************************************/
     //Services
     @Autowired
@@ -153,9 +155,8 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     }
 
     /**************************************************************************/
-    /* Table getter methods                                                   */
+    /* My Demands                                                             */
     /**************************************************************************/
-    //************************* CLIENT - My Demands ***************************/
     /**
      * Get all demand's count that has been created by client. When new demand is created by client, will be involved
      * here. As Client: "All demands created by me."
@@ -288,7 +289,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return list;
     }
 
-    //************************* CLIENT - My Offers ****************************/
+    /**************************************************************************/
+    /* Offers                                                                 */
+    /**************************************************************************/
     /**
      * Get all demands where have been placed an offer by some supplier. When supplier place an offer to client's
      * demand, the demand will be involved here. As Client: "Demands that have already an offer."
@@ -418,6 +421,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return listCodod;
     }
 
+    /**
+     * Get search forget client offered demand offers.
+     * TODO refactor - unused.
+     * @param searchDefinition
+     * @param userId
+     * @param demandId
+     * @return Search
+     */
     private Search getSearchForgetClientOfferedDemandOffers(SearchDefinition searchDefinition,
             long userId, long demandId) {
         List<String> searchAttributes = new ArrayList<String>();
@@ -439,7 +450,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return backendSearch;
     }
 
-    //******************** CLIENT - My Assigned Demands ***********************/
+    /**************************************************************************/
+    /*  Assigned Demands                                                      */
+    /**************************************************************************/
     /**
      * Get all offers that were accepted by client to solve a demand. When client accept an offer, will be involved
      * here. As Client: "All offers that were accepted by me to solve my demand."
@@ -511,7 +524,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return listCodod;
     }
 
-    //******************** CLIENT - My Closed Demands *************************/
+    /**************************************************************************/
+    /*  Closed Demands                                                        */
+    /**************************************************************************/
     /**
      * Get all closed demands.
      * When client accept supplier's work, demand is closed and stored to demand's history.
@@ -667,7 +682,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         generalService.save(demand);
     }
 
-    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    /**************************************************************************/
+    /* HELPER METHODS                                                         */
+    /**************************************************************************/
     private Client findClient(long userId) {
         final User user = generalService.find(User.class, userId);
         if (user == null) {
@@ -750,6 +767,14 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
+    /**
+     * Upadtes demand.
+     * @param demandId to be updated
+     * @param updatedDemand carrying new data
+     * @return updated demand detail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullDemandDetail updateDemand(long demandId, FullDemandDetail updatedDemand) throws
@@ -776,6 +801,12 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return demandConverter.convertToTarget(generalService.save(demand));
     }
 
+    /**
+     * Updates domain demand fields.
+     * @param demand to be updated
+     * @param updatedDemand demand detail carrying new data
+     * @return updated domain demand object
+     */
     private Demand updateDemandFields(Demand demand, FullDemandDetail updatedDemand) {
         demand.setTitle(updatedDemand.getDemandTitle());
         demand.setDescription(updatedDemand.getDescription());
@@ -789,7 +820,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         return demand;
     }
 
-    @Override
     /**
      * Client enters a new feedback for Supplier with respect to given demand.
      *
@@ -799,6 +829,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      * @throws RPCException
      * @throws ApplicationSecurityException
      */
+    @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public void closeDemandAndEnterFeedbackForSupplier(final long demandID, final long offerID,
         final Integer supplierRating, final String supplierMessage)

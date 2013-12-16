@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector;
 
@@ -20,8 +19,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Manages instances of CatLocSelector module.
+ * Widget can be loaded at the page several times - independent instances. Therefore implement some
+ * instance manager to manages request. Each request has to be served by particular
+ * instance, not by everyone. Therefore each method take as argument instance id.
  *
- * @author Mato
+ * @author Martin Slavkovsky
  */
 @EventHandler
 public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelectorEventBus> {
@@ -29,6 +32,9 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
     /**************************************************************************/
     /* Interfaces                                                             */
     /**************************************************************************/
+    /**
+     * CatLocSelector view's interface.
+     */
     public interface CatLocSelectorInterface extends LazyView {
 
         SimplePanel getHolder();
@@ -36,6 +42,9 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
         Widget getWidgetView();
     }
 
+    /**
+     * Search CatLocSelector widget's presenter must implements this interface.
+     */
     public interface PresentersInterface extends HasCellTreeLoadingHandlers {
 
         CatLocSelectorEventBus getEventBus();
@@ -46,6 +55,7 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
 
         CatLocSelectorBuilder getBuilder();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -58,6 +68,13 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates new or Loads particular instance to given holder panel.
+     * @param embedToWidget - holder panel
+     * @param builder - the CatLocSelector builder
+     * @param instanceId - required instance id, if not exist yet, created new,
+     *                     otherwise return coresponsing instance
+     */
     public void onInitCatLocSelector(
             SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId) {
         if (this.instanceIds.containsKey(instanceId)) {

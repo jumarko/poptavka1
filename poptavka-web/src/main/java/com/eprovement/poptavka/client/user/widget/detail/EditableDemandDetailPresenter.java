@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.detail;
 
@@ -24,13 +23,17 @@ import com.mvp4g.client.view.LazyView;
 import java.util.List;
 
 /**
+ * Widget for editing demand.
  *
- * @author mato
+ * @author Martin Slavkovsky1
  */
 @Presenter(view = EditableDemandDetailView.class, multiple = true)
 public class EditableDemandDetailPresenter extends
         LazyPresenter<IEditableDemandDetailView, ClientDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface IEditableDemandDetailView extends LazyView, IsWidget {
 
         void setDemanDetail(FullDemandDetail demandDetail);
@@ -61,9 +64,18 @@ public class EditableDemandDetailPresenter extends
 
         void resetFields();
     }
-    //history of changes
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private boolean editingCategories;
 
+    /**************************************************************************/
+    /* Bind events                                                            */
+    /**************************************************************************/
+    /**
+     * Binds events for updating categories and localities - edit, submit, close button handlers.
+     */
     @Override
     public void bindView() {
         view.getEditCatBtn().addClickHandler(new ClickHandler() {
@@ -130,6 +142,14 @@ public class EditableDemandDetailPresenter extends
         });
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Updates given demand detail with current widget's data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     public FullDemandDetail updateDemandDetail(FullDemandDetail detail) {
         return view.updateDemandDetail(detail);
     }

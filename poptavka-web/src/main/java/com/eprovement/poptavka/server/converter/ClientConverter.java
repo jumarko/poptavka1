@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -13,15 +13,34 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Converts Client to FullClientDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class ClientConverter extends AbstractConverter<Client, FullClientDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates ClientConverter.
+     */
     private ClientConverter(Converter<BusinessUser, BusinessUserDetail> businessUserConverter) {
         // Spring instantiates converters - see converters.xml
         this.businessUserConverter = businessUserConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public FullClientDetail convertToTarget(Client source) {
         Preconditions.checkArgument(source != null, "Client cannot be null!");
@@ -48,6 +67,9 @@ public final class ClientConverter extends AbstractConverter<Client, FullClientD
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Client convertToSource(FullClientDetail source) {
         throw new UnsupportedOperationException();

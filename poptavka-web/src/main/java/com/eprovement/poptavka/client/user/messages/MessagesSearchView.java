@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.google.gwt.core.client.GWT;
@@ -14,22 +17,56 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
 
+/**
+ * Custom advance search attributes selector for messages module.
+ * @author Martin Slavkovsky
+ */
 public class MessagesSearchView extends Composite implements
         SearchModulePresenter.SearchModulesViewInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static SearchModulViewUiBinder uiBinder = GWT.create(SearchModulViewUiBinder.class);
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, MessagesSearchView> {
     }
-    @UiField
-    TextBox sender, subject, body;
-    @UiField
-    Button clearBtn;
 
+    /**************************************************************************/
+    /* Attrinbutes                                                            */
+    /**************************************************************************/
+    /** UiBinder attributes. **/
+    @UiField TextBox sender, subject, body;
+    @UiField Button clearBtn;
+
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates MessageSearch view's components.
+     */
     public MessagesSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    /**
+     * Binds clear button handler. Clears view's compontents.
+     */
+    @UiHandler("clearBtn")
+    void clearBtnAction(ClickEvent event) {
+        clear();
+    }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /**
+     * Get search fileter
+     * @return list of search filter.
+     */
     @Override
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
@@ -45,11 +82,9 @@ public class MessagesSearchView extends Composite implements
         return filters;
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * Clears view's compontents.
+     */
     @Override
     public void clear() {
         sender.setText("");
@@ -57,6 +92,9 @@ public class MessagesSearchView extends Composite implements
         body.setText("");
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

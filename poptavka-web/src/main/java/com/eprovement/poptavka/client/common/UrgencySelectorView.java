@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common;
 
@@ -17,6 +16,8 @@ import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
 /**
+ * Urgency selector used to define demand urgency levels <b>low, medium, hight, expired</b>.
+ * Each level coresponds to time period calculated as difference between validTo and current date.
  *
  * @author Martin Slavkovsky
  */
@@ -41,11 +42,12 @@ public class UrgencySelectorView extends Composite {
     /* Initialization                                                         */
     /**************************************************************************/
     /**
-     * @param advanced True displays fourth choice - Grey icon - selection in progress
-     *                     False otherwise
+     * Creates UrgencySelector view's compontents.
+     * @param advanced True displays fourth choice - expired
+     *                 False otherwise
      */
     @UiConstructor
-    public UrgencySelectorView(boolean advanced, boolean title) {
+    public UrgencySelectorView(boolean advanced) {
         initWidget(uiBinder.createAndBindUi(this));
 
         labelColumn4.setVisible(advanced);
@@ -102,18 +104,30 @@ public class UrgencySelectorView extends Composite {
     }
 
     /** CheckBoxes. **/
+    /**
+     * @return the first urgency radio button
+     */
     public RadioButton getUrgency1() {
         return urgency1;
     }
 
+    /**
+     * @return the second urgency radio button
+     */
     public RadioButton getUrgency2() {
         return urgency2;
     }
 
+    /**
+     * @return the third urgency radio button
+     */
     public RadioButton getUrgency3() {
         return urgency3;
     }
 
+    /**
+     * @return the fourth urgency radio button
+     */
     public RadioButton getUrgency4() {
         return urgency4;
     }

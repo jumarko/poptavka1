@@ -1,8 +1,11 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.TextCell;
@@ -15,6 +18,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import java.util.ArrayList;
 
+/**
+ * View consists of Table.
+ *
+ * @author Martin Slavkovsky
+ */
 public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPresenter>
     implements ServiceSelectorPresenter.SupplierServiceInterface, ProvidesValidate {
 
@@ -25,6 +33,7 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
 
     interface SupplierServiceUiBinder extends UiBinder<Widget, ServiceSelectorView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -36,6 +45,9 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates ServiceSelector view's compontents.
+     */
     @Override
     public void createView() {
         initTable();
@@ -43,6 +55,9 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Creates table.
+     */
     private void initTable() {
         /** Table initialization. **/
         DataGrid.Resources resource = GWT.create(DataGridResources.class);
@@ -51,6 +66,10 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
         dataProvider.addDataDisplay(table);
     }
 
+    /**
+     * Creates table columns.
+     * @param radioBtnColumn - radio button column.
+     */
     @Override
     public void initTableColumns(Column<ServiceDetail, Boolean> radioBtnColumn) {
         /** Column initialization. **/
@@ -109,11 +128,18 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * Validates view's components.
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         return presenter.getSelected() != null;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

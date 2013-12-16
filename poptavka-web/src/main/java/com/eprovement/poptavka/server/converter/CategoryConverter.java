@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -11,6 +11,10 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Converts Category to ICatLocDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class CategoryConverter extends AbstractConverter<Category, ICatLocDetail> {
 
     /**************************************************************************/
@@ -38,6 +42,9 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates CategoryConverter.
+     */
     private CategoryConverter() {
         // Spring instantiates converters - see converters.xml
     }
@@ -45,11 +52,12 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     /**************************************************************************/
     /* Convert methods                                                        */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ICatLocDetail convertToTarget(Category category) {
         CatLocDetail detail = new CatLocDetail(category.getId(), category.getName());
-//        detail.setId(category.getId());
-//        detail.setName(category.getName());
         detail.setDemandsCount(demandService.getDemandsCountQuick(category));
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(category));
         detail.setLevel(category.getLevel());
@@ -58,6 +66,9 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Category convertToSource(ICatLocDetail categoryDetail) {
         return categoryService.getById(categoryDetail.getId());

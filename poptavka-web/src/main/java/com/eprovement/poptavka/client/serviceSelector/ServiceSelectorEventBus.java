@@ -1,8 +1,5 @@
 /*
- * HomeDemandsEventBus servers all events for module HomeDemandsModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis Poptaviek
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
@@ -19,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Used for selecting services during registration process.
+ *
  * @author Martin Slavkovsky
  */
 @Events(startPresenter = ServiceSelectorPresenter.class, module = ServiceSelectorModule.class)

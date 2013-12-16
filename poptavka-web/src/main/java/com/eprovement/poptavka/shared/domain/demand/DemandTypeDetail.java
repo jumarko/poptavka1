@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -12,25 +15,26 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class DemandTypeDetail implements IsSerializable {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private Long id;
     private String value;
     private String description;
 
-    /** for serialization. **/
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     public DemandTypeDetail() {
+        // for serialization
     }
 
-    public DemandTypeDetail(DemandTypeDetail demand) {
-        this.updateWholeDemandType(demand);
-    }
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeDemandType(DemandTypeDetail demandTypeDetail) {
-        id = demandTypeDetail.getId();
-        value = demandTypeDetail.getValue();
-        description = demandTypeDetail.getDescription();
-    }
-
+    /**************************************************************************/
+    /* Getters & Setters                                                      */
+    /**************************************************************************/
+    /*
+     * Demand type description pair.
+     */
     public String getDescription() {
         return description;
     }
@@ -39,6 +43,9 @@ public class DemandTypeDetail implements IsSerializable {
         this.description = description;
     }
 
+    /*
+     * Demand type id pair.
+     */
     public Long getId() {
         return id;
     }
@@ -47,6 +54,9 @@ public class DemandTypeDetail implements IsSerializable {
         this.id = id;
     }
 
+    /*
+     * Demand type value pair.
+     */
     public String getValue() {
         return value;
     }
@@ -55,6 +65,9 @@ public class DemandTypeDetail implements IsSerializable {
         this.value = value;
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
 

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -23,6 +26,10 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Displays client's projects with placed offer on it.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractClientView.class)
 public class ClientOffersPresenter extends AbstractClientPresenter {
 
@@ -34,6 +41,15 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Bind handlers:
+     * <ul>
+     *   <li>back button handler</li>
+     *   <li>accept button handler</li>
+     *   <li>demand table selection handler</li>
+     *   <li>offer table selection handler</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         super.bindView();
@@ -48,6 +64,10 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Creates ClinetOffers widget.
+     * @param filter - search criteria
+     */
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
 
@@ -75,8 +95,8 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     }
 
     /**
-     * Response method for onInitSupplierList()
-     * @param data
+     * Displays parent table data.
+     * @param data to be displayed
      */
     public void onDisplayClientOfferedDemands(List<ClientDemandDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemands");
@@ -85,6 +105,10 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             view.getParentTable().getStart(), data);
     }
 
+    /**
+     * Displays child table data.
+     * @param data to be displayed
+     */
     public void onDisplayClientOfferedDemandOffers(List<ClientOfferedDemandOffersDetail> data) {
         GWT.log("++ onResponseClientsOfferedDemandOffers");
 
@@ -98,6 +122,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         }
     }
 
+    /**
+     * Shows thank you popup when offer is accepted and forwards user to ClientAssignedDemands.
+     */
     public void onResponseAcceptOffer() {
         Timer additionalAction = new Timer() {
             @Override
@@ -141,7 +168,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         });
     }
 
-    // Buttons
+    /**
+     * Binds back button handler.
+     */
     private void addBackButtonHandler() {
         view.getToolbar().getBackBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -151,6 +180,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         });
     }
 
+    /**
+     * Displays parent table and hides child table on back button action.
+     */
     private void backBtnClickHandlerInner() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.displayAdvertisement();
@@ -163,6 +195,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             view.getParentTable().getSort().getSortOrder()));
     }
 
+    /**
+     * Binds accept offer button handler.
+     */
     private void addAcceptOfferButtonHandler() {
         view.getToolbar().getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -174,6 +209,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     }
 
     /**
+     * Inits parent table.
      * Client demands user case - parent table - demands table
      */
     @Override
@@ -190,6 +226,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     }
 
     /**
+     * Inits child table.
      * Client demands user case - child table - conversation table
      */
     @Override

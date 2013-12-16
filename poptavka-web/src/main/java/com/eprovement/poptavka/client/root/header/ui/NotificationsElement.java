@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.ui;
 
 import com.eprovement.poptavka.client.root.header.ui.NotificationsElement.NotificationsElementUiBinder;
@@ -10,6 +13,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 
+/**
+ * Notification element includes push buttons for messages and system messages notifications.
+ * Visible for all screens but only for logged user.
+ * @author Martin Slavkovsky
+ */
 public class NotificationsElement extends Composite {
 
     /**************************************************************************/
@@ -19,6 +27,7 @@ public class NotificationsElement extends Composite {
 
     interface NotificationsElementUiBinder extends UiBinder<Widget, NotificationsElement> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -31,6 +40,9 @@ public class NotificationsElement extends Composite {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates notification element view's compontents.
+     */
     public NotificationsElement() {
         initWidget(uiBinder.createAndBindUi(this));
     }
@@ -38,26 +50,29 @@ public class NotificationsElement extends Composite {
     /**************************************************************************/
     /* Getter                                                                 */
     /**************************************************************************/
+    /**
+     * @return the newMessagesCount label
+     */
     public Label getNewMessagesCount() {
         return newMessagesCount;
     }
 
     /**
-     * @return the newSystemMessagesCount
+     * @return the newSystemMessagesCount label
      */
     public Label getNewSystemMessagesCount() {
         return newSystemMessagesCount;
     }
 
     /**
-     * @return the pushButton
+     * @return the pushButton push button
      */
     public PushButton getPushButton() {
         return pushButton;
     }
 
     /**
-     * @return the pushSystemButton
+     * @return the pushSystemButton push button
      */
     public PushButton getPushSystemButton() {
         return pushSystemButton;

@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
@@ -25,6 +24,9 @@ public class ClientDashboardDetail implements IsSerializable {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates ClientDashboardDetail.
+     */
     public ClientDashboardDetail() {
         //for serialization
     }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -31,15 +34,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Handle RPC calls for Admin module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class AdminHandler extends BaseEventHandler<AdminEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private AdminRPCServiceAsync adminService = null;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
     //*************************************************************************/
+    /**
+     * Request for table data count.
+     * @param grid - table
+     * @param searchDefinition -search criteria
+     */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.ADMIN_ACCESS_ROLE:
@@ -92,6 +108,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         }
     }
 
+    /**
+     * Request for table data.
+     * @param grid - table
+     * @param searchDefinition -search criteria
+     */
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.ADMIN_ACCESS_ROLE:

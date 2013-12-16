@@ -1,14 +1,13 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
 import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 
 /**
- *
- * @author jackie177
+ * Implement in widget that want to handle TreeLoading handler.
+ * @author Martin Slavkovsky
  */
 public interface HasCellTreeLoadingHandlers {
 

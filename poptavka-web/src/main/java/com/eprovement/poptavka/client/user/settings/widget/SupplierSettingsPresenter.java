@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
@@ -20,6 +23,9 @@ import com.mvp4g.client.view.LazyView;
 import java.util.List;
 
 /**
+ * SupplierSettings widget is part of Settings module widgets.
+ * Displays supplier's profile data only.
+ *
  * TODO LATER ivlcek: = check for number of categories according to payed service
  *      = authentication code when updating email
  *      = what else need to do when updating services? send invoice??.
@@ -66,6 +72,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
+    /**
+     * Binds events needed for updating categories and localities - edit, submit buttons hanlders.
+     */
     @Override
     public void bindView() {
         view.getEditCatBtn().addClickHandler(new ClickHandler() {
@@ -117,6 +126,10 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Inits UserSettings widget.
+     * @param holder panel
+     */
     public void initUserSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
         if (Storage.getBusinessUserDetail() != null
@@ -131,14 +144,20 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Sets SupplierSettings profile data.
+     * @param detail object carrying supplier's profile data
+     */
     public void onSetSupplierSettings(SettingDetail detail) {
         view.setSupplierSettings(detail);
         eventBus.selectService(detail.getSupplier().getServices().get(0));
     }
 
-    /**************************************************************************/
-    /* SETTERS                                                                */
-    /**************************************************************************/
+    /**
+     * Updates supplier's settings data of given detail for current widget's data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     public SettingDetail updateSupplierSettings(SettingDetail detail) {
         detail.getSupplier().setCategories(view.getCategories());
         detail.getSupplier().setLocalities(view.getLocalities());

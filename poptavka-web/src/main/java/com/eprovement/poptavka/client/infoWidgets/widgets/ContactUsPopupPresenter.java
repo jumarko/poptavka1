@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
@@ -10,7 +9,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.infoWidgets.InfoWidgetsEventBus;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
-import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,17 +21,17 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 /**
+ * Contact us popup is used for users to send email to Want-Something.com.
  *
  * @author ivlcek, Martin Slavkovsky
  */
 @Presenter(view = ContactUsPopupView.class)
 public class ContactUsPopupPresenter
-        extends LazyPresenter<ContactUsPopupPresenter.IContactUsPopupView, InfoWidgetsEventBus> {
+    extends LazyPresenter<ContactUsPopupPresenter.IContactUsPopupView, InfoWidgetsEventBus> {
 
-    private MailRPCServiceAsync mailService;
-    private String errorId;
-    private int subjectId;
-
+    /**************************************************************************/
+    /*  View interface                                                        */
+    /**************************************************************************/
     public interface IContactUsPopupView extends LazyView, IsWidget {
 
         //Getters
@@ -42,7 +41,7 @@ public class ContactUsPopupPresenter
 
         WSListBox getSubjectListBox();
 
-        EmailDialogDetail getEmailDialogDetail();
+        ContactUsDetail getEmailDialogDetail();
 
         boolean isValid();
 
@@ -53,35 +52,34 @@ public class ContactUsPopupPresenter
     }
 
     /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
+    private MailRPCServiceAsync mailService;
+    private String errorId;
+    private int subjectId;
+
+    /**************************************************************************/
     /* Inject RPC service                                                     */
     /**************************************************************************/
+    //TODO Martin - move this to appropriate handler (infoWidgetsHandler?)
     @Inject
     void setMailService(MailRPCServiceAsync service) {
         mailService = service;
     }
 
     /**************************************************************************/
-    /* General Module events                                                  */
+    /* Bind events                                                            */
     /**************************************************************************/
-    public void onStart() {
-        // nothing
-    }
-
-    public void onForward() {
-        // nothing
-    }
-
-    /**************************************************************************/
-    /* Bind actions                                                           */
-    /**************************************************************************/
+    /**
+     * Bind send & close button handlers.
+     */
     @Override
     public void bindView() {
         view.getSendButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 if (view.isValid()) {
-                    EmailDialogDetail dialogDetail = view.getEmailDialogDetail();
+                    ContactUsDetail dialogDetail = view.getEmailDialogDetail();
                     if (subjectId == Constants.SUBJECT_REPORT_ISSUE) {
                         dialogDetail.setMessage(extendMessageBodyByErroId() + dialogDetail.getMessage());
                     } else {
@@ -100,7 +98,6 @@ public class ContactUsPopupPresenter
         });
 
         view.getCloseButton().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 hideView();
@@ -108,9 +105,8 @@ public class ContactUsPopupPresenter
         });
     }
 
-
     /**************************************************************************/
-    /* Navigation events                                                      */
+    /* Business events                                                        */
     /**************************************************************************/
     /**
      * Contact us popup will will be prefilled with values as subject and errorId.
@@ -127,18 +123,19 @@ public class ContactUsPopupPresenter
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter                                   */
+    /* Helper methods                                                         */
     /**************************************************************************/
     /**
      * Hides the EmailDialogPopupView.
      */
-    public void hideView() {
+    private void hideView() {
         view.getWidgetView().hide();
     }
 
-    /**************************************************************************/
-    /* Business events handled by eventbus or RPC                             */
-    /**************************************************************************/
+    /**
+     * Adds user id to error id string
+     * @return string containing errorId and userId
+     */
     private String extendMessageBodyByErroId() {
         if (Storage.getUser() != null) {
             return "errorId=" + errorId + "\nuserId=" + Storage.getUser().getUserId() + "\n";

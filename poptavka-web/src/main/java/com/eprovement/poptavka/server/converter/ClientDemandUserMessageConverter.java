@@ -1,17 +1,33 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 
+/**
+ * Converts UserMessage to ClientDemandDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class ClientDemandUserMessageConverter extends AbstractConverter<UserMessage, ClientDemandDetail> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates ClientDemandUserMessageConverter.
+     */
     private ClientDemandUserMessageConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ClientDemandDetail convertToTarget(UserMessage userMessage) {
         final ClientDemandDetail detail = new ClientDemandDetail();
@@ -30,6 +46,9 @@ public final class ClientDemandUserMessageConverter extends AbstractConverter<Us
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public UserMessage convertToSource(ClientDemandDetail clientDemandDetail) {
         throw new UnsupportedOperationException("Conversion from ClientDemandDetail to domain object UserMessage "

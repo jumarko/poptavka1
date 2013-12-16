@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.security;
 
 import org.apache.commons.logging.Log;
@@ -22,6 +25,10 @@ public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthent
 
     private static final Log LOGGER = LogFactory.getLog(PoptavkaAuthListener.class);
 
+    /**
+     * Authenticate user.
+     * @param event the AbstractAuthenticationEvent
+     */
     @Override
     public void onApplicationEvent(AbstractAuthenticationEvent event) {
         final StringBuilder builder = new StringBuilder();
@@ -47,19 +54,19 @@ public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthent
             String remoteAddress = null;
             HttpSessionDestroyedEvent logoutEvent = (HttpSessionDestroyedEvent) appEvent;
             SecurityContext securityContext = (SecurityContext) logoutEvent.
-                    getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+                getSession().getAttribute("SPRING_SECURITY_CONTEXT");
             if (securityContext != null) {
                 username = (String) logoutEvent.getSession().getAttribute("SPRING_SECURITY_LAST_USERNAME");
                 WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) securityContext.
-                        getAuthentication().getDetails();
+                    getAuthentication().getDetails();
                 LOGGER.warn("applicationEvent is HttpSessionDestroyedEvent, username="
-                        + username + ", remoteAddress=" + remoteAddress + ", securityContext!=null");
+                    + username + ", remoteAddress=" + remoteAddress + ", securityContext!=null");
                 if (webAuthenticationDetails != null) {
                     remoteAddress = webAuthenticationDetails.getRemoteAddress();
                 }
                 //Log action
                 LOGGER.warn("applicationEvent is HttpSessionDestroyedEvent, username="
-                        + username + ", remoteAddress=" + remoteAddress);
+                    + username + ", remoteAddress=" + remoteAddress);
             }
             return;
         }
@@ -67,7 +74,7 @@ public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthent
         if (appEvent instanceof InteractiveAuthenticationSuccessEvent) {
             InteractiveAuthenticationSuccessEvent successEvent = (InteractiveAuthenticationSuccessEvent) appEvent;
             WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) successEvent.
-                    getAuthentication().getDetails();
+                getAuthentication().getDetails();
             String username = successEvent.getAuthentication().getName();
             //Log action
             LOGGER.warn("applicationEvent is InteractiveAuthenticationSuccessEvent: username=" + username);
@@ -77,7 +84,7 @@ public class PoptavkaAuthListener implements ApplicationListener<AbstractAuthent
         if (appEvent instanceof AuthenticationFailureBadCredentialsEvent) {
             AuthenticationFailureBadCredentialsEvent failureEvent = (AuthenticationFailureBadCredentialsEvent) appEvent;
             WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails) failureEvent.
-                    getAuthentication().getDetails();
+                getAuthentication().getDetails();
             String username = failureEvent.getAuthentication().getName();
             //Log action
             LOGGER.warn("applicationEvent is AuthenticationFailureBadCredentialsEvent: username=" + username);

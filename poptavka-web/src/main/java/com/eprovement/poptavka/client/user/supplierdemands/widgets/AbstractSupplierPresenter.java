@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -23,11 +26,16 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Common SupplierDemands' widgets functionality.
+ *
  * @author Martin Slakvovsky
  */
 public abstract class AbstractSupplierPresenter
     extends LazyPresenter<IAbstractSupplierView, SupplierDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface IAbstractSupplierView extends LazyView, IsWidget {
 
         void initTable(UniversalAsyncGrid table);
@@ -50,11 +58,17 @@ public abstract class AbstractSupplierPresenter
     /**************************************************************************/
     /* General Widget events                                                  */
     /**************************************************************************/
+    /**
+     * Inits table when creating presenter.
+     */
     @Override
     public void createPresenter() {
         view.initTable(initTable());
     }
 
+    /**
+     * Binds table selection handler and sets footer.
+     */
     @Override
     public void bindView() {
         addTableSelectionModelHandler();

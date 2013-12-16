@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -8,9 +11,10 @@ import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 
 /**
- * History converter class. Handles history for AministrationModule.
+ * Manages history for AministrationModule.
+ * //TODO Martin - refactor history converter for admin module
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "administration")
 public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {

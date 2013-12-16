@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.ui;
 
 import com.eprovement.poptavka.client.root.header.ui.LoginElement.LoginElementUiBinder;
@@ -10,6 +13,10 @@ import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 
+/**
+ * Login element includes button for middle-large screens and icon anchor for tiny-small screens.
+ * @author Martin Slavkovsky
+ */
 public class LoginElement extends Composite {
 
     /**************************************************************************/
@@ -19,6 +26,7 @@ public class LoginElement extends Composite {
 
     interface LoginElementUiBinder extends UiBinder<Widget, LoginElement> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -29,6 +37,9 @@ public class LoginElement extends Composite {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates login elements view's components.
+     */
     public LoginElement() {
         initWidget(uiBinder.createAndBindUi(this));
     }

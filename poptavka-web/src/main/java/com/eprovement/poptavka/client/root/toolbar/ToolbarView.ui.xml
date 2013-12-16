@@ -1,17 +1,15 @@
-<!-- Uncomment this for XHTML entities <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent"> -->
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
              xmlns:bb="urn:import:com.github.gwtbootstrap.client.ui.base">
 
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:FlowPanel styleName="{res.initial.toolbar}">
         <!--Tree icon-->
-        <!--TODO categories replace-->
-        <b:Tooltip text="Categories" placement="BOTTOM">
+        <b:Tooltip text="{msgs.toolbarLeftMenu}" placement="RIGHT">
             <bb:IconAnchor ui:field='categoriesAnchor' icon="LIST" iconSize="TWO_TIMES" styleName='left-icon'/>
         </b:Tooltip>
 
@@ -21,10 +19,10 @@
         <g:SimplePanel ui:field='customContent'/>
 
         <!--Detail icon-->
-        <!--In order to have float content but right icon at absolute position,
+        <!--In order to have float content not overlaping right icon at absolute position,
             a fake float right icon panel must be implemented-->
         <g:SimplePanel ui:field='fakeDetailAnchor' styleName='fake-right-icon'/>
-        <b:Tooltip text="Detail" placement="BOTTOM">
+        <b:Tooltip text="{msgs.toolbarRightMenu}" placement="LEFT">
             <bb:IconAnchor ui:field='detailAnchor' icon="FOLDER_OPEN" iconSize="TWO_TIMES" styleName='right-icon'/>
         </b:Tooltip>
                     

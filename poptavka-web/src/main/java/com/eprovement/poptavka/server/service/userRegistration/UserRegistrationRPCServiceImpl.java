@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.userRegistration;
 
@@ -12,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 /**
- *
+ * This RPC handles all requests from UserRegistration module.
  * @author Martin Slavkovsky
  */
 @Configurable
@@ -32,6 +31,12 @@ public class UserRegistrationRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /* Business methods                                                       */
     /**************************************************************************/
+    /**
+     * Checks email availability.
+     * @param email to be checked
+     * @return true if availabale, false otherwise
+     * @throws RPCException
+     */
     @Override
     public boolean checkFreeEmail(String email) throws RPCException {
         return clientService.checkFreeEmail(email);

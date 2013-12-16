@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.UrgencySelectorView;
@@ -17,6 +20,10 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * From demand advanced view.
+ * @author Beho, Martin Slavkovsky
+ */
 public class FormDemandAdvView extends Composite
         implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate {
 
@@ -42,6 +49,9 @@ public class FormDemandAdvView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates demand advanced form view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -50,12 +60,18 @@ public class FormDemandAdvView extends Composite
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
+    /**
+     * Binds handler for normal demand type choice.
+     */
     @UiHandler("normalBtn")
     public void normalBtnClickHandler(ClickEvent e) {
         attractiveSelected = false;
         setDemandTypeChoicePanelStyles(false);
     }
 
+    /**
+     * Binds handler for atractive demand type choice.
+     */
     @UiHandler("attractiveBtn")
     public void attractiveBtnClickHandler(ClickEvent e) {
         attractiveSelected = true;
@@ -83,11 +99,10 @@ public class FormDemandAdvView extends Composite
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
+    /**
+     * Validates view components.
+     * @return true if view components are valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         if (maxOffersBox.getValue() == null) {
@@ -99,6 +114,11 @@ public class FormDemandAdvView extends Composite
         }
     }
 
+    /**
+     * Fills appropriate attributes to given demand detail.
+     * @param demandToUpdate - demand detail that is to be updated
+     * @return updated demand detail
+     */
     @Override
     public FullDemandDetail updateAdvDemandInfo(FullDemandDetail demandToUpdate) {
         demandToUpdate.setMaxSuppliers(maxOffersBox.getValue());
@@ -106,6 +126,14 @@ public class FormDemandAdvView extends Composite
         demandToUpdate.setDemandType(getDemandType());
         demandToUpdate.setValidTo(urgencySelector.getValidTo());
         return demandToUpdate;
+    }
+
+    /**
+     * @return the widget view
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
     }
 
     /**************************************************************************/

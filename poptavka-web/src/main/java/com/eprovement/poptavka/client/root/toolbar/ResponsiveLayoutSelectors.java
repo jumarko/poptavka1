@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.toolbar;
 
 import com.google.gwt.query.client.GQuery;

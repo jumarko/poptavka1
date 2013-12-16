@@ -1,5 +1,5 @@
 /*
- * This RPC service serves all methods from MessagesModule
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.messages;
 
@@ -44,12 +44,16 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
+ * This RPC handles all requests from Messages module.
  *
  * @author Praso
  */
 @Configurable
 public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implements MessagesRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     public static final String INTERNAL_MESSAGE = "Interna sprava";
     private GeneralService generalService;
     private MessageService messageService;
@@ -57,6 +61,9 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     private MessageConverter messageConverter;
     private UserMessageConverter userMessageConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
@@ -99,6 +106,11 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return messageDetailFromDB;
     }
 
+    /**
+     * Delete messages.
+     * @param messagesIds - list of messages ids to be deleted
+     * @throws RPCException
+     */
     @Override
     public void deleteMessages(List<Long> messagesIds) throws RPCException {
         Search searchMsgs = new Search(Message.class);
@@ -117,6 +129,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
 
     /** Inbox messages.                                                      **/
     //--------------------------------------------------------------------------
+    /**
+     * Request inbox messages data count.
+     * @param recipientId
+     * @param searchDefinition
+     * @return rows count
+     * @throws RPCException
+     */
     @Override
     public Integer getInboxMessagesCount(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException {
@@ -129,6 +148,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return ((Long) generalService.searchUnique(messagesSearch)).intValue();
     }
 
+    /**
+     * Request inbox messages data.
+     * @param recipientId
+     * @param searchDefinition
+     * @return
+     * @throws RPCException
+     */
     @Override
     public ArrayList<MessageDetail> getInboxMessages(Long recipientId, SearchDefinition searchDefinition)
         throws RPCException {
@@ -140,6 +166,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
     }
 
     //--------------------------------------------------------------------------
+    /**
+     * Request sent messages.
+     * @param senderId
+     * @param searchDataHolder
+     * @return list of user message detail
+     * @throws RPCException
+     */
     @Override
     public List<UserMessageDetail> getSentMessages(Long senderId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {
@@ -187,19 +220,15 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         recipients.addAll(generalService.search(messageUserRoleSearch));
 
 
-        //Stacilo by mi aj to zhora, ale musim ziskat este UserMessage, aby som vedel, isRead, isStarred, ...
-
-        /**///Ziskaj UserMessage (read/unread , starred/unstarred)
+        //Retrieve isRead, isSterred attributes
         List<UserMessage> inboxMessages = new ArrayList<UserMessage>();
         Search userMessagesSearch = new Search(UserMessage.class);
-//        for (Message msg : rootMessages) {
-
         userMessagesSearch.addFilterEqual("user", sender);
         userMessagesSearch.addFilterIn("message", senderMessages.values());
-        /**/ inboxMessages.addAll(generalService.search(userMessagesSearch));
-//        }
+        inboxMessages.addAll(generalService.search(userMessagesSearch));
 
         //Create details
+        //TODO refactor
         List<UserMessageDetail> inboxMessagesDetail = new ArrayList<UserMessageDetail>();
 //        for (MessageUserRole)
         for (UserMessage userMessage : inboxMessages) {
@@ -271,6 +300,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         }
     }
 
+    /**
+     * Deletes messages
+     * @param userId
+     * @param searchDataHolder
+     * @return list of user message details.
+     * @throws RPCException
+     */
     @Override
     public List<UserMessageDetail> getDeletedMessages(Long userId, SearchModuleDataHolder searchDataHolder)
         throws RPCException {
@@ -305,6 +341,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         List<UserMessageDetail> deletedMessagesDetail = new ArrayList<UserMessageDetail>();
 
         for (UserMessage userMessage : rootDeletedMessages.values()) {
+//            TODO refactor
 //            modify to return MessageDetail
 //            deletedMessagesDetail.add(userMessageConverter.convertToTarget(userMessage));
         }
@@ -312,6 +349,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return deletedMessagesDetail;
     }
 
+    /**
+     * Get messages.
+     * @param recipientId
+     * @param searchDataHolder
+     * @param roles
+     * @return list of UserMessageDetails
+     */
     private List<UserMessageDetail> getMessages(Long recipientId, SearchModuleDataHolder searchDataHolder,
             List<MessageUserRoleType> roles) {
         User recipient = generalService.find(User.class, recipientId);
@@ -338,7 +382,7 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
             }
             recipientMessages.addAll(generalService.search(recipientMessagesSearch));
 
-
+//        TODO refactor
 //        Search firstBornRecipientMessagesSearch = new Search(Message.class);
 //        List<Message> firstBornRecipientMessages = new ArrayList<Message>();
 //        for (MessageUserRole mur : recipientMessages) {
@@ -371,6 +415,13 @@ public class MessagesRPCServiceImpl extends AutoinjectingRemoteService implement
         return null;
     }
 
+    /**
+     * Converst FilterItem to Search.
+     * @param search to be set
+     * @param prefix - field prefix
+     * @param item the FilterItem
+     * @return updated Search
+     */
     private Search filter(Search search, String prefix, FilterItem item) {
         prefix += ".";
         switch (item.getOperation()) {

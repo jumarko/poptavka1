@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -12,9 +15,17 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * ClientDemands view consists of left vertical menu and content for ClientDemands widgets.
+ *
+ * @author Martin Slavkovsky
+ */
 public class ClientDemandsModuleView extends Composite
         implements ClientDemandsModulePresenter.ClientDemandsViewInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     private static ClientDemandsLayoutViewUiBinder uiBinder = GWT.create(ClientDemandsLayoutViewUiBinder.class);
 
     interface ClientDemandsLayoutViewUiBinder extends UiBinder<Widget, ClientDemandsModuleView> {
@@ -33,6 +44,9 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates ClientDemandsModule view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -72,6 +86,9 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Helper methods.                                                        */
     /**************************************************************************/
+    /**
+     * Clears active style from menu styles.
+     */
     private void removeMenuStyleChange() {
         clientNewDemands.removeStyleName(Constants.ACT);
         clientOffers.removeStyleName(Constants.ACT);
@@ -80,6 +97,9 @@ public class ClientDemandsModuleView extends Composite
         clientRatings.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for newDemands menu button.
+     */
     private void clientDemandsMenuStyleChange() {
         clientOffers.removeStyleName(Constants.ACT);
         clientAssignedDemands.removeStyleName(Constants.ACT);
@@ -88,6 +108,9 @@ public class ClientDemandsModuleView extends Composite
         clientNewDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for offers menu button.
+     */
     private void clientOffersMenuStyleChange() {
         clientNewDemands.removeStyleName(Constants.ACT);
         clientAssignedDemands.removeStyleName(Constants.ACT);
@@ -96,6 +119,9 @@ public class ClientDemandsModuleView extends Composite
         clientOffers.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for assinedDemands menu button.
+     */
     private void clientAssignedDemandsMenuStyleChange() {
         clientNewDemands.removeStyleName(Constants.ACT);
         clientOffers.removeStyleName(Constants.ACT);
@@ -104,6 +130,9 @@ public class ClientDemandsModuleView extends Composite
         clientAssignedDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for closedDemands menu button.
+     */
     private void clientClosedDemandsMenuStyleChange() {
         clientNewDemands.removeStyleName(Constants.ACT);
         clientOffers.removeStyleName(Constants.ACT);
@@ -112,6 +141,9 @@ public class ClientDemandsModuleView extends Composite
         clientClosedDemands.addStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for rating menu button.
+     */
     private void clientRatingMenuStyleChange() {
         clientNewDemands.removeStyleName(Constants.ACT);
         clientOffers.removeStyleName(Constants.ACT);
@@ -123,41 +155,65 @@ public class ClientDemandsModuleView extends Composite
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the new demands button.
+     */
     @Override
     public Button getClientNewDemandsButton() {
         return clientNewDemands;
     }
 
+    /**
+     * @return the offers button
+     */
     @Override
     public Button getClientOffersButton() {
         return clientOffers;
     }
 
+    /**
+     * @return the assigned demands button
+     */
     @Override
     public Button getClientAssignedDemandsButton() {
         return clientAssignedDemands;
     }
 
+    /**
+     * @return the closed demands button
+     */
     @Override
     public Button getClientClosedDemandsButton() {
         return clientClosedDemands;
     }
 
+    /**
+     * @return the rating button
+     */
     @Override
     public Button getClientRatingsButton() {
         return clientRatings;
     }
 
+    /**
+     * @return the ClientToolbar view
+     */
     @Override
     public ClientToolbarView getToolbarContent() {
         return toolbar;
     }
 
+    /**
+     * @return the content container
+     */
     @Override
     public SimplePanel getContentContainer() {
         return contentContainer;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public IsWidget getWidgetView() {
         return this;

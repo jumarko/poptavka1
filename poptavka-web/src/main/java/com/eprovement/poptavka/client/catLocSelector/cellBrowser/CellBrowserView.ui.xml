@@ -7,7 +7,6 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />    
 
-    <!--<b:FluidContainer styleName='well well-container'>-->
     <b:FluidContainer>
         <b:FluidRow>
             <b:Column size="12">

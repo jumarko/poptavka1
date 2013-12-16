@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail.views;
 
 import com.eprovement.poptavka.client.common.ui.WSBigDecimalBox;
@@ -31,16 +34,23 @@ import java.util.Date;
 public class OfferQuestionWindow extends Composite implements ProvidesValidate {
 
     /**************************************************************************/
-    /* ATTRIBUTES                                                             */
+    /* UiBinder                                                               */
     /**************************************************************************/
     private static ReplyWindowUiBinder uiBinder = GWT.create(ReplyWindowUiBinder.class);
 
     interface ReplyWindowUiBinder extends UiBinder<Widget, OfferQuestionWindow> {
     }
-    /** Constants. **/
-    public static final int RESPONSE_OFFER = 0;
-    public static final int RESPONSE_QUESTION = 1;
-    public static final String EMPTY = "";
+
+    /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        Storage.RSCS.details().ensureInjected();
+    }
+
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) ValidationMonitor bodyMonitor, priceMonitor, finishDateMonitor;
     @UiField Button offerReplyBtn, questionReplyBtn;
@@ -51,18 +61,26 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /** Class attributes. **/
     private int selectedResponse;
     private MessageDetail replyToMessage;
+    /** Constants. **/
+    public static final int RESPONSE_OFFER = 0;
+    public static final int RESPONSE_QUESTION = 1;
+    public static final String EMPTY = "";
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates offer question view's components.
+     */
     public OfferQuestionWindow() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
         offerReplyBtn.setVisible(false);
-
-        Storage.RSCS.details().ensureInjected();
     }
 
+    /**
+     * Initialze validation monitors.
+     */
     private void initValidationMonitors() {
         bodyMonitor = new ValidationMonitor<OfferMessageDetail>(
                 OfferMessageDetail.class, OfferMessageDetail.MessageField.BODY.getValue());
@@ -76,6 +94,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* UiHandlers                                                             */
     /**************************************************************************/
+    /**
+     * Binds handler for <b>offer</b> reply button.
+     */
     @UiHandler("offerReplyBtn")
     public void offerReplyBtnHandler(ClickEvent event) {
         resetValidationStyles();
@@ -83,6 +104,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         selectedResponse = RESPONSE_OFFER;
     }
 
+    /**
+     * Binds handler for <b>question</b> reply button.
+     */
     @UiHandler("questionReplyBtn")
     public void questionReplyBtnHandler(ClickEvent event) {
         resetValidationStyles();
@@ -90,6 +114,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         selectedResponse = RESPONSE_QUESTION;
     }
 
+    /**
+     * Binds handler for <b>cancel</b> button.
+     */
     @UiHandler("cancelBtn")
     public void cancelBtnHandler(ClickEvent event) {
         setDefaultStyle();
@@ -98,6 +125,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* SETTER                                                                 */
     /**************************************************************************/
+    /**
+     * Sets sending <b>offer</b> styles and widget layout.
+     */
     public void setSendingOfferStyle() {
         header.setVisible(false);
         messageBody.setVisible(true);
@@ -107,6 +137,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         ((TextArea) bodyMonitor.getWidget()).setFocus(true);
     }
 
+    /**
+     * Sets sending <b>question</b> styles and widget layout.
+     */
     public void setSendingQuestionStyle() {
         header.setVisible(false);
         messageBody.setVisible(true);
@@ -116,6 +149,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         ((TextArea) bodyMonitor.getWidget()).setFocus(true);
     }
 
+    /**
+     * Sets default styles.
+     */
     public void setDefaultStyle() {
         header.setVisible(true);
         messageBody.setVisible(false);
@@ -126,12 +162,19 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         bodyMonitor.setValue(EMPTY);
     }
 
+    /**
+     * Reset validation styles.
+     */
     private void resetValidationStyles() {
         bodyMonitor.resetValidation();
         priceMonitor.resetValidation();
         finishDateMonitor.resetValidation();
     }
 
+    /**
+     * Enables sending offer.
+     * @param enable true if sending offer should be enabled, false otherwise
+     */
     public void setSendingOfferEnabled(boolean enable) {
         offerReplyBtn.setVisible(enable);
     }
@@ -139,12 +182,20 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* GETTER of created messages.                                            */
     /**************************************************************************/
+    /**
+     * Get question message.
+     * @return created question message
+     */
     public MessageDetail getCreatedMessage() {
         MessageDetail message = new MessageDetail();
         message.setBody((String) bodyMonitor.getValue());
         return message;
     }
 
+    /**
+     * Get offer message
+     * @return created offer message
+     */
     public OfferMessageDetail getCreatedOfferMessage() {
         OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
         offerMessageDetailImpl.setPrice((BigDecimal) priceMonitor.getValue());
@@ -156,18 +207,31 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* GETTER                                                                 */
     /**************************************************************************/
+    /**
+     * @return the offer reply button
+     */
     public Button getOfferReplyBtn() {
         return offerReplyBtn;
     }
 
+    /**
+     * @return the submit button
+     */
     public Button getSubmitBtn() {
         return submitBtn;
     }
 
+    /**
+     * @return 0 for RESPONSE_OFFER, 1 for RESPONSE_QUESTION
+     */
     public int getSelectedResponse() {
         return selectedResponse;
     }
 
+    /**
+     * Validate view's components.
+     * @return true if components are valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         boolean valid = bodyMonitor.isValid();
@@ -178,6 +242,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         return valid;
     }
 
+    /**
+     * @return the widget view
+     */
     public Widget getWidgetView() {
         return this;
     }
@@ -185,10 +252,17 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Conversation Methods                                                   */
     /**************************************************************************/
+    /**
+     * @return the message detail
+     */
     public MessageDetail getMessage() {
         return replyToMessage;
     }
 
+    /**
+     * Sets message detail.
+     * @param message to be set
+     */
     public void setMessage(MessageDetail message) {
         if (Storage.getUser().getUserId() == message.getSenderId()) {
             sender.setStyleName(Storage.RSCS.details().conversationDetailHeaderRed());
@@ -233,6 +307,9 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         return messageDetail;
     }
 
+    /**
+     * Clear compontents.
+     */
     public void clear() {
         messageBody.setVisible(false);
         replyToMessage = null;

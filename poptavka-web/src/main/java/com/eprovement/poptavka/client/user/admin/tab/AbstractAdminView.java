@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -14,8 +17,15 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.inject.Inject;
 import java.util.Set;
 
+/**
+ * Abstract admin view consists common UI elements.
+ * @author Martin Slavkovsky
+ */
 public class AbstractAdminView extends Composite implements IAbstractAdminView {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static AbstractAdminViewUiBinder uiBinder = GWT.create(AbstractAdminViewUiBinder.class);
 
     interface AbstractAdminViewUiBinder extends UiBinder<Widget, AbstractAdminView> {
@@ -30,6 +40,7 @@ public class AbstractAdminView extends Composite implements IAbstractAdminView {
         //for popups created of image hover in datagrid
         Storage.RSCS.modal().ensureInjected();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -43,6 +54,9 @@ public class AbstractAdminView extends Composite implements IAbstractAdminView {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates AbstractAdmin view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -68,43 +82,50 @@ public class AbstractAdminView extends Composite implements IAbstractAdminView {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-//    @Override
-//    public List<Long> getSelectedUserMessageIds() {
-//        List<Long> idList = new ArrayList<Long>();
-//        Set<TableDisplayUserMessage> set = getSelectedObjects();
-//        Iterator<TableDisplayUserMessage> it = set.iterator();
-//        while (it.hasNext()) {
-//            idList.add(it.next().getUserMessageId());
-//        }
-//        return idList;
-//    }
-
+    /**
+     * @return the selected objects set
+     */
     @Override
     public Set getSelectedObjects() {
         MultiSelectionModel model = (MultiSelectionModel) table.getSelectionModel();
         return model.getSelectedSet();
     }
 
+    /**
+     * @return the universal asynchronous grid
+     */
     @Override
     public UniversalAsyncGrid getTable() {
         return table;
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
+    /**
+     * @return the detail panel
+     */
     @Override
     public SimplePanel getDetailPanel() {
         return detailPanel;
     }
 
+    /**
+     * @return the AdminToolbar view
+     */
     @Override
     public AdminToolbarView getToolbar() {
         return toolbar;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgeView() {
         return this;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.userRegistration;
 
 import com.eprovement.poptavka.client.common.forms.AccountInfoForm;
@@ -23,6 +26,7 @@ import java.util.List;
 /**
  * User registration widget represent user's registration form.
  * It creates BusinessUserDetail. Provides field validation.
+ *
  * @author Martin Slavkovsky
  */
 public class UserRegistrationView extends Composite
@@ -35,6 +39,7 @@ public class UserRegistrationView extends Composite
 
     interface AccountRegistrationFormViewUiBinder extends UiBinder<Widget, UserRegistrationView> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -55,6 +60,9 @@ public class UserRegistrationView extends Composite
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates UserRegistration view's components.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -99,52 +107,22 @@ public class UserRegistrationView extends Composite
         companyInfoForm.getVatNumber().resetValidation();
     }
 
+    /**
+     * Inits email validation.
+     * @param isAvailable true if email is availbale, false otherwise
+     */
     @Override
     public void initVisualFreeEmailCheck(Boolean isAvailable) {
         accountInfoForm.initVisualFreeEmailCheck(isAvailable);
     }
+
     /**************************************************************************/
-    /* Getters                                                                */
+    /* Setters                                                                */
     /**************************************************************************/
-    @Override
-    public boolean isValid() {
-        boolean valid = true;
-        if (companySelected) {
-            for (ValidationMonitor box : validationMonitorsCompanyOnly) {
-                valid = box.isValid() && valid;
-            }
-        }
-        for (ValidationMonitor box : validationMonitorsCommon) {
-            valid = box.isValid() && valid;
-        }
-        return ((ProvidesValidate) addressHolder.getWidget()).isValid() && valid;
-    }
-
-    @Override
-    public SimplePanel getAddressHolder() {
-        return addressHolder;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
-    @Override
-    public ValidationMonitor getEmailBox() {
-        return accountInfoForm.getEmail();
-    }
-
-    @Override
-    public Button getPersonBtn() {
-        return personBtn;
-    }
-
-    @Override
-    public Button getCompanyBtn() {
-        return companyBtn;
-    }
-
+    /**
+     * Updates given BusinessUserDetail's data with current widget's data
+     * @param user to be updated
+     */
     @Override
     public void createBusinessUserDetail(BusinessUserDetail user) {
         user.setEmail(((String) accountInfoForm.getEmail().getValue()).trim());
@@ -162,6 +140,69 @@ public class UserRegistrationView extends Composite
         user.setDescription((String) additionalInfoForm.getDescription().getValue());
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public boolean isValid() {
+        boolean valid = true;
+        if (companySelected) {
+            for (ValidationMonitor box : validationMonitorsCompanyOnly) {
+                valid = box.isValid() && valid;
+            }
+        }
+        for (ValidationMonitor box : validationMonitorsCommon) {
+            valid = box.isValid() && valid;
+        }
+        return ((ProvidesValidate) addressHolder.getWidget()).isValid() && valid;
+    }
+
+    /**
+     * @return the address container
+     */
+    @Override
+    public SimplePanel getAddressHolder() {
+        return addressHolder;
+    }
+
+    /**
+     * @return the widget view
+     */
+    @Override
+    public Widget getWidgetView() {
+        return this;
+    }
+
+    /**
+     * @return the email validation monitor
+     */
+    @Override
+    public ValidationMonitor getEmailBox() {
+        return accountInfoForm.getEmail();
+    }
+
+    /**
+     * @return the person button
+     */
+    @Override
+    public Button getPersonBtn() {
+        return personBtn;
+    }
+
+    /**
+     * @return the company button
+     */
+    @Override
+    public Button getCompanyBtn() {
+        return companyBtn;
+    }
+
+    /**
+     * @return true if company is selected, false otherwise (person)
+     */
     @Override
     public boolean getCompanySelected() {
         return companySelected;

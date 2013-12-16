@@ -1,11 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
@@ -33,6 +32,11 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
+/**
+ * Client section for managing projects.
+ *
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
 public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,

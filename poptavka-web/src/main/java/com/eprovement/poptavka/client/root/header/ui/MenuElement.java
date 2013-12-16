@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.ui;
 
 import com.google.gwt.core.client.GWT;
@@ -10,6 +13,10 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 
+/**
+ * Menu element includes hideable menu widget for all screens and icon anchor for tiny-small screens.
+ * @author Martin Slavkovsky
+ */
 public class MenuElement extends Composite {
 
     /**************************************************************************/
@@ -19,6 +26,7 @@ public class MenuElement extends Composite {
 
     interface MenuElementUiBinder extends UiBinder<Widget, MenuElement> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -29,6 +37,9 @@ public class MenuElement extends Composite {
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates menu element view's components.
+     */
     public MenuElement() {
         initWidget(uiBinder.createAndBindUi(this));
     }

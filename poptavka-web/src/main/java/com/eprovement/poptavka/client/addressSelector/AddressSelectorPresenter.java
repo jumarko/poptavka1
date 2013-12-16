@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.addressSelector;
 
 import com.eprovement.poptavka.client.addressSelector.others.AddressSelectorSuggestDisplay;
@@ -23,6 +26,11 @@ import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Address selector presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AddressSelectorView.class)
 public class AddressSelectorPresenter
         extends LazyPresenter<AddressSelectorPresenter.AddressSelectorInterface, AddressSelectorEventBus> {
@@ -62,6 +70,7 @@ public class AddressSelectorPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -81,6 +90,9 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     /* BIND                                                                   */
     /**************************************************************************/
+    /**
+     * Binds handlers for suggestionBox onFocus and onSelection.
+     */
     @Override
     public void bindView() {
         /** FOCUS. **/
@@ -109,6 +121,11 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Initialize AddressSelector.
+     * Sets widget view to given holder panel and clear view's components.
+     * @param embedWidget holder for widget view
+     */
     public void onInitAddressSelector(SimplePanel embedWidget) {
         embedWidget.setWidget(view.getWidgetView());
         //presenter is not multiple due to widget recycling (Google I-O 2010 - GWT testing best practices)
@@ -141,6 +158,12 @@ public class AddressSelectorPresenter
         addresses.add(createAddress());
     }
 
+    /**
+     * Sets list of addresses.
+     * <b><i>Note:</i></b>
+     * Only one address is supported so far.
+     * @param addresses list of addresses
+     */
     public void onSetAddresses(List<AddressDetail> addresses) {
         if (addresses != null && !addresses.isEmpty()) {
             final AddressDetail address = addresses.get(0);
@@ -153,17 +176,27 @@ public class AddressSelectorPresenter
         }
     }
 
+    /**
+     * Validate view's compontents.
+     * Stores result in given variable.
+     * @param result where validation result is stored
+     */
     public void onIsAddressSelectorValid(boolean result) {
         result = view.isValid();
     }
 
+    /**
+     * Get popup where choices are shown.
+     * @return the AddressSelectorSuggestDisplay
+     */
     public AddressSelectorSuggestDisplay getCitySuggestionPopup() {
         return ((AddressSelectorSuggestDisplay) view.getCitySuggestBox().getSuggestionDisplay());
     }
 
-    /**************************************************************************/
-    /* Business events                                                        */
-    /**************************************************************************/
+    /**
+     * Creates and returns AddressDetail object.
+     * @return created address detail object
+     */
     private AddressDetail createAddress() {
         AddressDetail address = new AddressDetail();
         address.setCountry(Constants.COUNTRY);

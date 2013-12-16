@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -10,6 +10,10 @@ import com.eprovement.poptavka.shared.selectors.addressSelector.AddressSuggestio
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Converts Locality to AddressSuggestionDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class AddressSuggestionConverter extends AbstractConverter<Locality, AddressSuggestionDetail> {
 
     /**************************************************************************/
@@ -25,6 +29,9 @@ public final class AddressSuggestionConverter extends AbstractConverter<Locality
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates AddressSuggestionConverter.
+     */
     private AddressSuggestionConverter() {
         // Spring instantiates converters - see converters.xml
     }
@@ -32,6 +39,9 @@ public final class AddressSuggestionConverter extends AbstractConverter<Locality
     /**************************************************************************/
     /* Convert methods                                                        */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public AddressSuggestionDetail convertToTarget(Locality localityCity) {
         Preconditions.checkArgument(
@@ -59,6 +69,10 @@ public final class AddressSuggestionConverter extends AbstractConverter<Locality
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public Locality convertToSource(AddressSuggestionDetail catLocDetailSuggestion) {
         return localityService.getLocality(catLocDetailSuggestion.getCityId());
     }

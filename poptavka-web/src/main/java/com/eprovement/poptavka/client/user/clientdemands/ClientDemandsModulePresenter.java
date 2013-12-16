@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -19,11 +22,18 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Client Demands module presenter.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = ClientDemandsModuleView.class)
 public class ClientDemandsModulePresenter
         extends LazyPresenter<ClientDemandsViewInterface, ClientDemandsModuleEventBus>
         implements NavigationConfirmationInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface ClientDemandsViewInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         Button getClientNewDemandsButton();
@@ -55,6 +65,9 @@ public class ClientDemandsModulePresenter
         // nothing by default
     }
 
+    /**
+     * Sets bodu, toolbar, search and update unread messages count.
+     */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Client Menu", view.getToolbarContent(), true);
@@ -65,12 +78,15 @@ public class ClientDemandsModulePresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Bind menu buttons handlers.
+     */
     @Override
     public void bindView() {
         view.getClientNewDemandsButton().addClickHandler(new ClickHandler() {
@@ -113,6 +129,11 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Creates ClientDemands module.
+     * @param filter - search criteria
+     * @param loadWidget - widget id
+     */
     public void onGoToClientDemandsModule(SearchModuleDataHolder filter, int loadWidget) {
         eventBus.loadingDivShow(Storage.MSGS.loading());
         ((ClientToolbarView) view.getToolbarContent()).resetBasic();
@@ -142,10 +163,18 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     /* Business events handled by presenter */
     /**************************************************************************/
+    /**
+     * Sets ClientDemands widget.
+     * @param content widget
+     */
     public void onDisplayView(IsWidget content) {
         view.getContentContainer().setWidget(content);
     }
 
+    /**
+     * Displays loading widget.
+     * @param loadingMessage
+     */
     public void onLoadingDivShow(String loadingMessage) {
         GWT.log("  - loading div created");
         if (loadingDiv == null) {
@@ -155,6 +184,9 @@ public class ClientDemandsModulePresenter
         view.getContentContainer().getElement().appendChild(loadingDiv.getElement());
     }
 
+    /**
+     * Hides loading widget.
+     */
     public void onLoadingDivHide() {
         GWT.log("  - loading div removed");
         if (view.getContentContainer().getElement().isOrHasChild(loadingDiv.getElement())) {
@@ -168,6 +200,10 @@ public class ClientDemandsModulePresenter
     /**************************************************************************/
     /* Client Demands MENU                                                    */
     /**************************************************************************/
+    /**
+     * Sets active style for clientDemands menu.
+     * @param loadedWidget
+     */
     public void onClientDemandsMenuStyleChange(int loadedWidget) {
         view.clientMenuStyleChange(loadedWidget);
     }

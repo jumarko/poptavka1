@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.suppliercreation;
 
@@ -33,8 +32,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- * This RPC hadnles all requests comming from SupplierCreation module. This module is supposed to create and register
- * new supplier.
+ * This RPC handles all requests from SupplierCreation module such as create and register new supplier.
  *
  * @author Praso
  * TODO LATER ivlcek: vytvorit predka pre checkFreeEmail if possible, optimalizovat backend
@@ -42,6 +40,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Configurable
 public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService implements SupplierCreationRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private SupplierService supplierService;
     private ClientService clientService;
     private GeneralService generalService;
@@ -49,6 +50,9 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private Converter<Locality, ICatLocDetail> localityConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
@@ -82,6 +86,9 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         this.localityConverter = localityConverter;
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
     /**
      * Create new supplier from detail object constructed by SupplierCreation forms. New Supplier automatically
      * contains a Client role so that he can create new Demands.
@@ -121,6 +128,14 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         return supplierConverter.convertToTarget(supplierFromDB);
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Fills supplier's business user data with given business user detail using BusinessUserData.Builder().
+     * @param supplier to be update
+     * @param newSupplier
+     */
     private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
                 .companyName(supplier.getCompanyName())
@@ -135,12 +150,22 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
 
+    /**
+     * Fills supplier's addresses with given business user detail.
+     * @param supplier
+     * @param newSupplier
+     */
     private void setNewSupplierAddresses(BusinessUserDetail supplier, Supplier newSupplier) {
         final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
     }
 
+    /**
+     * Fills supplier's services with given supplier detail.
+     * @param supplier
+     * @param newSupplier
+     */
     private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
         final List<UserService> us = new ArrayList<UserService>();
 
@@ -156,19 +181,38 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         newSupplier.getBusinessUser().setUserServices(us);
     }
 
+    /**
+     * Fills supplier's categories with given supplier detail.
+     * @param supplier
+     * @param newSupplier
+     */
     private void setNewSupplierCategories(FullSupplierDetail supplier, Supplier newSupplier) {
         newSupplier.setCategories(categoryConverter.convertToSourceList(supplier.getCategories()));
     }
 
+    /**
+     * Fills supplier's localities with given supplier detail.
+     * @param supplier
+     * @param newSupplier
+     */
     private void setNewSupplierLocalities(FullSupplierDetail supplier, Supplier newSupplier) {
         newSupplier.setLocalities(localityConverter.convertToSourceList(supplier.getLocalities()));
     }
 
 
+    /**
+     * Assigns business role to new supplier.
+     * @param newSupplier role
+     */
     private void assignBusinessRoleToNewSupplier(Supplier newSupplier) {
         newSupplier.getBusinessUser().getBusinessUserRoles().add(newSupplier);
     }
 
+    /**
+     * Get addresses from supplier city name.
+     * @param supplier object
+     * @return list of addresses
+     */
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
         final List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {

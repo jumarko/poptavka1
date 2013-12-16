@@ -1,17 +1,27 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.shared.domain.adminModule.ActivationEmailDetail;
 
+/**
+ * Converts ActivationEmail to ActivationEmailDetail
+ * @author Juraj Martinka
+ */
 public final class ActivationEmailConverter extends AbstractConverter<ActivationEmail, ActivationEmailDetail> {
 
+    /**
+     * Creates ActivationEmailConverter.
+     */
     private ActivationEmailConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ActivationEmailDetail convertToTarget(ActivationEmail source) {
         ActivationEmailDetail detail = new ActivationEmailDetail();
@@ -23,6 +33,9 @@ public final class ActivationEmailConverter extends AbstractConverter<Activation
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ActivationEmail convertToSource(ActivationEmailDetail source) {
         throw new UnsupportedOperationException();

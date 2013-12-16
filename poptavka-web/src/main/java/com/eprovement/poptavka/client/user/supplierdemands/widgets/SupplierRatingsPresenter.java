@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
@@ -22,12 +21,21 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Part of SupplierDemands module widget.
+ * Displays supplier's ratings.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractSupplierView.class)
 public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Binds table selection handler. Inits detail section.
+     */
     @Override
     public void bindView() {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -42,6 +50,10 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
     /**************************************************************************/
     /* Navigation events */
     /**************************************************************************/
+    /**
+     * Creates SupplierRatings widget.
+     * @param filter - search criteria
+     */
     public void onInitSupplierRatings(SearchModuleDataHolder filter) {
         //Must be present here. Loading data rely on this atrtibute
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_RATINGS);
@@ -61,8 +73,8 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
     /* Business events handled by presenter */
     /**************************************************************************/
     /**
-     * Response method for onInitSupplierList()
-     * @param data
+     * Displays supplier's ratings data.
+     * @param data to be dispalyed
      */
     public void onDisplaySupplierRatings(List<String> data) {
         GWT.log("++ onResponseSupplierRatings");
@@ -73,6 +85,10 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
     /**************************************************************************/
     /* Bind View helper methods                                               */
     /**************************************************************************/
+    /**
+     * Inits detail section.
+     * @param selectedDetail - rating detail
+     */
     private void initDetailSection(RatingDetail selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addRatingTab(selectedDetail.getDemandId())
@@ -80,6 +96,10 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
             .build());
     }
 
+    /**
+     * Creates supplier ratings table using UniversalGridFactory.
+     * @return table
+     */
     @Override
     UniversalAsyncGrid initTable() {
         return new UniversalGridFactory.Builder<RatingDetail>()

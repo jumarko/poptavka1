@@ -1,8 +1,5 @@
 /*
- * HomeDemandsEventBus servers all events for module HomeDemandsModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis Poptaviek
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common.userRegistration;
 
@@ -18,6 +15,8 @@ import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.event.EventBusWithLookup;
 
 /**
+ * Used for registering user.
+ *
  * @author Martin Slavkovsky
  */
 @Events(startPresenter = UserRegistrationPresenter.class, module = UserRegistrationModule.class)

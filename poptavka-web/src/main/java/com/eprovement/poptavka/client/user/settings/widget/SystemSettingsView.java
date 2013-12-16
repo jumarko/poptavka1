@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -13,6 +16,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
+ * View consists of table of notifications, each represented by NotificationItem widget.
  *
  * @author Martin Slavkovsky
  */
@@ -26,6 +30,7 @@ public class SystemSettingsView extends Composite
 
     interface UserSettingsViewUiBinder extends UiBinder<Widget, SystemSettingsView> {
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -38,6 +43,9 @@ public class SystemSettingsView extends Composite
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates SystemSettings view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -46,6 +54,10 @@ public class SystemSettingsView extends Composite
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets system's profile data.
+     * @param detail object carrying system's profile data
+     */
     @Override
     public void setSystemSettings(SettingDetail detail) {
         //notifications
@@ -55,6 +67,11 @@ public class SystemSettingsView extends Composite
         fluidContainer.setHeight(((detail.getNotifications().size() + 1) * ITEM_HEIGHT) + "px");
     }
 
+    /**
+     * Updates system's profile data of given object for current widget's data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     @Override
     public SettingDetail updateSystemSettings(SettingDetail detail) {
         //notifications
@@ -73,11 +90,17 @@ public class SystemSettingsView extends Composite
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return true;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

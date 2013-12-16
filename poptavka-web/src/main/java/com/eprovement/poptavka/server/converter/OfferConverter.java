@@ -1,17 +1,33 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 
+/**
+ * Converts Offer to OfferDetail.
+ * @author Juraj Martinka
+ */
 public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates OfferConverter.
+     */
     private OfferConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public OfferDetail convertToTarget(Offer source) {
         OfferDetail detail = new OfferDetail();
@@ -30,6 +46,9 @@ public final class OfferConverter extends AbstractConverter<Offer, OfferDetail> 
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Offer convertToSource(OfferDetail source) {
         throw new UnsupportedOperationException();

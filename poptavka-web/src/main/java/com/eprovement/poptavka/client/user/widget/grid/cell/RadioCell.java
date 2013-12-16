@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
@@ -11,11 +10,14 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 /**
- *
- * @author mato
+ * Cell for rendering radio button.
+ * @author Martin Slavkovsky
  */
 public class RadioCell extends CheckboxCell {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     /**
      * An html string representation of a checked input box.
      */
@@ -24,6 +26,12 @@ public class RadioCell extends CheckboxCell {
     private static final SafeHtml INPUT_UNCHECKED = SafeHtmlUtils.fromSafeConstant(
             "<input type=\"radio\" name=\"selected\" tabindex=\"-1\"/>");
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(Context context, Boolean value, SafeHtmlBuilder sb) {
         if (value != null && value) {

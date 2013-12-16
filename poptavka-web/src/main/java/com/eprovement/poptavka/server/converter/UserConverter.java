@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -9,10 +9,23 @@ import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts to User to UserDetail
+ * @author Juraj Martinka
+ */
 public final class UserConverter extends AbstractConverter<User, UserDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates UserConverter.
+     */
     private UserConverter(
             Converter<AccessRole, AccessRoleDetail> accessRoleConverter) {
         // Spring instantiates converters - see converters.xml
@@ -20,6 +33,12 @@ public final class UserConverter extends AbstractConverter<User, UserDetail> {
         this.accessRoleConverter = accessRoleConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public UserDetail convertToTarget(User source) {
         UserDetail detail = new UserDetail();
@@ -32,6 +51,9 @@ public final class UserConverter extends AbstractConverter<User, UserDetail> {
         return detail;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public User convertToSource(UserDetail source) {
         throw new UnsupportedOperationException();

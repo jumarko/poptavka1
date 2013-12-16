@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
@@ -39,6 +38,9 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates CatLocSuggestion display.
+     */
     public CatLocSuggestionDisplay() {
         loader.setImageResource(Storage.RSCS.images().loaderIcon33());
         loader.addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
@@ -47,6 +49,9 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the siggestion display popup
+     */
     @Override
     public PopupPanel getPopupPanel() {
         return super.getPopupPanel();
@@ -55,10 +60,18 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets suggest oracle.
+     * @param oracle the CatLocSuggestiOracle
+     */
     public void setOracle(CatLocSuggestOracle oracle) {
         this.oracle = oracle;
     }
 
+    /**
+     * Sets suggestion display popup position.
+     * @param suggestBox
+     */
     public void setLoadingPopupPosition(SuggestBox suggestBox) {
         loadingPopup.setPopupPosition(
                 DOM.getAbsoluteLeft(suggestBox.getElement()) + OFFSET_LEFT,
@@ -68,6 +81,10 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
     /**************************************************************************/
     /* SHOW                                                                   */
     /**************************************************************************/
+    /**
+     * Displays <b>Items not fount</b> text in suggestion popup.
+     * @param eventbus coresponding eventBus
+     */
     public void showItemsFound(final CatLocSelectorEventBus eventbus) {
         VerticalPanel vp = new VerticalPanel();
         vp.addStyleName(StyleResource.INSTANCE.modal().suggestModal());
@@ -77,6 +94,10 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
         loadingPopup.show();
     }
 
+    /**
+     * Displays <b>Short items</b> text in suggestion popup.
+     * @param minCityChars item lenght restriction value
+     */
     public void showShortItemsInfo(int minCityChars) {
         VerticalPanel vp = new VerticalPanel();
         vp.addStyleName(StyleResource.INSTANCE.modal().suggestModal());
@@ -94,6 +115,9 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
         loadingPopup.show();
     }
 
+    /**
+     * Displays <b>item already added</b> text in suggestion popup.
+     */
     public void showItemAlreadyAdded() {
         VerticalPanel vp = new VerticalPanel();
         vp.addStyleName(StyleResource.INSTANCE.modal().suggestModal());
@@ -112,6 +136,9 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
         timer.schedule(1000);
     }
 
+    /**
+     * Show loading in suggestion popup.
+     */
     public void showLoading() {
         hideSuggestions();
         loadingPopup.setWidget(loader);
@@ -122,11 +149,17 @@ public class CatLocSuggestionDisplay extends SuggestBox.DefaultSuggestionDisplay
     /**************************************************************************/
     /* HIDE                                                                   */
     /**************************************************************************/
+    /**
+     * Hides suggestion popup
+     */
     @Override
     public void hideSuggestions() {
         super.hideSuggestions();
     }
 
+    /**
+     * Hides loading in suggestion popup.
+     */
     public void hideLoadingPopup() {
         loadingPopup.hide();
     }

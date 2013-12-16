@@ -1,12 +1,15 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.datagrid;
 
 import com.google.gwt.resources.client.CssResource.ClassName;
 import com.google.gwt.user.cellview.client.DataGrid;
 
 /**
- * Custom stylesheet for our cellTables/Datagrids.
+ * Defines DataGrid styles for UniversalAsyncGrid.
  *
- * @author beho, Martin Slavkovsky
+ * @author Jaro
  */
 public interface DataGridStyles extends DataGrid.Style {
 

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -16,10 +19,18 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 
+/**
+ * Login presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = LoginPopupView.class)
 public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.LoginPopupInterface, LoginEventBus>
         implements NavigationConfirmationInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface LoginPopupInterface extends LazyView {
 
         void setLoadingMessage(String localizableMessage);
@@ -54,13 +65,17 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
         LoginPopupView getWidget();
     }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private int widgetToLoad = Constants.NONE;
 
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        // nothing by default
     }
 
     public void onForward() {
@@ -70,12 +85,15 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
     /* Bind handlers                                                          */
     /**************************************************************************/
+    /**
+     * Bind login button handlers.
+     */
     @Override
     public void bindView() {
         view.getSubmitBtn().addClickHandler(new ClickHandler() {
@@ -115,7 +133,7 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
     }
 
     /**************************************************************************/
-    /* Business events LOGIN - LOGOUT.                                        */
+    /* Business events                                                        */
     /**************************************************************************/
     /**
      * Show login popup window. Navigation event to access login module.
@@ -143,14 +161,26 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
         login(widgetToLoad);
     }
 
+    /**
+     * Sets loading process in progress bar.
+     * @param percentage - progress as percentage value
+     * @param message of progress
+     */
     public void onSetLoadingProgress(int percentage, String message) {
         view.setLoadingProgress(percentage, message);
     }
 
+    /**
+     * Sets error message if an error occurs.
+     * @param message - error message
+     */
     public void onSetErrorMessage(String message) {
         view.setErrorMessage(message);
     }
 
+    /**
+     * Hides login popup.
+     */
     public void onHideView() {
         view.getWidget().hide();
     }

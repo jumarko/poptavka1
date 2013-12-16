@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -17,13 +17,26 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts Supplier to FullSupplierDetail.
+ * @author Juraj Martinka
+ */
 public final class SupplierConverter extends AbstractConverter<Supplier, FullSupplierDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<Category, ICatLocDetail> categoryConverter;
     private final Converter<Locality, ICatLocDetail> localityConverter;
     private final Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
     private final Converter<Service, ServiceDetail> serviceConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates SupplierConverter.
+     */
     private SupplierConverter(
             Converter<Category, ICatLocDetail> categoryConverter,
             Converter<Locality, ICatLocDetail> localityConverter,
@@ -39,6 +52,12 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         this.serviceConverter = serviceConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public FullSupplierDetail convertToTarget(Supplier source) {
         FullSupplierDetail detail = new FullSupplierDetail();
@@ -58,6 +77,11 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
 
     }
 
+    /**
+     * Converts services from UserServices to ServiceDetails.
+     * @param services - list of UserServices
+     * @return list of ServiceDetails
+     */
     private List<ServiceDetail> convertServices(List<UserService> services) {
         List<ServiceDetail> servicesDetails = new ArrayList<ServiceDetail>();
         for (UserService userService : services) {
@@ -66,6 +90,9 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
         return servicesDetails;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Supplier convertToSource(FullSupplierDetail source) {
         throw new UnsupportedOperationException();

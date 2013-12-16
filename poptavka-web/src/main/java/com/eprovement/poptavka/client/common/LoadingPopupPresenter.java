@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.common;
 
@@ -10,6 +9,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 /**
+ * Loading popup that contains Want-Somehitng logo and some text.
  *
  * @author Martin Slavkovsky
  */
@@ -22,10 +22,17 @@ public class LoadingPopupPresenter
         LoadingPopupView getWidget();
     }
 
+    /**
+     * Displays popup with given message.
+     * @param message to be displayed
+     */
     public void onLoadingShow(String message) {
         view.getWidget().show(message);
     }
 
+    /**
+     * Hides popup.
+     */
     public void onLoadingHide() {
         view.getWidget().hide();
     }

@@ -10,8 +10,15 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 
+/**
+ * Home Welcome view interface
+ * @author Martin Slavkovsky
+ */
 public interface IHomeWelcomeView extends IsWidget, LazyView {
 
+    /**
+     * Home Welcome presenter interface
+     */
     public interface IHomeWelcomePresenter {
     }
 

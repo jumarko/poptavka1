@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.ui;
 
 import com.github.gwtbootstrap.client.ui.BigDecimalBox;
@@ -15,10 +18,9 @@ import java.text.ParseException;
  */
 public class WSBigDecimalBox extends BigDecimalBox {
 
-    /**
-     * Set Big decimal value
-     * @param value
-     * @param fireEvents
+    /*
+     * @{inheritDoc}
+     * Sets Big decimal value.
      */
     @Override
     public void setValue(BigDecimal value, boolean fireEvents) {

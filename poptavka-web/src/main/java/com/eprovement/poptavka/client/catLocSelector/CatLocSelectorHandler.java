@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -9,12 +12,22 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.LinkedList;
 
+/**
+ * Handle RPC calls for CatLocSelector Handler.
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class CatLocSelectorHandler extends BaseEventHandler<CatLocSelectorEventBus> {
 
+    /**************************************************************************/
+    /* Inject Services                                                        */
+    /**************************************************************************/
     @Inject
     CatLocSelectorRPCServiceAsync catLocSelectorService;
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
     /**
      * There is not need to request for all selected hierarchies,
      * because at the same time, there can be opened only one path.

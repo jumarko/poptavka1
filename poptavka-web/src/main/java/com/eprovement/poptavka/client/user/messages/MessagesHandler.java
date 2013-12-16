@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -17,15 +20,27 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 
 import java.util.List;
 
+/**
+ * Handle RPC calls for Message module.
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private MessagesRPCServiceAsync messagesService;
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface.                          */
     /**************************************************************************/
+    /**
+     * Request table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.MESSAGES_INBOX:
@@ -36,6 +51,10 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
         }
     }
 
+    /**
+     * Request table data.
+     * @param searchDefinition - search criteria
+     */
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.MESSAGES_INBOX:
@@ -49,6 +68,11 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
     /**************************************************************************/
     /* INBOX                                                                  */
     /**************************************************************************/
+    /**
+     * Request inbox table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     public void getInboxMessagesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         messagesService.getInboxMessagesCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
@@ -59,6 +83,10 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             });
     }
 
+    /**
+     * Request inbox table data.
+     * @param searchDefinition - search criteria
+     */
     public void getInboxMessages(SearchDefinition searchDefinition) {
         messagesService.getInboxMessages(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
@@ -96,6 +124,11 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
         });
     }
 
+    /**
+     * Request conversations
+     * @param threadRootId
+     * @param subRootId
+     */
     public void onRequestConversation(Long threadRootId, Long subRootId) {
         messagesService.getConversationMessages(threadRootId, subRootId,
                 new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
@@ -106,15 +139,23 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
             });
     }
 
+    /**
+     * Deletes messages.
+     * @param messagesIds to remove
+     */
     public void onDeleteMessages(List<Long> messagesIds) {
         messagesService.deleteMessages(messagesIds, new SecuredAsyncCallback<List<UserMessageDetail>>(eventBus) {
             @Override
             public void onSuccess(List<UserMessageDetail> result) {
                 GWT.log("Messages deleted.");
+                //TODO implement
             }
         });
     }
 
+    /**
+     * Updates unread messages count.
+     */
     public void onUpdateUnreadMessagesCount() {
         messagesService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override

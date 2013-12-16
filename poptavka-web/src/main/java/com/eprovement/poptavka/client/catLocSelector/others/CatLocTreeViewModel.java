@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManager.PresentersInterface;
@@ -23,6 +26,11 @@ public class CatLocTreeViewModel implements TreeViewModel {
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates CatLocTreeModel.
+     * @param selectionModel - selection model
+     * @param presenter - presenter
+     */
     public CatLocTreeViewModel(
         SetSelectionModel<ICatLocDetail> selectionModel,
         PresentersInterface presenter) {
@@ -52,6 +60,11 @@ public class CatLocTreeViewModel implements TreeViewModel {
         return new DefaultNodeInfo(dataProvider, categoryCell, selectionModel, selectionManager, null);
     }
 
+    /**
+     * Check if item is leaf.
+     * @param value - item
+     * @return true if leaf, false otherwise (node)
+     */
     @Override
     public boolean isLeaf(Object value) {
         if (value == null) {

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server;
 
 import java.io.IOException;
@@ -26,9 +29,13 @@ public final class CrawlServlet implements Filter {
     private static final int TIMEOUT = 3000;
     private static final int ESCAPED_LENGTH_LONGER = 20;
     private static final int ESCAPED_LENGTH = 19;
-
     private static final String FRAGMENT = "_escaped_fragment_";
 
+    /**
+     * Rewrite query string.
+     * @param queryString to be updated
+     * @return return updated string
+     */
     private static String rewriteQueryString(String queryString) {
         StringBuilder queryStringSb = new StringBuilder(queryString);
 
@@ -38,7 +45,7 @@ public final class CrawlServlet implements Filter {
             tmpSb.append("#!");
             try {
                 tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + ESCAPED_LENGTH_LONGER,
-                        queryStringSb.length()), "UTF-8"));
+                    queryStringSb.length()), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 // TODO LATER Auto-generated catch block
                 e.printStackTrace();
@@ -52,9 +59,9 @@ public final class CrawlServlet implements Filter {
             tmpSb.append("#!");
             try {
                 tmpSb.append(URLDecoder.decode(queryStringSb.substring(i + ESCAPED_LENGTH,
-                        queryStringSb.length()), "UTF-8"));
+                    queryStringSb.length()), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
-            // TODO LATER juraj: Auto-generated catch block
+                // TODO LATER juraj: Auto-generated catch block
                 e.printStackTrace();
             }
             queryStringSb = tmpSb;
@@ -66,21 +73,22 @@ public final class CrawlServlet implements Filter {
 
         return queryString;
     }
-
     private FilterConfig filterConfig = null;
 
-      /**
-       * Destroys the filter configuration.
-       */
+    /**
+     * Destroys the filter configuration.
+     */
+    @Override
     public void destroy() {
         this.filterConfig = null;
     }
 
-      /**
-       * Filters all requests and invokes headless browser if necessary.
-       */
+    /**
+     * Filters all requests and invokes headless browser if necessary.
+     */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
-          FilterChain chain) throws IOException {
+        FilterChain chain) throws IOException {
         if (filterConfig == null) {
             return;
         }
@@ -110,8 +118,8 @@ public final class CrawlServlet implements Filter {
             PrintWriter out = res.getWriter();
             out.println("<hr>");
             out.println("<center><h3>You are viewing a non-interactive page that is intended for the crawler. "
-                    + "You probably want to see this page: <a href=\""
-                    + pageName + "\">" + pageName + "</a></h3></center>");
+                + "You probably want to see this page: <a href=\""
+                + pageName + "\">" + pageName + "</a></h3></center>");
             out.println("<hr>");
 
             out.println(page.asXml());
@@ -127,11 +135,11 @@ public final class CrawlServlet implements Filter {
         }
     }
 
-      /**
-       * Initializes the filter configuration.
-       */
+    /**
+     * Initializes the filter configuration.
+     */
+    @Override
     public void init(FilterConfig config) {
         this.filterConfig = config;
     }
-
 }

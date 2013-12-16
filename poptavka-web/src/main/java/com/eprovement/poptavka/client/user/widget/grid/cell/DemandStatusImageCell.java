@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -14,6 +17,9 @@ import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
 /**
+ * Clickable cell displaying star status of message.
+ * Not all States are supported yet.
+ *
  * NEW
  * * There are two meanings for this state. Brand new Client created Demand during registration
  * * and he must confirm email activation link. The other meaning is when Demand came from external system
@@ -52,19 +58,26 @@ import com.google.gwt.user.client.ui.HTMLPanel;
  * * A Client or Operator canceled Demand on which the work could being done
  * * or the work has never stared for some reason.
  *
- * Clickable cell displaying star status of message.
- * Not all States are supported yet.
- *
  * @author beho
+ * @author Martin Slavkovsky
  * @param <C>
  *
  */
 public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Created DemandStatusImageCell.
+     */
     public DemandStatusImageCell() {
         super("mouseover", "mouseout");
         if (renderer == null) {
@@ -72,6 +85,12 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         }
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
             DemandStatus value, SafeHtmlBuilder sb) {
@@ -83,6 +102,9 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         setImage(value, sb);
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, DemandStatus value, NativeEvent event,
@@ -95,6 +117,12 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         }
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Displays tooltip popup.
+     */
     private void displayPopup(NativeEvent event, DemandStatus demandStauts) {
         if (displayed) {
             return;
@@ -114,11 +142,18 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         popup.show();
     }
 
+    /**
+     * Hides popup
+     */
     private void hidePopup() {
         displayed = false;
         popup.hide();
     }
 
+    /**
+     * Sets cell's image.
+     * @param value - demand status value
+     */
     private void setImage(DemandStatus value, SafeHtmlBuilder sb) {
         switch (value) {
             case NEW:
@@ -135,6 +170,11 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         }
     }
 
+    /**
+     * Converts DemandStatus to readable string.
+     * @param value - demand status value
+     * @return string
+     */
     private String getExplanationText(DemandStatus value) {
         switch (value) {
             case NEW:

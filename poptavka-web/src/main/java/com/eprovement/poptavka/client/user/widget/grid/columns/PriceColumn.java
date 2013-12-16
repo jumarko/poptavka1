@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.columns;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -8,8 +11,10 @@ import com.google.gwt.user.cellview.client.Column;
 import java.math.BigDecimal;
 
 /**
+ * Use to create <b>price column</b> in table.
+ * Object must implemnets <b>TableDisplayPrice</b> to be displayable in table with price column.
  *
- * @author Mato
+ * @author Martin Slavkovsky
  */
 public class PriceColumn extends Column<TableDisplayPrice, String> {
 
@@ -18,6 +23,15 @@ public class PriceColumn extends Column<TableDisplayPrice, String> {
         BigDecimal getPrice();
     }
 
+    /**
+     * Creates PriceColumn with:
+     * <ul>
+     *   <li>sortable: true</li>
+     *   <li>cellStyleNames: none</li>
+     *   <li>fieldUpdater: provided</li>
+     * </ul>
+     * @param fieldUpdater
+     */
     public PriceColumn(FieldUpdater fieldUpdater) {
         super(new SafeClickableTextCell());
         setSortable(true);
@@ -26,6 +40,9 @@ public class PriceColumn extends Column<TableDisplayPrice, String> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public String getValue(TableDisplayPrice object) {
         return Storage.CURRENCY_FORMAT.format(object.getPrice());

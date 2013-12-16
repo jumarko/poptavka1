@@ -1,13 +1,10 @@
 /*
- * HomeSuppliersEventBus servers all events for module HomeSuppliersModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis dodavatelov
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
 import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -24,8 +21,12 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
+ * HomeSuppliersEventBus servers all events for module HomeSuppliersModule.
  *
- * @author martin.slavkovsky
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis dodavatelov
+ *
+ * @author Martin Slavkovsky
  */
 @Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
@@ -50,7 +51,6 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     void forward();
 
     /**************************************************************************/
-
     /* Navigation events.                                                     */
     /**************************************************************************/
     /**

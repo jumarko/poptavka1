@@ -1,9 +1,12 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.layout;
 
 import com.google.gwt.resources.client.CssResource;
 
 /**
- * GWT Wrapper for base app layout.
+ * Defines styles for base app layout.
  *
  * @author Beho, Jaro
  */

@@ -1,8 +1,5 @@
 /*
- * HomeDemandsEventBus servers all events for module HomeDemandsModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis Poptaviek
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.addressSelector;
 
@@ -18,6 +15,8 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
+ * Address selector event bus.
+ *
  * @author Martin Slavkovsky
  */
 @Events(startPresenter = AddressSelectorPresenter.class, module = AddressSelectorModule.class)

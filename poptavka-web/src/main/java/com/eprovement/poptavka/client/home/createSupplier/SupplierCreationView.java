@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
@@ -28,7 +31,11 @@ import com.google.gwt.user.client.ui.Widget;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Supplier creation view.
+ *
+ * @author Beho, Martin Slavkovsky
+ */
 public class SupplierCreationView extends OverflowComposite
         implements SupplierCreationPresenter.CreationViewInterface {
 
@@ -39,6 +46,7 @@ public class SupplierCreationView extends OverflowComposite
 
     interface CreationViewUiBinder extends UiBinder<Widget, SupplierCreationView> {
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -72,6 +80,9 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates supplier creation view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -95,6 +106,9 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* UiHandler                                                              */
     /**************************************************************************/
+    /**
+     * Binds agreed check handler.
+     */
     @UiHandler("agreedCheck")
     public void agreedCheckChanged(ClickEvent event) {
         agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
@@ -104,38 +118,61 @@ public class SupplierCreationView extends OverflowComposite
     /* Getters                                                                */
     /**************************************************************************/
     /** PANELS. **/
+    /**
+     * @return the tab layout panel
+     */
     @Override
     public TabLayoutPanel getMainPanel() {
         return mainPanel;
     }
 
+    /**
+     * @param order of holder panel
+     * @return the particular holder panel
+     */
     @Override
     public SimplePanel getHolderPanel(int order) {
         return holderPanels.get(order);
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the registration button
+     */
     @Override
     public Button getRegisterButton() {
         return buttonsPanel4.getNextBtn();
     }
 
     /** OTHERS. **/
+    /**
+     * @param order of the next tooltip
+     * @return the particular next tooltip
+     */
     @Override
     public Tooltip getNextBtnTooltip(int order) {
         return tooltips.get(order);
     }
 
+    /**
+     * @return the condition anchor
+     */
     @Override
     public Anchor getConditionLink() {
         return conditionLink;
     }
 
+    /**
+     * @return agreed checkbox
+     */
     @Override
     public CheckBox getAgreedCheck() {
         return agreedCheck;
     }
 
+    /**
+     * Shows conditinos in popup.
+     */
     @Override
     public void showConditions() {
         final PopupPanel panel = new PopupPanel(true, false);
@@ -170,6 +207,9 @@ public class SupplierCreationView extends OverflowComposite
         panel.show();
     }
 
+    /**
+     * @return true if agreement checkbox is checked, false otherwise.
+     */
     @Override
     public boolean isAgreementChecked() {
         if (agreedCheck.getValue()) {
@@ -180,11 +220,17 @@ public class SupplierCreationView extends OverflowComposite
         }
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterPanel() {
         return footerPanel;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
@@ -193,6 +239,9 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Binds back & next buttons handlers.
+     */
     private void bindHandlers() {
         //back click handler
         buttonsPanel1.getBackBtn().addClickHandler(backClickHandler);
@@ -206,10 +255,16 @@ public class SupplierCreationView extends OverflowComposite
         buttonsPanel4.getNextBtn().addClickHandler(nextClickHandler);
     }
 
+    /**
+     * Selects text tab.
+     */
     private void selectNextTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() + 1, true);
     }
 
+    /**
+     * Selects previous tab.
+     */
     private void selectPreviousTab() {
         mainPanel.selectTab(mainPanel.getSelectedIndex() - 1, true);
     }

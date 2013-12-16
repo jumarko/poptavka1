@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.eprovement.poptavka.client.common.validation.Extended;
@@ -10,7 +13,6 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.Tab
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.type.DemandDetailType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -37,6 +39,9 @@ import org.hibernate.validator.constraints.NotBlank;
 public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate,
     TableDisplayValidTo, TableDisplayDemandTitle, TableDisplayDemandStatus, TableDisplayLocality {
 
+    /**************************************************************************/
+    /* Enums                                                                  */
+    /**************************************************************************/
     //Only fields that can be updated
     public enum DemandField {
 
@@ -53,7 +58,6 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         DEMAND_STATUS("status"),
         CREATED("createdDate"),
         EXCLUDE_SUPPLIER("excludedSuppliers");
-
         public static final String SEARCH_CLASS = "demand";
         private String value;
 
@@ -89,6 +93,10 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
             return value;
         }
     }
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
     private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
     private long clientId;
@@ -98,85 +106,55 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
     private int clientRating;
     private String demandType;
     private DemandStatus status;
-    private DemandDetailType detailType = DemandDetailType.BASE;
     private long demandId;
     private boolean starred;
     private Date created;
-
     //Basic Demand Info
     @NotBlank(message = "{titleNotBlank}")
     @Pattern(regexp = "[a-zA-Z0-9\\ ,]*", message = "{patternNoSpecChars}",
-            groups = {Extended.class, SearchGroup.class })
+    groups = {Extended.class, SearchGroup.class })
     @Size(min = 5, max = 100, message = "{titleSize}", groups = Extended.class)
     private String title;
-
     @NotNull(message = "{priceNotNull}")
     //@Pattern cannot be used for non String attributes
     @Digits(integer = 12, fraction = 0, message = "{priceDigits}", groups = {Extended.class, SearchGroup.class })
     @Min(value = 0, message = "{priceMin}", groups = {Extended.class, SearchGroup.class })
     private BigDecimal price;
-
     @NotNull(message = "{endDateNotNull}")
     @Future(message = "{endDateFuture}", groups = Extended.class)
     private Date endDate;
-
     @NotNull(message = "{validToNotNull}")
     @Future(message = "{validToFuture}", groups = Extended.class)
     private Date validTo;
-
     @NotBlank(message = "{descriptionNotBlank}")
     @Size(min = 20, max = 1500, message = "{descriptionSize}", groups = Extended.class)
     private String description;
-
     private List<FullSupplierDetail> excludedSuppliers;
     //KeyProvider
     public static final ProvidesKey<FullDemandDetail> KEY_PROVIDER =
-            new ProvidesKey<FullDemandDetail>() {
-                @Override
-                public Object getKey(FullDemandDetail item) {
-                    return item == null ? null : item.getDemandId();
-                }
-            };
+        new ProvidesKey<FullDemandDetail>() {
+            @Override
+            public Object getKey(FullDemandDetail item) {
+                return item == null ? null : item.getDemandId();
+            }
+        };
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     /**
-     * for serialization. *
+     * Creates FullDemandDetail.
      */
     public FullDemandDetail() {
-        super();
-        setType(DemandDetailType.FULL);
+        //For serialization.
     }
 
-    public FullDemandDetail(FullDemandDetail demand) {
-        this.updateWholeDemand(demand);
-    }
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeDemand(FullDemandDetail demand) {
-        demandId = demand.getDemandId();
-        title = demand.getDemandTitle();
-        description = demand.getDescription();
-        price = demand.getPrice();
-        created = demand.getCreated();
-        endDate = demand.getEndDate();
-        validTo = demand.getValidTo();
-        maxSuppliers = demand.getMaxSuppliers();
-        minRating = demand.getMinRating();
-        //categories
-        categories = new ArrayList<ICatLocDetail>(demand.getCategories());
-
-        //localities
-        localities = new ArrayList<ICatLocDetail>(demand.getLocalities());
-
-        status = demand.getDemandStatus();
-        demandType = demand.getDemandType();
-        clientId = demand.getClientId();
-
-        excludedSuppliers = new ArrayList<FullSupplierDetail>();
-        for (FullSupplierDetail supplier : demand.getExcludedSuppliers()) {
-//            excludedSuppliers.add(new FullSupplierDetail(supplier));
-        }
-    }
-
+    /**************************************************************************/
+    /* Getter & Setter pairs                                                  */
+    /**************************************************************************/
+    /*
+     * Categories pair
+     */
     public ArrayList<ICatLocDetail> getCategories() {
         return categories;
     }
@@ -185,8 +163,8 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.categories = new ArrayList<ICatLocDetail>(categories);
     }
 
-    /**
-     * Localities pair.
+    /*
+     * Localities pair
      */
     @Override
     public ArrayList<ICatLocDetail> getLocalities() {
@@ -197,6 +175,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.localities = new ArrayList<ICatLocDetail>(localities);
     }
 
+    /*
+     * Client id pair.
+     */
     public long getClientId() {
         return clientId;
     }
@@ -205,6 +186,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.clientId = clientId;
     }
 
+    /*
+     * Max suppliers pair.
+     */
     public int getMaxSuppliers() {
         return maxSuppliers;
     }
@@ -213,6 +197,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.maxSuppliers = maxSuppliers;
     }
 
+    /*
+     * Min rating pair.
+     */
     public int getMinRating() {
         return minRating;
     }
@@ -221,6 +208,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.minRating = minRating;
     }
 
+    /*
+     * Demand type pair.
+     */
     public String getDemandType() {
         return demandType;
     }
@@ -229,7 +219,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.demandType = demandType;
     }
 
-    /**
+    /*
      * Demand created date pair.
      */
     @Override
@@ -241,35 +231,15 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.created = created;
     }
 
+    /**
+     * @return the unread messages count
+     */
     @Override
     public int getUnreadMessagesCount() {
         return 0;
     }
 
-    @Override
-    public String toString() {
-        return "\nGlobal Demand Detail Info"
-                + "\n- BaseDemandDetail:"
-                + "\n     demandId=" + demandId
-                + "\n     title=" + title
-                + "\n     Description=" + description
-                + "\n     Price=" + price
-                + "\n     endDate=" + endDate
-                + "\n     validToDate=" + validTo
-                + "\n     isStarred=" + starred
-                + "\n     detailType=" + detailType
-                + "\n"
-                + "* FullDemandDetail:"
-                + "\n     localities=" + localities
-                + "\n     categories=" + categories
-                + "\n     clientId=" + clientId
-                + "\n     maxOffers=" + maxSuppliers
-                + "\n     minRating=" + minRating
-                + "\n     demandType=" + demandType
-                + "\n     demandStatus=" + status;
-    }
-
-    /**
+    /*
      * Offer status pair.
      */
     @Override
@@ -281,14 +251,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.status = demandStatus;
     }
 
-    public DemandDetailType getDetailType() {
-        return detailType;
-    }
-
-    public void setDetailType(DemandDetailType detailType) {
-        this.detailType = detailType;
-    }
-
+    /*
+     * Demand id pair.
+     */
     public long getDemandId() {
         return demandId;
     }
@@ -297,6 +262,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.demandId = demandId;
     }
 
+    /*
+     * End date pair.
+     */
     public Date getEndDate() {
         return endDate;
     }
@@ -305,6 +273,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.endDate = endDate;
     }
 
+    /*
+     * Valid to date.
+     */
     @Override
     public Date getValidTo() {
         return validTo;
@@ -314,7 +285,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.validTo = validToDate;
     }
 
-    /**
+    /*
      * Demand title pair.
      */
     @Override
@@ -326,6 +297,9 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.title = title;
     }
 
+    /*
+     * Description pair.
+     */
     public String getDescription() {
         return description;
     }
@@ -334,22 +308,31 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.description = description;
     }
 
+    /*
+     * Price pair.
+     */
     public BigDecimal getPrice() {
         return price;
-    }
-
-    public void setType(DemandDetailType demandDetailType) {
-        this.detailType = demandDetailType;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /*
+     * Exclude suppliers pair
+     */
     public List<FullSupplierDetail> getExcludedSuppliers() {
         return excludedSuppliers;
     }
 
+    public void setExcludedSuppliers(List<FullSupplierDetail> excludedSuppliers) {
+        this.excludedSuppliers = excludedSuppliers;
+    }
+
+    /*
+     * Client rating pair
+     */
     public int getClientRating() {
         return clientRating;
     }
@@ -358,8 +341,29 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.clientRating = clientRating;
     }
 
-    public void setExcludedSuppliers(List<FullSupplierDetail> excludedSuppliers) {
-        this.excludedSuppliers = excludedSuppliers;
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    @Override
+    public String toString() {
+        return "\nGlobal Demand Detail Info"
+            + "\n- BaseDemandDetail:"
+            + "\n     demandId=" + demandId
+            + "\n     title=" + title
+            + "\n     Description=" + description
+            + "\n     Price=" + price
+            + "\n     endDate=" + endDate
+            + "\n     validToDate=" + validTo
+            + "\n     isStarred=" + starred
+            + "\n"
+            + "* FullDemandDetail:"
+            + "\n     localities=" + localities
+            + "\n     categories=" + categories
+            + "\n     clientId=" + clientId
+            + "\n     maxOffers=" + maxSuppliers
+            + "\n     minRating=" + minRating
+            + "\n     demandType=" + demandType
+            + "\n     demandStatus=" + status;
     }
 
     @Override

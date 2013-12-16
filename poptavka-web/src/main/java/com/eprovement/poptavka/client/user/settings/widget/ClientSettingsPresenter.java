@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
@@ -10,6 +13,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 /**
+ * Client settings widget is part of Settings module's widgets.
+ * Displays client's profile data only.
  *
  * @author Martin Slavkovsky
  */
@@ -33,17 +38,30 @@ public class ClientSettingsPresenter extends LazyPresenter<ClientSettingsViewInt
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
-    public void initUserSettings(SimplePanel holder) {
+    /**
+     * Inits ClientSettings widget.
+     * @param holder panel
+     */
+    public void iniClientSettings(SimplePanel holder) {
         holder.setWidget(view.getWidgetView());
     }
 
     /**************************************************************************/
     /* METHODS                                                                */
     /**************************************************************************/
+    /**
+     * Sets client's profile data.
+     * @param detail carring profile data
+     */
     public void onSetClientSettings(SettingDetail detail) {
         view.setClientSettings(detail);
     }
 
+    /**
+     * Updates client's profile data of given object with actual widget's profile data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     public SettingDetail updateClientSettings(SettingDetail detail) {
         return view.updateClientSettings(detail);
     }

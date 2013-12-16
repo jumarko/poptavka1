@@ -5,6 +5,7 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel styleName='{res.initial.footer}'>
+        <!--Links to Want-Something page-->
         <g:HTMLPanel styleName='links pull-right' >
             <g:Button ui:field="termsAndConditions" styleName='button'>
                 <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
@@ -27,6 +28,7 @@
             </g:Button>            
         </g:HTMLPanel>
             
+        <!--Links to Want-Something related pages-->
         <g:HTMLPanel styleName='block' >
             <g:HTMLPanel styleName='pull-left' >
                 <g:Label>

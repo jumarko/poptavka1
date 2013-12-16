@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -9,7 +12,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.client.infoWidgets.widgets.ContactUsPopupPresenter.IContactUsPopupView;
-import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.constants.BackdropType;
 import com.google.gwt.core.client.GWT;
@@ -28,7 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class ContactUsPopupView extends Modal implements IContactUsPopupView, ProvidesValidate {
 
     /**************************************************************************/
-    /* UIBINDER                                                               */
+    /* UiBinder                                                               */
     /**************************************************************************/
     private static ContactUsPopupUiBinder uiBinder = GWT.create(ContactUsPopupUiBinder.class);
 
@@ -44,7 +47,7 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
     }
 
     /**************************************************************************/
-    /* ATTRIBUTES                                                             */
+    /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) WSListBox subject;
@@ -52,8 +55,11 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
     @UiField Button sendButton, closeButton;
 
     /**************************************************************************/
-    /* INITIALIZATION                                                         */
+    /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates contact us popup view's components.
+     */
     @Override
     public void createView() {
         // set values for subjectListBox
@@ -73,52 +79,52 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
         setDynamicSafe(true);
     }
 
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Clear email and messageBody textboxes.
+     */
     @Override
     public void reset() {
         emailMonitor.setValue("");
         msgBodyMonitor.setValue("");
     }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     /**
-     * Initialize validation monitors for each field we want to validate.
+     * @return the send button hasClickHandler
      */
-    private void initValidationMonitors() {
-        emailMonitor = new ValidationMonitor<EmailDialogDetail>(
-                EmailDialogDetail.class, EmailDialogDetail.Field.EMAIL_FROM.getValue());
-        msgBodyMonitor = new ValidationMonitor<EmailDialogDetail>(
-                EmailDialogDetail.class, EmailDialogDetail.Field.MESSAGE.getValue());
-    }
-
-    private void createSubjectListBox() {
-        WSListBoxData subjectData = new WSListBoxData();
-        subjectData.insertItem(Storage.MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
-        subjectData.insertItem(Storage.MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
-        subjectData.insertItem(Storage.MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
-        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
-        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
-        subject = WSListBox.createListBox(subjectData, 0);
-    }
-
-    /**************************************************************************/
-    /* GETTERS                                                                */
-    /**************************************************************************/
     @Override
     public HasClickHandlers getSendButton() {
         return sendButton;
     }
 
+    /**
+     * @return the close button hasClickHandler
+     */
     @Override
     public HasClickHandlers getCloseButton() {
         return closeButton;
     }
 
+    /**
+     * @return the subject WSListBox
+     */
     @Override
     public WSListBox getSubjectListBox() {
         return subject;
     }
 
+    /**
+     * Gets filled contact us detail object.
+     * @return filled detail object
+     */
     @Override
-    public EmailDialogDetail getEmailDialogDetail() {
-        EmailDialogDetail detail = new EmailDialogDetail();
+    public ContactUsDetail getEmailDialogDetail() {
+        ContactUsDetail detail = new ContactUsDetail();
         detail.setRecipient(Storage.MSGS.supportWantSomethingEmail());
         detail.setSubject(subject.getSelected());
         detail.setEmailFrom((String) emailMonitor.getValue());
@@ -126,6 +132,10 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
         return detail;
     }
 
+    /**
+     * Validate view's components
+     * @return true if components are valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         //Need to do it this way because we need all monitors perform isValid method.
@@ -135,8 +145,37 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
         return valid;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public ContactUsPopupView getWidgetView() {
         return this;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Initialize validation monitors for each field we want to validate.
+     */
+    private void initValidationMonitors() {
+        emailMonitor = new ValidationMonitor<ContactUsDetail>(
+                ContactUsDetail.class, ContactUsDetail.Field.EMAIL_FROM.getValue());
+        msgBodyMonitor = new ValidationMonitor<ContactUsDetail>(
+                ContactUsDetail.class, ContactUsDetail.Field.MESSAGE.getValue());
+    }
+
+    /**
+     * Creates WSListBox containing message types that can be send.
+     */
+    private void createSubjectListBox() {
+        WSListBoxData subjectData = new WSListBoxData();
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectGeneralQuestion(), Constants.SUBJECT_GENERAL_QUESTION);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectHelp(), Constants.SUBJECT_HELP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectPartnership(), Constants.SUBJECT_PARTNERSHIP);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportIssue(), Constants.SUBJECT_REPORT_ISSUE);
+        subjectData.insertItem(Storage.MSGS.emailDialogSubjectReportUser(), Constants.SUBJECT_REPORT_USER);
+        subject = WSListBox.createListBox(subjectData, 0);
     }
 }

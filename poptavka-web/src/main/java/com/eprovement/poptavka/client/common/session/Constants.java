@@ -1,9 +1,7 @@
-package com.eprovement.poptavka.client.common.session;
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
-
+package com.eprovement.poptavka.client.common.session;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
@@ -19,6 +18,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
 /**
+ * Thank you popup is a bootstrap modal for displaying info messages about workflow.
+ * Popup is shown for a certain period (THANK_YOU_POPUP_DISPLAY_TIME constant)
+ * of time displaying given message.
+ * After that, a given additional action is performed.
  *
  * @author Martin Slavkovsky
  */
@@ -49,6 +52,9 @@ public final class ThankYouPopup extends Modal {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates thank you view's compotents.
+     */
     public ThankYouPopup() {
         add(uiBinder.createAndBindUi(this));
 
@@ -64,12 +70,10 @@ public final class ThankYouPopup extends Modal {
     /* Popup                                                                  */
     /**************************************************************************/
     /**
-     * Thank you popup name tells more than enough. Popup is shown for a certain
-     * period (THANK_YOU_POPUP_DISPLAY_TIME constant) of time displaying given message.
-     * After that, a given additional action is performed.
-     *
+     * Creates thank you popup with given message and timer.
      * @param message that is shown during popup show time.
-     * @param additionalAction additional action after hide, provide null if no additional action is needed.
+     * @param additionalAction define how long will be popup displayed and following action.
+     * Provide null if default timer with no action is enough.
      */
     public void create(SafeHtml message, Timer additionalAction) {
         messageThankYou.setHTML(message);

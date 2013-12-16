@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.session;
 
 import com.eprovement.poptavka.resources.StyleResource;
@@ -58,6 +61,7 @@ public final class Storage {
 
     /**************************************************************************/
     /* History methods                                                        */
+    /* TODO Martin - refactor, not used any more                              */
     /**************************************************************************/
     public static boolean isLogoutDueToHistory() {
         return logoutDueToHistory;
@@ -92,8 +96,14 @@ public final class Storage {
     }
 
     /**************************************************************************/
-    /*  Date time formater initialization                                     */
+    /* Date time formater initialization                                      */
     /**************************************************************************/
+    /**
+     * Inits date time format.
+     * Differ between <b>long</b>(large screens) and <b>short</b>(tiny-middle screens).
+     *
+     * @param longFormat true if long format should be used, false for short one
+     */
     public void initDateTimeFormat(boolean longFormat) {
         if (longFormat) {
             dateTimeFormat = DateTimeFormat.getFormat(MSGS.formatDateLong());
@@ -101,9 +111,16 @@ public final class Storage {
             dateTimeFormat = DateTimeFormat.getFormat(MSGS.formatDateMiddle());
         }
     }
+
+    /**
+     * @return the date time format
+     */
     public DateTimeFormat getDateTimeFormat() {
         return dateTimeFormat;
     }
+
+    /**************************************************************************/
+    /* User related                                                           */
     /**************************************************************************/
     /**
      * @return the businessUserDetail
@@ -119,6 +136,25 @@ public final class Storage {
         businessUserDetail = aBusinessUserDetail;
     }
 
+    /**
+     * @return the user detail
+     */
+    public static UserDetail getUser() {
+        return userDetail;
+    }
+
+    /**
+     * Sets user detail object for global access.
+     * @param aUserDetail
+     */
+    public static void setUserDetail(UserDetail aUserDetail) {
+        userDetail = aUserDetail;
+    }
+
+    /**************************************************************************/
+    /* Conversation related                                                   */
+    /* TODO LATER Martin - refactor, not sure why it must be here             */
+    /**************************************************************************/
     /**
      * @return the threadRootId
      */
@@ -161,36 +197,6 @@ public final class Storage {
         supplierId = aSupplierId;
     }
 
-    //getters for global final classes
-    public LocalizableMessages getMessages() {
-        return MSGS;
-    }
-
-    public StyleResource getResource() {
-        return RSCS;
-    }
-
-    public static void setUserDetail(UserDetail aUserDetail) {
-        userDetail = aUserDetail;
-    }
-
-    public static UserDetail getUser() {
-        return userDetail;
-    }
-
-    public static int getCurrentlyLoadedView() {
-        return currentlyLoadedView;
-    }
-
-    /**
-     * Set value currentlyLoadedView to actual loaded widget table. Used for SearchModule.
-     * If widget contains no table, set value to NULL.
-     * @param currentlyLoadedView
-     */
-    public static void setCurrentlyLoadedView(int currentlyLoadedView) {
-        Storage.currentlyLoadedView = currentlyLoadedView;
-    }
-
     public static long getDemandId() {
         return demandId;
     }
@@ -207,6 +213,28 @@ public final class Storage {
         Storage.appCalledByURL = appCalledByURL;
     }
 
+    /**************************************************************************/
+    /* Widgets related                                                        */
+    /**************************************************************************/
+    /**
+     * @return the current widget id
+     */
+    public static int getCurrentlyLoadedView() {
+        return currentlyLoadedView;
+    }
+
+    /**
+     * Set value currentlyLoadedView to actual loaded widget table. Used for SearchModule.
+     * If widget contains no table, set value to NULL.
+     * @param currentlyLoadedView
+     */
+    public static void setCurrentlyLoadedView(int currentlyLoadedView) {
+        Storage.currentlyLoadedView = currentlyLoadedView;
+    }
+
+    /**************************************************************************/
+    /* Other                                                                  */
+    /**************************************************************************/
     /**
      * Method clears all data of this Storage session object.
      */

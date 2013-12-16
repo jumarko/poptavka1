@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.search.advanced;
 
 import com.eprovement.poptavka.client.search.SearchModulePresenter.SearchModulesViewInterface;
@@ -21,6 +24,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Advance Search view consists of tabLayout panel with
+ * <b>DemandAttribute, SupplierAttribute, CurrectAttribute, CategorySelector, LocalitySelector</b> tabs.
+ * @author Martin Slavkovsky
+ */
 public class AdvanceSearchView extends Modal
         implements AdvanceSearchPresenter.AdvanceSearchInterface {
 
@@ -43,6 +51,7 @@ public class AdvanceSearchView extends Modal
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    /** UiBinder attributes. **/
     @UiField Label currentViewAttributesLabel;
     @UiField Button searchBtn1, searchBtn2, clearBtn;
     @UiField TabLayoutPanel mainPanel;
@@ -54,9 +63,7 @@ public class AdvanceSearchView extends Modal
     /** Class attributes. **/
     private MenuItem custom;
     private int menuItemsCount = 2;
-    /**************************************************************************/
-    /* Tab constants                                                          */
-    /**************************************************************************/
+    /** Constants. **/
     public static final int DEMANDS_SELECTOR_WIDGET = 0;
     public static final int SUPPLIER_SELECTOR_WIDGET = 1;
     public static final int CURRENT_SELECTOR_WIDGET = 2;
@@ -66,6 +73,9 @@ public class AdvanceSearchView extends Modal
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates AdvanceSearch view's compotents.
+     */
     @Override
     public void createView() {
         add(uiBinder.createAndBindUi(this));
@@ -78,6 +88,11 @@ public class AdvanceSearchView extends Modal
         setDynamicSafe(true);
     }
 
+    /**
+     * Bind handlers.
+     * Places here, because this is only UI functionality to set tabs visibility
+     * according to <b>searchWhat</b> dropdown menu choice.
+     */
     public void bindHandlers() {
         demand.setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
@@ -108,6 +123,9 @@ public class AdvanceSearchView extends Modal
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Sets current tab's name according to current loaded view (currentAttribute widget).
+     */
     @Override
     public void setCurrentViewTabName() {
         switch (Storage.getCurrentlyLoadedView()) {
@@ -144,41 +162,65 @@ public class AdvanceSearchView extends Modal
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the custom attribute selector panel
+     */
     @Override
     public SimplePanel getAttributeSelectorPanel() {
         return attributeSelectorWidgetPanel;
     }
 
+    /**
+     * @return the category selector panel
+     */
     @Override
     public SimplePanel getCategorySelectorPanel() {
         return categorySelectorWidgetPanel;
     }
 
+    /**
+     * @return the locality selector panel
+     */
     @Override
     public SimplePanel getLocalitySelectorPanel() {
         return localitySelectorWidgetPanel;
     }
 
+    /**
+     * @return the tab layout panel
+     */
     @Override
     public TabLayoutPanel getTabLayoutPanel() {
         return mainPanel;
     }
 
+    /**
+     * @return the search button 1
+     */
     @Override
     public Button getSearchBtn1() {
         return searchBtn1;
     }
 
+    /**
+     * @return the search button 2
+     */
     @Override
     public Button getSearchBtn2() {
         return searchBtn2;
     }
 
+    /**
+     * @return the clear button
+     */
     @Override
     public Button getClearBtn() {
         return clearBtn;
     }
 
+    /**
+     * @return the search what choice
+     */
     @Override
     public int getSearchWhat() {
         if (searchWhatItem.getText().equals(demand.getText())) {
@@ -190,6 +232,10 @@ public class AdvanceSearchView extends Modal
         }
     }
 
+    /**
+     * Fills search criteria's attributes
+     * @param searchDataHolder - search criteria object that is to be updated
+     */
     @Override
     public void fillAttributes(SearchModuleDataHolder searchDataHolder) {
         if (mainPanel.getTabWidget(DEMANDS_SELECTOR_WIDGET).getParent().isVisible()) {
@@ -204,14 +250,23 @@ public class AdvanceSearchView extends Modal
         }
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public AdvanceSearchView getWidgetView() {
         return this;
     }
 
     /**************************************************************************/
-    /*  Helper methods                                                       */
+    /*  Helper methods                                                        */
     /**************************************************************************/
+    /**
+     * Sets basic tabs visibity.
+     * @param demandsTabVisible true to display demandAttributeTab
+     * @param suppliersTabVisible true to display supplierAttributeTab
+     * @param currentViewTabVisible true to display currentAttributeTab
+     */
     @Override
     public void setAdvanceContentTabsVisibility(
             boolean demandsTabVisible, boolean suppliersTabVisible, boolean currentViewTabVisible) {
@@ -223,6 +278,11 @@ public class AdvanceSearchView extends Modal
                 .getParent().setVisible(currentViewTabVisible);
     }
 
+    /**
+     * Adds choice to searchWhat dropdown menu.
+     * @param addOrRemove - true to add currentWidget name to searchWhat dropdown menu,
+     *                      false otherwise
+     */
     @Override
     public void addCustomItemToSearchWhatBox(boolean addOrRemove) {
         if (addOrRemove) {

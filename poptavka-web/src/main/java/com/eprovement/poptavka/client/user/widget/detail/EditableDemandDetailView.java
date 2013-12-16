@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.detail;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
@@ -27,6 +30,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * View consists of components allowing updating demand's data.
+ * <b><i>Note:</i></b>
+ * For updating categories and localities a CatLocSelector widget is used.
+ * The widget is displayed in SimpleConfirmPopup.
+ *
+ * @author Martin Slavkovsky
+ */
 public class EditableDemandDetailView extends Composite implements
         EditableDemandDetailPresenter.IEditableDemandDetailView, ProvidesValidate {
 
@@ -57,7 +68,9 @@ public class EditableDemandDetailView extends Composite implements
     /**************************************************************************/
     /* INITIALIZATON                                                          */
     /**************************************************************************/
-    //Constructor
+    /**
+     * Creates EditableDemandDetail view's compontents.
+     */
     @Override
     public void createView() {
         categories = new CellList<ICatLocDetail>(new CatLogSimpleCell());
@@ -79,6 +92,9 @@ public class EditableDemandDetailView extends Composite implements
         StyleResource.INSTANCE.common().ensureInjected();
     }
 
+    /**
+     * Inits validation monitors.
+     */
     private void initValidationMonitors() {
         titleMonitor = createDemandValidationMonitor(DemandField.TITLE);
         priceMonitor = createDemandValidationMonitor(DemandField.PRICE);
@@ -90,13 +106,21 @@ public class EditableDemandDetailView extends Composite implements
                 titleMonitor, priceMonitor, endDateMonitor, maxOffersMonitor, minRatingMonitor, descriptionMonitor);
     }
 
+    /**
+     * Creates validation monitor.
+     * @param fieldField - validation field
+     * @return validation monitor
+     */
     private ValidationMonitor createDemandValidationMonitor(DemandField fieldField) {
         return new ValidationMonitor<FullDemandDetail>(FullDemandDetail.class, fieldField.getValue());
     }
 
     /**************************************************************************/
-    /* METHODS                                                                */
+    /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Resets validation monitors.
+     */
     @Override
     public void resetFields() {
         for (ValidationMonitor monitor : monitors) {
@@ -104,9 +128,11 @@ public class EditableDemandDetailView extends Composite implements
         }
     }
 
-    /**************************************************************************/
-    /* SETTERS                                                                */
-    /**************************************************************************/
+    /**
+     * Sets demand detail data.
+     * @param demandDetail carrying data.
+     */
+    @Override
     public void setDemanDetail(FullDemandDetail demandDetail) {
         GWT.log("detail detail" + demandDetail.toString());
         demandId = demandDetail.getDemandId();
@@ -121,6 +147,11 @@ public class EditableDemandDetailView extends Composite implements
         localityProvider.setList(demandDetail.getLocalities());
     }
 
+    /**
+     * Updates given demand detail with current widget's data.
+     * @param detail to be updated
+     * @return updated detail object
+     */
     @Override
     public FullDemandDetail updateDemandDetail(FullDemandDetail demandToUpdate) {
         demandToUpdate.setDemandTitle((String) titleMonitor.getValue());
@@ -139,59 +170,92 @@ public class EditableDemandDetailView extends Composite implements
     /* GETTER                                                                 */
     /**************************************************************************/
     /** Button. **/
+    /**
+     * @return the edit categories button
+     */
     @Override
     public Button getEditCatBtn() {
         return editCatBtn;
     }
 
+    /**
+     * @return the edit localities button
+     */
     @Override
     public Button getEditLocBtn() {
         return editLocBtn;
     }
 
+    /**
+     * @return the submit button
+     */
     @Override
     public Button getSubmitButton() {
         return submitButton;
     }
 
+    /**
+     * @return the cancel button
+     */
     @Override
     public Button getCancelButton() {
         return cancelButton;
     }
 
     /** Panels. **/
+    /**
+     * @return the edit buttons panel
+     */
     @Override
     public FluidRow getEditButtonsPanel() {
         return editButtonsPanel;
     }
 
+    /**
+     * @return the SimpleConfirmPopup
+     */
     @Override
     public SimpleConfirmPopup getSelectorPopup() {
         return selectorPopup;
     }
 
+    /**
+     * @return the toolbar's submit button tooltip
+     */
     @Override
     public Tooltip getSubmitBtnTooltip() {
         return submitBtnTooltip;
     }
 
     /** Data. **/
+    /**
+     * @return the demand id
+     */
     @Override
     public long getDemandId() {
         return demandId;
     }
 
+    /**
+     * @return the updated categories
+     */
     @Override
     public List<ICatLocDetail> getCategories() {
         return this.categoryProvider.getList();
     }
 
+    /**
+     * @return the updated localities
+     */
     @Override
     public List<ICatLocDetail> getLocalities() {
         return this.localityProvider.getList();
     }
 
     /** Validation. **/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         boolean valid = true;
@@ -204,6 +268,9 @@ public class EditableDemandDetailView extends Composite implements
     }
 
     /** Widget view. **/
+    /**
+     * @return the wiget view
+     */
     @Override
     public Widget asWidget() {
         return this;

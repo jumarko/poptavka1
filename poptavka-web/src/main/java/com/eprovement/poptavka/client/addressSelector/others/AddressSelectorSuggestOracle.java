@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.addressSelector.others;
 
@@ -27,6 +26,10 @@ import java.util.List;
  */
 public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
 
+    /**************************************************************************/
+    /* ATTRIBUTES                                                             */
+    /**************************************************************************/
+    /** Constants. **/
     private static final String SUBSTRING_FORMATTER_LEFT = "<strong>";
     private static final String SUBSTRING_FORMATTER_RIGHT = "</strong>";
     private static final String LOCALITY_SEPARATOR = ", ";
@@ -39,6 +42,13 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
     private int currentRequestId = 0;
     private boolean throwAwayAnyReponse;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Initialize AddressSelector suggestion oracel.
+     * @param addressPresenter the AddressSelectorPresenter
+     */
     public AddressSelectorSuggestOracle(AddressSelectorPresenter addressPresenter) {
         this.presenter = addressPresenter;
         this.timer = new Timer() {
@@ -58,6 +68,12 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
             };
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Request for city suggestions.
+     */
     @Override
     public void requestSuggestions(final Request suggestRequest, final Callback callback) {
         this.suggestRequest = suggestRequest;
@@ -76,6 +92,9 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
 
     }
 
+    /**
+     * Reqeust for shor city suggestions.
+     */
     public void requestShortCitySuggestions() {
         throwAwayAnyReponse = false;
         presenter.getCitySuggestionPopup().showLoading();
@@ -106,6 +125,10 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
         //else - forget the response - throw it away
     }
 
+    /**
+     * Displays city suggestions in popup. Fotmat suggestions before displating.
+     * @param result list of suggestions
+     */
     private void responseSuggestions(final Request suggestRequest, final Callback callback,
             List<AddressSuggestionDetail> result) {
         if (result.isEmpty()) {
@@ -119,6 +142,14 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
         }
     }
 
+    /**
+     * Fotmats suggestions before displating.
+     * Emphatize search query in given suggestions.
+     *
+     * @param query string typed by user
+     * @param candidates list of suggestions
+     * @return formated suggestions list
+     */
     private List<AddressSuggestionDetail> convertToFormattedSuggestions(String query,
             List<AddressSuggestionDetail> candidates) {
         List<AddressSuggestionDetail> suggestions = new ArrayList<AddressSuggestionDetail>();
@@ -163,6 +194,11 @@ public class AddressSelectorSuggestOracle extends MultiWordSuggestOracle {
         formatedCity.appendEscaped(part3);
     }
 
+    /**
+     * Get city from given query.
+     * @param query containing city
+     * @return city string
+     */
     private String getCityFromQuery(String query) {
         if (query.indexOf(LOCALITY_SEPARATOR) == -1) {
             return query;

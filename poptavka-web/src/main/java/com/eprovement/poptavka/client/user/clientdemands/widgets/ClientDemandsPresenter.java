@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -29,6 +32,10 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Displays client demands that are new.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractClientView.class)
 public class ClientDemandsPresenter extends AbstractClientPresenter {
 
@@ -40,12 +47,21 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Binds handlers:
+     * <ul>
+     *   <li>back button handler</li>
+     *   <li>toolbar buttons handler</li>
+     *   <li>parent table selection handler</li>
+     *   <li>child table selection handler</li>
+     * </ul>
+     */
     @Override
     public void bindView() {
         super.bindView();
         // Toolbar handlers
         addBackBtnClickHandler();
-        addButtonsClickHandlers();
+        addToolbarButtonsClickHandlers();
         // Selection Handlers
         addParentTableSelectionHandler();
         addChildTableSelectionModelHandler();
@@ -56,6 +72,10 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
+    /**
+     * Creates ClientDemands widget.
+     * @param filter - search criteria
+     */
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
 
@@ -138,6 +158,10 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Response methods                                                       */
     /**************************************************************************/
+    /**
+     * Display notification when demand was deleted.
+     * @param result
+     */
     public void onResponseDeleteDemand(boolean result) {
         //TODO LATER Martin - make proper notify popup and change layout
         backBtnClickHandlerInner();
@@ -199,6 +223,9 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         });
     }
 
+    /**
+     * Displays toolbar edit demands visibility.
+     */
     private void addDetailSelectionHandler() {
         eventBus.setCustomSelectionHandler(new SelectionHandler<Integer>() {
             @Override
@@ -212,6 +239,9 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /** Field updater. **/
     //--------------------------------------------------------------------------
     //Button handlers
+    /**
+     * Binds back buttons handler.
+     */
     private void addBackBtnClickHandler() {
         view.getToolbar().getBackBtn().addClickHandler(new ClickHandler() {
             @Override
@@ -221,6 +251,9 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         });
     }
 
+    /**
+     * Displays parent table and hides child table on back button action.
+     */
     private void backBtnClickHandlerInner() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         eventBus.displayAdvertisement();
@@ -235,7 +268,10 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             view.getParentTable().getSort().getSortOrder()));
     }
 
-    private void addButtonsClickHandlers() {
+    /**
+     * Binds toolbar buttons handlers.
+     */
+    private void addToolbarButtonsClickHandlers() {
         view.getToolbar().getEditBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -252,6 +288,9 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     }
 
     /** Others. **/
+    /**
+     * @return the EditableDemandDetailView
+     */
     private EditableDemandDetailView getEditableDemandPresetner() {
         if (editDemandPresenter == null) {
             editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
@@ -264,6 +303,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     }
 
     /**
+     * Inits parent table.
      * Client demands user case - parent table - demands table
      */
     @Override
@@ -281,6 +321,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     }
 
     /**
+     * Inits child table.
      * Client demands user case - child table - conversation table
      */
     @Override

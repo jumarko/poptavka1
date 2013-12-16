@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.eprovement.poptavka.client.common.DateUtils;
@@ -25,9 +28,16 @@ import java.util.Date;
  */
 public class CreatedDateCell extends DateCell {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    /** Constants. **/
     private static final DateTimeFormat DATE_FORMAT_SHORT = DateTimeFormat.getFormat(MSGS.formatDateShort());
     private static final DateTimeFormat TIME_FORMATTER = DateTimeFormat.getFormat("hh:mm a");
-
+    /** Class attributes. **/
+    /**
+     * Provides mentioned conversion from created date to text.
+     */
     private SafeHtmlRenderer<Date> renderer = new AbstractSafeHtmlRenderer<Date>() {
         @Override
         public SafeHtml render(Date demandCreation) {
@@ -45,9 +55,12 @@ public class CreatedDateCell extends DateCell {
         }
     };
 
-    public CreatedDateCell() {
-    }
-
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
         sb.append(renderer.render(value));

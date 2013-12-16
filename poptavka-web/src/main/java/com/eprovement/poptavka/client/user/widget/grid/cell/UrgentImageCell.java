@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.eprovement.poptavka.client.common.DateUtils;
@@ -51,14 +54,20 @@ public class UrgentImageCell extends AbstractCell<Date> {
     private boolean displayed;
 
     /**************************************************************************/
-    /* Override methods                                                       */
+    /* Overriden methods                                                      */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(Context context, Date value, SafeHtmlBuilder sb) {
         setImageResoureAndTooltip(value);
         uiRenderer.render(sb, imageResource, tooltip);
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, Date value, NativeEvent event,
@@ -71,6 +80,12 @@ public class UrgentImageCell extends AbstractCell<Date> {
         }
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Displays tooltip popup.
+     */
     private void displayPopup(NativeEvent event) {
         if (displayed) {
             return;
@@ -89,6 +104,9 @@ public class UrgentImageCell extends AbstractCell<Date> {
         popup.show();
     }
 
+    /**
+     * Hides tooltip popup.
+     */
     private void hidePopup() {
         displayed = false;
         popup.hide();

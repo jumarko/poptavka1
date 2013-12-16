@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -18,6 +21,11 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.ArrayList;
 
+/**
+ * Home Welcome presenter.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = HomeWelcomeView.class)
 public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWelcomeEventBus> implements
         IHomeWelcomePresenter, NavigationConfirmationInterface {
@@ -32,9 +40,12 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        //nothing
+        // nothing by default
     }
 
+    /**
+     * Sets footer and search bar
+     */
     public void onForward() {
         eventBus.setFooter(view.getFooterContainer());
         eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
@@ -44,17 +55,15 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
-    /* Navigation events                                                      */
+    /* Bind evetns                                                            */
     /**************************************************************************/
-    public void onGoToHomeWelcomeModule() {
-        eventBus.getRootCategories();
-        eventBus.setToolbarContent("Home", null, false);
-    }
-
+    /**
+     * Bind handlers.
+     */
     @Override
     public void bindView() {
         /** ANCHOR. **/
@@ -72,7 +81,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     }
 
     /**************************************************************************/
-    /* Bind - helper mehtods                                                  */
+    /* Bind events - Helper mehtods                                           */
     /**************************************************************************/
     /** BUTTONS. **/
     private void addSuppliersBtnClickHandler() {
@@ -145,8 +154,17 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     }
 
     /**************************************************************************/
-    /* Business events handled by presenter                                   */
+    /* Busoness events                                                        */
     /**************************************************************************/
+    /**
+     * Initialize home welcome module.
+     * Request for root categories, sets toolbar.
+     */
+    public void onGoToHomeWelcomeModule() {
+        eventBus.getRootCategories();
+        eventBus.setToolbarContent("Home", null, false);
+    }
+
     /**
      * Methods displays root categories. These categories are divided into cellLists (columns),
      * where number of columns depends on constant: COLUMNS.
@@ -189,6 +207,10 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Creates how it works instance.
+     * @param view enum defining which type of howItWorks widget initialize
+     */
     private void createHowItWorks(final HowItWorksViews view) {
         GWT.runAsync(HowItWorks.class, new RunAsyncCallback() {
             @Override
@@ -207,6 +229,9 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         });
     }
 
+    /**
+     * Creates HowItWorks for demands widget.
+     */
     private void createHowItWorksDemands() {
         howItWorksDemands = HowItWorks.createHowItWorksDemand();
         howItWorksDemands.getRegisterBtn().addClickHandler(new ClickHandler() {
@@ -218,6 +243,9 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         eventBus.setBody(howItWorksDemands);
     }
 
+    /**
+     * Creates HowItWorks for suppliers widget.
+     */
     private void createHowItWorksSuppliers() {
         howItWorksSuppliers = HowItWorks.createHowItWorksSupplier();
         howItWorksSuppliers.getRegisterBtn().addClickHandler(new ClickHandler() {

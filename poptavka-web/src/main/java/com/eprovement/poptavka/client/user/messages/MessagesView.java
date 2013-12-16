@@ -1,6 +1,10 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.user.messages.toolbar.MessagesToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,17 +13,30 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.eprovement.poptavka.resources.StyleResource;
 import com.google.inject.Inject;
 
+/**
+ * Messages view consists of texboxes/attributes that can be used as sorting filter.
+ * @author Martin Slavkovsky
+ */
 public class MessagesView extends Composite
         implements MessagesPresenter.MessagesLayoutInterface {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static MessagesModuleViewUiBinder uiBinder = GWT.create(MessagesModuleViewUiBinder.class);
 
     interface MessagesModuleViewUiBinder extends UiBinder<Widget, MessagesView> {
     }
+
+    /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+    }
+
     /**************************************************************************/
     /* Attrinbutes                                                            */
     /**************************************************************************/
@@ -31,13 +48,14 @@ public class MessagesView extends Composite
     private MessagesToolbarView toolbar;
 
     /**************************************************************************/
-    /* Initialization                                                            */
+    /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates Messages view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     /**************************************************************************/
@@ -62,23 +80,35 @@ public class MessagesView extends Composite
     /* Getters                                                                */
     /**************************************************************************/
     /** Panels. **/
+    /**
+     * @return the content container
+     */
     @Override
     public SimplePanel getContentContainer() {
         return contentContainer;
     }
 
     /** Buttons. **/
+    /**
+     * @return the messages inbox button
+     */
     @Override
     public Button getMessagesInbox() {
         return menuMessagesInboxBtn;
     }
 
+    /**
+     * @return the custom toolbar content
+     */
     @Override
     public Widget getToolbarContent() {
         return toolbar;
     }
 
     /** Other. **/
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

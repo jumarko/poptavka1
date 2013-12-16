@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
@@ -19,19 +22,21 @@ import com.mvp4g.client.view.LazyView;
 import java.util.Set;
 
 /**
+ * AbsatractAdminPresenter.
  *
  * @author Martin Slakvovsky
  */
 public abstract class AbstractAdminPresenter
     extends LazyPresenter<IAbstractAdminView, AdminEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface IAbstractAdminView extends LazyView, IsWidget {
 
         void initTable(UniversalAsyncGrid table);
 
         UniversalAsyncGrid getTable();
-
-//        List<Long> getSelectedUserMessageIds();
 
         Set getSelectedObjects();
 
@@ -47,12 +52,16 @@ public abstract class AbstractAdminPresenter
     /**************************************************************************/
     /* General Widget events                                                  */
     /**************************************************************************/
+    /**
+     * Inits table when creating presenter.
+     */
     @Override
     public void createPresenter() {
         view.initTable(initTable());
     }
 
     /**
+     * Binds table selection handlers and sets footer.
      * Don't forget to call super.bindView() in implementing class.
      */
     @Override
@@ -69,13 +78,12 @@ public abstract class AbstractAdminPresenter
     protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayDetailModule, String>() {
         @Override
         public void update(int index, TableDisplayDetailModule object, String value) {
-//            object.setRead(true);
-
             MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTable().getSelectionModel();
             selectionModel.clear();
             selectionModel.setSelected(object, true);
         }
     };
+//    TODO Martin - why commented?
 //    protected FieldUpdater starFieldUpdater = new FieldUpdater<TableDisplayUserMessage, Boolean>() {
 //        @Override
 //        public void update(int index, TableDisplayUserMessage object, Boolean value) {
@@ -98,6 +106,10 @@ public abstract class AbstractAdminPresenter
     /**************************************************************************/
     // Detail section
     //--------------------------------------------------------------------------
+    /**
+     * Inits detail section - demand.
+     * @param selectedDetail the TableDisplayDetailModule
+     */
     protected void initDetailSectionDemand(TableDisplayDetailModule selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
@@ -105,6 +117,10 @@ public abstract class AbstractAdminPresenter
             .build());
     }
 
+    /**
+     * Inits detail section - conversation.
+     * @param selectedDetail the TableDisplayDetailModule
+     */
     protected void initDetailSectionConversation(TableDisplayDetailModule selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())

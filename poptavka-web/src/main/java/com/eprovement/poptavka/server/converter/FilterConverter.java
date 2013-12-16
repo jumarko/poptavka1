@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -8,17 +8,36 @@ import com.googlecode.genericdao.search.Filter;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Converts Filter to FilterItem
+ * @author Juraj Martinka
+ */
 public final class FilterConverter implements Converter<Filter, FilterItem> {
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates FilterConverter.
+     */
     private FilterConverter() {
         // Spring instantiates converters - see converters.xml
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public FilterItem convertToTarget(Filter source) {
         throw new UnsupportedOperationException("Convertion Filter to FilterItem failed!");
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public Filter convertToSource(FilterItem filterItem) {
         Filter filter;
@@ -48,6 +67,9 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
         return filter;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ArrayList<FilterItem> convertToTargetList(Collection<Filter> sourceObjects) {
         final ArrayList<FilterItem> detailObjects = new ArrayList<FilterItem>();
@@ -57,6 +79,9 @@ public final class FilterConverter implements Converter<Filter, FilterItem> {
         return detailObjects;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public ArrayList<Filter> convertToSourceList(Collection<FilterItem> targetObjects) {
         ArrayList<Filter> filtersAnd = new ArrayList<Filter>();

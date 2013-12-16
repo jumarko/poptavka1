@@ -1,8 +1,11 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
@@ -17,6 +20,11 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 
+/**
+ * Home Welcome view.
+ *
+ * @author Martin Slavkovsky
+ */
 public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter> implements IHomeWelcomeView {
 
     /**************************************************************************/
@@ -67,6 +75,10 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Displays retrieved categories.
+     * @param rootCategories list of categories
+     */
     @Override
     public void displayCategories(ArrayList<ICatLocDetail> rootCategories) {
         dataProvider.setList(rootCategories);
@@ -75,53 +87,83 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
+    /**
+     * @return the category selection model
+     */
     @Override
     public SingleSelectionModel<ICatLocDetail> getCategorySelectionModel() {
         return selectionRootModel;
     }
 
+    /**
+     * @return the category data provider
+     */
     @Override
     public ListDataProvider getDataProvider() {
         return dataProvider;
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;
     }
 
     /** ANCHOR. **/
+    /**
+     * @return the supplier button
+     */
     @Override
     public Button getSuppliersBtn() {
         return suppliersBtn;
     }
 
+    /**
+     * @return the demands button
+     */
     @Override
     public Button getDemandsBtn() {
         return demandsBtn;
     }
 
+    /**
+     * @return the hotItWorksSupplier button
+     */
     @Override
     public Button getHowItWorksSupplierBtn() {
         return howItWorksSupplierBtn;
     }
 
+    /**
+     * @return the howItWorksDemand button
+     */
     @Override
     public Button getHowItWorksDemandBtn() {
         return howItWorksDemandBtn;
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the register supplier button
+     */
     @Override
     public Button getRegisterSupplierBtn() {
         return registerSupplierBtn;
     }
 
+    /**
+     * @return the register demand button
+     */
     @Override
     public Button getRegisterDemandBtn() {
         return registerDemandBtn;

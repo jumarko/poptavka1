@@ -5,6 +5,7 @@
              xmlns:h="urn:import:com.eprovement.poptavka.client.root.header.ui"
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel>
@@ -13,14 +14,12 @@
 
         <!--Menu-->
         <h:MenuElement ui:field='menu' />
-        <!--<h:MenuElement ui:field='menu' styleName='{res.header.menu}'/>-->
-        <!--<g:SimplePanel ui:field="menu" styleName='{res.header.menu}'/>-->
 
         <!--Search-->
         <h:SearchElement ui:field="search" />
 
         <!--Header Toolbar-->        
-        <b:Tooltip text="My profile" placement="BOTTOM">
+        <b:Tooltip text="{msgs.toolbarSettings}" placement="LEFT">
             <bb:IconAnchor ui:field='settingsAnchor' icon="WRENCH" iconSize="TWO_TIMES" styleName='{res.header.settingsIcon}'/>
         </b:Tooltip>
     
@@ -28,11 +27,9 @@
         <h:NotificationsElement ui:field='notifications' styleName='{res.header.loginBar}'/>
 
         <!--Login-->
-        <!--<h:LoginElement ui:field='login'/>-->
         <h:LoginElement ui:field='login'/>
 
         <!--Logout-->
-        <!--<h:LogoutElement ui:field='logout' styleName='{res.header.login}'/>-->
         <h:LogoutElement ui:field='logout'/>
 
     </g:HTMLPanel>

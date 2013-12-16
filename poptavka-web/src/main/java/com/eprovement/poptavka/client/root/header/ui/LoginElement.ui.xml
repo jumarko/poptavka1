@@ -7,19 +7,18 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
     <g:HTMLPanel styleName='{res.header.login}'>
-
-        <b:Tooltip text="Login" placement="BOTTOM">
+        <!--Icon anchor-->
+        <b:Tooltip text="Login" placement="LEFT">
             <bb:IconAnchor ui:field='loginAnchor' icon="SIGNIN" iconSize="TWO_TIMES" styleName='{res.header.loginIcon}'/>
         </b:Tooltip>
 
+        <!--Button-->
         <div class='{res.header.loginPanel}'>
             <div class='{res.header.loginButton}'>
                 <g:Anchor ui:field="loginButton">
                     <ui:msg key="headerLogIn">Log In</ui:msg>
                 </g:Anchor>
             </div>
-            <!--<div id="loginAnchor" style="position: absolute; width: 150px; right: 0px; z-index: 151;"/>-->
         </div>
-
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -1,8 +1,16 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.resources.common;
 
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.CssResource.ClassName;
 
+/**
+ * Defines common styles.
+ *
+ * @author Jaro
+ */
 public interface CommonStyles extends CssResource {
 
     /** Action box styles. **/

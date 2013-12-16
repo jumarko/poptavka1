@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
@@ -19,10 +18,19 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Part of SupplierDemands module widgets.
+ * Displays supplier's dashboard information.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = SupplierDemandsWelcomeView.class)
 public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         SupplierDemandsWelcomePresenter.SupplierDemandsWelcomeViewInterface, SupplierDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* View interdace                                                         */
+    /**************************************************************************/
     public interface SupplierDemandsWelcomeViewInterface extends LazyView, IsWidget {
 
         HTML getPotentialDemandsUnreadMessages();
@@ -45,8 +53,11 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Bind actions                                                           */
+    /* Bind events                                                            */
     /**************************************************************************/
+    /**
+     * Bind menu button handlers.
+     */
     @Override
     public void bindView() {
         view.getPotentialDemandsRow().addDomHandler(new ClickHandler() {
@@ -76,8 +87,11 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Navigation events */
+    /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Creates supplier dashboard widget.
+     */
     public void onInitSupplierDemandsWelcome() {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_DEMANDS_WELCOME);
         eventBus.getSupplierDashboardDetail();
@@ -87,8 +101,7 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
     }
 
     /**
-     * Load all data into dashboard.
-     *
+     * Loads all data into dashboard.
      * @param dashboard
      */
     public void onLoadSupplierDashboardDetail(SupplierDashboardDetail dashboard) {
@@ -110,6 +123,11 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
                     .append(Storage.MSGS.inClosedDemands())).toSafeHtml());
     }
 
+    /**
+     * Transform number into string.
+     * @param number to be transformed.
+     * @return transformed number as string
+     */
     private SafeHtml getNumberIntoString(int number) {
         if (number == 0) {
             return Storage.MSGS.noMessage();

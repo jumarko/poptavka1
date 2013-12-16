@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.infoWidgets;
 
 import com.eprovement.poptavka.client.infoWidgets.widgets.ContactUsPopupPresenter;
@@ -20,6 +23,11 @@ import com.mvp4g.client.presenter.NoStartPresenter;
  *    <li>* AlertBox - popup for displaying various alerts</li>
  *    <li>* ThankYou - popup for displaying workflow information, can be disabled in user's settings</li>
  * </ul>
+ *
+ * <b><i>Note:</i></b>
+ * This module has neither presenter or view. For creating info popups that can
+ * stand alone is event handler more than enough.
+ *
  * @author ivlcek, Martin Slavkovsky
  */
 @Events(startPresenter = NoStartPresenter.class, module = InfoWidgetsModule.class)

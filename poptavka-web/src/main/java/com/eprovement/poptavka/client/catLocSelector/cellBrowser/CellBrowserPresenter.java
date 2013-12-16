@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.catLocSelector.cellBrowser;
 
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorEventBus;
@@ -26,11 +29,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Cell browser presenter. Use GWT cell browser to browse and pick up categories.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = CellBrowserView.class, multiple = true)
 public class CellBrowserPresenter
         extends LazyPresenter<CellBrowserPresenter.CellBrowserInterface, CatLocSelectorEventBus>
         implements PresentersInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface CellBrowserInterface extends LazyView {
 
         void createCellBrowser();
@@ -51,6 +61,7 @@ public class CellBrowserPresenter
 
         Widget getWidgetView();
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -73,6 +84,9 @@ public class CellBrowserPresenter
     /**************************************************************************/
     /* Bind                                                                   */
     /**************************************************************************/
+    /**
+     * Binds selection handler for cell list.
+     */
     @Override
     public void bindView() {
         view.getCellListSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -87,6 +101,11 @@ public class CellBrowserPresenter
         });
     }
 
+    /**
+     * Binds cell browser selection handler.
+     * Cannot be defined in <i>bindView</i> because cell browser is created later.
+     * Therefore register handler after cell browser is created.
+     */
     private void bindCellBrowserHanlders() {
         view.getCellBrowserSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -186,11 +205,17 @@ public class CellBrowserPresenter
     /**************************************************************************/
     /* Getter methods                                                         */
     /**************************************************************************/
+    /**
+     * @return the instance id
+     */
     @Override
     public int getInstanceId() {
         return instanceId;
     }
 
+    /**
+     * @return the CatLocSelectionBuilder
+     */
     @Override
     public CatLocSelectorBuilder getBuilder() {
         return builder;
@@ -219,6 +244,11 @@ public class CellBrowserPresenter
         embedWidget.setWidget(view.getWidgetView());
     }
 
+    /**
+     * Get selected object exceeding allowed registration items ccount.
+     * The object must be unselect from cell browser.
+     * @return the object
+     */
     private ICatLocDetail getSelectedObjectOverAllowedMax() {
         for (ICatLocDetail selectedCatLoc : view.getCellBrowserSelectionModel().getSelectedSet()) {
             if (!view.getCellListDataProvider().getList().contains(selectedCatLoc)) {

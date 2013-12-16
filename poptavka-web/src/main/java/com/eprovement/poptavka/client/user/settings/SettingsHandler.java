@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -10,12 +13,26 @@ import com.eprovement.poptavka.client.service.demand.SettingsRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 
+/**
+ * Handler RPC calls for Settings module.
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     SettingsRPCServiceAsync settingsService;
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
+    /**
+     * Request logged user.
+     * @param userId
+     */
     public void onGetLoggedUser(long userId) {
         GWT.log("HomeSettingsHandler handling user" + userId);
         settingsService.getUserSettings(userId, new SecuredAsyncCallback<SettingDetail>(eventBus) {
@@ -28,6 +45,9 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
         });
     }
 
+    /**
+     * Updates unread messages count.
+     */
     public void onUpdateUnreadMessagesCount() {
         settingsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override
@@ -37,6 +57,10 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
         });
     }
 
+    /**
+     * Updates settings.
+     * @param settingsDetail to be updated
+     */
     public void onRequestUpdateSettings(SettingDetail settingsDetail) {
         settingsService.updateSettings(settingsDetail, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
@@ -46,6 +70,11 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
         });
     }
 
+    /**
+     * Checks current password.
+     * @param userId
+     * @param password user's current password
+     */
     public void onRequestCheckCurrentPassword(long userId, String password) {
         settingsService.checkCurrentPassword(userId, password, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override
@@ -55,6 +84,11 @@ public class SettingsHandler extends BaseEventHandler<SettingsEventBus> {
         });
     }
 
+    /**
+     * Resets user's password
+     * @param userId
+     * @param newPassword
+     */
     public void onRequestResetPassword(long userId, String newPassword) {
         settingsService.resetPassword(userId, newPassword, new SecuredAsyncCallback<Boolean>(eventBus) {
             @Override

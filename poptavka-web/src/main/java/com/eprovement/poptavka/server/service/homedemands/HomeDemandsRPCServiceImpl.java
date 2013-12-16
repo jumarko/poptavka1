@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.homedemands;
 
@@ -36,6 +35,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
+ * This RPC handles all requests for HomeDemands module.
  * <b>HomeDemandsRPCServiceImpl</b> is RPC service for HomeDemands module. It
  * contains two methods: <ul> <li>@see #getDemandsCount(SearchModuleDataHolder
  * detail)</li> <li>@see #getDemands(int start, int count,
@@ -56,6 +56,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Configurable
 public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implements HomeDemandsRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private GeneralService generalService;
     private DemandService demandService;
     private CategoryService categoryService;
@@ -67,9 +70,9 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private FulltextSearchService fulltextSearchService;
     private SortConverter sortConverter;
 
-    // ***********************************************************************
-    // Autowired methods
-    // ***********************************************************************
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
@@ -126,6 +129,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**************************************************************************/
     /*  Categories                                                            */
     /**************************************************************************/
+    /**
+     * Get category detail.
+     * @param categoryID
+     * @return category detail
+     * @throws RPCException
+     */
     @Override
     public ICatLocDetail getCategory(long categoryID) throws RPCException {
         return categoryConverter.convertToTarget(categoryService.getById(categoryID));
@@ -134,14 +143,20 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**************************************************************************/
     /*  Demands                                                               */
     /**************************************************************************/
+    /**
+     * Get demand detail.
+     * @param demandID
+     * @return demand detail
+     * @throws RPCException
+     */
     @Override
     public FullDemandDetail getDemand(long demandID) throws RPCException {
         return demandConverter.convertToTarget(demandService.getById(demandID));
     }
 
-    // ***********************************************************************
-    // Get filtered demands
-    // ***********************************************************************
+    /**************************************************************************/
+    /* Get filtered demands                                                   */
+    /**************************************************************************/
     /**
      * Method in general gets demands count according to given filter criteria
      * represented by SearchModuleDataHolder. If user don't specify attribute to
@@ -486,6 +501,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**************************************************************************/
     /*  Helper methods - others                                               */
     /**************************************************************************/
+    /**
+     * Get all sub categories.
+     * @param id
+     * @return sub categories array
+     */
     private Category[] getAllSubCategories(Long id) {
         final Category cat = this.generalService.find(Category.class, id);
         final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat, Category.class);
@@ -493,6 +513,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
+    /**
+     * Get all sub localities.
+     * @param id
+     * @return sub localities array
+     */
     private Locality[] getAllSublocalities(Long id) {
         final Locality loc = this.localityService.getLocality(id);
         final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);

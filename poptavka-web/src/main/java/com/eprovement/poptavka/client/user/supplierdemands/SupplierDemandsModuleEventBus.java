@@ -1,11 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierDemandsPresenter;
@@ -30,6 +29,11 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
+/**
+ * Supplier section for managing projects and offers.
+ *
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = SupplierDemandsModulePresenter.class, module = SupplierDemandsModule.class)
 public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,
@@ -57,7 +61,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     String createTokenForHistory();
 
     /**************************************************************************/
-
     /* Navigation events.                                                     */
     /**************************************************************************/
     //Module navigation
@@ -154,9 +157,6 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     /**************************************************************************/
     //Requesters
     //--------------------------------------------------------------------------
-    @Event(handlers = SupplierDemandsModuleHandler.class)
-    void requestEditOffer(long id);
-
     @Event(handlers = SupplierDemandsModuleHandler.class)
     void requestFinishAndRateClient(long demandID, long offerID, Integer rating, String comment);
 

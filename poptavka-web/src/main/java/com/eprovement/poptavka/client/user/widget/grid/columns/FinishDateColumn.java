@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.columns;
 
@@ -12,6 +11,9 @@ import com.google.gwt.user.cellview.client.Column;
 import java.util.Date;
 
 /**
+ * Use to create <b>Finnish date column</b> in table.
+ * Object must implemnets <b>TableDisplayFinnishDate</b> to be displayable in table with finnish date column.
+ *
  * @author Martin Slavkovsky
  */
 public class FinishDateColumn extends Column<TableDisplayFinishDate, String> {
@@ -21,6 +23,15 @@ public class FinishDateColumn extends Column<TableDisplayFinishDate, String> {
         Date getFinishDate();
     }
 
+    /**
+     * Creates FinnishDateColumn with:
+     * <ul>
+     *   <li>sortable: true</li>
+     *   <li>cellStyleNames: none</li>
+     *   <li>fieldUpdater: provided</li>
+     * </ul>
+     * @param fieldUpdater
+     */
     public FinishDateColumn(FieldUpdater fieldUpdater) {
         super(new SafeClickableTextCell());
         setSortable(true);
@@ -29,6 +40,9 @@ public class FinishDateColumn extends Column<TableDisplayFinishDate, String> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public String getValue(TableDisplayFinishDate object) {
         return Storage.get().getDateTimeFormat().format(object.getFinishDate());

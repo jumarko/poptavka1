@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.mvp4g.client.annotation.History;
@@ -7,21 +10,35 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 
 /**
- * History converter class. Handles history of supplier creation module.
+ * Manages history for supplier creation module.
  *
- * @author slavkovsky.martin
+ * @author Martin Slavkovsky
  */
 @History(type = HistoryConverterType.DEFAULT, name = "supplierCreation")
 public class SupplierCreationHistoryConverter implements HistoryConverter<SupplierCreationEventBus> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static final String HOME = "home";
     private static final String USER = "user";
 
+    /**************************************************************************/
+    /* ConvertToToken events                                                  */
+    /**************************************************************************/
+    /**
+     * Creates history token for supplier creation module.
+     * @return created history token
+     */
     public String onGoToCreateSupplierModule() {
         return Storage.getUser() == null ? HOME : USER;
     }
 
+    /**************************************************************************/
+    /* ConvertFromToken                                                       */
+    /**************************************************************************/
     /**
+     * Convert history token into action.
      * Called either when browser action <b>back</b> or <b>forward</b> is evocated,
      * or by clicking on <b>hyperlink</b> with set token.
      *
@@ -40,6 +57,9 @@ public class SupplierCreationHistoryConverter implements HistoryConverter<Suppli
         }
     }
 
+    /**************************************************************************/
+    /* Other events                                                           */
+    /**************************************************************************/
     @Override
     public boolean isCrawlable() {
         return false;

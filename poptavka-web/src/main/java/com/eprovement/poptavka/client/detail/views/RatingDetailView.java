@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail.views;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -13,12 +16,20 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Rating detail view for displaying data from RatingDemandDetail objects.
+ * @author Mato
+ */
 public class RatingDetailView extends Composite {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static RatingDetailViewUiBinder uiBinder = GWT.create(RatingDetailViewUiBinder.class);
 
     interface RatingDetailViewUiBinder extends UiBinder<Widget, RatingDetailView> {
     }
+
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
@@ -36,6 +47,9 @@ public class RatingDetailView extends Composite {
     /**************************************************************************/
     /* INITIALIZATON                                                          */
     /**************************************************************************/
+    /**
+     * Creates rating detail view's compontents.
+     */
     public RatingDetailView() {
         initWidget(uiBinder.createAndBindUi(this));
 
@@ -45,27 +59,39 @@ public class RatingDetailView extends Composite {
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
-    public void setRatingDetail(FullRatingDetail demandDetail) {
-        demandDescription.setText(demandDetail.getDemandDescription());
-        setClientFullRatingDetail(demandDetail);
-        setSupplierFullRatingDetail(demandDetail);
+    /**
+     * Sets rating detail's data.
+     * @param ratingDetail to be set
+     */
+    public void setRatingDetail(FullRatingDetail ratingDetail) {
+        demandDescription.setText(ratingDetail.getDemandDescription());
+        setClientFullRatingDetail(ratingDetail);
+        setSupplierFullRatingDetail(ratingDetail);
     }
 
     /**************************************************************************/
     /* HELPER METHODS                                                         */
     /**************************************************************************/
-    private void setClientFullRatingDetail(FullRatingDetail demandDetail) {
-        clientDisplayName.setText(demandDetail.getClientName());
-        if (demandDetail.getRatingClient() == null) {
+    /**
+     * Sets rating detail's data - <b>client</b>'s part
+     * @param ratingDetail to be set
+     */
+    private void setClientFullRatingDetail(FullRatingDetail ratingDetail) {
+        clientDisplayName.setText(ratingDetail.getClientName());
+        if (ratingDetail.getRatingClient() == null) {
             clientHeading.setText(Storage.MSGS.feedbackNotRated());
             clientCommentDefault.setText("");
         } else {
             setClientRate(
-                    demandDetail.getRatingClient(),
-                    getAdditionalComment(demandDetail.getRatingClientMessage()));
+                    ratingDetail.getRatingClient(),
+                    getAdditionalComment(ratingDetail.getRatingClientMessage()));
         }
     }
 
+    /**
+     * Sets rating detail's data - <b>supplier</b>'s part
+     * @param ratingDetail to be set
+     */
     private void setSupplierFullRatingDetail(FullRatingDetail demandDetail) {
         supplierDisplayName.setText(demandDetail.getSupplierName());
         if (demandDetail.getRatingSupplier() == null) {
@@ -78,6 +104,11 @@ public class RatingDetailView extends Composite {
         }
     }
 
+    /**
+     * Sets <b>client</b>'s rating details.
+     * @param rating of client
+     * @param additionalComment of rating
+     */
     private void setClientRate(int rating, String additionalComment) {
         clientCommentAdditional.setText(additionalComment);
         switch (rating) {
@@ -111,6 +142,11 @@ public class RatingDetailView extends Composite {
         }
     }
 
+    /**
+     * Sets <b>suppliers</b>'s rating details.
+     * @param rating of supplier
+     * @param additionalComment of rating
+     */
     private void setSupplierRate(int rating, String additionalComment) {
         supplierCommentAdditional.setText(additionalComment);
         switch (rating) {
@@ -144,6 +180,14 @@ public class RatingDetailView extends Composite {
         }
     }
 
+    /**
+     * Sets <b>client</b>'s gold stars.
+     * @param star1 true if <b>first<\b> star is gold.
+     * @param star2 true if <b>second<\b> star is gold.
+     * @param star3 true if <b>third<\b> star is gold.
+     * @param star4 true if <b>fourth<\b> star is gold.
+     * @param star5 true if <b>fifth<\b> star is gold.
+     */
     private void setClientStarGoldStyles(boolean star1, boolean star2,
             boolean star3, boolean star4, boolean star5) {
         clientStar1.setStyleName(star1 ? STAR_GOLD : STAR_GREY);
@@ -153,6 +197,14 @@ public class RatingDetailView extends Composite {
         clientStar5.setStyleName(star5 ? STAR_GOLD : STAR_GREY);
     }
 
+    /**
+     * Sets <b>supplier</b>'s gold stars.
+     * @param star1 true if <b>first<\b> star is gold.
+     * @param star2 true if <b>second<\b> star is gold.
+     * @param star3 true if <b>third<\b> star is gold.
+     * @param star4 true if <b>fourth<\b> star is gold.
+     * @param star5 true if <b>fifth<\b> first star is gold.
+     */
     private void setSupplierStarGoldStyles(boolean star1, boolean star2,
             boolean star3, boolean star4, boolean star5) {
         supplierStar1.setStyleName(star1 ? STAR_GOLD : STAR_GREY);
@@ -162,6 +214,11 @@ public class RatingDetailView extends Composite {
         supplierStar5.setStyleName(star5 ? STAR_GOLD : STAR_GREY);
     }
 
+    /**
+     * Extracts additional comment from given comment.
+     * @param wholeComment - given comment
+     * @return additional comment part
+     */
     private String getAdditionalComment(String wholeComment) {
         int idx = wholeComment.indexOf("Addition:");
         if (idx != -1) {

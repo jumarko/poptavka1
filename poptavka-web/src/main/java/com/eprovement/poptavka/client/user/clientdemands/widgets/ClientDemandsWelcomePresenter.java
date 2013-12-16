@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
@@ -19,10 +18,17 @@ import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Client dashboard.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = ClientDemandsWelcomeView.class)
 public class ClientDemandsWelcomePresenter extends LazyPresenter<
         ClientDemandsWelcomePresenter.ClientDemandsWelcomeViewInterface, ClientDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface ClientDemandsWelcomeViewInterface extends LazyView, IsWidget {
 
         HTML getMyDemandsUnreadMessages();
@@ -47,6 +53,9 @@ public class ClientDemandsWelcomePresenter extends LazyPresenter<
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Bind menu buttons handlers.
+     */
     @Override
     public void bindView() {
         view.getMyDemandsRow().addDomHandler(new ClickHandler() {
@@ -76,8 +85,11 @@ public class ClientDemandsWelcomePresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Navigation events */
+    /* Navigation events                                                      */
     /**************************************************************************/
+    /**
+     * Create ClientDemandsWelcome widget.
+     */
     public void onInitClientDemandsWelcome() {
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS_WELCOME);
         eventBus.getClientDashboardDetail();
@@ -110,6 +122,11 @@ public class ClientDemandsWelcomePresenter extends LazyPresenter<
                     .append(Storage.MSGS.inClosedDemands())).toSafeHtml());
     }
 
+    /**
+     * Convert number into string
+     * @param number to convert
+     * @return string representation
+     */
     private SafeHtml getNumberIntoString(int number) {
         if (number == 0) {
             return Storage.MSGS.noMessage();

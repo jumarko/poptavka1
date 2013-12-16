@@ -1,12 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
 /**
- *
- * @author Mato
+ * CatLocSelectionBuilder for making creation of CellTree, CellBrowser and Manager easier.
+ * @author Martin Slavkovsky
  */
 public final class CatLocSelectorBuilder {
 

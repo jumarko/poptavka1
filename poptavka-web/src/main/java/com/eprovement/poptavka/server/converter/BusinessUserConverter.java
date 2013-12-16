@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -13,20 +13,35 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts BusinessUser to BusinessUserDetail and vice versa.
+ * @author Juraj Martinka
+ */
 public final class BusinessUserConverter extends AbstractConverter<BusinessUser, BusinessUserDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<Address, AddressDetail> addressConverter;
-//    private final Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates BusinessUserConverter.
+     */
     private BusinessUserConverter(Converter<Address, AddressDetail> addressConverter) {
-//            Converter<AccessRole, AccessRoleDetail> accessRoleConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(addressConverter);
-//        Validate.notNull(accessRoleConverter);
         this.addressConverter = addressConverter;
-//        this.accessRoleConverter = accessRoleConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public BusinessUserDetail convertToTarget(BusinessUser source) {
         if (source == null) {
@@ -73,6 +88,9 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public BusinessUser convertToSource(BusinessUserDetail userDetail) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.

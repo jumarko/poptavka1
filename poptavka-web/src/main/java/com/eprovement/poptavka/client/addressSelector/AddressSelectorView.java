@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.addressSelector;
 
 import com.eprovement.poptavka.client.addressSelector.others.AddressSelectorSuggestDisplay;
@@ -6,7 +9,7 @@ import com.eprovement.poptavka.client.addressSelector.AddressSelectorPresenter.A
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.root.ReverseCompositeView;
+import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.AddressDetail.AddressField;
 import com.google.gwt.core.client.GWT;
@@ -16,6 +19,11 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * Address selector view consists of city suggest box, street and zipcode textboxes.
+ *
+ * @author Martin Slavkovsky
+ */
 public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPresenter>
         implements AddressSelectorInterface, ProvidesValidate {
 
@@ -45,6 +53,9 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
     /**************************************************************************/
     /* INITIALIZATION                                                         */
     /**************************************************************************/
+    /**
+     * Creates AddressSelector view's compontents.
+     */
     @Override
     public void createView() {
         cityBox = new SuggestBox(
@@ -56,12 +67,21 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
         initWidget(uiBinder.createAndBindUi(this));
     }
 
+    /**
+     * Inits validation monitors.
+     */
     private void initValidationMonitors() {
         cityMonitor = createValidationMonitor(AddressField.CITY);
         zipcodeMonitor = createValidationMonitor(AddressField.ZIP_CODE);
         streetMonitor = createValidationMonitor(AddressField.STREET);
     }
 
+    /**
+     * Creates validation monitors
+     * @param field - validation field
+     * @param groups - validation groups
+     * @return created validation monitor
+     */
     private ValidationMonitor createValidationMonitor(AddressField field) {
         return new ValidationMonitor<AddressDetail>(AddressDetail.class, field.getValue());
     }
@@ -69,6 +89,10 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
     /**************************************************************************/
     /* SETTERS                                                                */
     /**************************************************************************/
+    /**
+     * Sets address data for editing.
+     * @param address data to be eddited
+     */
     @Override
     public void setAddressForEditing(AddressDetail address) {
         this.cityMonitor.setValue(address.getCity() + ", " + address.getRegion());
@@ -81,31 +105,49 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
     /**************************************************************************/
     //SuggestBoxes
     //--------------------------------------------------------------------------
+    /**
+     * @return the city suggest box
+     */
     @Override
     public SuggestBox getCitySuggestBox() {
         return cityBox;
     }
 
+    /**
+     * @return the city validation monitor
+     */
     @Override
     public ValidationMonitor getCityMonitor() {
         return cityMonitor;
     }
 
+    /**
+     * @return the street validation monitor
+     */
     @Override
     public ValidationMonitor getStreetMonitor() {
         return streetMonitor;
     }
 
+    /**
+     * @return the zipcode validation monitor
+     */
     @Override
     public ValidationMonitor getZipcodeMonitor() {
         return zipcodeMonitor;
     }
 
+    /**
+     * @return the street textbox
+     */
     @Override
     public TextBox getStreetMonitorBox() {
         return streetMonitorBox;
     }
 
+    /**
+     * @return the zipcode textbox
+     */
     @Override
     public TextBox getZipcodeMonitorBox() {
         return zipcodeMonitorBox;
@@ -113,6 +155,10 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
 
     //Others
     //--------------------------------------------------------------------------
+    /**
+     * Validate view's compontents.
+     * @return true if valid, false otherwise
+     */
     @Override
     public boolean isValid() {
         boolean valid = true;
@@ -122,6 +168,9 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
         return valid;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -10,13 +13,26 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
+/**
+ * Cell for displaying offer states.
+ * @author Martin Slavkovsky
+ */
 public class OfferStateImageCell extends AbstractCell<OfferStateType> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
     private String explanationText;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates OfferStateImage cell.
+     */
     public OfferStateImageCell() {
         super("click", "keydown", "mouseover", "mouseout");
         if (renderer == null) {
@@ -24,6 +40,12 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
         }
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
             OfferStateType value, SafeHtmlBuilder sb) {
@@ -31,6 +53,9 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
         setImageAndExplanationText(value, sb);
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, OfferStateType value, NativeEvent event,
@@ -46,6 +71,9 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     protected void onEnterKeyDown(
             com.google.gwt.cell.client.Cell.Context context, Element parent,
@@ -55,6 +83,12 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
         }
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Displays tooltip popup.
+     */
     private void displayPopup(Element parent, NativeEvent event) {
         if (displayed) {
             return;
@@ -69,11 +103,18 @@ public class OfferStateImageCell extends AbstractCell<OfferStateType> {
         displayed = true;
     }
 
+    /**
+     * Hides tooltip popup.
+     */
     private void hidePopup() {
         displayed = false;
         popup.hide();
     }
 
+    /**
+     * Sets cell's image and tooltip text.
+     * @param value - offer state type
+     */
     private void setImageAndExplanationText(OfferStateType value, SafeHtmlBuilder sb) {
         switch (value) {
             case ACCEPTED:

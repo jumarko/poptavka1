@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.gateways;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -6,7 +9,7 @@ import com.mvp4g.client.annotation.Event;
 
 /**
  * Gateway interface for Address selector module.
- * Defines which methods are accessible to the world.
+ * Defines which methods are accessible to the rest of application.
  *
  * @author Martin Slavkovsky
  */

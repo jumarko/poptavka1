@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.service.homesuppliers;
 
@@ -38,13 +37,15 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
- *
- * This RPC hadnled all requests from HomeSuppliers module such as suppliers catalogue and their details.
+ * This RPC handles all requests from HomeSuppliers module.
  * @author ivlcek
  */
 @Configurable
 public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService implements HomeSuppliersRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private GeneralService generalService;
     private TreeItemService treeItemService;
     private LocalityService localityService;
@@ -56,6 +57,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Converter<Filter, FilterItem> filterConverter;
     private SortConverter sortConverter;
 
+    /**************************************************************************/
+    /* Autowire services and converters                                       */
+    /**************************************************************************/
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
@@ -112,6 +116,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /**************************************************************************/
     /*  Categories                                                            */
     /**************************************************************************/
+    /**
+     * Get category detail.
+     * @param categoryID
+     * @return category detail
+     * @throws RPCException
+     */
     @Override
     public ICatLocDetail getCategory(long categoryID) throws RPCException {
         return categoryConverter.convertToTarget(categoryService.getById(categoryID));
@@ -120,6 +130,12 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /**************************************************************************/
     /*  Suppliers                                                             */
     /**************************************************************************/
+    /**
+     * Get supplier detail.
+     * @param supplierID
+     * @return supplier detail
+     * @throws RPCException
+     */
     @Override
     public FullSupplierDetail getSupplier(long supplierID) throws RPCException {
         return supplierConverter.convertToTarget(supplierService.getById(supplierID));
@@ -443,6 +459,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     /**************************************************************************/
     /*  Helper methods - others                                               */
     /**************************************************************************/
+    /**
+     * Get all sub categories.
+     * @param id
+     * @return sub category array
+     */
     private Category[] getAllSubCategories(Long id) {
         final Category cat = this.generalService.find(Category.class, id);
         final List<Category> allSubCategories = this.treeItemService.getAllDescendants(cat, Category.class);
@@ -450,6 +471,11 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         return allSubCategories.toArray(new Category[allSubCategories.size()]);
     }
 
+    /**
+     * Get all sub loacalities.
+     * @param id
+     * @return sub localities array
+     */
     private Locality[] getAllSublocalities(Long id) {
         final Locality loc = this.localityService.getLocality(id);
         final List<Locality> allSubLocalites = this.treeItemService.getAllDescendants(loc, Locality.class);

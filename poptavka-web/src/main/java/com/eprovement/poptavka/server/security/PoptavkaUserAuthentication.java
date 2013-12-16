@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.security;
 
 import java.util.ArrayList;
@@ -15,17 +18,25 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 /**
  * This class represents authenticated user and all his granted authorities
  * @author kolkar
- *
  */
 public class PoptavkaUserAuthentication implements Authentication {
 
-
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private boolean authenticated;
-
     private final List<GrantedAuthority> grantedAuthority = new ArrayList<GrantedAuthority>();
     private final Authentication authentication;
     private final User loggedUser;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates PoptavkaUserAuthentication instance.
+     * @param loggedUser
+     * @param authentication
+     */
     public PoptavkaUserAuthentication(User loggedUser, Authentication authentication) {
         for (AccessRole role : loggedUser.getAccessRoles()) {
             this.grantedAuthority.add(new SimpleGrantedAuthority(role.getCode()));
@@ -34,42 +45,74 @@ public class PoptavkaUserAuthentication implements Authentication {
         this.loggedUser = loggedUser;
     }
 
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return Collections.unmodifiableCollection(grantedAuthority);
-    }
-
-    @Override
-    public Object getCredentials() {
-        return authentication.getCredentials();
-    }
-
-    @Override
-    public Object getDetails() {
-        return authentication.getDetails();
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return authentication.getPrincipal();
-    }
-
-    @Override
-    public boolean isAuthenticated() {
-        return authenticated;
-    }
-
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    /**
+     * Sets authenticated value.
+     * @param authenticated true if authenticated, false otherwise
+     * @throws IllegalArgumentException
+     */
     @Override
     public void setAuthenticated(boolean authenticated) throws IllegalArgumentException {
         this.authenticated = authenticated;
     }
 
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
+    /**
+     * @return the collection of GrantedAuthorities
+     */
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return Collections.unmodifiableCollection(grantedAuthority);
+    }
+
+    /**
+     * @return the creadetials
+     */
+    @Override
+    public Object getCredentials() {
+        return authentication.getCredentials();
+    }
+
+    /**
+     * @return the details
+     */
+    @Override
+    public Object getDetails() {
+        return authentication.getDetails();
+    }
+
+    /**
+     * @return the principal
+     */
+    @Override
+    public Object getPrincipal() {
+        return authentication.getPrincipal();
+    }
+
+    /**
+     * @return the name
+     */
     @Override
     public String getName() {
         return this.getClass().getSimpleName();
     }
 
+    /**
+     * @return the user id
+     */
     public Long getUserId() {
         return loggedUser.getId();
+    }
+
+    /**
+     * @return true if authenticated, false otherwise
+     */
+    @Override
+    public boolean isAuthenticated() {
+        return authenticated;
     }
 }

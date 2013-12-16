@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -16,15 +19,28 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
+/**
+ * Handle RPC calls for SupplierDemands module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private SupplierDemandsModuleRPCServiceAsync supplierDemandsService = null;
 
-    //*************************************************************************/
-    // Overriden methods of IEventBusData interface.                          */
-    //*************************************************************************/
+    /**************************************************************************/
+    /* Overriden methods of IEventBusData interface.                          */
+    /**************************************************************************/
+    /**
+     * Request needed table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
@@ -47,6 +63,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
         }
     }
 
+    /**
+     * Request needed table data.
+     * @param searchDefinition - search criteria
+     */
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.SUPPLIER_POTENTIAL_DEMANDS:
@@ -69,9 +89,12 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
         }
     }
 
-    //*************************************************************************/
-    // Retrieving methods - SUPPLIER WELCOME DASHBOARD                        */
-    //*************************************************************************/
+    /**************************************************************************/
+    /* Retrieving methods - SUPPLIER WELCOME DASHBOARD                        */
+    /**************************************************************************/
+    /**
+     * Requests supplier dashboard data.
+     */
     public void onGetSupplierDashboardDetail() {
         supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getSupplierId(),
                 new SecuredAsyncCallback<SupplierDashboardDetail>(eventBus) {
@@ -84,10 +107,14 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     }
 
 
-    //*************************************************************************/
-    // Retrieving methods                                                     */
-    //*************************************************************************/
-
+    /**************************************************************************/
+    /* Retrieving methods                                                     */
+    /**************************************************************************/
+    /**
+     * Request potential demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierPotentialDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
@@ -99,6 +126,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request potential demands table data.
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierPotentialDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierPotentialDemands(
                 Storage.getUser().getUserId(), Storage.getSupplierId(), searchDefinition,
@@ -110,6 +141,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request offers table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
                 Storage.getSupplierId(), searchDefinition,
@@ -121,6 +157,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request offers table data.
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierOffers(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffers(
                 Storage.getSupplierId(), Storage.getUser().getUserId(), searchDefinition,
@@ -132,6 +172,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request assigend demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemandsCount(
                 Storage.getSupplierId(), searchDefinition,
@@ -143,6 +188,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request assinged demands table data .
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierAssignedDemands(
                 Storage.getSupplierId(), searchDefinition,
@@ -154,6 +203,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request closed demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierClosedDemandsCount(
                 Storage.getSupplierId(), searchDefinition,
@@ -165,6 +219,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request closed demands table data .
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierClosedDemands(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierClosedDemands(
                 Storage.getSupplierId(), searchDefinition,
@@ -176,6 +234,11 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request ratings table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierRatingsCount(
                 Storage.getSupplierId(), searchDefinition,
@@ -187,6 +250,10 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
+    /**
+     * Request ratings table data .
+     * @param searchDefinition - search criteria
+     */
     private void getSupplierRatings(SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierRatings(
                 Storage.getSupplierId(), searchDefinition,
@@ -201,6 +268,13 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
     /**************************************************************************/
     /* Other                                                                  */
     /**************************************************************************/
+    /**
+     * Finnishes offer and rates client.
+     * @param demandID
+     * @param offerID
+     * @param rating of client
+     * @param message of rating
+     */
     public void onRequestFinishAndRateClient(final long demandID, final long offerID,
             final Integer rating, final String message) {
         supplierDemandsService.finishOfferAndEnterFeedbackForClient(demandID, offerID, rating, message,
@@ -213,12 +287,9 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
                 });
     }
 
-    //request? better would be update
-
-    public void onRequestEditOffer(long id) {
-        //TODO LATER ivlcek: maybe we will not enable this functionality. Consider removing
-    }
-
+    /**
+     * Updates unread messages count.
+     */
     public void onUpdateUnreadMessagesCount() {
         supplierDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override

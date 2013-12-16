@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.detail;
 
@@ -37,6 +36,7 @@ public class MessageCell extends AbstractCell<MessageDetail> {
 
         PreElement getBodySpan(Element parent);
     }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -45,6 +45,9 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Initializes message cell.
+     */
     public MessageCell() {
         super(BrowserEvents.CLICK);
     }
@@ -52,6 +55,10 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Overriden methods                                                      */
     /**************************************************************************/
+    /**
+     * Renders message cell's view.
+     * @param value - message detail
+     */
     @Override
     public void render(Context context, MessageDetail value, SafeHtmlBuilder sb) {
         String cssColor;
@@ -64,6 +71,10 @@ public class MessageCell extends AbstractCell<MessageDetail> {
                 getSentText(value.getSent()), value.getBody());
     }
 
+    /**
+     * Handles browser events.
+     * @param value - message detail
+     */
     @Override
     public void onBrowserEvent(Context context, Element parent, MessageDetail value,
             NativeEvent event, ValueUpdater<MessageDetail> valueUpdater) {
@@ -79,6 +90,11 @@ public class MessageCell extends AbstractCell<MessageDetail> {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Gets formated date.
+     * @param sent date
+     * @return string representation of given date
+     */
     private String getSentText(Date sent) {
         if (sent == null) {
             return "";

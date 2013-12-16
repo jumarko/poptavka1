@@ -1,8 +1,5 @@
 /*
- * HomeSuppliersEventBus servers all events for module HomeSuppliersModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis dodavatelov
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.detail;
 
@@ -28,6 +25,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
+ * DetailModuleEventBus serves all events for DetailModule.
  *
  * @author martin.slavkovsky
  */
@@ -53,21 +51,8 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
     void forward();
 
     /**************************************************************************/
-    /* Parent events.                                                         */
-    /**************************************************************************/
-    @Event(forwardToParent = true)
-    void displayError(int errorResponseCode, String errorId);
-
-    /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
-    /**
-     * The only entry point to this module due to code-splitting and exclusive
-     * fragment.
-     */
-    @Event(handlers = DetailModulePresenter.class, navigationEvent = true)
-    void goToDetailModule();
-
     @Event(forwardToModules = SupplierDemandsModule.class)
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 

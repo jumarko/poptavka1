@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -17,12 +20,21 @@ import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Part of SupplierDemands module widgets.
+ * Displays supplier's potential demands.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = AbstractSupplierView.class)
 public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
 
     /**************************************************************************/
     /* Bind actions                                                           */
     /**************************************************************************/
+    /**
+     * Binds table selection handler.
+     */
     @Override
     public void bindView() {
         super.bindView();
@@ -33,6 +45,9 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Creates SupplierDemands widget.
+     */
     public void onInitSupplierDemands(SearchModuleDataHolder filter) {
         Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_POTENTIAL_DEMANDS);
@@ -49,8 +64,8 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
     }
 
     /**
-     * Response method for onInitSupplierList()
-     * @param data
+     * Displays supplier's potential demands data.
+     * @param data to be displyed
      */
     public void onDisplaySupplierDemands(List<SupplierPotentialDemandDetail> data) {
         GWT.log("++ onResponseSupplierPotentialDemands");
@@ -61,6 +76,9 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     *  Binds table selection handler. Allows sending offer button.
+     */
     public void addTableSelectionModelClickHandler() {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
@@ -73,7 +91,7 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
     }
 
     /**
-     * Create supplier potential demands table.
+     * Create supplier potential demands table using UniversalGridFactory.
      */
     @Override
     protected UniversalAsyncGrid initTable() {

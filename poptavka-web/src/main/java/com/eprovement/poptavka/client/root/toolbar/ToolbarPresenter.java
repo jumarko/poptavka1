@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.toolbar;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
@@ -29,8 +32,14 @@ import com.mvp4g.client.presenter.LazyPresenter;
  * }
  * </pre>
  * Left and Right panels can be implemented separately or you can miss one or both.
+ * <b><i>Note:</i></b>
+ * Toolbar consists of two parts: general toolbar - represented by this widget and
+ * custom toolbar - provided by each module.
+ * Animation is enabled by responsive design. Left sliding panel animates for tiny-middle screens.
+ * Right sliding panel animates for tiny-small screen.s
  *
  * @author Martin Slavkovsky
+ * @since 10.7.2013
  */
 @Presenter(view = ToolbarView.class)
 public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> {
@@ -38,6 +47,9 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
     /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
+    /**
+     * Sets toolbar widget to page layout.
+     */
     public void onStart() {
         eventBus.setToolbar(view);
     }
@@ -81,6 +93,12 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Sets custom toolbar widget.
+     * @param title of toolbar
+     * @param content - custom toolbar widget
+     * @param hasAnimationLayout - has 3-layout-responsive-view that can be animated
+     */
     public void onSetToolbarContent(String title, Widget content, boolean hasAnimationLayout) {
         view.setToolbarContent(title, content, hasAnimationLayout);
     }
@@ -88,6 +106,10 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Animates left sliding panel.
+     * @param open - true to slide left sliding panel to be visible, false otherwise
+     */
     private void openCategoryTreePanel(boolean open) {
         isCategoryPanelOpen = open;
         if (open) {
@@ -98,6 +120,10 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
         }
     }
 
+    /**
+     * Animates right sliding panel.
+     * @param open - true to slide right sliding panel to be visible, false otherwise
+     */
     private void openDetailPanel(boolean open) {
         isDetailPanelOpen = open;
         if (open) {

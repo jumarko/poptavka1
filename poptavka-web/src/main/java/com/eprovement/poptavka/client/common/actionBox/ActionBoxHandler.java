@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.actionBox;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -7,17 +10,26 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
+/**
+ * Handles RPC calls for ActionBox module.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class ActionBoxHandler extends BaseEventHandler<ActionBoxEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private ActionBoxRPCServiceAsync rootService;
 
-    /*
-     * Messages methods
-     */
+    /**************************************************************************/
+    /* Business event                                                         */
+    /**************************************************************************/
     /**
-     * Changes demands Read status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     * Changes demands Read status.
+     * Changes are displayed immediately on frontend. No onSuccess code is needed.
      *
      * @param selectedIdList list of demands which read status should be changed
      * @param newStatus of demandList
@@ -32,7 +44,8 @@ public class ActionBoxHandler extends BaseEventHandler<ActionBoxEventBus> {
     }
 
     /**
-     * Changes demands star status. Changes are displayed immediately on frontend. No onSuccess code is needed.
+     * Changes demands star status.
+     * Changes are displayed immediately on frontend. No onSuccess code is needed.
      *
      * @param userMessageIdList list od demands which star status should be changed
      * @param newStatus of demandList

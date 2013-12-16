@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server.converter;
 
@@ -9,16 +9,36 @@ import com.eprovement.poptavka.shared.domain.demand.DemandTypeDetail;
 import com.eprovement.poptavka.shared.domain.demandsModule.PotentialDemandDetail;
 import org.apache.commons.lang.Validate;
 
+/**
+ * Converts UserMessage to PotrentialDemandDetail.
+ * //TODO Martin switch to SupplierPotentialDetail
+ * @author Juraj Martinka
+ */
 public final class PotentialDemandConverter extends AbstractConverter<UserMessage, PotentialDemandDetail> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private final Converter<DemandType, DemandTypeDetail> demandTypeConverter;
 
+    /**************************************************************************/
+    /* Constructor                                                            */
+    /**************************************************************************/
+    /**
+     * Creates PotentialDemandConverter.
+     */
     private PotentialDemandConverter(Converter<DemandType, DemandTypeDetail> demandTypeConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(demandTypeConverter);
         this.demandTypeConverter = demandTypeConverter;
     }
 
+    /**************************************************************************/
+    /* Convert methods                                                        */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public PotentialDemandDetail convertToTarget(UserMessage userMessage) {
         final PotentialDemandDetail detail = new PotentialDemandDetail();
@@ -52,6 +72,9 @@ public final class PotentialDemandConverter extends AbstractConverter<UserMessag
 
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public UserMessage convertToSource(PotentialDemandDetail potentialDemandDetail) {
         throw new UnsupportedOperationException("Conversion from PotentialDemandDetail to domain object UserMessage "

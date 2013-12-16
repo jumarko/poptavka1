@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.forms;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
@@ -30,6 +33,7 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
 
     interface CompanyInfoFormUiBinder extends UiBinder<Widget, AccountInfoForm> {
     }
+
     /**************************************************************************/
     /* Attribute                                                              */
     /**************************************************************************/
@@ -40,6 +44,9 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Constructor                                                            */
     /**************************************************************************/
+    /**
+     * Creates AccountInfoForm view's compotnents.
+     */
     public AccountInfoForm() {
         initValidationMonitors();
         initWidget(uiBinder.createAndBindUi(this));
@@ -54,6 +61,11 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
         passwordConfirm = createValidationMonitor(UserField.PASSWORD);
     }
 
+    /**
+     * Creates validation monitor.
+     * @param field - validation field
+     * @return validation monitor
+     */
     private ValidationMonitor createValidationMonitor(UserField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
@@ -81,18 +93,30 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the email validation monitor
+     */
     public ValidationMonitor getEmail() {
         return email;
     }
 
+    /**
+     * @return the password validation monitor
+     */
     public ValidationMonitor getPassword() {
         return password;
     }
 
+    /**
+     * @return the password confirm validation monitor
+     */
     public ValidationMonitor getPasswordConfirm() {
         return passwordConfirm;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return email.isValid() && password.isValid() && passwordConfirm.isValid();

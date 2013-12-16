@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.session.Constants;
@@ -15,6 +18,10 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 
+/**
+ * View consists of left vertical menu and content area for placing module's widgets.
+ * @author Martin Slavkovsky
+ */
 public class SettingsView extends Composite implements
         SettingsPresenter.SttingsViewInterface {
 
@@ -39,6 +46,9 @@ public class SettingsView extends Composite implements
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates Settings view's compontents.
+     */
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -55,11 +65,19 @@ public class SettingsView extends Composite implements
     /**************************************************************************/
     /*  Methods handled by view                                               */
     /**************************************************************************/
+    /**
+     * Allows supplier settings button in menu if logged user is a supplier.
+     * @param visible true to display, false to hide
+     */
     @Override
-    public void setClientButtonVisibility(boolean visible) {
+    public void allowSupplierSettings(boolean visible) {
         menuSupplierBtn.setVisible(visible);
     }
 
+    /**
+     * Sets active style for user menu button style.
+     */
+    @Override
     public void settingsUserStyleChange() {
         menuUserBtn.addStyleName(Constants.ACT);
         menuClientBtn.removeStyleName(Constants.ACT);
@@ -68,6 +86,10 @@ public class SettingsView extends Composite implements
         menuSecurityBtn.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for client menu button style.
+     */
+    @Override
     public void settingsClientStyleChange() {
         menuUserBtn.removeStyleName(Constants.ACT);
         menuClientBtn.addStyleName(Constants.ACT);
@@ -76,6 +98,10 @@ public class SettingsView extends Composite implements
         menuSecurityBtn.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for supplier menu button style.
+     */
+    @Override
     public void settingsSupplierStyleChange() {
         menuUserBtn.removeStyleName(Constants.ACT);
         menuClientBtn.removeStyleName(Constants.ACT);
@@ -84,6 +110,10 @@ public class SettingsView extends Composite implements
         menuSecurityBtn.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for system menu button style.
+     */
+    @Override
     public void settingsSystemsStyleChange() {
         menuUserBtn.removeStyleName(Constants.ACT);
         menuClientBtn.removeStyleName(Constants.ACT);
@@ -92,6 +122,10 @@ public class SettingsView extends Composite implements
         menuSecurityBtn.removeStyleName(Constants.ACT);
     }
 
+    /**
+     * Sets active style for security menu button style.
+     */
+    @Override
     public void settingsSecurityStyleChange() {
         menuUserBtn.removeStyleName(Constants.ACT);
         menuClientBtn.removeStyleName(Constants.ACT);
@@ -104,47 +138,74 @@ public class SettingsView extends Composite implements
     /*  Getters                                                               */
     /**************************************************************************/
     /** PANELS. **/
+    /**
+     * @return the content container
+     */
     @Override
     public SimplePanel getContentPanel() {
         return contentContainer;
     }
 
+    /**
+     * @return the footer container
+     */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
     }
 
     /** BUTTONS. **/
+    /**
+     * @return the use menu button
+     */
     @Override
     public Button getMenuUserBtn() {
         return menuUserBtn;
     }
 
+    /**
+     * @return the client menu button
+     */
     @Override
     public Button getMenuClientBtn() {
         return menuClientBtn;
     }
 
+    /**
+     * @return the supplier menu button
+     */
     @Override
     public Button getMenuSupplierBtn() {
         return menuSupplierBtn;
     }
 
+    /**
+     * @return the system menu button
+     */
     @Override
     public Button getMenuSystemBtn() {
         return menuSystemBtn;
     }
 
+    /**
+     * @return the security menut button
+     */
     @Override
     public Button getMenuSecurityBtn() {
         return menuSecurityBtn;
     }
 
+    /**
+     * @return the custom toolbar widget
+     */
     @Override
     public Widget getToolbarContent() {
         return toolbar;
     }
 
+    /**
+     * @return the widget view
+     */
     @Override
     public Widget getWidgetView() {
         return this;

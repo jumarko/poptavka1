@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
@@ -20,15 +23,27 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.List;
 
+/**
+ * Handle RPC calls for ClientDemands module.
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsModuleEventBus> {
 
+    /**************************************************************************/
+    /* Inject RPC services                                                    */
+    /**************************************************************************/
     @Inject
     private ClientDemandsModuleRPCServiceAsync clientDemandsService;
 
     //*************************************************************************/
     // Overriden methods of IEventBusData interface.                          */
     //*************************************************************************/
+    /**
+     * Request table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_DEMANDS:
@@ -57,6 +72,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         }
     }
 
+    /**
+     * Request table data.
+     * @param searchDefinition - search criteria
+     */
     public void onGetData(SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_DEMANDS:
@@ -88,7 +107,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT WELCOME DASHBOARD                          */
     //*************************************************************************/
-
+    /**
+     * Request client dashboard detail.
+     */
     public void onGetClientDashboardDetail() {
         clientDemandsService.getClientDashboardDetail(Storage.getUser().getUserId(),
                 new SecuredAsyncCallback<ClientDashboardDetail>(eventBus) {
@@ -102,6 +123,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT DEMANDS                                   */
     //*************************************************************************/
+    /**
+     * Request client demands data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
@@ -113,6 +139,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client demands data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemands(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -127,6 +157,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT DEMAND CONVERSATIONS                      */
     //*************************************************************************/
+    /**
+     * Request client demands conversation table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientDemandConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandConversationsCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
@@ -142,6 +177,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client demands conversation table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientDemandConversations(SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandConversations(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
@@ -156,6 +195,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT OFFERED DEMANDS                           */
     //*************************************************************************/
+    /**
+     * Request client offered demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientOfferedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandsCount(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
@@ -167,6 +211,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client offered demands table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientOfferedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -181,6 +229,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     //*************************************************************************/
     // Retrieving methods - CLIENT PROJECT CONTESTANTS                        */
     //*************************************************************************/
+    /**
+     * Request client demands offers table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientOfferedDemandOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandOffersCount(
                 Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
@@ -193,6 +246,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client demands offers table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientOfferedDemandOffers(SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandOffers(
                 Storage.getUser().getUserId(), Storage.getDemandId(), Storage.getThreadRootId(), searchDefinition,
@@ -207,6 +264,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Retrieving methods - CLIENT ASSIGNED DEMANDS                           */
     /**************************************************************************/
+    /**
+     * Request client assigned demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemandsCount(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -219,6 +281,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client assigned demands table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientAssignedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -233,6 +299,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Retrieving methods - CLIENT CLOSED DEMANDS                           */
     /**************************************************************************/
+    /**
+     * Request client closed demands table data count.
+     * @param grid - table
+     * @param searchDefinition - search criteria
+     */
     private void getClientClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientClosedDemandsCount(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -245,6 +316,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client closed demands table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientClosedDemands(SearchDefinition searchDefinition) {
         clientDemandsService.getClientClosedDemands(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -259,6 +334,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Retrieving methods - CLIENT RATINGS                                    */
     /**************************************************************************/
+    /**
+     * Request client ratings table data count.
+     * @param grid - table
+     * @param searchDefinition - ssearch criteria
+     */
     private void getClientRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientRatingsCount(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -271,6 +351,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Request client ratings table data.
+     * @param searchDefinition - search criteria
+     */
     private void getClientRatings(SearchDefinition searchDefinition) {
         clientDemandsService.getClientRatings(
                 Storage.getUser().getUserId(), searchDefinition,
@@ -285,6 +369,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Other                                                                  */
     /**************************************************************************/
+    /**
+     * Close demand and rate supplier.
+     * @param demandID
+     * @param offerID
+     * @param supplierRating - supplier's rating
+     * @param supplierMessage - rating's message
+     */
     public void onRequestCloseAndRateSupplier(final long demandID, final long offerID, final Integer supplierRating,
             final String supplierMessage) {
         clientDemandsService.closeDemandAndEnterFeedbackForSupplier(demandID, offerID, supplierRating, supplierMessage,
@@ -297,6 +388,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                 });
     }
 
+    /**
+     * Accepts offer.
+     * @param offerId
+     */
     public void onRequestAcceptOffer(long offerId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
         clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<Void>(eventBus) {
@@ -312,6 +407,9 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* Button actions - messaging.                                            */
     /**************************************************************************/
+    /**
+     * Updates unread messages count.
+     */
     public void onUpdateUnreadMessagesCount() {
         clientDemandsService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
             @Override
@@ -324,6 +422,10 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     /**************************************************************************/
     /* CRUD operation of demand                                               */
     /**************************************************************************/
+    /**
+     * Deletes demand.
+     * @param demandId
+     */
     public void onRequestDeleteDemand(long demandId) {
         clientDemandsService.requestDeleteDemand(demandId, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
             @Override
@@ -333,6 +435,11 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
         });
     }
 
+    /**
+     * Updates demand.
+     * @param demandId
+     * @param updatedDemand
+     */
     public void onRequestUpdateDemand(long demandId, FullDemandDetail updatedDemand) {
         clientDemandsService.updateDemand(demandId, updatedDemand,
                 new SecuredAsyncCallback<FullDemandDetail>(eventBus) {

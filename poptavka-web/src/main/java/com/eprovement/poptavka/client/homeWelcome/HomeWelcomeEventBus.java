@@ -1,12 +1,9 @@
 /*
- * HomeWelcomEventBus is very first home page to be loaded.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.homeWelcome;
 
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.Debug;
@@ -17,6 +14,14 @@ import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.ArrayList;
 
+/**
+ * HomeWelcomEventBus is very first home page to be loaded.
+ *
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/
+ *
+ * @author Beho, Martin Slavkovsky
+ */
 @Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventBus {

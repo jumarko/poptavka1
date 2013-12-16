@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
@@ -10,15 +13,13 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
-
-
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * Represents full detail of demand. Serves for creating new demand or for call of detail, that supports editing.
  *
- * @author Beho
+ * @author Martin Slavkovsky
  */
 public class ClientDemandDetail implements IsSerializable,
     TableDisplayDemandTitle, TableDisplayUserMessage, TableDisplayDetailModule,
@@ -53,6 +54,9 @@ public class ClientDemandDetail implements IsSerializable,
     /**************************************************************************/
     /* Constructors                                                           */
     /**************************************************************************/
+    /**
+     * Creates Client demand detail.
+     */
     public ClientDemandDetail() {
         //for serialization
     }

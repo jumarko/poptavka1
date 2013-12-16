@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.session;
 
 import com.eprovement.poptavka.resources.StyleResource;
@@ -18,6 +21,9 @@ import com.google.gwt.dom.client.StyleInjector;
  */
 public final class CssInjector {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     public static final CssInjector INSTANCE = new CssInjector();
     private boolean isInitialLoaded;
     private boolean isLayoutLoaded;
@@ -28,9 +34,15 @@ public final class CssInjector {
     private boolean isGridLoaded;
     private boolean isPagerLoaded;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
     private CssInjector() {
     }
 
+    /**************************************************************************/
+    /* Business events                                                        */
+    /**************************************************************************/
     /**
      * Inject <b>initial</b> styles.
      */
@@ -138,6 +150,10 @@ public final class CssInjector {
             injectResponsiveStyle(pagerResources.simplePagerStyleTiny().getText(), 480);
         }
     }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
     /**
      * Inject responsive styles.
      *

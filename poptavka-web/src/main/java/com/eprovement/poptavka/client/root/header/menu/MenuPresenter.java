@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.root.header.menu;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
@@ -15,77 +18,32 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.SingleSplitter;
 
+/**
+ * Menu presenter provides handlers for menu buttons and
+ * correct menu layout according to type of logged user.
+ *
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = MenuView.class, async = SingleSplitter.class)
 public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         implements IUserMenuPresenter {
 
+    /**************************************************************************/
+    /* General Module events                                                  */
+    /**************************************************************************/
+    /**
+     * Sets menu widget to page layout.
+     */
     public void onStart() {
         eventBus.setMenu(view);
-    }
-
-    public void onAtHome() {
-        view.getHome().setVisible(true);
-        view.getClient().setVisible(false);
-        view.getSupplier().setVisible(false);
-        view.getDemands().setVisible(true);
-        view.getSuppliers().setVisible(true);
-        view.getCreateDemand().setVisible(true);
-        view.getCreateSupplier().setVisible(true);
-        view.getInbox().setVisible(false);
-        view.getAdministration().setVisible(false);
-    }
-    /**
-     * Jedina matoda, ktora nahra UserMenu pohlad do Root menu layoutu. Ak je prave
-     * prihlaseny uzivatel administrator, zobrazi administatorsky tab.
-     */
-    public void onAtAccount() {
-        GWT.log("User menu view loaded");
-        view.getHome().setVisible(false);
-        view.getInbox().setVisible(true);
-        //Tab visibility must be defined here, because unlike constructor in UserMenuView
-        //this method is called each time user is logging in
-        /* ADMIN TAB */
-        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-            view.getClient().setVisible(false);
-            view.getSupplier().setVisible(false);
-            view.getDemands().setVisible(false);
-            view.getSuppliers().setVisible(false);
-            view.getCreateDemand().setVisible(false);
-            view.getCreateSupplier().setVisible(false);
-            view.getAdministration().setVisible(true);
-            view.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
-        } else {
-            /* SUPPLIER TAB */
-            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
-                view.getClient().setVisible(true);
-                view.getSupplier().setVisible(true);
-                view.getDemands().setVisible(true);
-                view.getSuppliers().setVisible(true);
-                view.getCreateDemand().setVisible(true);
-                view.getCreateSupplier().setVisible(false);
-                view.getAdministration().setVisible(false);
-                view.menuStyleChange(Constants.USER_SUPPLIER_MODULE);
-                view.setSupplierButtonVerticalNoLine(true);
-                /* CLIENT TAB */
-            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.CLIENT)) {
-                view.getClient().setVisible(true);
-                view.getSupplier().setVisible(false);
-                view.getDemands().setVisible(true);
-                view.getSuppliers().setVisible(true);
-                view.getCreateDemand().setVisible(true);
-                view.getCreateSupplier().setVisible(true);
-                view.getAdministration().setVisible(false);
-                view.menuStyleChange(Constants.USER_CLIENT_MODULE);
-                view.setSupplierButtonVerticalNoLine(false);
-            }
-        }
     }
 
     /**************************************************************************/
     /* Bind methods.                                                          */
     /**************************************************************************/
+    /**
+     * Bind menu buttons handlers.
+     */
     @Override
     public void bind() {
         view.getHome().addClickHandler(new ClickHandler() {
@@ -154,7 +112,73 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
     }
 
     /**************************************************************************/
-    /* Style change methods.                                                  */
+    /* Layout events                                                          */
+    /**************************************************************************/
+    /**
+     * Sets menu layout for unlogged user.
+     */
+    public void onAtHome() {
+        view.getHome().setVisible(true);
+        view.getClient().setVisible(false);
+        view.getSupplier().setVisible(false);
+        view.getDemands().setVisible(true);
+        view.getSuppliers().setVisible(true);
+        view.getCreateDemand().setVisible(true);
+        view.getCreateSupplier().setVisible(true);
+        view.getInbox().setVisible(false);
+        view.getAdministration().setVisible(false);
+    }
+    /**
+     * Sets menu layout for logged user.
+     * Different layout according to user's access and business role is used.
+     */
+    public void onAtAccount() {
+        GWT.log("User menu view loaded");
+        view.getHome().setVisible(false);
+        view.getInbox().setVisible(true);
+        //Tab visibility must be defined here, because unlike constructor in UserMenuView
+        //this method is called each time user is logging in
+        /* ADMIN TAB */
+        if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
+            view.getClient().setVisible(false);
+            view.getSupplier().setVisible(false);
+            view.getDemands().setVisible(false);
+            view.getSuppliers().setVisible(false);
+            view.getCreateDemand().setVisible(false);
+            view.getCreateSupplier().setVisible(false);
+            view.getAdministration().setVisible(true);
+            view.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
+        } else {
+            /* SUPPLIER TAB */
+            if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                view.getClient().setVisible(true);
+                view.getSupplier().setVisible(true);
+                view.getDemands().setVisible(true);
+                view.getSuppliers().setVisible(true);
+                view.getCreateDemand().setVisible(true);
+                view.getCreateSupplier().setVisible(false);
+                view.getAdministration().setVisible(false);
+                view.menuStyleChange(Constants.USER_SUPPLIER_MODULE);
+                view.setSupplierButtonVerticalNoLine(true);
+                /* CLIENT TAB */
+            } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
+                view.getClient().setVisible(true);
+                view.getSupplier().setVisible(false);
+                view.getDemands().setVisible(true);
+                view.getSuppliers().setVisible(true);
+                view.getCreateDemand().setVisible(true);
+                view.getCreateSupplier().setVisible(true);
+                view.getAdministration().setVisible(false);
+                view.menuStyleChange(Constants.USER_CLIENT_MODULE);
+                view.setSupplierButtonVerticalNoLine(false);
+            }
+        }
+    }
+
+    /**************************************************************************/
+    /* Business events                                                        */
     /**************************************************************************/
     /**
      * Loads right styles to menu buttons.

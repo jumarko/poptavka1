@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2012, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.server;
 
@@ -90,6 +89,10 @@ public final class DomainObjectsMaping {
     }
 }
 
+/**
+ * Represents maping pair.
+ * @author Martin Slavkovsky
+ */
 class MapingPair {
 
     private Class<?> searchClass;

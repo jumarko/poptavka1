@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.user.widget.grid.columns;
 
@@ -10,6 +9,9 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 
 /**
+ * Use to create <b>message text column</b> in table.
+ * Object must implemnets <b>TableDisplayMessageText</b> to be displayable in table with message text column.
+ *
  * @author Martin Slavkovsky
  */
 public class MessageTextColumn extends Column<TableDisplayMessageText, String> {
@@ -19,6 +21,15 @@ public class MessageTextColumn extends Column<TableDisplayMessageText, String> {
         String getMessageText();
     }
 
+    /**
+     * Creates MessageTextColumn with:
+     * <ul>
+     *   <li>sortable: false</li>
+     *   <li>cellStyleNames: ellipsis</li>
+     *   <li>fieldUpdater: provided</li>
+     * </ul>
+     * @param fieldUpdater
+     */
     public MessageTextColumn(FieldUpdater fieldUpdater) {
         super(new SafeClickableTextCell());
         setSortable(false);
@@ -28,6 +39,9 @@ public class MessageTextColumn extends Column<TableDisplayMessageText, String> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public String getValue(TableDisplayMessageText object) {
         return object.getMessageText();

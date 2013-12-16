@@ -1,5 +1,12 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.detail;
 
+/**
+ * Enum defining demand module tabs.
+ * @author Martin Slavkovsky
+ */
 public enum DetailModuleTabs {
 
     DEMAND_DETAIL_TAB(1),

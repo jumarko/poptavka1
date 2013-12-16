@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages.toolbar;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -13,11 +16,15 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
 /**
+ * Custom toolbar for Messages module.
  * @author Martin Slavkovsky
  */
 @Singleton
 public class MessagesToolbarView extends Composite implements IsWidget {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static MessagesToolbarViewUiBinder uiBinder = GWT.create(MessagesToolbarViewUiBinder.class);
 
     interface MessagesToolbarViewUiBinder extends UiBinder<Widget, MessagesToolbarView> {
@@ -34,6 +41,9 @@ public class MessagesToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates MessagesToolbar view's components.
+     */
     public MessagesToolbarView() {
         pager = new UniversalPagerWidget();
         initWidget(uiBinder.createAndBindUi(this));
@@ -42,6 +52,10 @@ public class MessagesToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * Binds pager to table
+     * @param table
+     */
     public void bindPager(UniversalAsyncGrid table) {
         pager.setDisplay(table);
     }
@@ -65,18 +79,30 @@ public class MessagesToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the reply button
+     */
     public Button getReplyBtn() {
         return replyBtn;
     }
 
+    /**
+     * @return the actionbox panel
+     */
     public SimplePanel getActionBox() {
         return actionBox;
     }
 
+    /**
+     * @return the universal pager widget
+     */
     public UniversalPagerWidget getPager() {
         return pager;
     }
 
+    /**
+     * @return the widget view
+     */
     public Widget getWdigetView() {
         return this;
     }

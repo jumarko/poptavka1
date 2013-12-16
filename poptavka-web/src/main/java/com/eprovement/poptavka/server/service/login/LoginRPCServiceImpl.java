@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.server.service.login;
 
 import com.eprovement.poptavka.client.service.demand.LoginRPCService;
@@ -8,7 +11,6 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.user.LoginService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AccessRoleDetail;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
+ * This RPC handles all secured requests from Login module.
  * All methods in this RPC service require access of authenticated user, which means that by the time any of these
  * methods is carried out there is a Authentication object in SecurityContextHolder that contains userId reference of
  * logged user.
@@ -28,24 +31,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Configurable
 public class LoginRPCServiceImpl extends AutoinjectingRemoteService implements LoginRPCService {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     //Services
     private GeneralService generalService;
-    private LoginService loginService;
     //Converters
     private Converter<AccessRole, AccessRoleDetail> accessRoleConverter;
     private Converter<BusinessUser, BusinessUserDetail> businessUserConverter;
 
     /**************************************************************************/
-    /* Autowired methods                                                      */
+    /* Autowire services and converters                                       */
     /**************************************************************************/
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
-    }
-
-    @Autowired
-    public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
     }
 
     /**************************************************************************/
@@ -66,6 +66,12 @@ public class LoginRPCServiceImpl extends AutoinjectingRemoteService implements L
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    /**
+     * Request business user detail by id.
+     * @param userId of user
+     * @return business user detail
+     * @throws RPCException
+     */
     @Override
     public BusinessUserDetail getBusinessUserById(Long userId) throws RPCException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, userId));

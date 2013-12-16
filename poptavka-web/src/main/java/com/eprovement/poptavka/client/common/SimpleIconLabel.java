@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common;
 
 import com.google.gwt.core.client.GWT;
@@ -22,6 +25,10 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+/**
+ * TODO Martin - refactor, remove
+ * @author beho
+ */
 public class SimpleIconLabel extends Composite implements HasMouseOverHandlers, HasMouseOutHandlers {
 
     private static SimpleIconLabelUiBinder uiBinder = GWT.create(SimpleIconLabelUiBinder.class);

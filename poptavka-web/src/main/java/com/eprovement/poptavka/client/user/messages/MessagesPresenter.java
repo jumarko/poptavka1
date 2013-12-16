@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.messages;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,6 +21,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
 /**
+ * Messages presenter
  * @author Martin Slavkovsky
  */
 @Presenter(view = MessagesView.class)
@@ -25,6 +29,9 @@ public class MessagesPresenter
         extends LazyPresenter<MessagesLayoutInterface, MessagesEventBus>
         implements NavigationConfirmationInterface {
 
+    /**************************************************************************/
+    /* View interface                                                         */
+    /**************************************************************************/
     public interface MessagesLayoutInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         void setMessagesMenuStyleChange(int loadedWidget);
@@ -44,6 +51,9 @@ public class MessagesPresenter
     /**************************************************************************/
     /* Bind                                                                   */
     /**************************************************************************/
+    /**
+     * Binds menu buttons handlers
+     */
     @Override
     public void bindView() {
         view.getMessagesInbox().addClickHandler(new ClickHandler() {
@@ -58,12 +68,13 @@ public class MessagesPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        // nothing by default
     }
 
     /**
      * Every call of onForward method invokes updateUnreadMessagesCount event that is secured thus user without
      * particular access role can't access it and loginPopupView will be displayed.
+     * Sets body, toolbar.
      */
     public void onForward() {
         //Must be set before any widget start initialize because of autoDisplay feature
@@ -77,7 +88,7 @@ public class MessagesPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing
+        // nothing by default
     }
 
     /**************************************************************************/
@@ -93,10 +104,18 @@ public class MessagesPresenter
         eventBus.initInbox(filter);
     }
 
+    /**
+     * Sets Messages widget to MessagesModule content.
+     * @param content widget
+     */
     public void onDisplayView(IsWidget content) {
         view.getContentContainer().setWidget(content);
     }
 
+    /**
+     * Set active style for menu styles.
+     * @param loadedWidget
+     */
     public void onMessagesMenuStyleChange(int loadedWidget) {
         view.setMessagesMenuStyleChange(loadedWidget);
     }

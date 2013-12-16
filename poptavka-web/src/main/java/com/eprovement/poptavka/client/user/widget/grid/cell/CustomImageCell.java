@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.google.gwt.cell.client.AbstractCell;
@@ -10,19 +13,31 @@ import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
- * Clickable cell displaying star status of message.
+ * Image cell with tooltip.
+ * TODO LATER Martin - create TooltipCell
  *
  * @author beho
+ * @author Martin Slavkovsky
  * @param <C>
  *
  */
 public class CustomImageCell extends AbstractCell<ImageResource> {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private static ImageResourceRenderer renderer;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
     private String explanationText;
 
+    /**************************************************************************/
+    /* Initialization                                                         */
+    /**************************************************************************/
+    /**
+     * Creates CustomImageCell.
+     * @param explanationText - tooltip text
+     */
     public CustomImageCell(String explanationText) {
         super("click", "keydown", "mouseover", "mouseout");
         this.explanationText = explanationText;
@@ -31,6 +46,12 @@ public class CustomImageCell extends AbstractCell<ImageResource> {
         }
     }
 
+    /**************************************************************************/
+    /* Overriden methods                                                      */
+    /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void render(com.google.gwt.cell.client.Cell.Context context,
             ImageResource value, SafeHtmlBuilder sb) {
@@ -39,6 +60,9 @@ public class CustomImageCell extends AbstractCell<ImageResource> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, ImageResource value, NativeEvent event,
@@ -54,6 +78,9 @@ public class CustomImageCell extends AbstractCell<ImageResource> {
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
     @Override
     protected void onEnterKeyDown(
             com.google.gwt.cell.client.Cell.Context context, Element parent,
@@ -63,6 +90,12 @@ public class CustomImageCell extends AbstractCell<ImageResource> {
         }
     }
 
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Displays tooltip in popup.
+     */
     private void displayPopup(Element parent, NativeEvent event) {
         if (displayed) {
             return;
@@ -77,6 +110,9 @@ public class CustomImageCell extends AbstractCell<ImageResource> {
         displayed = true;
     }
 
+    /**
+     * Hides popup.
+     */
     private void hidePopup() {
         displayed = false;
         popup.hide();

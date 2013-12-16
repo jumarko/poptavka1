@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.domain.demand;
 
 import com.eprovement.poptavka.client.user.widget.grid.columns.CreatedDateColumn.TableDisplayCreatedDate;
@@ -22,6 +25,9 @@ import java.util.Date;
 public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule,
     TableDisplayDemandTitle, TableDisplayCreatedDate, TableDisplayValidTo, TableDisplayLocality {
 
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
     private ArrayList<ICatLocDetail> localities;
     private long senderId;
     private long demandId;
@@ -38,16 +44,19 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         };
 
     /**************************************************************************/
-    /* Constructors                                                           */
+    /* Initialization                                                         */
     /**************************************************************************/
+    /**
+     * Creates NewDemandDetail.
+     */
     public NewDemandDetail() {
         // for serialization.
     }
 
     /**************************************************************************/
-    /* Getters & Setters                                                      */
+    /* Getter & Setter pairs                                                  */
     /**************************************************************************/
-    /**
+    /*
      * Localities pair.
      */
     @Override
@@ -59,7 +68,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.localities = localities;
     }
 
-    /**
+    /*
      * Demand id pair.
      */
     @Override
@@ -71,7 +80,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.demandId = demandId;
     }
 
-    /**
+    /*
      * Message's thread root id pair.
      */
     @Override
@@ -83,7 +92,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.threadRootId = threadRootId;
     }
 
-    /**
+    /*
      * Demand's creation date pair.
      */
     @Override
@@ -95,7 +104,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.created = created;
     }
 
-    /**
+    /*
      * Demand title pair.
      */
     @Override
@@ -107,7 +116,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.title = title;
     }
 
-    /**
+    /*
      * Demand valid to date pair.
      */
     @Override
@@ -119,7 +128,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.validTo = validTo;
     }
 
-    /**
+    /*
      * Message sender id pair.
      */
     @Override
@@ -131,8 +140,12 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
         this.senderId = senderId;
     }
 
+    /**
+     * @return the unread messages count
+     */
     @Override
     public int getUnreadMessagesCount() {
+        //always return 0.
         return 0;
     }
 

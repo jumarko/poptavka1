@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.user.settings;
 
 import com.google.gwt.core.client.GWT;
@@ -29,24 +32,23 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 
+/**
+ * Used to view and update user's data.
+ * @author Martin Slavkovsky
+ */
 @Presenter(view = SettingsView.class)
 public class SettingsPresenter
         extends LazyPresenter<SttingsViewInterface, SettingsEventBus>
         implements NavigationConfirmationInterface {
 
-    private UserSettingsPresenter userPresenter;
-    private ClientSettingsPresenter clientPresenter;
-    private SupplierSettingsPresenter supplierPresenter;
-    private SystemSettingsPresenter systemPresenter;
-    private SecuritySettingsPresenter securityPresenter;
-    //
-    private SettingDetail settingsDetail;
-
-    //IsWidget musi byt kvoli funkcii ChildAutoDisplay
+    /**************************************************************************/
+    /* View insterface                                                        */
+    /**************************************************************************/
+    //Extends IsWidget in order to use ChildAutoDisplay feature
     public interface SttingsViewInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         /** Setters. **/
-        void setClientButtonVisibility(boolean visible);
+        void allowSupplierSettings(boolean visible);
 
         void settingsUserStyleChange();
 
@@ -77,15 +79,28 @@ public class SettingsPresenter
     }
 
     /**************************************************************************/
+    /* Attributes events                                                      */
+    /**************************************************************************/
+    /** Module widgets' presenters. **/
+    private UserSettingsPresenter userPresenter;
+    private ClientSettingsPresenter clientPresenter;
+    private SupplierSettingsPresenter supplierPresenter;
+    private SystemSettingsPresenter systemPresenter;
+    private SecuritySettingsPresenter securityPresenter;
+    /** Class attributes. **/
+    private SettingDetail settingsDetail;
+
+    /**************************************************************************/
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing
+        // nothing by default
     }
 
     /**
      * Every call of onForward method invokes updateUnreadMessagesCount event that is secured thus user without
      * particular access role can't access it and loginPopupView will be displayed.
+     * Sets body, footer, toolbar and update unread messages count
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
@@ -96,6 +111,11 @@ public class SettingsPresenter
         }
     }
 
+    /**
+     * Asks for confirmation when leaving module.
+     * Widgets updates data, therefore notify user that he can lose them without saving.
+     * @param event the NavigationEventCommand
+     */
     @Override
     public void confirm(NavigationEventCommand event) {
         String navigationLeaveModule = event.toString().substring(0, event.toString().indexOf("$"));
@@ -114,6 +134,9 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Bind                                                                   */
     /**************************************************************************/
+    /**
+     * Binds toolbar & menu button handlers.
+     */
     @Override
     public void bindView() {
         ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().addClickHandler(new ClickHandler() {
@@ -168,11 +191,14 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Navigation events                                                      */
     /**************************************************************************/
+    /**
+     * Creates Settings module.
+     */
     public void onGoToSettingsModule() {
         eventBus.loadingShow(Storage.MSGS.loading());
         eventBus.setNavigationConfirmation(this);
 
-        view.setClientButtonVisibility(
+        view.allowSupplierSettings(
                 Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER));
 
@@ -187,6 +213,10 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Business events handled by presenter                                   */
     /**************************************************************************/
+    /**
+     * Sets settings data.
+     * @param detail the SettingDetail carrying data
+     */
     public void onSetSettings(SettingDetail detail) {
         this.settingsDetail = detail;
         //set userSettings widget because it is loaded on startup
@@ -194,6 +224,10 @@ public class SettingsPresenter
         eventBus.loadingHide();
     }
 
+    /**
+     * Shows thank you popup after updating data.
+     * @param updated true if successful, false otherwise
+     */
     public void onResponseUpdateSettings(Boolean updated) {
         eventBus.loadingHide();
         if (updated) {
@@ -206,6 +240,10 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Init Methods                                                           */
     /**************************************************************************/
+    /**
+     * Inits UserSettings widget.
+     * @param holder panel
+     */
     public void initUserSettings(SimplePanel holder) {
         if (userPresenter == null) {
             userPresenter = eventBus.addHandler(UserSettingsPresenter.class);
@@ -216,16 +254,24 @@ public class SettingsPresenter
         view.settingsUserStyleChange();
     }
 
+    /**
+     * Inits ClientSettings widget.
+     * @param holder panel
+     */
     public void initClientSettings(SimplePanel holder) {
         if (clientPresenter == null) {
             clientPresenter = eventBus.addHandler(ClientSettingsPresenter.class);
             clientPresenter.onSetClientSettings(settingsDetail);
         }
-        clientPresenter.initUserSettings(holder);
+        clientPresenter.iniClientSettings(holder);
         ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setVisible(true);
         view.settingsClientStyleChange();
     }
 
+    /**
+     * Inits SupplierSettings widget.
+     * @param holder panel
+     */
     public void initSupplierSettings(SimplePanel holder) {
         if (supplierPresenter == null) {
             supplierPresenter = eventBus.addHandler(SupplierSettingsPresenter.class);
@@ -236,6 +282,10 @@ public class SettingsPresenter
         view.settingsSupplierStyleChange();
     }
 
+    /**
+     * Inits SystemSettings widget.
+     * @param holder panel
+     */
     public void initSystemSettings(SimplePanel holder) {
         if (systemPresenter == null) {
             systemPresenter = eventBus.addHandler(SystemSettingsPresenter.class);
@@ -246,6 +296,10 @@ public class SettingsPresenter
         view.settingsSystemsStyleChange();
     }
 
+    /**
+     * Inits SecuritySettings widget.
+     * @param holder panel
+     */
     public void initSecuritySettings(SimplePanel holder) {
         if (securityPresenter == null) {
             securityPresenter = eventBus.addHandler(SecuritySettingsPresenter.class);
@@ -259,6 +313,10 @@ public class SettingsPresenter
     /**************************************************************************/
     /* Update settings methods                                                */
     /**************************************************************************/
+    /**
+     * Validates widgets' components.
+     * @return true if valid, false otherwise
+     */
     private boolean isValid() {
         boolean valid = true;
         if (userPresenter != null) {
@@ -277,6 +335,9 @@ public class SettingsPresenter
         return valid;
     }
 
+    /**
+     * Updates user profile data.
+     */
     private void updateProfile() {
         eventBus.loadingShow(Storage.MSGS.progressUpdatingProfile());
 

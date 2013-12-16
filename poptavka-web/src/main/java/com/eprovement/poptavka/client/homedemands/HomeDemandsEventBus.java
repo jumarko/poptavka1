@@ -1,13 +1,10 @@
 /*
- * HomeDemandsEventBus servers all events for module HomeDemandsModule.
- *
- * Specification:
- * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis Poptaviek
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.client.homedemands;
 
 import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
-import com.eprovement.poptavka.client.root.BaseChildEventBus;
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -24,6 +21,11 @@ import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
 /**
+ * HomeDemandsEventBus servers all events for module HomeDemandsModule.
+ *
+ * Specification:
+ * Wireframe: http://www.webgres.cz/axure/ -> VR Vypis Poptaviek
+ *
  * @author Martin Slavkovsky
  */
 @Events(startPresenter = HomeDemandsPresenter.class, module = HomeDemandsModule.class)

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.login;
 
 import com.eprovement.poptavka.client.common.CommonAccessRoles;
@@ -9,7 +12,7 @@ import com.eprovement.poptavka.client.service.demand.LoginRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
-import com.eprovement.poptavka.shared.domain.message.EmailDialogDetail;
+import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -23,6 +26,11 @@ import com.mvp4g.client.annotation.EventHandler;
 import com.mvp4g.client.event.BaseEventHandler;
 import java.util.logging.Logger;
 
+/**
+ * Login handler manages module's RPC calls.
+ *
+ * @author Martin Slavkovsky
+ */
 @EventHandler
 public class LoginHandler extends BaseEventHandler<LoginEventBus> {
 
@@ -44,6 +52,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      * A secured RPC service is invoked so this method is succesfylly called only if user is logged in and he opened our
      * website in new browser tab, which obviously starts the whole app from the begining.
      * If user is not logged in the RPC service will cause the initiation of loginPopupView via SecuredAsyncCallback.
+     * @param widgetToLoad is a constant of view that will be loaded at the end
      */
     public void onLoginFromSession(final int widgetToLoad) {
         loginService.getLoggedUser(new SecuredAsyncCallback<UserDetail>(eventBus) {
@@ -64,6 +73,12 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         });
     }
 
+    /**
+     * Verifes if user provided correct email and password.
+     * @param userEmail
+     * @param userPassword
+     * @param widgetToLoad is a constant of view that will be loaded at the end
+     */
     public void onVerifyUser(final String userEmail, final String userPassword, final int widgetToLoad) {
         eventBus.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
         loginUnsecService.getBusinessUserByEmail(
@@ -101,6 +116,12 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                 });
     }
 
+    /**
+     * Login user after successfull verification.
+     * @param user
+     * @param password
+     * @param widgetToLoad is a constant of view that will be loaded at the end
+     */
     public void loginUser(final String user, final String password, final int widgetToLoad) {
 
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
@@ -151,6 +172,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      * This method is initiated after successfull login. All components must be notified of this event in order to
      * change the view etc. User is forwarded to ClientDemands module or SupplierDemands module based on his business
      * roles.
+     * @param widgetToLoad is a constant of view that will be loaded at the end
      */
     private void fireAfterLoginEvent(final int widgetToLoad) {
         // retrieve UserDetail and subsequently BusinessUserDetail object and store them in Storage
@@ -178,6 +200,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
 
     /**
      * Logs out and user is forwarded to HomeWelcomModule.
+     * @param widgetToLoad is a constant of view that will be loaded at the end
      */
     public void onLogout(final int widgetToLoad) {
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getLogoutUrl());
@@ -212,6 +235,10 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         }
     }
 
+    /**
+     * Sets whether thank you popup will be displayed at the end.
+     * @param displayThankYouPopup true enables thank you popup, false disables
+     */
     public void onShowThankYouPopupAfterLogin(boolean displayThankYouPopup) {
         this.displayThankYouPopup = displayThankYouPopup;
     }
@@ -258,7 +285,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      */
     private void sendEmailWithNewPassword(final BusinessUserDetail user, final String newPassword) {
         eventBus.setLoadingProgress(60, null);
-        EmailDialogDetail dialogDetail = new EmailDialogDetail();
+        ContactUsDetail dialogDetail = new ContactUsDetail();
         dialogDetail.setRecipient(user.getEmail());
         dialogDetail.setMessage(Storage.MSGS.resetPasswordEmail(user.getPersonFirstName(), newPassword));
         dialogDetail.setSubject(Storage.MSGS.resetPasswordEmailSubject());
@@ -276,6 +303,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
     /**
      * Set account layout and forward user to appropriate module according to his role.
      * Called by loginFromSession from HistoryConverter.
+     * @param widgetToLoad is a constant of view that will be loaded at the end
      */
     private void forwardUserLogin(int widgetToLoad) {
         //Set account layout
@@ -323,6 +351,11 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         }
     }
 
+    /**
+     * Forwards user after logout to a widget.
+     * Each widget has assigned an constant that must be provided.
+     * @param widgetToLoad is a constant of view that will be loaded after logout
+     */
     private void forwardUserLogout(int widgetToLoad) {
         //Set home layout
         eventBus.atHome();
@@ -337,6 +370,10 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         }
     }
 
+    /**
+     * Forwards to CreateDemands module.
+     * Display thank you popup if enabled.
+     */
     private void forwardToCreateDemands() {
         Timer additionalAction = new Timer() {
             @Override
@@ -352,6 +389,11 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         }
     }
 
+    /**
+     * Forwards to ClientDemands module and to a its particular widget.
+     * Display thank you popup if enabled.
+     * @param widgetToLoad is a constant of view that will be loaded
+     */
     private void forwardToClientDemands(final int widgetToLoad) {
         Timer additionalAction = new Timer() {
             @Override
@@ -367,6 +409,11 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         }
     }
 
+    /**
+     * Forwards to SupplierDemands module and to a its particular widget.
+     * Display thank you popup if enabled.
+     * @param widgetToLoad is a constant of view that will be loaded
+     */
     private void forwardToSupplierDemands(final int widgetToLoad) {
         Timer additionalAction = new Timer() {
             @Override
@@ -384,7 +431,6 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
 
     /**
      * Method returns the login URL that when called issues the login process that is handled by SpringSecurity.
-     *
      * @return gwt login url with j_spring_security_check postfix
      */
     private String getSpringLoginUrl() {
@@ -396,7 +442,6 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
 
     /**
      * Method returns the logout URL that when called issues the logout process that is handled by SpringSecurity.
-     *
      * @return gwt logout url with j_spring_security_logout postfix
      */
     public String getLogoutUrl() {

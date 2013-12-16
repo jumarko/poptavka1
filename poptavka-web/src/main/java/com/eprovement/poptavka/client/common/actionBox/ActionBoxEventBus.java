@@ -1,3 +1,6 @@
+/*
+ * Copyright (C), eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.client.common.actionBox;
 
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -9,6 +12,12 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
 import java.util.List;
 
+/**
+ * Small module but exists due to code spliting feature.
+ * Used in every table with multiple selection model, where star and read status can be updated.
+ *
+ * @author Martin Slavkovsky
+ */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = ActionBoxPresenter.class, module = ActionBoxModule.class)
 public interface ActionBoxEventBus extends EventBusWithLookup {
