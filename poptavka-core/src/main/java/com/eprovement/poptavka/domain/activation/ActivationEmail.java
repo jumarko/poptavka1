@@ -18,7 +18,7 @@ public class ActivationEmail extends DomainObject {
     private String activationCode;
 
     /** After this date the activation will not be possible. */
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date validTo;
 
     public String getActivationCode() {
