@@ -6,12 +6,24 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:HTMLPanel>
-        <g:SimplePanel ui:field='header' styleName='{res.layout.headerContainer}'/>
-        <g:SimplePanel ui:field='toolbar' styleName='{res.layout.toolbarContainer}' debugId='toolbarContainer'/>
-        <!--Resize layout is used in order to handle resize event to reset animation.
-            Absolute positioning style must be used for BodyContainer style because we need browser
-            to calculate height each time browser resizes for scroll panels to behave correctly-->
-        <g:ResizeLayoutPanel ui:field='body' styleName='{res.layout.bodyContainer}' debugId='bodyContainer'/>
-    </g:HTMLPanel>
+    <!--Resize layout is used in order to handle resize event to reset animation.-->
+    <g:ResizeLayoutPanel ui:field='page'>
+        <b:FluidContainer>
+            <b:FluidRow>
+                <b:Column size='12'>
+                    <g:SimplePanel ui:field='header' styleName='{res.layout.headerContainer}'/>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size='12'>
+                    <g:SimplePanel ui:field='toolbar' styleName='{res.layout.toolbarContainer}' debugId='toolbarContainer'/>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow>
+                <b:Column size='12'>
+                    <g:SimplePanel ui:field='body' styleName='{res.layout.bodyContainer}' debugId='bodyContainer'/>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+    </g:ResizeLayoutPanel>
 </ui:UiBinder>

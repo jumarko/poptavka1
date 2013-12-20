@@ -206,6 +206,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             protected void onRangeChanged(HasData<T> display) {
                 start = display.getVisibleRange().getStart();
                 length = display.getVisibleRange().getLength();
+                setTableHeight(2); //loading indicator represents two row.
                 if (!cancelRangeChangedEvent) {
                     //Aks for new data
                     if (display.getRowCount() > 0) {

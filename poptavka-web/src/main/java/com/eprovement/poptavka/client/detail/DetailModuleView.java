@@ -16,7 +16,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -42,7 +41,7 @@ public class DetailModuleView extends Composite
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField TabLayoutPanel container;
-    @UiField ScrollPanel demandDetailHolder, advertisementHolder;
+    @UiField SimplePanel demandDetailHolder, advertisementHolder;
     @UiField DemandDetailView demandDetail;
     @UiField UserDetailView userDetail;
     @UiField RatingDetailView ratingDetail;

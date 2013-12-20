@@ -138,8 +138,8 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);
 
-    @Event(handlers = RootPresenter.class)
-    void resize();
+    @Event(handlers = {RootPresenter.class, ToolbarPresenter.class })
+    void resetAnimation(int actualWidth);
 
     /**************************************************************************/
     /* Footer section                                                         */

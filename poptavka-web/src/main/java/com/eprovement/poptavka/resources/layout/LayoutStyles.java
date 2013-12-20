@@ -22,9 +22,6 @@ public interface LayoutStyles extends CssResource {
     @ClassName("body-container")
     String bodyContainer();
 
-    @ClassName("layout-user-main")
-    String layoutUser();
-
     @ClassName("full-size-panel")
     String fullSize();
 

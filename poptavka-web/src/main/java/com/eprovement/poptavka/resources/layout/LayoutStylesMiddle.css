@@ -1,76 +1,34 @@
-@CHARSET "UTF-8";
-
-/**
- * Css Resources for main basic layout for rest views for max 1200px width
- *
- * @author Martin Slavkovsky
- *
- */
 .header-container {
     background: url(images/header_bg_480.jpg) repeat-x;
     height: 150px;
 }
+
 .toolbar-container {}
 .body-container {}
+.full-size-panel {}
+.fluid-main-grid {}
+.search-view {}
+.advanced-search-modal {}
+.advanced-search-small-modal {}
 
-.layout-user-main {
-}
-
-.full-size-panel {
-}
-
-.fluid-main-grid {
-}
-
-.fluid-main-grid .grid-span7 {
-}
-
-.fluid-main-grid .grid-span5 {
-}
-
-.search-view {
-}
-
-.search-view ul {
-}
-
-.search-view ul li {
-}
-
-.search-view select {
-}
-
-.search-view input {
-}
-
-.advanced-search-modal {
-}
-
-.advanced-search-small-modal {
-}
-
-/*
-*	Toolbar Module styles
-*
-*/
 .submenu-icon {
     display: block;
     float: left;
 }
-.submenu-header {
-}
-.content-container {
-    padding: 10px;
-}
+.submenu-header {}
+
 .content-container.home {
-    left: 0;
+    margin-left: 0;
 }
 .content-container.user {
-    -left: 0;
+    margin-left: 0;
+}
+.content-container .content-margin {
+    padding: 10px;
 }
 
-.detail-container {
-}
+.detail-container {}
+
 .left-container {
     position: absolute;
     z-index: 10;
@@ -81,20 +39,11 @@
 .left-container.user {
     left: -220px;
 }
-    
-.submenu-list {
-}
 
-.submenu-list .gwt-Button {
-}
-
-.submenu-list .gwt-Button:hover, .gwt-Button.act {
-}
-
-.pager {
-}
+.submenu-list {}
+.pager {}
 .filter-label {}
-/** Other Styles **/
+
 .data-grid-container table {
     padding: 0 10px 10px;
 }
@@ -103,69 +52,11 @@
     padding: 10px 10px 0;
 }
 
-.data-grid-container table[align="center"] {
-}
-
-.data-grid-container table[align="center"] img {
-}
-
-.detail-info {
-}
-
-.popup-dropdown-container table {
-}
-
-.tab-layout-container {
-}
-
-.tab-layout-panel {
-}
-
-.stack-layout {
-}
-
-.stack-layout-panel-header {
-}
-
-.stack-layout-panel-header:hover {
-}
-
-/* Client And Supplier Dashboard Styles*/
-
-.dashboard {
-}
-
-.dashboard .dashboard-block {
-}
-
-.dashboard h4 {
-}
-
-.dashboard h5 {
-}
-
-.dashboard .dashboard-block-content {
-}
-
-.dashboard .dashboard-block-content > .span12 {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list:hover {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list strong {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list span {
-}
-
-.dashboard  .dashboard-block-content .gwt-Label.pull-left {
-}
-
-.dashboard  .dashboard-block-content .description {
-}
-
+.detail-info {}
+.popup-dropdown-container table {}
+.tab-layout-container {}
+.tab-layout-panel {}
+.stack-layout {}
+.stack-layout-panel-header {}
+.dashboard {}
 .notification-panel {}

@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.client.root.interfaces.IRootView;
@@ -55,8 +54,8 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField ResizeLayoutPanel body;
-    @UiField SimplePanel header, toolbar;
+    @UiField ResizeLayoutPanel page;
+    @UiField SimplePanel header, toolbar, body;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -71,51 +70,29 @@ public class RootView extends ReverseCompositeView<IRootPresenter> implements
     }
 
     /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    /**
-     * Sets widget to header container.
-     * @param header widget
-     */
-    @Override
-    public void setHeader(IsWidget header) {
-        GWT.log("Header widget view set");
-        this.header.add(header);
-
-    }
-
-    /**
-     * Sets widget to toolbar container.
-     * @param toolbar widget
-     */
-    @Override
-    public void setToolbar(IsWidget toolbar) {
-        GWT.log("Toolbar widget view set");
-        this.toolbar.add(toolbar);
-
-    }
-
-    /**
-     * Sets widget to body container.
-     * @param body widget
-     */
-    @Override
-    public void setBody(IsWidget body) {
-        GWT.log("Body widget view set");
-        this.body.clear();
-        this.body.add(body);
-
-    }
-
-    /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    @Override
+    public SimplePanel getHeader() {
+        return header;
+    }
+
+    @Override
+    public SimplePanel getToolbar() {
+        return toolbar;
+    }
+
+    @Override
+    public SimplePanel getBody() {
+        return body;
+    }
+
     /**
      * Gets body resizable container.
      * @return body's resizable layout container
      */
     @Override
-    public ResizeLayoutPanel getBody() {
-        return body;
+    public ResizeLayoutPanel getPage() {
+        return page;
     }
 }
