@@ -31,12 +31,9 @@ import com.google.gwt.user.client.ui.PushButton;
 public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     implements IHeaderPresenter {
 
-    /** Constants. **/
-    private static final String SLIDE_PX = "90px";
     //See usage. In this way style are overriden correctly, not need to use !important
     private static final String USER = "user";
     private static final String ADMIN = "admin";
-    private static final int SLIDE_DURATION = 500;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -134,7 +131,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getMenu().getMenuAnchor().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.slideBodyPanel(SLIDE_PX, SLIDE_DURATION);
+                eventBus.toogleMenu();
             }
         });
     }

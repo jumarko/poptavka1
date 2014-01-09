@@ -127,7 +127,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void setSearchBar(IsWidget searchBar);
 
     @Event(handlers = RootPresenter.class)
-    void slideBodyPanel(String px, int duration);
+    void toogleMenu();
 
     @Event(handlers = RootPresenter.class)
     void setToolbar(IsWidget toolbar);

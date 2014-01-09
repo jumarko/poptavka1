@@ -15,11 +15,13 @@
     background: #cad4de;
     min-height: 50px;
     width: 100%;
+    position: relative; /*without position z-index is not working */
     z-index: 10;
 }
 .body-container {
     background: url(images/content_bg.jpg) repeat;
-    z-index: 7;
+    position: relative; /*without position z-index is not working */
+    z-index: 10;
 }
 
 .full-size-panel {

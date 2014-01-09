@@ -47,7 +47,7 @@
     left: 75px;
     height: 90px;
     width: 700px;
-    z-index: 10;
+    z-index: 0;
 }
 .menu-panel.user {
     width: 780px;

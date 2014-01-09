@@ -143,6 +143,9 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
      */
     private void initVisualPasswordCheck() {
         int passwordLength = ((String) password.getValue()).length();
+        if (passwordLength == 0) {
+            password.resetValidation();
+        }
         if ((passwordLength <= Constants.LONG_PASSWORD) && (passwordLength > Constants.SHORT_PASSWORD)) {
             password.setExternalValidation(ControlGroupType.WARNING, Storage.MSGS.formUserRegSemiStrongPassword());
         }
@@ -156,10 +159,16 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
      * @param event
      */
     private void initVisualPasswordConfirmCheck() {
-        if (!(password.getValue()).equals(passwordConfirm.getValue())) {
-            passwordConfirm.setExternalValidation(ControlGroupType.ERROR, Storage.MSGS.formUserRegPasswordsUnmatch());
+        if (((String) passwordConfirm.getValue()).length() == 0) {
+            passwordConfirm.resetValidation();
         } else {
-            passwordConfirm.setExternalValidation(ControlGroupType.SUCCESS, Storage.MSGS.formUserRegPasswordsMatch());
+            if (!(password.getValue()).equals(passwordConfirm.getValue())) {
+                passwordConfirm.setExternalValidation(
+                    ControlGroupType.ERROR, Storage.MSGS.formUserRegPasswordsUnmatch());
+            } else {
+                passwordConfirm.setExternalValidation(
+                    ControlGroupType.SUCCESS, Storage.MSGS.formUserRegPasswordsMatch());
+            }
         }
     }
 }

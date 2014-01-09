@@ -33,8 +33,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /* Attributes                                                             */
     /**************************************************************************/
     private IRootSelectors animation = GWT.create(IRootSelectors.class);
+    private static final String SLIDE_PX = "90px";
+    private static final int SLIDE_DURATION = 500;
     private boolean runResize = false;
-    private boolean isMenuPanelVisible;
+    private boolean isMenuPanelVisible = false;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -193,15 +195,18 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         eventBus.setBody(new Label("Page not found"));
     }
 
-    public void onSlideBodyPanel(String px, int duration) {
+    /**
+     * Shows or hides menu.
+     */
+    public void onToogleMenu() {
         if (!isMenuPanelVisible) {
             isMenuPanelVisible = true;
-            animation.getToolbarContainer().animate("top: +=" + px, duration);
-            animation.getBodyContainer().animate("top: +=" + px, duration);
+            animation.getToolbarContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getBodyContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
         } else {
             isMenuPanelVisible = false;
-            animation.getToolbarContainer().animate("top: -=" + px, duration);
-            animation.getBodyContainer().animate("top: -=" + px, duration);
+            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getBodyContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
         }
     }
     // Inject widgets for user registration
