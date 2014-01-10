@@ -127,7 +127,10 @@ public interface RootEventBus extends EventBusWithLookup {
     void setSearchBar(IsWidget searchBar);
 
     @Event(handlers = RootPresenter.class)
-    void toogleMenu();
+    void openMenu();
+
+    @Event(handlers = RootPresenter.class)
+    void closeMenu();
 
     @Event(handlers = RootPresenter.class)
     void setToolbar(IsWidget toolbar);

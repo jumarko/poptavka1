@@ -3,12 +3,12 @@
  */
 package com.eprovement.poptavka.client.detail;
 
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
 import com.eprovement.poptavka.client.detail.views.DetailLoadingDiv;
 import com.eprovement.poptavka.client.detail.views.RatingDetailView;
 import com.eprovement.poptavka.client.detail.views.UserDetailView;
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
@@ -37,6 +37,14 @@ public class DetailModuleView extends Composite
     private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
 
     /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        CssInjector.INSTANCE.ensureDetailStylesInjected();
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+    }
+
+    /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attribute. **/
@@ -63,9 +71,6 @@ public class DetailModuleView extends Composite
         messageList = new CellList<MessageDetail>(new MessageCell());
         messageProvider.addDataDisplay(messageList);
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.details().ensureInjected();
-        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     /**************************************************************************/

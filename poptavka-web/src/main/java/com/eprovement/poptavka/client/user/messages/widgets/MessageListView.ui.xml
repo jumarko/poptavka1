@@ -9,7 +9,7 @@
     
     <b:FluidContainer>
         <b:FluidRow>
-            <b:Column size="7">
+            <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                 <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                     <g:HTMLPanel addStyleNames='content-margin'>
                         <!--Table-->
@@ -19,16 +19,16 @@
                     </g:HTMLPanel>
                 </g:ScrollPanel>
             </b:Column>
-            <b:Column size="5">
+            <b:Column size="5" addStyleNames='span-detail'>
                 <!--Detail-->                        
-                <g:ScrollPanel styleName='{res.initial.scrollContainer}' debugId='rightSlidingPanel'>
-                    <g:HTMLPanel>
-                        <g:SimplePanel ui:field="detailPanel">
-                            <g:HTMLPanel styleName='{res.details.emptyView}' />
-                        </g:SimplePanel>
-                        <d:MessageDetailView ui:field="messageDetailView" visible="false"/>
-                    </g:HTMLPanel>
-                </g:ScrollPanel>
+                <g:SimplePanel styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'>
+                    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
+                        <g:HTMLPanel>
+                            <g:SimplePanel ui:field="advertisementHolder" styleName='{res.details.emptyView}'/>
+                            <d:MessageDetailView ui:field="messageDetailView" visible="false"/>
+                        </g:HTMLPanel>
+                    </g:ScrollPanel>
+                </g:SimplePanel>
             </b:Column>                    
         </b:FluidRow>
     </b:FluidContainer>                

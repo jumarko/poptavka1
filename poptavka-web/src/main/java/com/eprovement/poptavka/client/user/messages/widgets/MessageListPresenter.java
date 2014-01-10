@@ -54,7 +54,7 @@ public class MessageListPresenter
 
         Set getSelectedObjects();
 
-        SimplePanel getWrapperPanel();
+        SimplePanel getAdvertisementPanel();
 
         SimplePanel getFooterContainer();
 
@@ -149,10 +149,12 @@ public class MessageListPresenter
                 //  display detail
                 if (view.getSelectedUserMessageIds().size() == 1) {
                     view.getMessageDetailView().setVisible(true);
+                    view.getAdvertisementPanel().setVisible(false);
                     view.getMessageDetailView().setMessageDetail(
                         (MessageDetail) view.getSelectedObjects().iterator().next());
                 } else {
                     view.getMessageDetailView().setVisible(false);
+                    view.getAdvertisementPanel().setVisible(true);
                 }
             }
         });

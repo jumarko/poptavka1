@@ -34,7 +34,7 @@ public class MessageListView extends Composite implements MessageListPresenter.M
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) UniversalAsyncGrid table;
-    @UiField SimplePanel footerContainer, detailPanel;
+    @UiField SimplePanel footerContainer, advertisementHolder;
     @UiField MessageDetailView messageDetailView;
     /** Constants. **/
     @Inject
@@ -103,8 +103,8 @@ public class MessageListView extends Composite implements MessageListPresenter.M
     }
 
     @Override
-    public SimplePanel getWrapperPanel() {
-        return detailPanel;
+    public SimplePanel getAdvertisementPanel() {
+        return advertisementHolder;
     }
 
     @Override

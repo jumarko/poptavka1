@@ -33,6 +33,7 @@ public final class CssInjector {
     private boolean isModalLoaded;
     private boolean isGridLoaded;
     private boolean isPagerLoaded;
+    private boolean isDetailLoaded;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -138,6 +139,20 @@ public final class CssInjector {
                 gridResources.dataGridStyleMiddle().getText(),
                 gridResources.dataGridStyleSmall().getText(),
                 gridResources.dataGridStyleTiny().getText());
+        }
+    }
+
+    /**
+     * Inject <b>detail</b> styles.
+     */
+    public void ensureDetailStylesInjected() {
+        if (!isDetailLoaded) {
+            isDetailLoaded = true;
+            StyleResource.INSTANCE.details().ensureInjected();
+            injectResponsiveStyles(
+                null,
+                StyleResource.INSTANCE.detailsSmall().getText(),
+                null);
         }
     }
 

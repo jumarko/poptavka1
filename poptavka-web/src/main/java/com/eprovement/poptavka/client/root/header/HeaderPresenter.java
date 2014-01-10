@@ -34,6 +34,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
     //See usage. In this way style are overriden correctly, not need to use !important
     private static final String USER = "user";
     private static final String ADMIN = "admin";
+    private boolean isMenuVisible = false;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -131,7 +132,13 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getMenu().getMenuAnchor().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.toogleMenu();
+                if (isMenuVisible) {
+                    isMenuVisible = true;
+                    eventBus.closeMenu();
+                } else {
+                    isMenuVisible = false;
+                    eventBus.openMenu();
+                }
             }
         });
     }

@@ -196,17 +196,23 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /**
-     * Shows or hides menu.
+     * Hides menu.
      */
-    public void onToogleMenu() {
+    public void onCloseMenu() {
+        if (isMenuPanelVisible) {
+            isMenuPanelVisible = false;
+            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getBodyContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+        }
+    }
+    /**
+     * Opens menu.
+     */
+    public void onOpenMenu() {
         if (!isMenuPanelVisible) {
             isMenuPanelVisible = true;
             animation.getToolbarContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
             animation.getBodyContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
-        } else {
-            isMenuPanelVisible = false;
-            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
-            animation.getBodyContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
         }
     }
     // Inject widgets for user registration

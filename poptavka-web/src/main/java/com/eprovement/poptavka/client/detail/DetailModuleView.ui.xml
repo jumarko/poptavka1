@@ -7,7 +7,7 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:ScrollPanel>
+    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <g:TabLayoutPanel stylePrimaryName='{res.details.detailTabPanel}'
                           ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
             <g:tab>

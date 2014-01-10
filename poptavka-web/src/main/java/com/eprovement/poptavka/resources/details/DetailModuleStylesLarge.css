@@ -3,6 +3,9 @@
 /******************************************************************************/
 /*  Detail Tab Panel Styles                                                   */
 /******************************************************************************/
+.detailTabPanel {
+    margin: 20px 20px 20px 0;
+}
 .detailTabPanel .gwt-TabLayoutPanelTab {
     background: none;
     color: #a09c8b;

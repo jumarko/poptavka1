@@ -34,7 +34,7 @@ public class MessagesView extends Composite
     /* CSS                                                                    */
     /**************************************************************************/
     static {
-        CssInjector.INSTANCE.ensureCommonStylesInjected();
+        CssInjector.INSTANCE.ensureDetailStylesInjected();
     }
 
     /**************************************************************************/

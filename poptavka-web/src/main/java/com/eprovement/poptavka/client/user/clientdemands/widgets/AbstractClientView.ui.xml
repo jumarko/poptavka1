@@ -17,7 +17,7 @@
 
     <b:FluidContainer>
         <b:FluidRow>
-            <b:Column size="7"  addStyleNames='{res.initial.expandOnSmall}'>
+            <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                 <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                     <g:HTMLPanel addStyleNames='content-margin'>
                         <!--Parent Table-->
@@ -30,10 +30,9 @@
                     </g:HTMLPanel>
                 </g:ScrollPanel>
             </b:Column>
-            <b:Column size="5"  addStyleNames='span-detail'>
-                <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                    <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
-                </g:ScrollPanel>
+            <b:Column size="5" addStyleNames='span-detail'>
+                <!--Detail-->
+                <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
             </b:Column>                    
         </b:FluidRow>
     </b:FluidContainer>

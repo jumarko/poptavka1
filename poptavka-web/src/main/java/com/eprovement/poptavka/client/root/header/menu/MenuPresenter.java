@@ -51,7 +51,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeWelcomeModule();
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getClient().addClickHandler(new ClickHandler() {
@@ -59,7 +59,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToClientDemandsModule(null, Constants.NONE);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getSupplier().addClickHandler(new ClickHandler() {
@@ -67,7 +67,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getInbox().addClickHandler(new ClickHandler() {
@@ -75,7 +75,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getAdministration().addClickHandler(new ClickHandler() {
@@ -83,7 +83,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToAdminModule(null, Constants.NONE);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getDemands().addClickHandler(new ClickHandler() {
@@ -91,7 +91,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeDemandsModule(null);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getSuppliers().addClickHandler(new ClickHandler() {
@@ -99,7 +99,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeSuppliersModule(null);
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getCreateDemand().addClickHandler(new ClickHandler() {
@@ -107,7 +107,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemandModule();
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
         view.getCreateSupplier().addClickHandler(new ClickHandler() {
@@ -115,7 +115,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateSupplierModule();
-                eventBus.toogleMenu();
+                eventBus.closeMenu();
             }
         });
     }

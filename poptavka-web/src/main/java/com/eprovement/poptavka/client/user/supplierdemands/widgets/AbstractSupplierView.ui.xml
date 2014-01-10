@@ -20,9 +20,7 @@
             </b:Column>
             <b:Column size="5"  addStyleNames='span-detail'>
                 <!--Detail-->                        
-                <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                    <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
-                </g:ScrollPanel>
+                <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
             </b:Column>                    
         </b:FluidRow>
     </b:FluidContainer>

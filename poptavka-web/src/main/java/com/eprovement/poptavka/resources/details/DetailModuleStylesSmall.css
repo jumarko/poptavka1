@@ -1,0 +1,34 @@
+.detailTabPanel {
+    margin: 0;
+}
+.empty-view {}
+.demandDetailSectionHeader {}
+.demand-detail-content {}
+.detail-block {}
+.detail-block .detail-header {}
+.detail-strong {}
+.detail-block-label {}
+.detail-date-label {}
+.detail-category-label{}
+.detail-locality-label{}
+.conversation-container {}
+.conversation-block {}
+.conversation-detail {}
+.conversation-detail-header-green {}
+.conversation-detail-header-red {}
+.conversation-detail-time {}
+.conversation-detail-content {}
+.conversation-left-block {}
+.conversation-ellipsis {}
+.rating-container {}
+.message-container {}
+.message-opened {}
+.message-buttons-container {}
+.message-body {}
+.reply-button {}
+.close-button {}
+.messages-mine {}
+.messages-received {}
+.message-unread {}
+.response-container {}
+.detail-description-content {}
