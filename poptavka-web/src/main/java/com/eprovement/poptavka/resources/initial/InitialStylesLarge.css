@@ -169,19 +169,15 @@ div[aria-hidden="true"] {
 /******************************************************************************/
 .footer {
     min-height: 30px;
-    width: 100%;
     margin: 0 auto;
     max-width: 1200px;
-}
-.footer .links {
-    width: 430px;
 }
 .footer .links .button {
     background: none;
     border: none;
-    float: right;
+    float: left;
     color: #827a5e;
-    padding: 2px 8px;
+    padding: 0px 8px;
     font-size: 12px;
 }
 .footer .links .button:hover {
@@ -192,23 +188,18 @@ div[aria-hidden="true"] {
 .footer .links .separator {
     background: none;
     border: none;
-    float: right;
+    float: left;
     color: #827a5e;
-    padding: 2px 0;
     font-size: 12px;
 }
-.border-separator {
-    display: block;
-}
-.footer .block {
-    display: block;
-    padding: 4px 8px;
+.footer .link-icons {
+    padding-top: 4px;
     color: #443b19;
     font-size: 12px;
 }
-.footer .block .icon {
+.footer .link-icons .icon {
     color: #177F03;
-    padding: 0 8px;
+    padding: 0 7px;
     float: right;
 }
 

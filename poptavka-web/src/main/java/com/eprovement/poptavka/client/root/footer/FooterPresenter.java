@@ -47,6 +47,12 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
      */
     @Override
     public void bind() {
+        view.getCompany().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeWelcomeModule();
+            }
+        });
         view.getContactUs().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

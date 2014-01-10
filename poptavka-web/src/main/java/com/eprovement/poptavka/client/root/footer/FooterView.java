@@ -31,7 +31,7 @@ public class FooterView extends Composite implements IFooterView {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField Button contactUs, aboutUs, faq, privacyPolicy, termsAndConditions;
+    @UiField Button company, contactUs, aboutUs, faq, privacyPolicy, termsAndConditions;
 
     /**************************************************************************/
     /* Constructors                                                           */
@@ -46,6 +46,14 @@ public class FooterView extends Composite implements IFooterView {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the Company button
+     */
+    @Override
+    public Button getCompany() {
+        return company;
+    }
+
     /**
      * @return the contactUs button
      */
