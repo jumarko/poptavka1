@@ -201,8 +201,8 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     public void onCloseMenu() {
         if (isMenuPanelVisible) {
             isMenuPanelVisible = false;
-            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
             animation.getBodyContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
         }
     }
     /**

@@ -132,6 +132,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = RootPresenter.class)
     void closeMenu();
 
+    @Event(handlers = ToolbarPresenter.class)
+    void closeSubMenu();
+
     @Event(handlers = RootPresenter.class)
     void setToolbar(IsWidget toolbar);
 

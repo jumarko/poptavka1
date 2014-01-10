@@ -92,6 +92,7 @@ public class ClientDemandsModulePresenter
         view.getClientNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
             }
@@ -99,6 +100,7 @@ public class ClientDemandsModulePresenter
         view.getClientOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_DEMANDS);
             }
@@ -106,6 +108,7 @@ public class ClientDemandsModulePresenter
         view.getClientAssignedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
             }
@@ -113,6 +116,7 @@ public class ClientDemandsModulePresenter
         view.getClientClosedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
             }
@@ -120,6 +124,7 @@ public class ClientDemandsModulePresenter
         view.getClientRatingsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToClientDemandsModule(null, Constants.CLIENT_RATINGS);
             }

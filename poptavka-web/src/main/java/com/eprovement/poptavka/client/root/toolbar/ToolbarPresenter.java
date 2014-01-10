@@ -121,6 +121,15 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
         }
     }
 
+    /**
+     * Close left sliding panel.
+     */
+    public void onCloseSubMenu() {
+        if (isCategoryPanelOpen) {
+            openCategoryTreePanel(false);
+        }
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/

@@ -159,30 +159,35 @@ public class SettingsPresenter
         view.getMenuUserBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 initUserSettings(view.getContentPanel());
             }
         });
         view.getMenuClientBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 initClientSettings(view.getContentPanel());
             }
         });
         view.getMenuSupplierBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 initSupplierSettings(view.getContentPanel());
             }
         });
         view.getMenuSystemBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 initSystemSettings(view.getContentPanel());
             }
         });
         view.getMenuSecurityBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 initSecuritySettings(view.getContentPanel());
             }
         });

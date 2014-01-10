@@ -133,10 +133,10 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             @Override
             public void onClick(ClickEvent event) {
                 if (isMenuVisible) {
-                    isMenuVisible = true;
+                    isMenuVisible = false;
                     eventBus.closeMenu();
                 } else {
-                    isMenuVisible = false;
+                    isMenuVisible = true;
                     eventBus.openMenu();
                 }
             }

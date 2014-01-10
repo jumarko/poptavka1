@@ -24,6 +24,9 @@
     left: 0;
     width: 100%;
 }
+.menu-panel.user {
+    width: 100%;
+}
 .menu-panel.admin {
     width: 100%;
 }
@@ -103,8 +106,11 @@
     right: 255px;
     height: 50px;
 }
+.search-panel.user {
+    right: 270px;
+}
 .search-panel.admin {
-    left: auto;
+    right: 270px;
 }
 
 .search-panel .search-textbox[type="text"] {
