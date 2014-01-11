@@ -117,8 +117,11 @@ public interface StyleResource extends ClientBundle {
     CreateTabPanelStyles createTabPanelTiny();
 
     @NotStrict
-    @Source("details/DetailModuleStyles.css")
+    @Source("details/DetailModuleStylesLarge.css")
     DetailModuleStyles details();
+    @NotStrict
+    @Source("details/DetailModuleStylesSmall.css")
+    DetailModuleStyles detailsSmall();
 
     @NotStrict
     @Source("standartStyles-initial.css")

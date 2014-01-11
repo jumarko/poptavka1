@@ -2,17 +2,18 @@ package com.eprovement.poptavka.client.root.interfaces;
 
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public interface IRootView extends IsWidget {
 
     public interface IRootPresenter {
     }
 
-    void setHeader(IsWidget header);
+    SimplePanel getHeader();
 
-    void setToolbar(IsWidget toolbar);
+    SimplePanel getToolbar();
 
-    void setBody(IsWidget body);
+    SimplePanel getBody();
 
-    ResizeLayoutPanel getBody();
+    ResizeLayoutPanel getPage();
 }

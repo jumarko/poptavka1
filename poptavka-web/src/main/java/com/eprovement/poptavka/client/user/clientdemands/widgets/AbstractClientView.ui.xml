@@ -17,9 +17,9 @@
 
     <b:FluidContainer>
         <b:FluidRow>
-            <b:Column size="7"  addStyleNames='{res.initial.expandOnSmall}'>
+            <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                 <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                    <g:HTMLPanel>
+                    <g:HTMLPanel addStyleNames='content-margin'>
                         <!--Parent Table-->
                         <s:UniversalAsyncGrid ui:field="parentTable" addStyleNames='{res.layout.dataGridContainer}' visible="false"/>
                         <!--Child Table-->
@@ -30,7 +30,8 @@
                     </g:HTMLPanel>
                 </g:ScrollPanel>
             </b:Column>
-            <b:Column size="5"  addStyleNames='span-detail'>
+            <b:Column size="5" addStyleNames='span-detail'>
+                <!--Detail-->
                 <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
             </b:Column>                    
         </b:FluidRow>

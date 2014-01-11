@@ -103,6 +103,33 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
         view.setToolbarContent(title, content, hasAnimationLayout);
     }
 
+    /**
+     * Removes animation styles on resize.
+     * When animation is used it overrides application styles with its own.
+     * It is not a problem unless application uses responsive design.
+     * When resizing, responsive design should take care to redesign application,
+     * but it is not if animation took place and overrided them.
+     * Therefore remove them on resize.
+     */
+    public void onResetAnimation(int actualWidth) {
+        if (767 <= actualWidth && actualWidth < 1200) {
+            animation.getRightSlidingPanel().removeAttr("style");
+            isDetailPanelOpen = false;
+        } else if (1200 <= actualWidth) {
+            animation.getLeftSlidingPanel().removeAttr("style");
+            isCategoryPanelOpen = false;
+        }
+    }
+
+    /**
+     * Close left sliding panel.
+     */
+    public void onCloseSubMenu() {
+        if (isCategoryPanelOpen) {
+            openCategoryTreePanel(false);
+        }
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/

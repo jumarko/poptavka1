@@ -6,7 +6,7 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:ScrollPanel>
+    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <b:FluidContainer addStyleNames='{res.initial.homepage}'>
             <b:FluidRow>
                 <b:Column size="12">

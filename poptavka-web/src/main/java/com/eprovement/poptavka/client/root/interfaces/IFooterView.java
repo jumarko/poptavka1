@@ -9,6 +9,7 @@ public interface IFooterView extends IsWidget {
     public interface IFooterPresenter {
     }
 
+    Button getCompany();
     Button getContactUs();
     Button getAboutUs();
     Button getFAQ();

@@ -84,6 +84,7 @@ public class SupplierDemandsModulePresenter
         view.getSupplierNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_DEMANDS);
             }
@@ -91,6 +92,7 @@ public class SupplierDemandsModulePresenter
         view.getSupplierOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
             }
@@ -98,6 +100,7 @@ public class SupplierDemandsModulePresenter
         view.getSupplierAssignedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
@@ -105,6 +108,7 @@ public class SupplierDemandsModulePresenter
         view.getSupplierClosedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CLOSED_DEMANDS);
             }
@@ -112,6 +116,7 @@ public class SupplierDemandsModulePresenter
         view.getSupplierRatingsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.updateUnreadMessagesCount();
                 eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_RATINGS);
             }

@@ -3,12 +3,12 @@
  */
 package com.eprovement.poptavka.client.detail;
 
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
 import com.eprovement.poptavka.client.detail.views.DetailLoadingDiv;
 import com.eprovement.poptavka.client.detail.views.RatingDetailView;
 import com.eprovement.poptavka.client.detail.views.UserDetailView;
-import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.GWT;
@@ -16,7 +16,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -38,11 +37,19 @@ public class DetailModuleView extends Composite
     private static DetailsWrapperViewUiBinder uiBinder = GWT.create(DetailsWrapperViewUiBinder.class);
 
     /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        CssInjector.INSTANCE.ensureDetailStylesInjected();
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+    }
+
+    /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField TabLayoutPanel container;
-    @UiField ScrollPanel demandDetailHolder, advertisementHolder;
+    @UiField SimplePanel demandDetailHolder, advertisementHolder;
     @UiField DemandDetailView demandDetail;
     @UiField UserDetailView userDetail;
     @UiField RatingDetailView ratingDetail;
@@ -64,9 +71,6 @@ public class DetailModuleView extends Composite
         messageList = new CellList<MessageDetail>(new MessageCell());
         messageProvider.addDataDisplay(messageList);
         initWidget(uiBinder.createAndBindUi(this));
-
-        StyleResource.INSTANCE.details().ensureInjected();
-        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     /**************************************************************************/

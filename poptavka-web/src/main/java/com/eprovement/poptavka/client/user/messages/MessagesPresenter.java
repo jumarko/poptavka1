@@ -59,6 +59,7 @@ public class MessagesPresenter
         view.getMessagesInbox().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.goToMessagesModule(filter, Constants.MESSAGES_INBOX);
             }
         });

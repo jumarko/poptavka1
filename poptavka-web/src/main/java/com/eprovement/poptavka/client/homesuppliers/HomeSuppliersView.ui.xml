@@ -15,7 +15,7 @@
                 <b:FluidRow>
                     <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                            <g:HTMLPanel>
+                            <g:HTMLPanel addStyleNames='content-margin'>
                                 <!--Table-->
                                 <g:Label ui:field="filterLabel" styleName="{res.layout.filterLabel}">
                                     <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>
@@ -27,7 +27,7 @@
                         </g:ScrollPanel>
                     </b:Column>
                     <b:Column size="5" addStyleNames='span-detail'>
-                        <!--Detail-->                        
+                        <!--Detail-->
                         <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
                     </b:Column>
                 </b:FluidRow>

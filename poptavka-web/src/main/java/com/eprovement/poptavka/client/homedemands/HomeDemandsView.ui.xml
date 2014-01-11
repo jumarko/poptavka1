@@ -2,7 +2,6 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-             xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
@@ -16,7 +15,7 @@
                 <b:FluidRow>
                     <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                            <g:HTMLPanel>
+                            <g:HTMLPanel addStyleNames='content-margin'>
                                 <!--Table-->
                                 <g:Label ui:field="filterLabel" styleName="{res.layout.filterLabel}">
                                     <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>

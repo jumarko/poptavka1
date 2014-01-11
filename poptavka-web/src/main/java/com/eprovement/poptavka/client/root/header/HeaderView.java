@@ -7,18 +7,17 @@ import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.root.header.ui.LoginElement;
 import com.eprovement.poptavka.client.root.header.ui.LogoutElement;
 import com.eprovement.poptavka.client.root.header.ui.MenuElement;
 import com.eprovement.poptavka.client.root.header.ui.NotificationsElement;
 import com.eprovement.poptavka.client.root.header.ui.SearchElement;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
-import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Header view involves: Logo, Menu bar, Search bar, Header Toolbar (settings, notifications, login, logout).
@@ -27,8 +26,7 @@ import com.google.gwt.user.client.ui.Button;
  * @author Ivan Vlcek, Martin Slavkovsky
  * @since 16.11.2013
  */
-public class HeaderView extends ReverseCompositeView<IHeaderPresenter>
-    implements IHeaderView {
+public class HeaderView extends Composite implements IHeaderView {
 
     /**************************************************************************/
     /* UiBinder                                                               */

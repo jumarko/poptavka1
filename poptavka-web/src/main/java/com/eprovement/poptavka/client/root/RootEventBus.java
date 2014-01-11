@@ -127,7 +127,13 @@ public interface RootEventBus extends EventBusWithLookup {
     void setSearchBar(IsWidget searchBar);
 
     @Event(handlers = RootPresenter.class)
-    void slideBodyPanel(String px, int duration);
+    void openMenu();
+
+    @Event(handlers = RootPresenter.class)
+    void closeMenu();
+
+    @Event(handlers = ToolbarPresenter.class)
+    void closeSubMenu();
 
     @Event(handlers = RootPresenter.class)
     void setToolbar(IsWidget toolbar);
@@ -138,8 +144,8 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);
 
-    @Event(handlers = RootPresenter.class)
-    void resize();
+    @Event(handlers = {RootPresenter.class, ToolbarPresenter.class })
+    void resetAnimation(int actualWidth);
 
     /**************************************************************************/
     /* Footer section                                                         */

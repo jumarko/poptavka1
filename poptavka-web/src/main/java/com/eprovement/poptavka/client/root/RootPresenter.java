@@ -33,8 +33,10 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /* Attributes                                                             */
     /**************************************************************************/
     private IRootSelectors animation = GWT.create(IRootSelectors.class);
+    private static final String SLIDE_PX = "90px";
+    private static final int SLIDE_DURATION = 500;
     private boolean runResize = false;
-    private boolean isMenuPanelVisible;
+    private boolean isMenuPanelVisible = false;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -102,16 +104,22 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
          * Disadvantage - calles each time browser is resized.
          *              - for changing layout to landscape and vice versa it's called only once, which is good. */
         //With this we can change view which is more flexible instead of using responsive styles???
-        view.getBody().addResizeHandler(new ResizeHandler() {
+        view.getPage().addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent event) {
                 //Don't run resize on browser startup
                 if (runResize) {
-                    eventBus.resize();
+                    eventBus.resetAnimation(event.getWidth());
                 }
                 runResize = true;
                 //set shorter dates on small screens
                 Storage.get().initDateTimeFormat(event.getWidth() > 1200);
+
+                //Calculate height each time browser resizes for scroll panels to behave correctly-->
+                int bodyHeight = view.getPage().getOffsetHeight();
+                bodyHeight -= view.getToolbar().getOffsetHeight();
+                bodyHeight -= view.getHeader().getOffsetHeight();
+                view.getBody().setHeight(bodyHeight + "px");
             }
         });
     }
@@ -144,7 +152,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onSetHeader(IsWidget header) {
         GWT.log("Header widget set");
-        view.setHeader(header);
+        view.getHeader().setWidget(header);
     }
 
     /**
@@ -153,7 +161,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onSetToolbar(IsWidget toolbar) {
         GWT.log("Toolbar widget set");
-        view.setToolbar(toolbar);
+        view.getToolbar().setWidget(toolbar);
     }
 
     /**
@@ -162,7 +170,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      */
     public void onSetBody(IsWidget body) {
         GWT.log("Body widget set");
-        view.setBody(body);
+        view.getBody().setWidget(body);
     }
 
     /**
@@ -173,7 +181,7 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-    public void onResize() {
+    public void onResetAnimation(int actualWidth) {
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");
         isMenuPanelVisible = false;
@@ -184,18 +192,27 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     /**************************************************************************/
     public void onNotFound() {
         eventBus.start();
-        view.setBody(new Label("Page not found"));
+        eventBus.setBody(new Label("Page not found"));
     }
 
-    public void onSlideBodyPanel(String px, int duration) {
+    /**
+     * Hides menu.
+     */
+    public void onCloseMenu() {
+        if (isMenuPanelVisible) {
+            isMenuPanelVisible = false;
+            animation.getBodyContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getToolbarContainer().animate("top: -=" + SLIDE_PX, SLIDE_DURATION);
+        }
+    }
+    /**
+     * Opens menu.
+     */
+    public void onOpenMenu() {
         if (!isMenuPanelVisible) {
             isMenuPanelVisible = true;
-            animation.getToolbarContainer().animate("top: +=" + px, duration);
-            animation.getBodyContainer().animate("top: +=" + px, duration);
-        } else {
-            isMenuPanelVisible = false;
-            animation.getToolbarContainer().animate("top: -=" + px, duration);
-            animation.getBodyContainer().animate("top: -=" + px, duration);
+            animation.getToolbarContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
+            animation.getBodyContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
         }
     }
     // Inject widgets for user registration

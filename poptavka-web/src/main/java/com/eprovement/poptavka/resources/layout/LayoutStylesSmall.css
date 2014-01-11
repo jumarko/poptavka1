@@ -1,61 +1,16 @@
-@CHARSET "UTF-8";
-
-/**
- * Css Resources for main basic layout for rest views for max 800 width
- *
- * @author Martin Slavkovsky
- *
- */
 .header-container {
     height: 60px;
 }
+
 .toolbar-container {}
 .body-container {}
-
-.layout-user-main {
-}
-
-.full-size-panel {
-}
-
-.fluid-main-grid {
-}
-
-.fluid-main-grid .grid-span7 {
-}
-
-.fluid-main-grid .grid-span5 {
-}
-
-.search-view {
-}
-
-.search-view ul {
-}
-
-.search-view ul li {
-}
-
-.search-view select {
-}
-
-.search-view input {
-}
-
-.advanced-search-modal {
-}
-
-.advanced-search-small-modal {
-}
-
-/*
-*	Toolbar Module styles
-*
-*/
-.submenu-icon {
-}
-.submenu-header {
-}
+.full-size-panel {}
+.fluid-main-grid {}
+.search-view {}
+.advanced-search-modal {}
+.advanced-search-small-modal {}
+.submenu-icon {}
+.submenu-header {}
 
 .content-container .span-detail {
     width: 0px;
@@ -69,87 +24,18 @@
     width: 350px;
 }
 
-.left-container {
-}
-
-.submenu-list {
-}
-
-.submenu-list .gwt-Button {
-}
-
-.submenu-list .gwt-Button:hover, .gwt-Button.act {
-}
-
-.pager {
-}
-.filter-label {
-}
-/** Other Styles **/
-.data-grid-container table[align="center"] {
-}
-
-.data-grid-container table[align="center"] img {
-}
-
-.detail-info {
-}
-
-.popup-dropdown-container table {
-}
-
-.tab-layout-container {
-}
-
-.tab-layout-panel {
-}
-
-.stack-layout {
-}
-
-.stack-layout-panel-header {
-}
-
-.stack-layout-panel-header:hover {
-}
-
-/* Client And Supplier Dashboard Styles*/
-
-.dashboard {
-}
-
-.dashboard .dashboard-block {
-}
-
-.dashboard h4 {
-}
-
-.dashboard h5 {
-}
-
-.dashboard .dashboard-block-content {
-}
-
-.dashboard .dashboard-block-content > .span12 {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list:hover {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list strong {
-}
-
-.dashboard  .dashboard-block-content .gwt-HTML.label-list span {
-}
-
-.dashboard  .dashboard-block-content .gwt-Label.pull-left {
-}
-
-.dashboard  .dashboard-block-content .description {
-}
+.left-container {}
+.submenu-list {}
+.pager {}
+.filter-label {}
+.data-grid-container  {}
+.detail-info {}
+.popup-dropdown-container {}
+.tab-layout-container {}
+.tab-layout-panel {}
+.stack-layout {}
+.stack-layout-panel-header {}
+.dashboard {}
 
 .notification-panel .label-on {
     display: none;

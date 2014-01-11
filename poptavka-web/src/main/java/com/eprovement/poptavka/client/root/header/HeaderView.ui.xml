@@ -8,7 +8,7 @@
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:HTMLPanel>
+    <g:FlowPanel>
         <!-- Logo -->
         <g:Button ui:field='logo' styleName='{res.header.logo}' />
 
@@ -32,5 +32,5 @@
         <!--Logout-->
         <h:LogoutElement ui:field='logout'/>
 
-    </g:HTMLPanel>
+    </g:FlowPanel>
 </ui:UiBinder>

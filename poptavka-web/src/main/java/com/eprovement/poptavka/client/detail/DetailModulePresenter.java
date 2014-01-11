@@ -18,6 +18,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -381,6 +382,7 @@ public class DetailModulePresenter
     public void onResponseDemandDetail(FullDemandDetail demandDetail) {
         view.getDemandDetail().setDemanDetail(demandDetail);
         view.getDemandDetail().setVisible(true);
+        setHeight(view.getDemandDetail());
         view.loadingDivHide(view.getDemandDetailHolder().getParent());
     }
 
@@ -392,6 +394,7 @@ public class DetailModulePresenter
     public void onResponseClientDetail(FullClientDetail clientDetail) {
         view.getSupplierDetail().setClientDetail(clientDetail);
         view.getSupplierDetail().setVisible(true);
+        setHeight(view.getSupplierDetail());
         view.loadingDivHide(view.getSupplierDetail().getParent());
     }
 
@@ -403,6 +406,7 @@ public class DetailModulePresenter
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
         view.getSupplierDetail().setSupplierDetail(supplierDetail);
         view.getSupplierDetail().setVisible(true);
+        setHeight(view.getSupplierDetail());
         view.loadingDivHide(view.getSupplierDetail().getParent());
     }
 
@@ -414,6 +418,7 @@ public class DetailModulePresenter
     public void onResponseRatingDetail(FullRatingDetail ratingDetail) {
         view.getRatingDetail().setRatingDetail(ratingDetail);
         view.getRatingDetail().setVisible(true);
+        setHeight(view.getRatingDetail());
         view.loadingDivHide(view.getRatingDetail().getParent());
     }
 
@@ -428,6 +433,7 @@ public class DetailModulePresenter
             eventBus.updateUserMessagesReadStatus(Storage.getUser().getUserId(), chatMessages);
             view.getConversationHolder().setVisible(true);
         }
+        setHeight(view.getConversationHolder());
         view.loadingDivHide(view.getConversationHolder().getParent().getParent());
     }
 
@@ -454,6 +460,7 @@ public class DetailModulePresenter
         setTabVisibility(DetailModuleBuilder.CONVERSATION_TAB, false);
         setTabVisibility(DetailModuleBuilder.ADVERTISEMENT_TAB, true);
         view.getContainer().selectTab(DetailModuleBuilder.ADVERTISEMENT_TAB, false);
+        view.getContainer().setHeight("260px");
     }
 
     /**
@@ -494,6 +501,7 @@ public class DetailModulePresenter
         view.getMessageProvider().setList(linkedList);
         view.getReplyHolder().setMessage(lastMessage);
         view.setMessagePanelVisibility();
+        setHeight(view.getConversationHolder());
     }
 
     /**
@@ -508,5 +516,26 @@ public class DetailModulePresenter
         MessageDetail questionMessageToSend = view.getReplyHolder().updateSendingMessage(statusMessage);
         questionMessageToSend.setSenderId(Storage.getUser().getUserId());
         eventBus.sendQuestionMessage(questionMessageToSend);
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * In order to scroll whole TabLayout panel, its height must be set to
+     * inner widget's height + header + margins.
+     * But those heights are available after widgets is created and placed in DOM,
+     * therefore wait for it in ScheduleDeferred loop.
+     */
+    private void setHeight(final Widget widget) {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                int height = widget.getOffsetHeight();
+                height += 50; //header
+                height += 40; //2x margin
+                view.getContainer().setHeight(height + "px");
+            }
+        });
     }
 }

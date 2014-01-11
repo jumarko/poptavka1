@@ -4,9 +4,8 @@
 /*  Detail Tab Panel Styles                                                   */
 /******************************************************************************/
 .detailTabPanel {
-    height: 100%;	
+    margin: 20px 20px 20px 0;
 }
-
 .detailTabPanel .gwt-TabLayoutPanelTab {
     background: none;
     color: #a09c8b;
@@ -42,7 +41,7 @@
 .empty-view {
     background: url(images/logo-motto.png) no-repeat;
     height: 200px;
-    margin: 25% auto;
+    margin: auto;
     width: 200px;
 }
 

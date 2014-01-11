@@ -89,6 +89,7 @@ public class AdminPresenter
         view.getActiveDemandsBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.goToAdminModule(null, Constants.ADMIN_ACTIVE_DEMANDS);
             }
         });
@@ -143,6 +144,7 @@ public class AdminPresenter
         view.getNewDemandsBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
                 eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
             }
         });

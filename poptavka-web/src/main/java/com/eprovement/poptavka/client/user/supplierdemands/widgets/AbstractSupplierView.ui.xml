@@ -10,13 +10,16 @@
         <b:FluidRow>
             <b:Column size="7"  addStyleNames='{res.initial.expandOnSmall}'>
                 <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-                    <!--Table-->
-                    <s:UniversalAsyncGrid ui:field="table" addStyleNames='{res.layout.dataGridContainer}'/>
-                    <!--Footer-->
-                    <g:SimplePanel ui:field="footerContainer"/>
+                    <g:HTMLPanel addStyleNames='content-margin'>
+                        <!--Table-->
+                        <s:UniversalAsyncGrid ui:field="table" addStyleNames='{res.layout.dataGridContainer}'/>
+                        <!--Footer-->
+                        <g:SimplePanel ui:field="footerContainer"/>
+                    </g:HTMLPanel>
                 </g:ScrollPanel>
             </b:Column>
             <b:Column size="5"  addStyleNames='span-detail'>
+                <!--Detail-->                        
                 <g:SimplePanel ui:field="detailPanel" styleName='{res.layout.detailContainer}' debugId='rightSlidingPanel'/>
             </b:Column>                    
         </b:FluidRow>
