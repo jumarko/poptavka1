@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.addressSelector.others;
 import com.eprovement.poptavka.client.addressSelector.AddressSelectorEventBus;
 import com.eprovement.poptavka.client.common.SimpleIconLabel;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,6 +45,8 @@ public class AddressSelectorSuggestDisplay extends SuggestBox.DefaultSuggestionD
     public AddressSelectorSuggestDisplay() {
         loader.setImageResource(Storage.RSCS.images().loaderIcon33());
         loader.addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
+
+        CssInjector.INSTANCE.ensureModalStylesInjected();
     }
 
     /**************************************************************************/
