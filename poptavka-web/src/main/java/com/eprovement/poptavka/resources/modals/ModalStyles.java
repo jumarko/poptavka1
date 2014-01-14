@@ -17,6 +17,10 @@ public interface ModalStyles extends CssResource {
     @ClassName("common-modal-style")
     String commonModalStyle();
 
+    /* Tooltip */
+    @ClassName("tooltip")
+    String tooltip();
+
     /** Login Modal Styles **/
     @ClassName("login-modal")
     String loginModal();

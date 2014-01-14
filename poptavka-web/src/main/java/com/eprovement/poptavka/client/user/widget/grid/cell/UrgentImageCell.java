@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.widget.grid.cell;
 
 import com.eprovement.poptavka.client.common.DateUtils;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.cell.client.AbstractCell;
@@ -16,8 +17,10 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiRenderer;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ImageResourceRenderer;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 import java.util.Date;
 
@@ -42,6 +45,7 @@ public class UrgentImageCell extends AbstractCell<Date> {
 
     public UrgentImageCell() {
         super("mouseover", "mouseout");
+        CssInjector.INSTANCE.ensureModalStylesInjected();
     }
 
     /**************************************************************************/
@@ -92,15 +96,20 @@ public class UrgentImageCell extends AbstractCell<Date> {
         }
         displayed = true;
 
+        HorizontalPanel holder = new HorizontalPanel();
+        SimplePanel arrow = new SimplePanel();
+        arrow.addStyleName("arrow-left");
+
+        HTMLPanel panel = new HTMLPanel(tooltip);
+        panel.addStyleName("panel");
+
+        holder.add(arrow);
+        holder.add(panel);
+
         popup.clear();
-        HTMLPanel htmlPanel2 = new HTMLPanel(tooltip);
-        htmlPanel2.addStyleName("container-fluid");
-        htmlPanel2.addStyleName("short-message");
-        HTMLPanel htmlPanel1 = new HTMLPanel("");
-        htmlPanel1.add(htmlPanel2);
-        htmlPanel1.setStylePrimaryName(StyleResource.INSTANCE.modal().commonModalStyle());
-        popup.add(htmlPanel1);
-        popup.setPopupPosition(event.getClientX() + 32, event.getClientY() + 32);
+        popup.add(holder);
+        popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
+        popup.setPopupPosition(event.getClientX() + 32, event.getClientY());
         popup.show();
     }
 
