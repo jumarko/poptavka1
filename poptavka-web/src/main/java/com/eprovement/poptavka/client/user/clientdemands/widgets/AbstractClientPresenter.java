@@ -5,10 +5,8 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
-import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
-import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.AbstractClientPresenter.IAbstractClientView;
+import com.eprovement.poptavka.client.user.clientdemands.interfaces.IAbstractClient;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
@@ -17,16 +15,11 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Common logic for ClientDemands module.
@@ -34,39 +27,8 @@ import java.util.Set;
  * @author Martin Slakvovsky
  */
 public abstract class AbstractClientPresenter
-    extends LazyPresenter<IAbstractClientView, ClientDemandsModuleEventBus>
-    implements HandleResizeEvent {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface IAbstractClientView extends LazyView, IsWidget {
-
-        void initTables(UniversalAsyncGrid parentTable, UniversalAsyncGrid childTable);
-
-        UniversalAsyncGrid getParentTable();
-
-        UniversalAsyncGrid getChildTable();
-
-        List<Long> getChildTableSelectedUserMessageIds();
-
-        Set getChildTableSelectedObjects();
-
-        SimplePanel getFooterContainer();
-
-        SimplePanel getDetailPanel();
-
-        ClientToolbarView getToolbar();
-
-        IsWidget getWidgetView();
-
-        // Setters
-        void setParentTableVisible(boolean visible);
-
-        void setChildTableVisible(boolean visible);
-
-        void setDemandTitleLabel(String text);
-    }
+    extends LazyPresenter<IAbstractClient.View, ClientDemandsModuleEventBus>
+    implements IAbstractClient.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */

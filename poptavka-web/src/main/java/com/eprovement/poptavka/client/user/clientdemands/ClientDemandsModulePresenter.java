@@ -5,22 +5,17 @@ package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
-import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModulePresenter.ClientDemandsViewInterface;
+import com.eprovement.poptavka.client.user.clientdemands.interfaces.IClientDemandsModule;
 import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
 /**
  * Client Demands module presenter.
@@ -28,30 +23,8 @@ import com.mvp4g.client.view.LazyView;
  */
 @Presenter(view = ClientDemandsModuleView.class)
 public class ClientDemandsModulePresenter
-        extends LazyPresenter<ClientDemandsViewInterface, ClientDemandsModuleEventBus>
-        implements NavigationConfirmationInterface {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface ClientDemandsViewInterface extends LazyView, IsWidget, ProvidesToolbar {
-
-        Button getClientNewDemandsButton();
-
-        Button getClientOffersButton();
-
-        Button getClientAssignedDemandsButton();
-
-        Button getClientClosedDemandsButton();
-
-        Button getClientRatingsButton();
-
-        SimplePanel getContentContainer();
-
-        void clientMenuStyleChange(int loadedView);
-
-        IsWidget getWidgetView();
-    }
+        extends LazyPresenter<IClientDemandsModule.View, ClientDemandsModuleEventBus>
+        implements IClientDemandsModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */

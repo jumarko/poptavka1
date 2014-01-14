@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.user.clientdemands.interfaces.IClientDemandsModule;
 import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,8 +21,7 @@ import com.google.inject.Inject;
  *
  * @author Martin Slavkovsky
  */
-public class ClientDemandsModuleView extends Composite
-        implements ClientDemandsModulePresenter.ClientDemandsViewInterface {
+public class ClientDemandsModuleView extends Composite implements IClientDemandsModule.View {
 
     /**************************************************************************/
     /* View interface                                                         */

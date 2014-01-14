@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;

@@ -4,8 +4,8 @@
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.clientdemands.interfaces.IAbstractClient;
 import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
-import com.eprovement.poptavka.client.user.clientdemands.widgets.AbstractClientPresenter.IAbstractClientView;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.GWT;
@@ -28,7 +28,7 @@ import java.util.Set;
  * Common UI elements for ClientDemandsModule.
  * @author Martin Slavkovsky
  */
-public class AbstractClientView extends Composite implements IAbstractClientView {
+public class AbstractClientView extends Composite implements IAbstractClient.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
