@@ -6,8 +6,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
-import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
-import com.eprovement.poptavka.client.user.supplierdemands.widgets.AbstractSupplierPresenter.IAbstractSupplierView;
+import com.eprovement.poptavka.client.user.supplierdemands.interfaces.IAbstractSupplier;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
@@ -15,15 +14,10 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Common SupplierDemands' widgets functionality.
@@ -31,29 +25,8 @@ import java.util.Set;
  * @author Martin Slakvovsky
  */
 public abstract class AbstractSupplierPresenter
-    extends LazyPresenter<IAbstractSupplierView, SupplierDemandsModuleEventBus> {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface IAbstractSupplierView extends LazyView, IsWidget {
-
-        void initTable(UniversalAsyncGrid table);
-
-        UniversalAsyncGrid getTable();
-
-        List<Long> getSelectedUserMessageIds();
-
-        Set getSelectedObjects();
-
-        SimplePanel getFooterContainer();
-
-        SimplePanel getDetailPanel();
-
-        SupplierToolbarView getToolbar();
-
-        IsWidget getWidgetView();
-    }
+    extends LazyPresenter<IAbstractSupplier.View, SupplierDemandsModuleEventBus>
+    implements IAbstractSupplier.Presenter {
 
     /**************************************************************************/
     /* General Widget events                                                  */
