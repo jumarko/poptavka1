@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.session.CssInjector;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
 import com.eprovement.poptavka.client.detail.views.DetailLoadingDiv;
@@ -26,8 +27,7 @@ import com.google.gwt.view.client.ListDataProvider;
  *
  * @author Martin Slavkovsky
  */
-public class DetailModuleView extends Composite
-        implements DetailModulePresenter.IDetailWrapper {
+public class DetailModuleView extends Composite implements IDetailModule.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */

@@ -12,8 +12,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
-import com.eprovement.poptavka.client.root.interfaces.IRootView;
-import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.eprovement.poptavka.client.root.interfaces.IRoot;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 
@@ -26,8 +25,8 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
  * @author Mato
  */
 @Presenter(view = RootView.class)
-public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
-    implements IRootPresenter {
+public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
+    implements IRoot.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -35,7 +34,6 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     private IRootSelectors animation = GWT.create(IRootSelectors.class);
     private static final String SLIDE_PX = "90px";
     private static final int SLIDE_DURATION = 500;
-    private boolean runResize = false;
     private boolean isMenuPanelVisible = false;
 
     /**************************************************************************/
@@ -107,19 +105,11 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
         view.getPage().addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent event) {
-                //Don't run resize on browser startup
-                if (runResize) {
-                    eventBus.resetAnimation(event.getWidth());
-                }
-                runResize = true;
                 //set shorter dates on small screens
                 Storage.get().initDateTimeFormat(event.getWidth() > 1200);
 
-                //Calculate height each time browser resizes for scroll panels to behave correctly-->
-                int bodyHeight = view.getPage().getOffsetHeight();
-                bodyHeight -= view.getToolbar().getOffsetHeight();
-                bodyHeight -= view.getHeader().getOffsetHeight();
-                view.getBody().setHeight(bodyHeight + "px");
+                //broadcast resize event to all listeners
+                eventBus.resize(event.getWidth());
             }
         });
     }
@@ -174,17 +164,24 @@ public class RootPresenter extends BasePresenter<IRootView, RootEventBus>
     }
 
     /**
-     * Removes animation styles on resize.
+     * Removes animation styles on resize and recalculate scrollpanel height.
      * When animation is used it overrides application styles with its own.
      * It is not a problem unless application uses responsive design.
      * When resizing, responsive design should take care to redesign application,
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-    public void onResetAnimation(int actualWidth) {
+//    @Override
+    public void onResize(int actualWidth) {
+        //reset animation style (menu related)
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");
         isMenuPanelVisible = false;
+        //recalculate body height for scrollbar to behave correctly
+        int bodyHeight = view.getPage().getOffsetHeight();
+        bodyHeight -= view.getToolbar().getOffsetHeight();
+        bodyHeight -= view.getHeader().getOffsetHeight();
+        view.getBody().setHeight(bodyHeight + "px");
     }
 
     /**************************************************************************/
