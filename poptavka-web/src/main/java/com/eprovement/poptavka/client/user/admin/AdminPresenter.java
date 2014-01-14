@@ -5,7 +5,7 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
@@ -13,15 +13,10 @@ import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
 /**
  * Admin presenter.
@@ -29,49 +24,7 @@ import com.mvp4g.client.view.LazyView;
  * @author Martin Slavkovsky
  */
 @Presenter(view = AdminView.class)
-public class AdminPresenter
-    extends LazyPresenter<AdminPresenter.AdminModuleInterface, AdminEventBus>
-    implements NavigationConfirmationInterface {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface AdminModuleInterface extends LazyView, IsWidget, ProvidesToolbar {
-
-        void setContent(Widget contentWidget);
-
-        Button getDemandsButton();
-
-        Button getActiveDemandsBtn();
-
-        Button getClientsButton();
-
-        Button getOffersButton();
-
-        Button getSuppliersButton();
-
-        Button getAccessRoleButton();
-
-        Button getEmailActivationButton();
-
-        Button getInvoiceButton();
-
-        Button getMessageButton();
-
-        Button getNewDemandsBtn();
-
-        Button getPaymentMethodButton();
-
-        Button getPermissionButton();
-
-        Button getPreferenceButton();
-
-        Button getProblemButton();
-
-        SimplePanel getContentContainer();
-
-        Widget getWidgetView();
-    }
+public class AdminPresenter extends LazyPresenter<IAdmin.View, AdminEventBus> implements IAdmin.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */

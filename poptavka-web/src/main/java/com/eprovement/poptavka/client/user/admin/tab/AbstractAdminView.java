@@ -4,7 +4,7 @@
 package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.admin.tab.AbstractAdminPresenter.IAbstractAdminView;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAbstractAdmin;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.GWT;
@@ -21,7 +21,7 @@ import java.util.Set;
  * Abstract admin view consists common UI elements.
  * @author Martin Slavkovsky
  */
-public class AbstractAdminView extends Composite implements IAbstractAdminView {
+public class AbstractAdminView extends Composite implements IAbstractAdmin.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */

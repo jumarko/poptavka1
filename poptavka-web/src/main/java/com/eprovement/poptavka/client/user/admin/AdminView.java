@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 
 import com.google.gwt.core.client.GWT;
@@ -21,7 +22,7 @@ import com.google.inject.Inject;
  *
  * @author Martin Slavkovsky
  */
-public class AdminView extends OverflowComposite implements AdminPresenter.AdminModuleInterface {
+public class AdminView extends OverflowComposite implements IAdmin.View {
 
     /**************************************************************************/
     /* View interface                                                         */
