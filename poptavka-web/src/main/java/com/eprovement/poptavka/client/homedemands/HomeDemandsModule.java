@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.module.HistoryName;
 
@@ -18,6 +19,6 @@ import com.mvp4g.client.annotation.module.HistoryName;
  * @author praso
  */
 @HistoryName("homeDemands")
-public interface HomeDemandsModule extends Mvp4gModule {
+public interface HomeDemandsModule extends Mvp4gModule, HandleResizeEvent {
 }
 

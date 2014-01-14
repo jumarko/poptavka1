@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.AbstractClientPresenter.IAbstractClientView;
@@ -33,7 +34,8 @@ import java.util.Set;
  * @author Martin Slakvovsky
  */
 public abstract class AbstractClientPresenter
-    extends LazyPresenter<IAbstractClientView, ClientDemandsModuleEventBus> {
+    extends LazyPresenter<IAbstractClientView, ClientDemandsModuleEventBus>
+    implements HandleResizeEvent {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -127,6 +129,16 @@ public abstract class AbstractClientPresenter
         addParentTableSelectionHandler();
         addChildTableSelectionModelHandler();
         eventBus.setFooter(view.getFooterContainer());
+    }
+
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getParentTable().resize(actualWidth);
+        view.getChildTable().resize(actualWidth);
     }
 
     /**************************************************************************/

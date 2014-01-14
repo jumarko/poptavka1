@@ -136,6 +136,15 @@ public class MessageListPresenter
         view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), inboxMessages);
     }
 
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getTable().resize(actualWidth);
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/

@@ -15,7 +15,9 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -410,6 +412,15 @@ public class HomeDemandsPresenter
         } else if (selectedDemandIdByHistory != -1) {
             eventBus.getDemand(selectedDemandIdByHistory);
         }
+    }
+
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getDataGrid().resize(actualWidth);
     }
 
     /**************************************************************************/

@@ -87,6 +87,9 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemandDetail(FullDemandDetail supplierDetail);
 
+    @Event(handlers = HomeDemandsPresenter.class)
+    void resize(int actualWidth);
+
     /**************************************************************************/
     /* Business events handled by Handler.                                    */
     /**************************************************************************/

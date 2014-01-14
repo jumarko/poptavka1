@@ -402,6 +402,15 @@ public class HomeSuppliersPresenter
         }
     }
 
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getDataGrid().resize(actualWidth);
+    }
+
     /**************************************************************************/
     /* Private methods                                                        */
     /**************************************************************************/

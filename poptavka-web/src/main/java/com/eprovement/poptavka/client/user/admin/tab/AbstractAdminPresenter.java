@@ -70,6 +70,15 @@ public abstract class AbstractAdminPresenter
         eventBus.setFooter(view.getFooterContainer());
     }
 
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getTable().resize(actualWidth);
+    }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/

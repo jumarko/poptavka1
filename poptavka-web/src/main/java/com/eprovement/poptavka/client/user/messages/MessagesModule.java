@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.messages;
 
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.module.HistoryName;
 
@@ -11,5 +12,5 @@ import com.mvp4g.client.annotation.module.HistoryName;
  * @author Martin Slavkovsky
  */
 @HistoryName("userMessages")
-public interface MessagesModule extends Mvp4gModule {
+public interface MessagesModule extends Mvp4gModule, HandleResizeEvent {
 }

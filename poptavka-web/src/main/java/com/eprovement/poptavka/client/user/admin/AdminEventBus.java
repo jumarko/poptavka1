@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.user.admin.tab.AbstractAdminPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminAccessRolesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
@@ -104,6 +105,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
+
+    /**************************************************************************/
+    /* Common event                                                           */
+    /**************************************************************************/
+    @Event(handlers = AbstractAdminPresenter.class)
+    void resize(int actualWidth);
 
     /**************************************************************************/
     /* Business Initialization events                                         */

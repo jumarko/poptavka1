@@ -3,12 +3,14 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.Cell;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent.AsyncHandler;
@@ -79,8 +81,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /*                          ATTRIBUTES                                    */
     /**************************************************************************/
-    private static final int TABLE_PADDING_HEIGHT = 20;
-    private static final int ROW_HEIGHT = 42;
     /**
      * Asynchronous Data Provider. When all data count is known, asynchronous
      * data provider is created {@link #createAsyncDataProvider(final int resultCount)}.
@@ -206,7 +206,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             protected void onRangeChanged(HasData<T> display) {
                 start = display.getVisibleRange().getStart();
                 length = display.getVisibleRange().getLength();
-                setTableHeight(2); //loading indicator represents two row.
+                resize(Document.get().getClientWidth());
                 if (!cancelRangeChangedEvent) {
                     //Aks for new data
                     if (display.getRowCount() > 0) {
@@ -238,7 +238,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             @Override
             public void updateRowData(int start, List<T> values) {
                 super.updateRowData(start, values);
-                setTableHeight(values.size());
+                resize(Document.get().getClientWidth());
             }
         };
         this.dataProvider.addDataDisplay(this);
@@ -346,13 +346,29 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     /**************************************************************************/
     /* Setter metods                                                          */
     /**************************************************************************/
-    private void setTableHeight(int rowCount) {
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     *
+     * @param actualWidth
+     */
+    public void resize(int actualWidth) {
+        int height = 0;
         //include table padding
-        int height = (2 * TABLE_PADDING_HEIGHT);
-        //include one row for a table header
-        height += ROW_HEIGHT;
+        if (actualWidth < 1200) {
+            height = Constants.TABLE_MARGINS_SMALL;
+        } else {
+            height = Constants.TABLE_MARGINS_LARGE;
+        }
+        height += 40; //header
         //include table rows
-        height += (rowCount > 0 ? (rowCount * ROW_HEIGHT) : ROW_HEIGHT);
+        int rows = getVisibleItemCount();
+        if (rows > 0) {
+            height += rows * getRowElement(0).getOffsetHeight();
+//            height += rows * getRowElement(0).getOffsetHeight() + 4;
+        } else {
+            height += 40;
+        }
         setHeight(height + "px");
     }
 

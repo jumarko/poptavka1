@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModuleEventBus;
@@ -73,6 +74,15 @@ public abstract class AbstractSupplierPresenter
     public void bindView() {
         addTableSelectionModelHandler();
         eventBus.setFooter(view.getFooterContainer());
+    }
+
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getTable().resize(actualWidth);
     }
 
     /**************************************************************************/

@@ -81,6 +81,9 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySupplierDetail(FullSupplierDetail supplierDetail);
 
+    @Event(handlers = HomeSuppliersPresenter.class)
+    void resize(int actualWidth);
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
