@@ -37,28 +37,7 @@ body > div {
 /******************************************************************************/
 /*  Footer View                                                               */
 /******************************************************************************/
-.footer {
-}
-.footer .links {
-    width: auto;
-    margin: 0 4px 6px 0;
-}
-.footer .links .button {
-}
-.footer .links .button:hover {
-}
-.footer .links .separator {
-    padding: 2px 9px;
-}
-.border-separator {
-    display: none;
-}
-.footer .block {
-}
-
-.footer-toggle {
-}
-
+.footer {}
 /* Loader Modal Styles */
 .loader-modal {}
 

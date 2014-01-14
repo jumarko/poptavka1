@@ -4,7 +4,7 @@
 package com.eprovement.poptavka.client.root.toolbar;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.client.root.interfaces.IToolbarView;
+import com.eprovement.poptavka.client.root.interfaces.IToolbar;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -42,7 +42,8 @@ import com.mvp4g.client.presenter.LazyPresenter;
  * @since 10.7.2013
  */
 @Presenter(view = ToolbarView.class)
-public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> {
+public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
+    implements IToolbar.Presenter {
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -111,7 +112,8 @@ public class ToolbarPresenter extends LazyPresenter<IToolbarView, RootEventBus> 
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-    public void onResetAnimation(int actualWidth) {
+//    @Override
+    public void onResize(int actualWidth) {
         if (767 <= actualWidth && actualWidth < 1200) {
             animation.getRightSlidingPanel().removeAttr("style");
             isDetailPanelOpen = false;

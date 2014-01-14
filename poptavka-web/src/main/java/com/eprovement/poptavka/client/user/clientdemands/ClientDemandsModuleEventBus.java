@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
+import com.eprovement.poptavka.client.user.clientdemands.interfaces.HandleClientResizeEvent;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientAssignedDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsPresenter;
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientDemandsWelcomePresenter;
@@ -128,6 +129,12 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
+
+    /**************************************************************************/
+    /* Common event                                                           */
+    /**************************************************************************/
+    @Event(broadcastTo = HandleClientResizeEvent.class, passive = true)
+    void resize(int actualWidth);
 
     /**************************************************************************/
     /* Business events handled by ClientDemandsModulePresenter.               */

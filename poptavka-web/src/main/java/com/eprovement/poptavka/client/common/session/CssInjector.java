@@ -69,6 +69,9 @@ public final class CssInjector {
                 StyleResource.INSTANCE.layoutMiddle().getText(),
                 StyleResource.INSTANCE.layoutSmall().getText(),
                 StyleResource.INSTANCE.layoutTiny().getText());
+            //Following fix not working because .content-container is not encryped by compiler (.GN1NBM2 .span-detail)
+            //if presented fix is needed, that encryped stylename has to be retrieved somehow.
+            //injectResponsiveStyle(".content-container .span-detail {width: 42.735%;}", 979);
         }
     }
 

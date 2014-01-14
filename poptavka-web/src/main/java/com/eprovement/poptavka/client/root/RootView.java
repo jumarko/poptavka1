@@ -3,16 +3,15 @@
  */
 package com.eprovement.poptavka.client.root;
 
-import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.eprovement.poptavka.client.root.interfaces.IRootView;
-import com.eprovement.poptavka.client.root.interfaces.IRootView.IRootPresenter;
+import com.eprovement.poptavka.client.root.interfaces.IRoot;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
@@ -26,9 +25,11 @@ import com.google.gwt.user.client.ui.SimplePanel;
  *
  * @author Beho, Martin Slavkovsky
  */
-public class RootView extends ReverseCompositeView<IRootPresenter> implements
-        IRootView {
+public class RootView extends Composite implements IRoot.View {
 
+    /**************************************************************************/
+    /* UiBinder                                                               */
+    /**************************************************************************/
     private static RootViewUiBinder uiBinder = GWT.create(RootViewUiBinder.class);
 
     interface RootViewUiBinder extends UiBinder<Widget, RootView> {

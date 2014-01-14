@@ -24,7 +24,10 @@
     margin-left: 0;
 }
 .content-container .content-margin {
-    padding: 10px;
+    margin: 10px;
+}
+.content-container .span-detail {
+    width: 42.55%;
 }
 
 .detail-container {}

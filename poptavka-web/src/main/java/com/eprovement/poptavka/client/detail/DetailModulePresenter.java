@@ -5,10 +5,9 @@ package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
-import com.eprovement.poptavka.client.detail.views.UserDetailView;
-import com.eprovement.poptavka.client.detail.views.RatingDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
@@ -17,22 +16,17 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,7 +36,8 @@ import java.util.List;
  */
 @Presenter(view = DetailModuleView.class)
 public class DetailModulePresenter
-    extends LazyPresenter<DetailModulePresenter.IDetailWrapper, DetailModuleEventBus> {
+    extends LazyPresenter<IDetailModule.View, DetailModuleEventBus>
+    implements IDetailModule.Presenter {
 
     /**************************************************************************/
     /* ATTRIBUTES                                                             */
@@ -50,40 +45,6 @@ public class DetailModulePresenter
     /** Class Attributes. **/
     private DetailModuleBuilder builder;
     private UniversalAsyncGrid table;
-
-    /**************************************************************************/
-    /* VIEW INTERFACE                                                         */
-    /**************************************************************************/
-    public interface IDetailWrapper extends LazyView {
-
-        Widget getWidgetView();
-
-        TabLayoutPanel getContainer();
-
-        SimplePanel getDemandDetailHolder();
-
-        SimplePanel getAdvertisementHolder();
-
-        DemandDetailView getDemandDetail();
-
-        UserDetailView getSupplierDetail();
-
-        RatingDetailView getRatingDetail();
-
-        OfferQuestionWindow getReplyHolder();
-
-        CellList getMessageList();
-
-        ListDataProvider getMessageProvider();
-
-        FluidContainer getConversationHolder();
-
-        void loadingDivShow(Widget holderWidget);
-
-        void loadingDivHide(Widget holderWidget);
-
-        void setMessagePanelVisibility();
-    }
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -296,6 +257,30 @@ public class DetailModulePresenter
      */
     public void onAllowSendingOffer() {
         view.getReplyHolder().setSendingOfferEnabled(true);
+    }
+
+    /**
+     * Recalculate current widget height for scrollpanel.
+     */
+//    @Override
+    public void onResize(int actualWidth) {
+        switch (view.getContainer().getSelectedIndex()) {
+            case DetailModuleBuilder.DEMAND_DETAIL_TAB:
+                setHeight(view.getDemandDetailHolder().getWidget());
+                break;
+            case DetailModuleBuilder.USER_DETAIL_TAB:
+                setHeight(view.getSupplierDetail());
+                break;
+            case DetailModuleBuilder.CONVERSATION_TAB:
+                setHeight(view.getConversationHolder());
+                break;
+            case DetailModuleBuilder.ADVERTISEMENT_TAB:
+                setHeight(view.getAdvertisementHolder().getWidget());
+                break;
+            default:
+                setHeight(view.getContainer().getWidget(view.getContainer().getSelectedIndex()));
+                break;
+        }
     }
 
     /**
@@ -533,7 +518,7 @@ public class DetailModulePresenter
             public void execute() {
                 int height = widget.getOffsetHeight();
                 height += 50; //header
-                height += 40; //2x margin
+                height += 20; //add space at the bootom
                 view.getContainer().setHeight(height + "px");
             }
         });

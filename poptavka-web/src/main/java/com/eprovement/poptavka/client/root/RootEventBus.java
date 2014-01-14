@@ -22,6 +22,7 @@ import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.header.menu.MenuPresenter;
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.root.toolbar.ToolbarPresenter;
 import com.eprovement.poptavka.client.serviceSelector.ServiceSelectorModule;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
@@ -144,8 +145,8 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);
 
-    @Event(handlers = {RootPresenter.class, ToolbarPresenter.class })
-    void resetAnimation(int actualWidth);
+    @Event(broadcastTo = HandleResizeEvent.class, passive = true)
+    void resize(int actualWidth);
 
     /**************************************************************************/
     /* Footer section                                                         */

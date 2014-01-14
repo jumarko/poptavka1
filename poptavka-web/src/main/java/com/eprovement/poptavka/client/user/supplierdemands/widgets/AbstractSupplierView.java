@@ -4,8 +4,8 @@
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.supplierdemands.interfaces.IAbstractSupplier;
 import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
-import com.eprovement.poptavka.client.user.supplierdemands.widgets.AbstractSupplierPresenter.IAbstractSupplierView;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.GWT;
@@ -27,7 +27,7 @@ import java.util.Set;
  *
  * @author Martin Slavkovsky
  */
-public class AbstractSupplierView extends Composite implements IAbstractSupplierView {
+public class AbstractSupplierView extends Composite implements IAbstractSupplier.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */

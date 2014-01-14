@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.user.supplierdemands.interfaces.ISupplierDemands;
 import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,8 +21,7 @@ import com.google.inject.Inject;
  *
  * @author Martin Slavkovsky
  */
-public class SupplierDemandsModuleView extends Composite
-        implements SupplierDemandsModulePresenter.SupplierLayoutInterface {
+public class SupplierDemandsModuleView extends Composite implements ISupplierDemands.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */

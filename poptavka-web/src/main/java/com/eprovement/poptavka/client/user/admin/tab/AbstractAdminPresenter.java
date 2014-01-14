@@ -5,21 +5,15 @@ package com.eprovement.poptavka.client.user.admin.tab;
 
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
-import com.eprovement.poptavka.client.user.admin.tab.AbstractAdminPresenter.IAbstractAdminView;
-import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAbstractAdmin;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
-import java.util.Set;
 
 /**
  * AbsatractAdminPresenter.
@@ -27,27 +21,8 @@ import java.util.Set;
  * @author Martin Slakvovsky
  */
 public abstract class AbstractAdminPresenter
-    extends LazyPresenter<IAbstractAdminView, AdminEventBus> {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface IAbstractAdminView extends LazyView, IsWidget {
-
-        void initTable(UniversalAsyncGrid table);
-
-        UniversalAsyncGrid getTable();
-
-        Set getSelectedObjects();
-
-        SimplePanel getFooterContainer();
-
-        SimplePanel getDetailPanel();
-
-        AdminToolbarView getToolbar();
-
-        Widget getWidgeView();
-    }
+    extends LazyPresenter<IAbstractAdmin.View, AdminEventBus>
+    implements IAbstractAdmin.Presenter {
 
     /**************************************************************************/
     /* General Widget events                                                  */
@@ -68,6 +43,15 @@ public abstract class AbstractAdminPresenter
     public void bindView() {
         addTableSelectionModelHandler();
         eventBus.setFooter(view.getFooterContainer());
+    }
+
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getTable().resize(actualWidth);
     }
 
     /**************************************************************************/

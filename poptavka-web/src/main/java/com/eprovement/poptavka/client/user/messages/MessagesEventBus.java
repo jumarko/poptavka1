@@ -62,6 +62,12 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
     void goToMessagesModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
 
     /**************************************************************************/
+    /* Common event                                                           */
+    /**************************************************************************/
+    @Event(handlers = MessageListPresenter.class)
+    void resize(int actualWidth);
+
+    /**************************************************************************/
     /* Parent events                                                          */
     /**************************************************************************/
     @Event(forwardToParent = true)

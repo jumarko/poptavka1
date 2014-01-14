@@ -107,9 +107,11 @@
     height: 50px;
 }
 .search-panel.user {
+    left: auto;
     right: 270px;
 }
 .search-panel.admin {
+    left: auto;
     right: 270px;
 }
 

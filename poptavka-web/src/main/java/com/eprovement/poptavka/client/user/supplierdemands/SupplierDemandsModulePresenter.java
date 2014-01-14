@@ -4,19 +4,15 @@
 package com.eprovement.poptavka.client.user.supplierdemands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
-import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModulePresenter.SupplierLayoutInterface;
+import com.eprovement.poptavka.client.user.supplierdemands.interfaces.ISupplierDemands;
 import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
 /**
  * SupplierDemands module presenter.
@@ -25,30 +21,8 @@ import com.mvp4g.client.view.LazyView;
  */
 @Presenter(view = SupplierDemandsModuleView.class)
 public class SupplierDemandsModulePresenter
-        extends LazyPresenter<SupplierLayoutInterface, SupplierDemandsModuleEventBus>
-        implements NavigationConfirmationInterface {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface SupplierLayoutInterface extends LazyView, IsWidget, ProvidesToolbar {
-
-        Button getSupplierNewDemandsButton();
-
-        Button getSupplierOffersButton();
-
-        Button getSupplierAssignedDemandsButton();
-
-        Button getSupplierClosedDemandsButton();
-
-        Button getSupplierRatingsButton();
-
-        void setContent(IsWidget contentWidget);
-
-        void supplierMenuStyleChange(int loadedWidget);
-
-        IsWidget getWidgetView();
-    }
+        extends LazyPresenter<ISupplierDemands.View, SupplierDemandsModuleEventBus>
+        implements ISupplierDemands.Presenter {
 
     /**************************************************************************/
     /* General Module events */

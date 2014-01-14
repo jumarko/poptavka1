@@ -31,9 +31,6 @@ public interface InitialStyles extends CssResource {
     @ClassName("footer")
     String footer();
 
-    @ClassName("footer-toggle")
-    String footerToggle();
-
     /* Loader Modal Styles */
     @ClassName("loader-modal")
     String loaderModal();

@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.client.root.toolbar;
 
-import com.eprovement.poptavka.client.root.interfaces.IToolbarView;
+import com.eprovement.poptavka.client.root.interfaces.IToolbar;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
@@ -20,7 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
  * Toolbar view
  * @author Martin Slavkovsky
  */
-public class ToolbarView extends Composite implements IToolbarView {
+public class ToolbarView extends Composite implements IToolbar.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */

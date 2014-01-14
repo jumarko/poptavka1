@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands;
 
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.mvp4g.client.Mvp4gModule;
 import com.mvp4g.client.annotation.module.HistoryName;
 
@@ -12,5 +13,5 @@ import com.mvp4g.client.annotation.module.HistoryName;
  * @author Martin Slavkovsky
  */
 @HistoryName("userSupplierDemands")
-public interface SupplierDemandsModule extends Mvp4gModule {
+public interface SupplierDemandsModule extends Mvp4gModule, HandleResizeEvent {
 }
