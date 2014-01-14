@@ -42,31 +42,7 @@ body > div {
 /******************************************************************************/
 /*  Footer View                                                               */
 /******************************************************************************/
-.footer {
-}
-.footer .links {
-    width: auto;
-    margin: 0 11px 6px 0;
-}
-.footer .links .button {
-    padding: 2px 6px;
-}
-.footer .links .button:hover {
-}
-.footer .links .separator {
-    /*padding: 2px 5px;*/
-}
-.border-separator {
-    display: none;
-}
-.footer .block {
-}
-.footer-container-texts {    
-}
-
-.footer-toggle {
-}
-
+.footer {}
 /* Loader Modal Styles */
 .loader-modal {
     margin: 0 auto !important;

@@ -9,30 +9,41 @@
         <b:FluidRow>
             <b:Column size='9'>
                 <g:FlowPanel styleName='links'>
-                    <g:Button ui:field='company' styleName='button'>
-                        <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
-                    </g:Button>
-                    <g:HTML styleName='separator'>|</g:HTML>
-                    <!--Links to Want-Something page-->
-                    <g:Button ui:field="termsAndConditions" styleName='button'>
-                        <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
-                    </g:Button>
-                    <g:HTML styleName='separator'>|</g:HTML>
-                    <g:Button ui:field="contactUs" styleName='button'>
-                        <ui:msg key='footerContactUs'>Contact us</ui:msg>
-                    </g:Button>
-                    <g:HTML styleName='separator'>|</g:HTML>
-                    <g:Button ui:field="aboutUs" styleName='button'>
-                        <ui:msg key='footerAboutUs'>About us</ui:msg>
-                    </g:Button>
-                    <g:HTML styleName='separator'>|</g:HTML>
-                    <g:Button ui:field="faq" styleName='button'>
-                        <ui:msg key='faq'>FAQ</ui:msg>
-                    </g:Button>
-                    <g:HTML styleName='separator'>|</g:HTML>
-                    <g:Button ui:field="privacyPolicy" styleName='button'>
-                        <ui:msg key='privacyPolicy'>Privacy Policy</ui:msg>
-                    </g:Button>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field='company' styleName='item-button'>
+                            <ui:msg key="footerCompanyName">2013 © eProvement s.r.o.</ui:msg>
+                        </g:Button>
+                        <g:HTML styleName='item-separator'>|</g:HTML>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field="termsAndConditions" styleName='item-button'>
+                            <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
+                        </g:Button>
+                        <g:HTML styleName='item-separator'>|</g:HTML>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field="contactUs" styleName='item-button'>
+                            <ui:msg key='footerContactUs'>Contact us</ui:msg>
+                        </g:Button>
+                        <g:HTML styleName='item-separator'>|</g:HTML>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field="aboutUs" styleName='item-button'>
+                            <ui:msg key='footerAboutUs'>About us</ui:msg>
+                        </g:Button>
+                        <g:HTML styleName='item-separator'>|</g:HTML>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field="faq" styleName='item-button'>
+                            <ui:msg key='faq'>FAQ</ui:msg>
+                        </g:Button>
+                        <g:HTML styleName='item-separator'>|</g:HTML>
+                    </g:FlowPanel>
+                    <g:FlowPanel styleName='item'>
+                        <g:Button ui:field="privacyPolicy" styleName='item-button'>
+                            <ui:msg key='privacyPolicy'>Privacy Policy</ui:msg>
+                        </g:Button>
+                    </g:FlowPanel>
                 </g:FlowPanel>
             </b:Column>
 
@@ -40,15 +51,15 @@
                 <g:FlowPanel styleName='link-icons'>
                     <!--Links to Want-Something related pages-->
                     <bb:IconAnchor styleName='icon' icon="GOOGLE_PLUS_SIGN" iconSize="LARGE"
-                               href="https://plus.google.com/116839001052592837742" target="_blank"/>
+                                   href="https://plus.google.com/116839001052592837742" target="_blank"/>
                     <bb:IconAnchor styleName='icon' icon="LINKEDIN_SIGN" iconSize="LARGE"
-                               href="http://www.linkedin.com/company/3218120?trk=tyah" target="_blank"/>
+                                   href="http://www.linkedin.com/company/3218120?trk=tyah" target="_blank"/>
                     <bb:IconAnchor styleName='icon' icon="TWITTER_SIGN" iconSize="LARGE"
-                               href="https://twitter.com/WntSomethingCom" target="_blank"/>
+                                   href="https://twitter.com/WntSomethingCom" target="_blank"/>
                     <bb:IconAnchor styleName='icon' icon="FACEBOOK_SIGN" iconSize="LARGE"
-                               href="https://www.facebook.com/WantSomethingCom" target="_blank"/>
+                                   href="https://www.facebook.com/WantSomethingCom" target="_blank"/>
                     <bb:IconAnchor styleName='icon' icon="BOOK" iconSize="LARGE"
-                               href="http://blog.want-something.com/" target="_blank"/>
+                                   href="http://blog.want-something.com/" target="_blank"/>
                 </g:FlowPanel>
             </b:Column>
         </b:FluidRow>

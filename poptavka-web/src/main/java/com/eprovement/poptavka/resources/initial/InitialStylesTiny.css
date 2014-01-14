@@ -62,33 +62,13 @@ body > div {
 .toolbar .header {    
     display: none;
 }
-/******************************************************************************/
-/*  Footer View                                                               */
-/******************************************************************************/
-.footer {
-}
-.footer .links {
-    width: auto;
-    margin: 0 11px 6px 0;
-}
-.footer .links .button {
-    padding: 2px 6px;
-}
-.footer .links .button:hover {
-}
-.footer .links .separator {
-    /*padding: 2px 5px;*/
-}
-.border-separator {
-    display: none;
-}
 .toolbar .item {
     margin: 6px 5px 0 0;
 }
-
-.footer-toggle {
-}
-
+/******************************************************************************/
+/*  Footer View                                                               */
+/******************************************************************************/
+.footer {}
 /* Loader Modal Styles */
 .loader-modal {}
 

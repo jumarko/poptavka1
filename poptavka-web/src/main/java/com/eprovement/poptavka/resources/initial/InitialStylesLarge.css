@@ -18,7 +18,7 @@ body {
 }
 
 body > div {
-    min-width: 320px;
+    /*min-width: 320px;*/
 }
 
 div[aria-hidden="true"] {
@@ -172,25 +172,29 @@ div[aria-hidden="true"] {
     margin: 0 auto;
     max-width: 1200px;
 }
-.footer .links .button {
+.footer .links .item {
+    padding-top: 2px;
+    float: left;
+}
+.footer .links .item-button {
     background: none;
     border: none;
     float: left;
     color: #827a5e;
-    padding: 0px 8px;
     font-size: 12px;
 }
-.footer .links .button:hover {
+.footer .links .item-button:hover {
     text-decoration: underline;
     cursor: pointer;
     color: #237e00;
 }
-.footer .links .separator {
+.footer .links .item-separator {
     background: none;
     border: none;
     float: left;
     color: #827a5e;
     font-size: 12px;
+    padding: 0 2px;
 }
 .footer .link-icons {
     padding-top: 4px;
@@ -199,19 +203,9 @@ div[aria-hidden="true"] {
 }
 .footer .link-icons .icon {
     color: #177F03;
-    padding: 0 7px;
+    padding: 0 7px 7px;
     float: right;
 }
-
-.footer-toggle {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    border: thin solid black;
-    border-bottom: none;
-    cursor: pointer;
-}
-
 
 /******************************************************************************/
 /*  Loader Modal Styles                                                       */
