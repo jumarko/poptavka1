@@ -24,22 +24,29 @@
     -webkit-border-radius: 5px;
 }
 
-/*.common-modal-style .well {
-    background: #E7E3D6;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+/******************************************************************************/
+/*  Tooltip                                                                   */
+/******************************************************************************/
+.tooltip .panel {
+    background: #555555;
+    color: #FFFFFF;
+    height: 23px;
+    padding: 3px 10px 0;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px; 
 }
-
-.common-modal-style .well .gwt-Label {
-    font-size: 14px;
-    line-height: 40px;    
-    padding: 0 15px;
+/*.tooltip .gwt-Label {
+    font-size: 12px;
 }*/
-/*.common-modal-style .short-message {
-    padding: 5px 15px;
-    border-radius: 0;
-}*/
+.tooltip .arrow-left {
+    margin-top: 8px;
+    width: 0; 
+    height: 0; 
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent; 
+    border-right: 5px solid #555555;
+}
 
 /******************************************************************************/
 /*  Login Modal Styles                                                        */
