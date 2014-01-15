@@ -39,11 +39,26 @@
 .selected-items-widget {}
 .switch-left {}
 .switch-right {}
-.form-fields {}
 
-.well-container .gwt-Label {
-    line-height: 20px;
+.form-fields input[type="text"],
+.form-fields input[type="password"],
+.form-fields textarea,
+.form-fields select {
+    height: 30px;
+}
+.form-fields .gwt-Label {
+    font-size: 12px;
+    line-height: 15px;
     margin-top: 7px;
+}
+.well-container {
+    margin-bottom: 5px;
+}
+.well-container .well-header {
+    height: 40px;
+}
+.well-container .well-header h4 {
+    line-height: 40px;
 }
 .well-container.well-form .well-content .span12 {
     padding: 0 10px;
@@ -52,9 +67,10 @@
     padding: 15px 10px 5px;
 }
 /* Validation styles */
-.validation-container .gwt-Label {
-    padding: 10px 0 0 15px;
-    line-height: initial;
+.validation-container .control-group .label {
+/*    padding: 10px 0 0 15px;
+    line-height: initial;*/
+    font-size: 9px;
 }
 
 /* how it works */

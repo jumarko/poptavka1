@@ -1,5 +1,9 @@
-.height-registration-extended {}
-.height-registration {}
+.height-registration-extended {
+    height: 1160px;
+}
+.height-registration {
+    height: 970px;
+}
 .height-selector {}
 .height-advanced {}
 .height-basic {}

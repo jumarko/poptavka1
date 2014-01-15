@@ -11,7 +11,8 @@
     <ui:style>
         .form-indent {
         margin: 0 auto;
-        width: 340px;
+        padding: 0 10px;
+        width: 315px;
         }
     </ui:style>
     
