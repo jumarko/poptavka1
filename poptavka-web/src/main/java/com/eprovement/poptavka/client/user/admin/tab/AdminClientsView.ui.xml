@@ -40,7 +40,7 @@
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
-            <g:ScrollPanel>
+            <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                 <detail:AdminClientInfoView ui:field="adminClientDetail"/>
             </g:ScrollPanel>
         </g:center>

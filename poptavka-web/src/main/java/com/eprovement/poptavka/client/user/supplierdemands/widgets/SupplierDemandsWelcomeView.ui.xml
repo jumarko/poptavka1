@@ -7,7 +7,7 @@
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:ScrollPanel>
+    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields} {res.layout.dashboard}'>
             <b:FluidRow>
                 <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>

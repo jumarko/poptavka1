@@ -752,23 +752,6 @@ button.button-green {
     -webkit-border-radius: 5px 5px 0 0;
 }
 
-.how-it-works-container .container-fluid {
-    background: #faf7eb;
-    border-left: 1px solid #D1CCBB;
-    border-right: 1px solid #D1CCBB;
-    border-bottom: 1px solid #aba798;    
-    padding: 20px;
-    border-radius: 0 0 5px 5px;
-    -moz-border-radius: 0 0 5px 5px;
-    -webkit-border-radius: 0 0 5px 5px;
-}
-
-.how-it-works-container .container-fluid .span4,
-.how-it-works-container .container-fluid .span6 {
-    background: url(images/how-it-works-arrow.png) no-repeat 0 6px;
-    padding: 0 0 0 12px;
-}
-
 /* MyListBox - used for custom select-box */
 .myListBox {    
     background: #F8F4E4;

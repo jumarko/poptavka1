@@ -44,7 +44,7 @@
             </g:DockLayoutPanel>
         </g:west>
         <g:center>
-            <g:ScrollPanel>
+            <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                 <d:AdminDemandInfoView ui:field="adminDemandDetail"/>
             </g:ScrollPanel>
         </g:center>
