@@ -11,7 +11,7 @@
         }
     </ui:style>
 
-    <g:ScrollPanel>
+    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
             <h1>
                 Frequently Asked Questions

@@ -5,6 +5,7 @@
              xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:style>
         .header {
         font-size: 110%;
@@ -37,7 +38,7 @@
     </ui:style>
 
     <g:DecoratorPanel addStyleNames='{style.decorationPanel}'>
-        <g:ScrollPanel>
+        <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
             <g:HTMLPanel>
                 <table style="width: 100%;">
                     <tr>

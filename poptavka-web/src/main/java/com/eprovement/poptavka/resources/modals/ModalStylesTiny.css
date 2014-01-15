@@ -73,6 +73,9 @@
     padding: 0;
     margin: 0;
 }
+.cell-browser-selection-modal .modal-body .content-row {
+    height: 360px;
+}
 /* Activation Code Modal Styles */
 .activation-code .well {
     padding: 10px 10px 0;

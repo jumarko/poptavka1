@@ -18,10 +18,10 @@
 
 .detail-container {
     position: absolute;
-    right: -350px;
+    right: -330px;
     z-index: 11;
     height: 100%;
-    width: 350px;
+    width: 330px;
 }
 
 .left-container {}

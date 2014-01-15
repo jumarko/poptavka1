@@ -355,7 +355,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public void resize(int actualWidth) {
         int height = 0;
         //include table padding
-        if (actualWidth < 1200) {
+        if (actualWidth < 480) {
+            height = Constants.TABLE_MARGINS_TINY;
+        } else if (actualWidth < 1200) {
             height = Constants.TABLE_MARGINS_SMALL;
         } else {
             height = Constants.TABLE_MARGINS_LARGE;

@@ -5,7 +5,7 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:ScrollPanel>
+    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
             <g:HTMLPanel styleName='content-step first-step'>
                 <g:Label styleName="circle-label">

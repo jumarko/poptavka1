@@ -408,7 +408,7 @@ button.button-green {
     background: url(images/switch-left.png) no-repeat;
     width: 108px;
     height: 40px;    
-    margin: 0 auto;
+    margin: 0 20px;
 }
 
 .switch-right {
@@ -501,7 +501,7 @@ button.button-green {
 .validation-container .control-group .label {
     line-height: 16px;
     min-height: 16px;
-    padding: 0 15px 0 30px;
+    padding: 0 15px 0 20px;
     border-radius: 0 5px 0 0;
     -moz-border-radius: 0 5px 0 0;
     -webkit-border-radius: 0 5px 0 0;
@@ -524,7 +524,7 @@ button.button-green {
     display: block;
     padding: 0 0 0 4px;
     position: absolute;
-    right: 37px;
+    right: 5px;
     top: -16px;
 }
 
@@ -750,23 +750,6 @@ button.button-green {
     border-radius: 5px 5px 0 0;
     -moz-border-radius: 5px 5px 0 0;
     -webkit-border-radius: 5px 5px 0 0;
-}
-
-.how-it-works-container .container-fluid {
-    background: #faf7eb;
-    border-left: 1px solid #D1CCBB;
-    border-right: 1px solid #D1CCBB;
-    border-bottom: 1px solid #aba798;    
-    padding: 20px;
-    border-radius: 0 0 5px 5px;
-    -moz-border-radius: 0 0 5px 5px;
-    -webkit-border-radius: 0 0 5px 5px;
-}
-
-.how-it-works-container .container-fluid .span4,
-.how-it-works-container .container-fluid .span6 {
-    background: url(images/how-it-works-arrow.png) no-repeat 0 6px;
-    padding: 0 0 0 12px;
 }
 
 /* MyListBox - used for custom select-box */
