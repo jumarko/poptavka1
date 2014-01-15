@@ -45,6 +45,7 @@
 .form-fields textarea,
 .form-fields select {
     height: 30px;
+    font-size: 11px;
 }
 .form-fields .gwt-Label {
     font-size: 12px;
@@ -91,9 +92,12 @@
 
 .catLocManager {}
 .catLocManager .gwt-SuggestBox {
-    width: 150px !important;
+    width: 120px !important;
 }
 .catLocManager .browse-button {
     margin: 3px 0 0 10px;
+    font-size: 12px;
+    line-height: 11px;
+    height: 30px;
     width: 100px;
 }
