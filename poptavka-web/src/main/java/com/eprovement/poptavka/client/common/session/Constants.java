@@ -226,4 +226,5 @@ public final class Constants {
 
     public static final int TABLE_MARGINS_LARGE = 60; //20top_margin+20top_padding+20bottom_padding
     public static final int TABLE_MARGINS_SMALL = 30; //10top_margin+10top_padding+10bottom_padding
+    public static final int TABLE_MARGINS_TINY = 10; //0top_margin+0top_padding+10bottom_margin
 }

@@ -63,7 +63,7 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
     private boolean isDetailPanelOpen = false;
     /** Constants. **/
     private static final String SLIDE_PX_CATEGORY = "330px";
-    private static final String SLIDE_PX_DETAIL = "350px";
+    private static final String SLIDE_PX_DETAIL = "330px";
 
     /**************************************************************************/
     /* Bind handlers                                                          */
