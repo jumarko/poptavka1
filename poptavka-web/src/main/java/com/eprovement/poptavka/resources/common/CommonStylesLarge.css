@@ -408,7 +408,7 @@ button.button-green {
     background: url(images/switch-left.png) no-repeat;
     width: 108px;
     height: 40px;    
-    margin: 0 auto;
+    margin: 0 20px;
 }
 
 .switch-right {

@@ -138,7 +138,7 @@
 .menu .button-more {
     background: url(images/more-arrows-small.png) no-repeat;
     float: left;
-    widows: 25px;
+    width: 25px;
     height: 31px;
 }
 

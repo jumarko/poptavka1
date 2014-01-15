@@ -63,6 +63,9 @@ public interface StyleResource extends ClientBundle {
     @NotStrict
     @Source("header/HeaderStylesSmall.css")
     HeaderStyles headerSmall();
+    @NotStrict
+    @Source("header/HeaderStylesTiny.css")
+    HeaderStyles headerTiny();
 
     @NotStrict
     @Source("layout/LayoutStylesLarge.css")

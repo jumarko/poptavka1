@@ -11,11 +11,7 @@
     <ui:style>
         .form-indent {
         margin: 0 auto;
-        width: 345px;
-        }
-        .buttons {
-        margin: 0 25px;
-        float: left;
+        width: 340px;
         }
     </ui:style>
     
@@ -27,7 +23,7 @@
                         <g:Label addStyleNames='pull-left'>
                             <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>
                         </g:Label>
-                        <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='{style.buttons} {res.common.switchLeft}'>
+                        <g:HTMLPanel ui:field="companyChoicePanel" addStyleNames='pull-left {res.common.switchLeft}'>
                             <g:Button ui:field="personBtn" debugId="personBtn"></g:Button>
                             <g:Button ui:field="companyBtn" debugId="companyBtn"></g:Button>
                         </g:HTMLPanel>

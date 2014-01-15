@@ -85,7 +85,7 @@ public final class CssInjector {
             injectResponsiveStyles(
                 StyleResource.INSTANCE.headerMiddle().getText(),
                 StyleResource.INSTANCE.headerSmall().getText(),
-                null);
+                StyleResource.INSTANCE.headerTiny().getText());
         }
     }
 
