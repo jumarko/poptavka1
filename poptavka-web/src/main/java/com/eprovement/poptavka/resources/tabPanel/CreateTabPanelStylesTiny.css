@@ -4,19 +4,26 @@
 .height-registration {
     height: 970px;
 }
-.height-selector {}
-.height-advanced {}
-.height-basic {}
+.height-selector {
+    height: 475px;
+}
+.height-advanced {
+    height: 485px;
+}
+.height-basic {
+    height: 250px;
+}
 .createTabPanel {
 }
 .createTabPanel .infoLabel1 {
-    font-size: 30px;
-    line-height: 60px;
+    font-size: 20px;
+    line-height: 20px;
 }
 .fourStepTabPanel {}
 
 .buttons-panel.middle {
     width: 266px;
+    margin: 45px auto 0;
 }
 .buttons-panel.large {
     width: 266px;
@@ -46,5 +53,6 @@
     width: 101px;
 }
 .buttons-panel .buttons-separator {
+    height: 90px;
     margin: 0 25px;
 }

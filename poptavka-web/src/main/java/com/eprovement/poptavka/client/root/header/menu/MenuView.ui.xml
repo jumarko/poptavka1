@@ -9,50 +9,36 @@
             <li>
                 <g:Button ui:field="home" styleName='button1'>
                     <ui:msg key="menuHome">Home</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="client" styleName='button6'>
                     <ui:msg key="menuClient">Client</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="supplier" styleName='button9'>
                     <ui:msg key="menuSupplier">Professional</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="inbox" styleName='button7'>
                     <ui:msg key='menuMessages'>Inbox</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="demands" styleName='button2'>
                     <ui:msg key="menuDemands">Projects</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="createDemand"  styleName='button3'>
                     <ui:msg key="createDemand">Post Project</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
                 <g:Button ui:field="suppliers" styleName='button4'>
                     <ui:msg key="menuSuppliers">Professionals</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
             <li>
@@ -63,8 +49,6 @@
             <li>
                 <g:Button ui:field="administration"  styleName='button8'>
                     <ui:msg key='menuAdministration'>Admistration</ui:msg>
-                    <br />
-                    <br />
                 </g:Button>
             </li>
         </ul>

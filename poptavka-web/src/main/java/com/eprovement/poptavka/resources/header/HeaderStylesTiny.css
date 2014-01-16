@@ -24,6 +24,7 @@
 .menu .button3 {
     background: url(images/menu-icons-responsive.png) no-repeat -10px -60px;
     padding: 0 10px 7px 40px;
+    width: 100px;
 }
 .menu .button4 {
     background: url(images/menu-icons-responsive.png) no-repeat -10px -90px;
