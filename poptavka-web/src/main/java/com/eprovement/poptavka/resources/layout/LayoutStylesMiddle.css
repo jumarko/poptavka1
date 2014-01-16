@@ -3,7 +3,11 @@
     height: 150px;
 }
 
-.toolbar-container {}
+.toolbar-container {
+    float: left;
+    padding-bottom: 5px;
+    min-height: 40px;
+}
 .body-container {}
 .full-size-panel {}
 .fluid-main-grid {}

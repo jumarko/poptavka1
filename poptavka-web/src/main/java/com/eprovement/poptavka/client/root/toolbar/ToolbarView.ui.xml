@@ -6,26 +6,31 @@
 
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-
-    <g:FlowPanel styleName="{res.initial.toolbar}">
-        <!--Tree icon-->
-        <b:Tooltip text="{msgs.toolbarLeftMenu}" placement="RIGHT">
-            <bb:IconAnchor ui:field='categoriesAnchor' icon="LIST" iconSize="TWO_TIMES" styleName='left-icon'/>
-        </b:Tooltip>
-
-        <b:Heading size='2' ui:field='title' styleName='header'/>
-
-        <!--Custom Content-->
-        <g:SimplePanel ui:field='customContent'/>
-
-        <!--Detail icon-->
-        <!--In order to have float content not overlaping right icon at absolute position,
-            a fake float right icon panel must be implemented-->
-        <g:SimplePanel ui:field='fakeDetailAnchor' styleName='fake-right-icon'/>
+    
+    <g:HTMLPanel styleName="{res.initial.toolbar}">
         <b:Tooltip text="{msgs.toolbarRightMenu}" placement="LEFT">
             <bb:IconAnchor ui:field='detailAnchor' icon="FOLDER_OPEN" iconSize="TWO_TIMES" styleName='right-icon'/>
         </b:Tooltip>
-                    
-        <g:HTMLPanel styleName="arrow {res.initial.hideOnSmall}"/>
-    </g:FlowPanel>
+        
+        <g:FlowPanel>
+            <!--Tree icon-->
+            <b:Tooltip text="{msgs.toolbarLeftMenu}" placement="RIGHT">
+                <bb:IconAnchor ui:field='categoriesAnchor' icon="LIST" iconSize="TWO_TIMES" styleName='left-icon'/>
+            </b:Tooltip>
+
+            <b:Heading size='2' ui:field='title' styleName='header'/>
+
+            <!--Custom Content-->
+            <g:SimplePanel ui:field='customContent'/>
+
+            <!--Detail icon-->
+            <!--In order to have float content not overlaping right icon at absolute position,
+                a fake float right icon panel must be implemented-->
+            <g:SimplePanel ui:field='fakeDetailAnchor' styleName='fake-right-icon'/>
+
+
+            <g:HTMLPanel styleName="arrow {res.initial.hideOnSmall}"/>
+        </g:FlowPanel>
+        
+    </g:HTMLPanel>
 </ui:UiBinder>
