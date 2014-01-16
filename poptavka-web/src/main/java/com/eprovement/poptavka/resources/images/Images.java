@@ -7,7 +7,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 /**
- * Defines imges resources.
+ * Defines images resources.
  *
  * @author Jaro
  */
@@ -189,4 +189,7 @@ public interface Images extends ClientBundle {
 
     @Source("checkbox-selected.gif")
     ImageResource checkboxSelected();
+
+    @Source("toolbar-button-left.png")
+    ImageResource toolbarButtonLeft();
 }
