@@ -12,7 +12,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.root.interfaces.IRoot;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ResizeLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
@@ -55,7 +54,6 @@ public class RootView extends Composite implements IRoot.View {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField ResizeLayoutPanel page;
     @UiField SimplePanel header, toolbar, body;
 
     /**************************************************************************/
@@ -86,14 +84,5 @@ public class RootView extends Composite implements IRoot.View {
     @Override
     public SimplePanel getBody() {
         return body;
-    }
-
-    /**
-     * Gets body resizable container.
-     * @return body's resizable layout container
-     */
-    @Override
-    public ResizeLayoutPanel getPage() {
-        return page;
     }
 }

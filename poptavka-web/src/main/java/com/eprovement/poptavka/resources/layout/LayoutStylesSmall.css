@@ -37,7 +37,10 @@
 .tab-layout-panel {}
 .stack-layout {}
 .stack-layout-panel-header {}
-.dashboard {}
+.dashboard {
+    padding: 10px;
+    margin: 10px;
+}
 
 .notification-panel .label-on {
     display: none;

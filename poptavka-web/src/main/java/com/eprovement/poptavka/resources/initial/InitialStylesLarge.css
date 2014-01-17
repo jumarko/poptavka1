@@ -43,6 +43,9 @@ div[aria-hidden="true"] {
     float: left;
     display: none;
 }
+.toolbar .left-icon:hover {
+    cursor: pointer;
+}
 .toolbar .fake-right-icon {
     float: left;
     width: 40px;

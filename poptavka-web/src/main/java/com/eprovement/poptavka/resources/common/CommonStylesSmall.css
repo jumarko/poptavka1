@@ -1,5 +1,7 @@
 .action-box {}
-.universal-pager {}
+.universal-pager .ws-pager-size-box {
+    display: none;
+}
 .small-loader {}
 .elem-hidden {}
 .elem-visible {}

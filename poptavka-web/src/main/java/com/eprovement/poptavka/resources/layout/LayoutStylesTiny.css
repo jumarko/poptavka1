@@ -32,6 +32,10 @@
 .tab-layout-panel {}
 .stack-layout {}
 .stack-layout-panel-header {}
+.dashboard {
+    padding: 0;
+    margin: 0;
+}
 .dashboard  .well-content .description {
     font-size: 12px;
     line-height: 25px;

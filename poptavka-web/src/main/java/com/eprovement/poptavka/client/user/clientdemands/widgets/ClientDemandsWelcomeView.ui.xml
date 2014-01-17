@@ -14,7 +14,6 @@
                     <b:FluidRow addStyleNames='well-header'>
                         <b:Column size="12">
                             <b:Heading size="4">
-                                <!--<ui:msg key="clientDashboard">Client Dashboard</ui:msg>-->
                                 <ui:msg key="recentNews">Recent News</ui:msg>
                             </b:Heading>
                         </b:Column>
