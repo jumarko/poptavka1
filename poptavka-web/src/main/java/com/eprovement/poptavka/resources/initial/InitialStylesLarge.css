@@ -48,9 +48,8 @@ div[aria-hidden="true"] {
     width: 40px;
 }
 .toolbar .right-icon {
-    position: absolute;
-    top: 13px;
-    right: 10px;
+    float: right;
+    margin: 11px 10px 0;
     display: none;
 }
 
