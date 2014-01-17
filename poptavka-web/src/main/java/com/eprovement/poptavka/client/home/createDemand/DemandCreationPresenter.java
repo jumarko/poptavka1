@@ -114,7 +114,7 @@ public class DemandCreationPresenter
         LOGGER.info("DemandCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Post a Project", null, false);
+        eventBus.setToolbarContent("Post a Project", null);
         eventBus.setFooter(view.getFooterPanel());
         eventBus.resetSearchBar(null);
         eventBus.menuStyleChange(Constants.CREATE_DEMAND);

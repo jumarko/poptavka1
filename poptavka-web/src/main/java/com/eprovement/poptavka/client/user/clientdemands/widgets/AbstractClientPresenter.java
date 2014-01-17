@@ -216,6 +216,7 @@ public abstract class AbstractClientPresenter
                         (TableDisplayDetailModule) view.getChildTableSelectedObjects().iterator().next();
                     if (selectedChildObject != null) {
                         initDetailSectionFull(selectedChildObject);
+                        eventBus.openDetail();
                     }
                 } else {
                     //  display advertisement if more than one item selected

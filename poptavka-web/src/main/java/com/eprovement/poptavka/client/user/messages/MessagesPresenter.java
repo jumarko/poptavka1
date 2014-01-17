@@ -61,6 +61,7 @@ public class MessagesPresenter
             public void onClick(ClickEvent event) {
                 eventBus.closeSubMenu();
                 eventBus.goToMessagesModule(filter, Constants.MESSAGES_INBOX);
+                eventBus.toolbarRefresh();
             }
         });
     }
@@ -83,7 +84,7 @@ public class MessagesPresenter
             eventBus.updateUnreadMessagesCount();
         }
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Inbox", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("Inbox", view.getToolbarContent());
         eventBus.menuStyleChange(Constants.USER_MESSAGES_MODULE);
     }
 
@@ -103,6 +104,7 @@ public class MessagesPresenter
         this.filter = filter;
 
         eventBus.initInbox(filter);
+        eventBus.toolbarRefresh();
     }
 
     /**

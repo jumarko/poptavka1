@@ -87,6 +87,9 @@
             <g:Button ui:field="clearBtn" styleName='{res.common.buttonGrey}' debugId='clearBtn'>
                 <ui:msg key="commonBtnClear">Clear</ui:msg>
             </g:Button>
+            <g:Button ui:field="closeBtn" styleName='{res.common.buttonGrey}' debugId='closeBtn'>
+                <ui:msg key="commonBtnClose">Close</ui:msg>
+            </g:Button>
         </g:FlowPanel>
 
         <g:TabLayoutPanel ui:field='mainPanel' barUnit='PX'

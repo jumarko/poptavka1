@@ -105,7 +105,7 @@ public class SettingsPresenter
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
         eventBus.setFooter(view.getFooterContainer());
-        eventBus.setToolbarContent("My Profile", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("My Profile", view.getToolbarContent());
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }

@@ -32,8 +32,15 @@
 .tab-layout-panel {}
 .stack-layout {}
 .stack-layout-panel-header {}
-.dashboard {}
-
+.dashboard {
+    padding: 0;
+    margin: 0;
+}
+.dashboard  .well-content .description {
+    font-size: 12px;
+    line-height: 25px;
+    padding-left: 0;
+}
 .notification-panel .buttons {
     margin-left: 5px;
 }

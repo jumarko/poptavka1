@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.client.root.interfaces;
 
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.view.LazyView;
@@ -15,9 +16,11 @@ public interface IToolbar {
 
     public interface View extends LazyView, IsWidget {
 
-        void setToolbarContent(String title, Widget content, boolean hasAnimationLayout);
+        void setToolbarContent(String title, Widget content);
 
-        IconAnchor getLeftSlidingMenuIcon();
+        void refresh();
+
+        Image getLeftSlidingMenuIcon();
 
         IconAnchor getRightSlidingMenuIcon();
     }

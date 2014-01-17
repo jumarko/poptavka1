@@ -43,88 +43,98 @@ public class AdminPresenter extends LazyPresenter<IAdmin.View, AdminEventBus> im
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.closeSubMenu();
-                eventBus.goToAdminModule(null, Constants.ADMIN_ACTIVE_DEMANDS);
+                commonSubMenuHandler(Constants.ADMIN_ACTIVE_DEMANDS);
             }
         });
         view.getDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_DEMANDS);
+                commonSubMenuHandler(Constants.ADMIN_DEMANDS);
             }
         });
         view.getClientsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_CLIENTS);
+                commonSubMenuHandler(Constants.ADMIN_CLIENTS);
             }
         });
         view.getSuppliersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_SUPPLIERS);
+                commonSubMenuHandler(Constants.ADMIN_SUPPLIERS);
             }
         });
         view.getOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_OFFERS);
+                commonSubMenuHandler(Constants.ADMIN_OFFERS);
             }
         });
         view.getAccessRoleButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_ACCESS_ROLE);
+                commonSubMenuHandler(Constants.ADMIN_ACCESS_ROLE);
             }
         });
         view.getEmailActivationButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_EMAILS_ACTIVATION);
+                commonSubMenuHandler(Constants.ADMIN_EMAILS_ACTIVATION);
             }
         });
         view.getInvoiceButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_INVOICES);
+                commonSubMenuHandler(Constants.ADMIN_INVOICES);
             }
         });
         view.getMessageButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_MESSAGES);
+                commonSubMenuHandler(Constants.ADMIN_MESSAGES);
             }
         });
         view.getNewDemandsBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.closeSubMenu();
-                eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
+                commonSubMenuHandler(Constants.ADMIN_NEW_DEMANDS);
             }
         });
         view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PAYMENT_METHODS);
+                commonSubMenuHandler(Constants.ADMIN_PAYMENT_METHODS);
             }
         });
         view.getPermissionButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PERMISSIONS);
+                commonSubMenuHandler(Constants.ADMIN_PERMISSIONS);
             }
         });
         view.getPreferenceButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PREFERENCES);
+                commonSubMenuHandler(Constants.ADMIN_PREFERENCES);
             }
         });
         view.getProblemButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.ADMIN_PROBLEMS);
+                commonSubMenuHandler(Constants.ADMIN_PROBLEMS);
             }
         });
+    }
+
+    /**
+     * Sets common functionality for submenu.
+     * @param widgetId of widget to be loaded
+     */
+    private void commonSubMenuHandler(int widgetId) {
+        eventBus.closeSubMenu();
+        eventBus.goToAdminModule(null, widgetId);
+        eventBus.toolbarRefresh();
     }
 
     /**************************************************************************/
@@ -146,7 +156,7 @@ public class AdminPresenter extends LazyPresenter<IAdmin.View, AdminEventBus> im
         }
         eventBus.setBody(view.getWidgetView());
         //TODO Martin - add i18n string
-        eventBus.setToolbarContent("Admin Menu", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("Admin Menu", view.getToolbarContent());
         eventBus.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
     }
 

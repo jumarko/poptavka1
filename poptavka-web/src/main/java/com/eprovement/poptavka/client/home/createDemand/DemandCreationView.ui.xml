@@ -40,8 +40,8 @@
                         </g:FlowPanel>
                         <g:FlowPanel ui:field="panel2" styleName='contentContainer'>
                             <g:SimplePanel ui:field="contentHolder1" />
-                            <g:FlowPanel>
-                                <g:Label addStyleNames='pull-left'>
+                            <g:HorizontalPanel>
+                                <g:Label>
                                     <ui:msg key="formRequiredFields">* fields are required</ui:msg>
                                 </g:Label>
                                 <btns:ButtonsPanel ui:field='buttonsPanel12'
@@ -49,7 +49,7 @@
                                                    nextBtn='{msgs.commonBtnNext}'
                                                    nextBtnTooltip='{msgs.tooltipInvalidFields}'
                                                    size='SMALL'/>
-                            </g:FlowPanel>
+                            </g:HorizontalPanel>                        
                         </g:FlowPanel>
                     </g:HTMLPanel>
                 </g:tab>

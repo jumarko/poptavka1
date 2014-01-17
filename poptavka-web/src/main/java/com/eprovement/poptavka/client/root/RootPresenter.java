@@ -13,8 +13,11 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.eprovement.poptavka.client.root.interfaces.IRoot;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 
 /**
  * Holds business logic for root module.
@@ -102,7 +105,7 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
          * Disadvantage - calles each time browser is resized.
          *              - for changing layout to landscape and vice versa it's called only once, which is good. */
         //With this we can change view which is more flexible instead of using responsive styles???
-        view.getPage().addResizeHandler(new ResizeHandler() {
+        Window.addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent event) {
                 //set shorter dates on small screens
@@ -171,17 +174,24 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-//    @Override
     public void onResize(int actualWidth) {
         //reset animation style (menu related)
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");
         isMenuPanelVisible = false;
         //recalculate body height for scrollbar to behave correctly
-        int bodyHeight = view.getPage().getOffsetHeight();
-        bodyHeight -= view.getToolbar().getOffsetHeight();
-        bodyHeight -= view.getHeader().getOffsetHeight();
-        view.getBody().setHeight(bodyHeight + "px");
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                //not working properly, trying to use Document.getHeight instead of Page.getHeight
+//                int bodyHeight = view.getPage().getOffsetHeight();
+                int bodyHeight = Document.get().getClientHeight();
+                bodyHeight -= view.getToolbar().getOffsetHeight();
+                bodyHeight -= view.getHeader().getOffsetHeight();
+                view.getBody().setHeight(bodyHeight + "px");
+            }
+        });
     }
 
     /**************************************************************************/

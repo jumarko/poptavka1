@@ -41,7 +41,7 @@ public interface InfoWidgetsEventBus extends EventBusWithLookup {
     void setBody(IsWidget body);
 
     @Event(forwardToParent = true)
-    void setToolbarContent(String title, Widget toolbarContent, boolean hasAnimationLayout);
+    void setToolbarContent(String title, Widget toolbarContent);
 
     /**************************************************************************/
     /* Navigation events.                                                     */

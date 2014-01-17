@@ -262,7 +262,6 @@ public class DetailModulePresenter
     /**
      * Recalculate current widget height for scrollpanel.
      */
-//    @Override
     public void onResize(int actualWidth) {
         switch (view.getContainer().getSelectedIndex()) {
             case DetailModuleBuilder.DEMAND_DETAIL_TAB:
@@ -278,7 +277,6 @@ public class DetailModulePresenter
                 setHeight(view.getAdvertisementHolder().getWidget());
                 break;
             default:
-                setHeight(view.getContainer().getWidget(view.getContainer().getSelectedIndex()));
                 break;
         }
     }

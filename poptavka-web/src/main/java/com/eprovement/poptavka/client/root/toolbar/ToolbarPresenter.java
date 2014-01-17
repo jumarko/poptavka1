@@ -98,10 +98,17 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Sets custom toolbar widget.
      * @param title of toolbar
      * @param content - custom toolbar widget
-     * @param hasAnimationLayout - has 3-layout-responsive-view that can be animated
+     * @param leftIconVisibile - has 3-layout-responsive-view that can be animated
      */
-    public void onSetToolbarContent(String title, Widget content, boolean hasAnimationLayout) {
-        view.setToolbarContent(title, content, hasAnimationLayout);
+    public void onSetToolbarContent(String title, Widget content) {
+        view.setToolbarContent(title, content);
+    }
+
+    /**
+     * Sets left and right icons visibility.
+     */
+    public void onToolbarRefresh() {
+        view.refresh();
     }
 
     /**
@@ -112,7 +119,6 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-//    @Override
     public void onResize(int actualWidth) {
         if (767 <= actualWidth && actualWidth < 1200) {
             animation.getRightSlidingPanel().removeAttr("style");
@@ -120,6 +126,15 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
         } else if (1200 <= actualWidth) {
             animation.getLeftSlidingPanel().removeAttr("style");
             isCategoryPanelOpen = false;
+        }
+    }
+
+    /**
+     * Opens right sliding panel.
+     */
+    public void onOpenDetail() {
+        if (!isDetailPanelOpen) {
+            openDetailPanel(true);
         }
     }
 

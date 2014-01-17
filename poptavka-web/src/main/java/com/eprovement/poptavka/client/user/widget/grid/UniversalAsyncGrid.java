@@ -367,9 +367,8 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         int rows = getVisibleItemCount();
         if (rows > 0) {
             height += rows * getRowElement(0).getOffsetHeight();
-//            height += rows * getRowElement(0).getOffsetHeight() + 4;
         } else {
-            height += 40;
+            height += 80;
         }
         setHeight(height + "px");
     }

@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -34,7 +35,8 @@ public class ToolbarView extends Composite implements IToolbar.View {
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField IconAnchor categoriesAnchor, detailAnchor;
+    @UiField IconAnchor detailAnchor;
+    @UiField Image categoriesAnchor;
     @UiField SimplePanel customContent, fakeDetailAnchor;
     @UiField Heading title;
 
@@ -56,39 +58,50 @@ public class ToolbarView extends Composite implements IToolbar.View {
      * Sets toolbar's components like title, custom content and enable or disable animation on desponsive designs.
      * @param title of toolbar
      * @param content - custom toolbar widget
-     * @param hasAnimationLayout - has 3-layout-responsive-view that can be animated
+     * @param leftIconVisible - has 3-layout-responsive-view that can be animated
      */
     @Override
-    public void setToolbarContent(String title, Widget content, boolean hasAnimationLayout) {
-        if (!hasAnimationLayout) {
-            this.categoriesAnchor.setVisible(false);
-            this.detailAnchor.setVisible(false);
-            this.fakeDetailAnchor.setVisible(false);
-        } else {
-            this.categoriesAnchor.setVisible(true);
-            this.detailAnchor.setVisible(true);
-            this.fakeDetailAnchor.setVisible(true);
-        }
+    public void setToolbarContent(final String titleText, final Widget content) {
+        Element leftPanel = DOM.getElementById("gwt-debug-leftSlidingPanel");
+
+        boolean isLeftVisible = leftPanel != null;
+        boolean isRightVisible = DOM.getElementById("gwt-debug-rightSlidingPanel") != null;
+
+        categoriesAnchor.setVisible(isLeftVisible);
+        detailAnchor.setVisible(isRightVisible);
+        fakeDetailAnchor.setVisible(isRightVisible);
+
         if (title == null) {
-            this.title.setVisible(false);
+            title.setVisible(false);
         } else {
-            Element leftSlidingPanel = DOM.getElementById("gwt-debug-leftSlidingPanel");
-            if (leftSlidingPanel != null) {
-                this.title.setWidth(leftSlidingPanel.getClientWidth() + "px");
+            if (isLeftVisible) {
+                title.setWidth(DOM.getElementById("gwt-debug-leftSlidingPanel").getClientWidth() + "px");
             }
-            this.title.setVisible(true);
-            this.title.setText(title);
+            title.setVisible(true);
+            title.setText(titleText);
         }
         if (content == null) {
-            this.customContent.setVisible(false);
-            if (!hasAnimationLayout && this.getParent() != null) {
-                this.getParent().addStyleName(StyleResource.INSTANCE.initial().hideOnSmall());
+            customContent.setVisible(false);
+            if (!isLeftVisible && !isRightVisible && getParent() != null) {
+                getParent().addStyleName(StyleResource.INSTANCE.initial().hideOnSmall());
             }
         } else {
-            this.getParent().removeStyleName(StyleResource.INSTANCE.initial().hideOnSmall());
-            this.customContent.setVisible(true);
-            this.customContent.setWidget(content);
+            getParent().removeStyleName(StyleResource.INSTANCE.initial().hideOnSmall());
+            customContent.setVisible(true);
+            customContent.setWidget(content);
         }
+    }
+
+    /**
+     * Sets left and right icons visibility.
+     */
+    @Override
+    public void refresh() {
+        boolean isLeftVisible = DOM.getElementById("gwt-debug-leftSlidingPanel") != null;
+        boolean isRightVisible = DOM.getElementById("gwt-debug-rightSlidingPanel") != null;
+        categoriesAnchor.setVisible(isLeftVisible);
+        detailAnchor.setVisible(isRightVisible);
+        fakeDetailAnchor.setVisible(isRightVisible);
     }
 
     /**************************************************************************/
@@ -99,7 +112,7 @@ public class ToolbarView extends Composite implements IToolbar.View {
      * @return left menu icon anchor
      */
     @Override
-    public IconAnchor getLeftSlidingMenuIcon() {
+    public Image getLeftSlidingMenuIcon() {
         return categoriesAnchor;
     }
 

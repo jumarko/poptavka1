@@ -414,7 +414,8 @@ button.button-green {
 .switch-right {
     background: url(images/switch-right.png) no-repeat;
     width: 108px;
-    height: 40px;    
+    height: 40px;
+    margin: 0 20px;
 }
 
 .switch-left .gwt-Button, .switch-right .gwt-Button {

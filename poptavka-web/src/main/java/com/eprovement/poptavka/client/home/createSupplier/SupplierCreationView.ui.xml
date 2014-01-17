@@ -30,8 +30,8 @@
                     </g:customHeader>
                     <g:HTMLPanel styleName='contentContainer'>
                         <g:SimplePanel ui:field="contentHolder1" debugId="userRegistrationHolder" />
-                        <g:FlowPanel>
-                            <g:Label addStyleNames='pull-left'>
+                        <g:HorizontalPanel>
+                            <g:Label>
                                 <ui:msg key="formRequiredFields">* fields are required</ui:msg>
                             </g:Label>
                             <btns:ButtonsPanel ui:field='buttonsPanel1'
@@ -39,7 +39,7 @@
                                                nextBtn='{msgs.commonBtnNext}'
                                                nextBtnTooltip='{msgs.tooltipInvalidFields}'
                                                size='SMALL'/>
-                        </g:FlowPanel>
+                        </g:HorizontalPanel>
                     </g:HTMLPanel>
                 </g:tab>
                 <!--2-->

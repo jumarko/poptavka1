@@ -107,7 +107,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
             createFooterInfo(FooterInfoViews.ABOUT_US);
         }
         eventBus.setBody(aboutUs);
-        eventBus.setToolbarContent(Storage.MSGS.aboutUsAboutWSTitle(), null, false);
+        eventBus.setToolbarContent(Storage.MSGS.aboutUsAboutWSTitle(), null);
         eventBus.setFooter(aboutUs.getFooterPanel());
     }
 
@@ -121,7 +121,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
             createFooterInfo(FooterInfoViews.FAQ);
         }
         eventBus.setBody(faq);
-        eventBus.setToolbarContent(Storage.MSGS.faq(), null, false);
+        eventBus.setToolbarContent(Storage.MSGS.faq(), null);
         eventBus.setFooter(faq.getFooterPanel());
     }
 
@@ -135,7 +135,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
             createFooterInfo(FooterInfoViews.PRIVACY_POLICY);
         }
         eventBus.setBody(privacyPolicy);
-        eventBus.setToolbarContent(Storage.MSGS.privacyPolicy(), null, false);
+        eventBus.setToolbarContent(Storage.MSGS.privacyPolicy(), null);
         eventBus.setFooter(privacyPolicy.getFooterPanel());
     }
 
@@ -149,7 +149,7 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
             createFooterInfo(FooterInfoViews.TERMS_AND_CONDITIONS);
         }
         eventBus.setBody(termsAndConditions);
-        eventBus.setToolbarContent(Storage.MSGS.footerTermsConditions(), null, false);
+        eventBus.setToolbarContent(Storage.MSGS.footerTermsConditions(), null);
         eventBus.setFooter(termsAndConditions.getFooterPanel());
     }
 

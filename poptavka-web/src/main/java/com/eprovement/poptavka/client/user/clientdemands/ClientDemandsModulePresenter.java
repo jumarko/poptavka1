@@ -43,7 +43,7 @@ public class ClientDemandsModulePresenter
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Client Menu", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("Client Menu", view.getToolbarContent());
         eventBus.resetSearchBar(null);
         eventBus.menuStyleChange(Constants.USER_CLIENT_MODULE);
         eventBus.updateUnreadMessagesCount();
@@ -65,43 +65,44 @@ public class ClientDemandsModulePresenter
         view.getClientNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_DEMANDS);
+                commonCubMenuHandler(Constants.CLIENT_DEMANDS);
             }
         });
         view.getClientOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_OFFERED_DEMANDS);
+                commonCubMenuHandler(Constants.CLIENT_OFFERED_DEMANDS);
             }
         });
         view.getClientAssignedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_ASSIGNED_DEMANDS);
+                commonCubMenuHandler(Constants.CLIENT_ASSIGNED_DEMANDS);
             }
         });
         view.getClientClosedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_CLOSED_DEMANDS);
+                commonCubMenuHandler(Constants.CLIENT_CLOSED_DEMANDS);
             }
         });
         view.getClientRatingsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToClientDemandsModule(null, Constants.CLIENT_RATINGS);
+                commonCubMenuHandler(Constants.CLIENT_RATINGS);
             }
         });
+    }
+
+    /**
+     * Sets common functionality for submenu.
+     * @param widgetId of widget to be loaded
+     */
+    private void commonCubMenuHandler(int widgetId) {
+        eventBus.closeSubMenu();
+        eventBus.updateUnreadMessagesCount();
+        eventBus.goToClientDemandsModule(null, widgetId);
+        eventBus.toolbarRefresh();
     }
 
     /**************************************************************************/
