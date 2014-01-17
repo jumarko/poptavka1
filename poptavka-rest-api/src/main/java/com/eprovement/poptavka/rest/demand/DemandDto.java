@@ -1,13 +1,9 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.rest.demand;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.rest.client.ClientDto;
 import com.eprovement.poptavka.rest.common.dto.CategoryDto;
 import com.eprovement.poptavka.rest.common.dto.LocalityDto;
-import org.apache.commons.lang.Validate;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -108,13 +104,6 @@ public class DemandDto {
 
     public void setClient(ClientDto client) {
         this.client = client;
-    }
-
-    public void validate() {
-        Validate.notEmpty(title, "demand's title cannot be empty");
-        Validate.notEmpty(description, "demand's description cannot be empty");
-        Validate.notNull(price, "demand's price cannot be empty");
-        Validate.notEmpty(categories, "at least one demand category has to be specified");
     }
 
     @Override
