@@ -9,7 +9,6 @@ import com.eprovement.poptavka.rest.client.ClientDeserializer;
 import com.eprovement.poptavka.rest.common.serializer.CategoryDeserializer;
 import com.eprovement.poptavka.rest.common.serializer.LocalityDeserializer;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.eprovement.poptavka.service.user.ClientService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
@@ -20,22 +19,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class DemandDeserializer implements Converter<com.eprovement.poptavka.rest.demand.DemandDto, Demand> {
 
-    private final ClientService clientService;
     private final ClientDeserializer clientDeserializer;
     private final CategoryDeserializer categoryDeserializer;
     private final LocalityDeserializer localityDeserializer;
     private final RegisterService registerService;
 
     @Autowired
-    public DemandDeserializer(ClientService clientService, ClientDeserializer clientDeserializer,
+    public DemandDeserializer(ClientDeserializer clientDeserializer,
                               CategoryDeserializer categoryDeserializer, LocalityDeserializer localityDeserializer,
                               RegisterService registerService) {
-        notNull(clientService, "clientService cannot be null!");
         notNull(clientDeserializer, "clientDeserializer cannot be null!");
         notNull(categoryDeserializer, "categoryDeserializer cannot be null!");
         notNull(localityDeserializer, "localityDeserializer cannot be null!");
         notNull(registerService, "registerService cannot be null!");
-        this.clientService = clientService;
         this.clientDeserializer = clientDeserializer;
         this.categoryDeserializer = categoryDeserializer;
         this.localityDeserializer = localityDeserializer;
@@ -45,7 +41,6 @@ public class DemandDeserializer implements Converter<com.eprovement.poptavka.res
     @Override
     public Demand convert(com.eprovement.poptavka.rest.demand.DemandDto demandDto) {
         notNull(demandDto);
-        demandDto.validate();
 
         final Demand demand = new Demand();
         if (StringUtils.isNotEmpty(demandDto.getId())) {

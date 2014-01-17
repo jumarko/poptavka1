@@ -137,6 +137,22 @@ public class DemandResourceIntegrationTest extends DBUnitBaseTest {
     }
 
 
+    /**
+     * Sometimes the price is unknown which is perfectly valid case.
+     */
+    @Test
+    public void createDemandWithoutPriceValid() throws Exception {
+        final Map<String, Object> demandWithoutPrice = validDemand();
+        demandWithoutPrice.remove("price");
+        // create demand and check only id - createDemandAndCheck cannot be used because it's checking price too
+        this.mockMvc.performRequest(post("/demands")
+               .content(toJsonString(demandWithoutPrice)))
+                .andExpect(status().isCreated())
+                // it is important to check that id has been generated and returned
+                .andExpect(jsonPath("$.id").exists());
+    }
+
+
     @Test
     public void createDemandWithoutTitleInvalid() throws Exception {
         createDemandWithoutFieldAndCheckResponse("title");
@@ -147,10 +163,6 @@ public class DemandResourceIntegrationTest extends DBUnitBaseTest {
         createDemandWithoutFieldAndCheckResponse("description");
     }
 
-    @Test
-    public void createDemandWithoutPriceInvalid() throws Exception {
-        createDemandWithoutFieldAndCheckResponse("price");
-    }
 
     @Test
     public void createDemandWithoutCategoryInvalid() throws Exception {
@@ -251,14 +263,14 @@ public class DemandResourceIntegrationTest extends DBUnitBaseTest {
     }
 
     private void createDemandWithoutFieldAndCheckResponse(String fieldName) throws Exception {
-        final Map demandWithoutTitle = validDemand();
-        demandWithoutTitle.remove(fieldName);
-        createAndExpectValidationError(demandWithoutTitle);
+        final Map demandWithoutField = validDemand();
+        demandWithoutField.remove(fieldName);
+        createAndExpectValidationError(demandWithoutField);
     }
 
-    private void createAndExpectValidationError(Map demandWithoutTitle) throws Exception {
+    private void createAndExpectValidationError(Map demand) throws Exception {
         this.mockMvc.performRequest(post("/demands")
-                .content(toJsonString(demandWithoutTitle)))
+                .content(toJsonString(demand)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(notNullValue()));
     }
