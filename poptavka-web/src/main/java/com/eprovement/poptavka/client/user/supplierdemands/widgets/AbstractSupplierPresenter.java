@@ -141,6 +141,7 @@ public abstract class AbstractSupplierPresenter
                         (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
                     if (selectedObject != null) {
                         initDetailSectionFull(selectedObject);
+                        eventBus.openDetail();
                     }
                 } else {
                     //  display advertisement if more than one item selected

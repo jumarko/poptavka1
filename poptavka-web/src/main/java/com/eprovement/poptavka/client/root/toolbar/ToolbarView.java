@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -34,7 +35,8 @@ public class ToolbarView extends Composite implements IToolbar.View {
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField IconAnchor categoriesAnchor, detailAnchor;
+    @UiField IconAnchor detailAnchor;
+    @UiField Image categoriesAnchor;
     @UiField SimplePanel customContent, fakeDetailAnchor;
     @UiField Heading title;
 
@@ -99,7 +101,7 @@ public class ToolbarView extends Composite implements IToolbar.View {
      * @return left menu icon anchor
      */
     @Override
-    public IconAnchor getLeftSlidingMenuIcon() {
+    public Image getLeftSlidingMenuIcon() {
         return categoriesAnchor;
     }
 

@@ -161,6 +161,7 @@ public class MessageListPresenter
                     view.getAdvertisementPanel().setVisible(false);
                     view.getMessageDetailView().setMessageDetail(
                         (MessageDetail) view.getSelectedObjects().iterator().next());
+                    eventBus.openDetail();
                 } else {
                     view.getMessageDetailView().setVisible(false);
                     view.getAdvertisementPanel().setVisible(true);

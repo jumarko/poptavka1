@@ -134,6 +134,7 @@ public abstract class AbstractAdminPresenter
                         (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
                     if (selectedObject != null) {
                         initDetailSectionDemand(selectedObject);
+                        eventBus.openDetail();
                     }
                 } else {
                     //  display advertisement if more than one item selected

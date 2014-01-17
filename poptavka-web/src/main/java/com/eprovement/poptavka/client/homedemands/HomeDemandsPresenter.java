@@ -379,6 +379,7 @@ public class HomeDemandsPresenter
                                 .addDemandTab(selectedDemandId)
                                 .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
                                 .build());
+                    eventBus.openDetail();
                     //create token for this selection
                     createTokenForHistory();
                 }

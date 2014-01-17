@@ -13,6 +13,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.eprovement.poptavka.client.root.interfaces.IRoot;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 
@@ -171,17 +172,22 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-//    @Override
     public void onResize(int actualWidth) {
         //reset animation style (menu related)
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");
         isMenuPanelVisible = false;
         //recalculate body height for scrollbar to behave correctly
-        int bodyHeight = view.getPage().getOffsetHeight();
-        bodyHeight -= view.getToolbar().getOffsetHeight();
-        bodyHeight -= view.getHeader().getOffsetHeight();
-        view.getBody().setHeight(bodyHeight + "px");
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                int bodyHeight = view.getPage().getOffsetHeight();
+                bodyHeight -= view.getToolbar().getOffsetHeight();
+                bodyHeight -= view.getHeader().getOffsetHeight();
+                view.getBody().setHeight(bodyHeight + "px");
+            }
+        });
     }
 
     /**************************************************************************/

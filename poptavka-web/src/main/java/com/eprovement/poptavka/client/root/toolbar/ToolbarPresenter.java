@@ -112,7 +112,6 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * but it is not if animation took place and overrided them.
      * Therefore remove them on resize.
      */
-//    @Override
     public void onResize(int actualWidth) {
         if (767 <= actualWidth && actualWidth < 1200) {
             animation.getRightSlidingPanel().removeAttr("style");
@@ -120,6 +119,15 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
         } else if (1200 <= actualWidth) {
             animation.getLeftSlidingPanel().removeAttr("style");
             isCategoryPanelOpen = false;
+        }
+    }
+
+    /**
+     * Opens right sliding panel.
+     */
+    public void onOpenDetail() {
+        if (!isDetailPanelOpen) {
+            openDetailPanel(true);
         }
     }
 

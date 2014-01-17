@@ -38,5 +38,8 @@ public interface BaseChildEventBus extends SearchModuleGateway, LoginGateway, In
     void sendStatusMessage(String statusMessageBody);
 
     @Event(forwardToParent = true)
+    void openDetail();
+
+    @Event(forwardToParent = true)
     void closeSubMenu();
 }

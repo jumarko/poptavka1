@@ -367,6 +367,7 @@ public class HomeSuppliersPresenter
                                 .addUserTab(selectedSupplierId)
                                 .selectTab(DetailModuleBuilder.USER_DETAIL_TAB)
                                 .build());
+                    eventBus.openDetail();
                     //create token for this selection
                     createTokenForHistory();
                 }
