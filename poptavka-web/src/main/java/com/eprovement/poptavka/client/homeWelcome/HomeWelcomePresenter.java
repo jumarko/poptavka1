@@ -162,7 +162,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
      */
     public void onGoToHomeWelcomeModule() {
         eventBus.getRootCategories();
-        eventBus.setToolbarContent("Home", null, false);
+        eventBus.setToolbarContent("Home", null);
     }
 
     /**
@@ -185,7 +185,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         } else {
             eventBus.setBody(howItWorksDemands);
         }
-        eventBus.setToolbarContent("How does it work for Projects", null, false);
+        eventBus.setToolbarContent("How does it work for Projects", null);
         eventBus.setFooter(howItWorksDemands.getFooterContainer());
     }
 
@@ -200,7 +200,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         } else {
             eventBus.setBody(howItWorksSuppliers);
         }
-        eventBus.setToolbarContent("How does it work for Professionals", null, false);
+        eventBus.setToolbarContent("How does it work for Professionals", null);
         eventBus.setFooter(howItWorksSuppliers.getFooterContainer());
     }
 

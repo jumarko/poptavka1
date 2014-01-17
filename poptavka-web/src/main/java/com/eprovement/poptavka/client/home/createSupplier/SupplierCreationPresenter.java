@@ -98,7 +98,7 @@ public class SupplierCreationPresenter
         LOGGER.info("SupplierCreationPresenter loaded");
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Became Professional", null, false);
+        eventBus.setToolbarContent("Became Professional", null);
         eventBus.setFooter(view.getFooterPanel());
         eventBus.resetSearchBar(null);
         eventBus.menuStyleChange(Constants.CREATE_SUPPLIER);

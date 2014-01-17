@@ -143,7 +143,10 @@ public interface RootEventBus extends EventBusWithLookup {
     void setToolbar(IsWidget toolbar);
 
     @Event(handlers = ToolbarPresenter.class)
-    void setToolbarContent(String title, Widget toolbarContent, boolean hasAnimationLayout);
+    void setToolbarContent(String title, Widget toolbarContent);
+
+    @Event(handlers = ToolbarPresenter.class)
+    void toolbarRefresh();
 
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);

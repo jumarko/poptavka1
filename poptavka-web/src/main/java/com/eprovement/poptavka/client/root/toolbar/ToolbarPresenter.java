@@ -98,10 +98,17 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Sets custom toolbar widget.
      * @param title of toolbar
      * @param content - custom toolbar widget
-     * @param hasAnimationLayout - has 3-layout-responsive-view that can be animated
+     * @param leftIconVisibile - has 3-layout-responsive-view that can be animated
      */
-    public void onSetToolbarContent(String title, Widget content, boolean hasAnimationLayout) {
-        view.setToolbarContent(title, content, hasAnimationLayout);
+    public void onSetToolbarContent(String title, Widget content) {
+        view.setToolbarContent(title, content);
+    }
+
+    /**
+     * Sets left and right icons visibility.
+     */
+    public void onToolbarRefresh() {
+        view.refresh();
     }
 
     /**

@@ -16,7 +16,9 @@ public interface IToolbar {
 
     public interface View extends LazyView, IsWidget {
 
-        void setToolbarContent(String title, Widget content, boolean hasAnimationLayout);
+        void setToolbarContent(String title, Widget content);
+
+        void refresh();
 
         Image getLeftSlidingMenuIcon();
 

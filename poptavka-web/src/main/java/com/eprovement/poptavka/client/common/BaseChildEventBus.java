@@ -20,7 +20,10 @@ public interface BaseChildEventBus extends SearchModuleGateway, LoginGateway, In
     void setBody(IsWidget widget);
 
     @Event(forwardToParent = true)
-    void setToolbarContent(String title, Widget toolbarContent, boolean hasAnimationLayout);
+    void setToolbarContent(String title, Widget toolbarContent);
+
+    @Event(forwardToParent = true)
+    void toolbarRefresh();
 
     @Event(forwardToParent = true)
     void setFooter(SimplePanel footerPanel);

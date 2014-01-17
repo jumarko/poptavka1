@@ -60,6 +60,6 @@ public class ErrorPresenter extends BasePresenter<IErrorView, InfoWidgetsEventBu
         view.setErrorResponseCode(errorResponseCode);
         view.setErrorId(errorId);
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Error", null, false);
+        eventBus.setToolbarContent("Error", null);
     }
 }

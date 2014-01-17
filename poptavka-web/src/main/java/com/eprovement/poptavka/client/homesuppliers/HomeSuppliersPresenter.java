@@ -110,7 +110,7 @@ public class HomeSuppliersPresenter
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Categories", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("Categories", view.getToolbarContent());
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());

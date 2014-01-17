@@ -18,6 +18,7 @@
 }
 
 .detail-container {
+    background: url("images/left-container_bg.jpg") repeat-y top right;
     position: absolute;
     right: -330px;
     z-index: 11;

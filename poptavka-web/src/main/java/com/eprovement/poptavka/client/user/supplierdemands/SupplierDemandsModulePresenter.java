@@ -36,7 +36,7 @@ public class SupplierDemandsModulePresenter
      */
     public void onForward() {
         eventBus.setBody(view.getWidgetView());
-        eventBus.setToolbarContent("Professional Menu", view.getToolbarContent(), true);
+        eventBus.setToolbarContent("Professional Menu", view.getToolbarContent());
         eventBus.resetSearchBar(null);
         eventBus.menuStyleChange(Constants.USER_SUPPLIER_MODULE);
         eventBus.updateUnreadMessagesCount();
@@ -58,43 +58,44 @@ public class SupplierDemandsModulePresenter
         view.getSupplierNewDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_POTENTIAL_DEMANDS);
+                commonSubMenuHandler(Constants.SUPPLIER_POTENTIAL_DEMANDS);
             }
         });
         view.getSupplierOffersButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_OFFERS);
+                commonSubMenuHandler(Constants.SUPPLIER_OFFERS);
             }
         });
         view.getSupplierAssignedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_ASSIGNED_DEMANDS);
+                commonSubMenuHandler(Constants.SUPPLIER_ASSIGNED_DEMANDS);
             }
         });
         view.getSupplierClosedDemandsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_CLOSED_DEMANDS);
+                commonSubMenuHandler(Constants.SUPPLIER_CLOSED_DEMANDS);
             }
         });
         view.getSupplierRatingsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.closeSubMenu();
-                eventBus.updateUnreadMessagesCount();
-                eventBus.goToSupplierDemandsModule(null, Constants.SUPPLIER_RATINGS);
+                commonSubMenuHandler(Constants.SUPPLIER_RATINGS);
             }
         });
+    }
+
+    /**
+     * Sets common functionality for submenu.
+     * @param widgetId of widget to be loaded
+     */
+    private void commonSubMenuHandler(int widgetId) {
+        eventBus.closeSubMenu();
+        eventBus.updateUnreadMessagesCount();
+        eventBus.goToSupplierDemandsModule(null, widgetId);
+        eventBus.toolbarRefresh();
     }
 
     /**************************************************************************/
