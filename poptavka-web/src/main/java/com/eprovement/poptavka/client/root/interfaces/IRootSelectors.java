@@ -23,6 +23,9 @@ public interface IRootSelectors extends Selectors {
     @Selector("#gwt-debug-detailPanel")
     GQuery getDetailPanel();
 
+    @Selector("#gwt-debug-closeBtn")
+    GQuery getCloseBtn();
+
     @Selector("#gwt-debug-clearBtn")
     GQuery getClearBtn();
 

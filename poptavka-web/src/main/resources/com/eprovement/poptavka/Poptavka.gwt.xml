@@ -8,13 +8,14 @@
     <inherits name='com.google.gwt.inject.Inject' />
     <inherits name="com.google.gwt.user.Debug"/>
 
-<!--    IMPORTANT - solves deserialization exception
+<!--    IMPORTANT - solves deserialization exception in some cases
     https://groups.google.com/forum/#!topic/gwt-platform/0xayGYO4ngE
     https://groups.google.com/forum/?fromgroups=#!topic/google-web-toolkit/CYZeY3f89sI
     "Client deserializer expected obfuscated classnames in the RPC. Have to set the inherit in the module.gwt.xml file to obfuscate,
     so I'm not sure why the server side it not using it. Jens has some suggestions for tracing that down. Oddly, the Double example
     works properly in the GWT Sample project with the same obfuscating settings. Not sure what's messing with them.-->
     <inherits name="com.google.gwt.user.RemoteServiceObfuscateTypeNames" />
+    <!--Another interesting point: http://dansilvablog.blogspot.sk/2013/04/gwt-response-could-not-be-deserialized.html-->
 
     <!--GWT no longer supports quicks mode. This deny warning on logs.
     We should set mode to HMTL5 standard and update css rather than this.-->

@@ -53,7 +53,7 @@ public class AdvanceSearchView extends Modal
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField Label currentViewAttributesLabel;
-    @UiField Button searchBtn1, searchBtn2, clearBtn;
+    @UiField Button searchBtn1, searchBtn2, clearBtn, closeBtn;
     @UiField TabLayoutPanel mainPanel;
     @UiField SimplePanel attributeSelectorWidgetPanel, categorySelectorWidgetPanel, localitySelectorWidgetPanel;
     @UiField MenuBar searchWhatList;
@@ -216,6 +216,14 @@ public class AdvanceSearchView extends Modal
     @Override
     public Button getClearBtn() {
         return clearBtn;
+    }
+
+    /**
+     * @return the close button
+     */
+    @Override
+    public Button getCloseBtn() {
+        return closeBtn;
     }
 
     /**

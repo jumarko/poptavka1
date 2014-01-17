@@ -57,6 +57,8 @@ public class AdvanceSearchPresenter
 
         Button getClearBtn();
 
+        Button getCloseBtn();
+
         TabLayoutPanel getTabLayoutPanel();
 
         SimplePanel getAttributeSelectorPanel();
@@ -93,6 +95,7 @@ public class AdvanceSearchPresenter
 
         @Override
         public void run() {
+            animation.getCloseBtn().fadeIn(FADE_ANIMATION_TIME, null);
             animation.getClearBtn().fadeIn(FADE_ANIMATION_TIME, null);
             animation.getSearchBtn2().fadeIn(FADE_ANIMATION_TIME, null);
         }
@@ -192,6 +195,12 @@ public class AdvanceSearchPresenter
                 ((SearchModulesViewInterface) visibleWidget).clear();
             }
         });
+        view.getCloseBtn().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.getWidgetView().hide();
+            }
+        });
     }
 
     /**
@@ -282,6 +291,7 @@ public class AdvanceSearchPresenter
      * @param millis define time in millisecond
      */
     private void hideSearchBtns(int millis) {
+        animation.getCloseBtn().fadeOut(FADE_ANIMATION_TIME, null);
         animation.getClearBtn().fadeOut(FADE_ANIMATION_TIME, null);
         animation.getSearchBtn2().fadeOut(FADE_ANIMATION_TIME, null);
         searchBtnDisplay.schedule(millis);
