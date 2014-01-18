@@ -1,11 +1,13 @@
 package com.eprovement.poptavka.domain.common;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
 /**
  * Represents external source of demands and/or suppliers.
  * This can be sites such as fbo.gov and similar
  */
+@Entity
 public class ExternalSource extends DomainObject {
 
     /**

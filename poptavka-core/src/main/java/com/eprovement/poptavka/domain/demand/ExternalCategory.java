@@ -16,8 +16,8 @@ import javax.persistence.OneToOne;
  * See <a href="http://www.naics.com/search.htm">SIC codes search.</a> as an example of different category system.
  */
 @Entity
-@NamedQuery(name = "getCategoryBySicCode",
-            query = "select c.category from CategorySicCode c where c.sicCode = :sicCode")
+@NamedQuery(name = "getCategoriesMappingForExternalSource",
+            query = "select ec.category from ExternalCategory ec where ec.externalSource = :source")
 public class ExternalCategory extends DomainObject {
     /**
      * Unique identifier of category in external system.
