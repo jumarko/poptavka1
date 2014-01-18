@@ -5,49 +5,52 @@ import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 
 import com.eprovement.poptavka.domain.common.ExternalSource;
-import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.rest.common.ResourceUtils;
 import com.eprovement.poptavka.rest.common.dto.CategoryDto;
-import com.eprovement.poptavka.rest.common.resource.AbstractPageableResource;
 import com.eprovement.poptavka.service.demand.CategoryService;
+import com.eprovement.poptavka.service.register.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Collection;
+import java.util.List;
 
 @Controller
 @RequestMapping(ExternalSourceResource.SOURCES_RESOURCE_URI)
-public class ExternalSourceResource extends AbstractPageableResource<ExternalSource, ExternalSourceDto> {
+public class ExternalSourceResource {
 
     public static final String SOURCES_RESOURCE_URI = "/sources";
 
     private final CategoryService categoryService;
-    private final Converter<ExternalSource, ExternalSourceDto> sourceSerializer;
     private final SourceCategoryMappingSerializer categoryMappingSerializer;
+
+    private final RegisterService registerService;
+    private final ExternalSourceSerializer sourceSerializer;
 
     @Autowired
     public ExternalSourceResource(CategoryService categoryService,
-                                  Converter<ExternalSource, ExternalSourceDto> sourceSerializer,
-                                  SourceCategoryMappingSerializer categoryMappingSerializer) {
-        super(ExternalSource.class, SOURCES_RESOURCE_URI);
-
+                                  SourceCategoryMappingSerializer categoryMappingSerializer,
+                                  RegisterService registerService,
+                                  ExternalSourceSerializer sourceSerializer) {
         notNull(categoryService, "categoryService cannot be null!");
-        notNull(sourceSerializer, "sourceSerializer cannot be null!");
         notNull(categoryMappingSerializer, "categoryMappingSerializer cannot be null!");
+        notNull(registerService, "registerService cannot be null");
+        notNull(sourceSerializer, "sourceSerializer cannot be null!");
         this.categoryService = categoryService;
-        this.sourceSerializer = sourceSerializer;
         this.categoryMappingSerializer = categoryMappingSerializer;
+        this.registerService = registerService;
+        this.sourceSerializer = sourceSerializer;
     }
 
-    @Override
-    public Collection<ExternalSourceDto> convertToDtos(Collection<ExternalSource> domainObjectsPage) {
-        return null;
-//        return categorySerializer.convert(domainObjectsPage);
+
+
+    @RequestMapping(method = RequestMethod.GET)
+    public @ResponseBody
+    List<ExternalSourceDto> listSources() {
+        final List<ExternalSource> sources = registerService.getAllValues(ExternalSource.class);
+        return sourceSerializer.convertList(sources);
     }
 
 

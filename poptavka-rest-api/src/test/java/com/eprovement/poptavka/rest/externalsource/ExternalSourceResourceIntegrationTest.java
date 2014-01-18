@@ -13,6 +13,19 @@ import org.junit.Test;
 public class ExternalSourceResourceIntegrationTest extends ResourceIntegrationTest {
 
     @Test
+    public void listSources() throws Exception {
+        mockMvc.performRequest(get("/sources"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].code").value("FBOGOV"))
+                .andExpect(jsonPath("$.[0].url").value("http://fbo.gov"))
+                .andExpect(jsonPath("$.[1].code").value("OTHER_SOURCE"))
+                .andExpect(jsonPath("$.[1].url").value("http://other.com"))
+                .andExpect(jsonPath("$.[2].code").value("EMPTY_SOURCE"))
+                .andExpect(jsonPath("$.[2].url").value("http://empty.com"));
+    }
+
+
+    @Test
     public void getCategoriesMappingForExternalSource() throws Exception {
         mockMvc.performRequest(get("/sources/FBOGOV/categorymapping"))
                 .andExpect(status().isOk())

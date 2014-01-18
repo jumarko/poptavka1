@@ -44,8 +44,8 @@
     <CATEGORYSICCODE ID="4" SICCODE="51" CATEGORY_ID="3"/>
 
     <EXTERNALSOURCE ID="1" CODE="FBOGOV" URL="http://fbo.gov" />
-    <EXTERNALSOURCE ID="2" CODE="EMPTY_SOURCE" URL="http://empty.com" />
-    <EXTERNALSOURCE ID="3" CODE="OTHER_SOURCE" URL="http://other.com" />
+    <EXTERNALSOURCE ID="2" CODE="OTHER_SOURCE" URL="http://other.com" />
+    <EXTERNALSOURCE ID="3" CODE="EMPTY_SOURCE" URL="http://empty.com" />
 
     <!--Use some NAICS codes as external ids-->
     <EXTERNALCATEGORY ID="1" EXTERNALSOURCE_ID="1" EXTERNALID="111110" />
