@@ -1,5 +1,12 @@
 package com.eprovement.poptavka.service.demand;
 
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+
+import com.eprovement.poptavka.domain.common.ExternalSource;
+import com.eprovement.poptavka.domain.common.UnknownSourceException;
+import com.eprovement.poptavka.domain.demand.ExternalCategory;
+import com.eprovement.poptavka.service.register.RegisterService;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.demand.CategoryDao;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
@@ -21,9 +28,14 @@ import java.util.List;
 public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
+    private final RegisterService registerService;
 
-    public CategoryServiceImpl(CategoryDao categoryDao) {
+    public CategoryServiceImpl(CategoryDao categoryDao, RegisterService registerService) {
+        notNull(categoryDao, "categoryDao cannot be null!");
+        notNull(registerService, "registerService cannot be null!");
+
         setDao(categoryDao);
+        this.registerService = registerService;
     }
 
     /** {@inheritDoc} */
@@ -61,9 +73,20 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     @Override
     @Cacheable(cacheName = "categoryCache")
     public Category getCategoryBySicCode(String sicCode) {
-        Validate.notEmpty(sicCode, "sicCode cannot be empty");
+        notEmpty(sicCode, "sicCode cannot be empty");
         Validate.isTrue(sicCode.length() > 1, "sicCode should have at least two charactes");
         return getDao().getCategoryBySicCode(sicCode.substring(0, 2));
+    }
+
+
+    @Override
+    @Cacheable(cacheName = "categoryCache")
+    public List<ExternalCategory> getCategoryMapping(String externalSourceName) {
+        final ExternalSource source = registerService.getValue(externalSourceName, ExternalSource.class);
+        if (source == null) {
+            throw new UnknownSourceException(externalSourceName);
+        }
+        return getDao().getCategoryMapping(source);
     }
 
     //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------

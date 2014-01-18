@@ -11,20 +11,20 @@ import javax.persistence.Entity;
 public class ExternalSource extends DomainObject {
 
     /**
-     * Unique name of external source.
+     * Unique code of external source. It's like a simplified name, e.g. "FBOGOV".
      */
     @Column(unique = true, length = 64)
-    private String name;
+    private String code;
 
     @Column(unique = true)
     private String url;
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getUrl() {
@@ -37,9 +37,9 @@ public class ExternalSource extends DomainObject {
 
     @Override
     public String toString() {
-        return "ExternalSource{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        return "ExternalSource{"
+                + "code='" + code + '\''
+                + ", url='" + url + '\''
+                + '}';
     }
 }

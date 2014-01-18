@@ -1,8 +1,10 @@
 package com.eprovement.poptavka.dao.demand;
 
+import com.eprovement.poptavka.domain.common.ExternalSource;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.demand.ExternalCategory;
 
 import java.util.List;
 
@@ -51,4 +53,11 @@ public interface CategoryDao extends GenericDao<Category> {
      * SicCode must match the exactly with the entry in underlying data source.
      */
     Category getCategoryBySicCode(String sicCode);
+
+    /**
+     * Loads mapping between external and internal categories
+     * @param externalSource external source such as FBOGOV (fbo.gov)
+     * @return list of mappings, each representing mapping [external_category, internal_categories]
+     */
+    List<ExternalCategory> getCategoryMapping(ExternalSource externalSource);
 }

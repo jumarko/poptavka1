@@ -6,8 +6,12 @@ import com.eprovement.poptavka.domain.common.ExternalSource;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import java.util.List;
 
 /**
  * Entity represents mapping between poptavka's internal categories and categories from External systems
@@ -17,7 +21,7 @@ import javax.persistence.OneToOne;
  */
 @Entity
 @NamedQuery(name = "getCategoriesMappingForExternalSource",
-            query = "select ec.category from ExternalCategory ec where ec.externalSource = :source")
+            query = "from ExternalCategory ec where ec.externalSource = :source")
 public class ExternalCategory extends DomainObject {
     /**
      * Unique identifier of category in external system.
@@ -27,16 +31,29 @@ public class ExternalCategory extends DomainObject {
     private String externalId;
 
     /**
-     * Internal category to which the external one is mapped.
+     * Internal categories to which the external one is mapped.
+     * Typically, one external category should be mapped to single internal category.
+     * However, there are some cases when we cannot determine the exact single category
+     * and want to map external category to multiple internal categories.
+     *
+     * The next part of story is, that one internal category will typically be connected to multiple external categories
+     * mappings because ExternalCategory entity can contain mappings for multiple external sources
+     * such as fbo.gov, uscompanydatabase.com etc.
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    private Category category;
+    @ManyToMany
+    @JoinTable(
+        name = "EXTERNAL_CATEGORY_TO_CATEGORY",
+        joinColumns = @JoinColumn(name = "EXTERNAL_CATEGORY_ID"),
+        inverseJoinColumns = @JoinColumn(name = "CATEGORY_ID")
+    )
+    private List<Category> categories;
 
     /**
      * External source for which this mapping is relevant
      */
     @OneToOne(fetch = FetchType.LAZY)
     private ExternalSource externalSource;
+
 
 
     public String getExternalId() {
@@ -47,12 +64,12 @@ public class ExternalCategory extends DomainObject {
         this.externalId = externalId;
     }
 
-    public Category getCategory() {
-        return category;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public ExternalSource getExternalSource() {
@@ -61,5 +78,14 @@ public class ExternalCategory extends DomainObject {
 
     public void setExternalSource(ExternalSource externalSource) {
         this.externalSource = externalSource;
+    }
+
+    @Override
+    public String toString() {
+        return "ExternalCategory{"
+                + "externalId='" + externalId + '\''
+                + ", categories=" + categories
+                + ", externalSource=" + externalSource
+                + '}';
     }
 }
