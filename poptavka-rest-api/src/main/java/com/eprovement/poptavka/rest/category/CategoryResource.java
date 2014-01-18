@@ -60,6 +60,16 @@ public class CategoryResource extends AbstractPageableResource<Category, Categor
         return categoryDto;
     }
 
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    public @ResponseBody
+//    CategoryDto getCategoryById(@PathVariable Long id) {
+//        Preconditions.checkNotNull(id);
+//        final Category category = this.categoryService.getById(id);
+//        final CategoryDto categoryDto = this.categorySerializer.convert(category);
+//        setLinks(categoryDto, category);
+//        return categoryDto;
+//    }
+
 
     //--------------------------------------------------- PRIVATE STUFF ------------------------------------------------
     private void setLinks(CategoryDto categoryDto, Category category) {
