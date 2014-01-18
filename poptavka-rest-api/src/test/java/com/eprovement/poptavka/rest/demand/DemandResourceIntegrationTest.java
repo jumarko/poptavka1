@@ -12,35 +12,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.Origin;
+import com.eprovement.poptavka.rest.ResourceIntegrationTest;
 import com.eprovement.poptavka.rest.client.ClientDto;
 import com.eprovement.poptavka.rest.common.dto.CategoryDto;
 import com.eprovement.poptavka.rest.common.dto.LocalityDto;
-import com.eprovement.poptavka.rest.support.MockMvcSupport;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration("classpath:applicationContext-rest-test.xml")
-@ActiveProfiles("test")
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
@@ -49,26 +35,13 @@ import java.util.Map;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class DemandResourceIntegrationTest extends DBUnitBaseTest {
+public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
 
     private static final String DEMAND_TITLE = "New demand from external system";
     private static final String DEMAND_DESCRIPTION = "Description of New demand from external system";
     private static final int DEMAND_PRICE = 1000;
     private static final CategoryDto DEMAND_CATEGORY = new CategoryDto().setId(11L);
     private static final LocalityDto DEMAND_LOCALITY = new LocalityDto().setId(11L);
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    @Autowired
-    private ObjectMapper jsonObjectMapper;
-
-    private MockMvcSupport mockMvc;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcSupport.build(wac);
-    }
 
     @Test
     public void listDemands() throws Exception {
