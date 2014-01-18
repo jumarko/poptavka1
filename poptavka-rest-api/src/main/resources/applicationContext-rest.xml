@@ -42,6 +42,16 @@
         <constructor-arg ref="categoryService" />
         <constructor-arg ref="categorySerializer" />
     </bean>
+    <bean id="externalCategorySerializer" class="com.eprovement.poptavka.rest.externalsource.ExternalCategorySerializer" />
+    <bean id="sourceCategoryMappingSerializer" class="com.eprovement.poptavka.rest.externalsource.SourceCategoryMappingSerializer" >
+        <constructor-arg ref="externalCategorySerializer"/>
+    </bean>
+    <bean id="externalSourceSerializer" class="com.eprovement.poptavka.rest.externalsource.ExternalSourceSerializer" />
+    <bean class="com.eprovement.poptavka.rest.externalsource.ExternalSourceResource">
+        <constructor-arg ref="categoryService" />
+        <constructor-arg ref="externalSourceSerializer" />
+        <constructor-arg ref="categorySerializer" />
+    </bean>
 
     <!--locality-->
     <bean id="localitySerializer" class="com.eprovement.poptavka.rest.locality.LocalitySerializer" />
