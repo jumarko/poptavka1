@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.rest.externalsource;
 
+import static org.hamcrest.Matchers.empty;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -22,6 +23,20 @@ public class ExternalSourceResourceIntegrationTest extends ResourceIntegrationTe
                 .andExpect(jsonPath("$.[1].url").value("http://other.com"))
                 .andExpect(jsonPath("$.[2].code").value("EMPTY_SOURCE"))
                 .andExpect(jsonPath("$.[2].url").value("http://empty.com"));
+    }
+
+    @Test
+    public void getSource() throws Exception {
+        mockMvc.performRequest(get("/sources/FBOGOV"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("FBOGOV"))
+                .andExpect(jsonPath("$.url").value("http://fbo.gov"));
+    }
+
+    @Test
+    public void getSourceForUnknownCode() throws Exception {
+        mockMvc.performRequest(get("/sources/UNKNOWN"))
+                .andExpect(status().isNotFound());
     }
 
 
@@ -49,5 +64,21 @@ public class ExternalSourceResourceIntegrationTest extends ResourceIntegrationTe
                 .andExpect(jsonPath("$.links.self").value("/api/sources/FBOGOV/categorymapping"));
     }
 
+    @Test
+    public void getCategoriesMappingForUnknownSource() throws Exception {
+        mockMvc.performRequest(get("/sources/UNKNOWN/categorymapping"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getCategoriesMappingForSourceWithoutAnyMapping() throws Exception {
+        mockMvc.performRequest(get("/sources/EMPTY_SOURCE/categorymapping"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.source").value("EMPTY_SOURCE"))
+                // no mapping
+                .andExpect(jsonPath("$.mappings", empty()))
+                .andExpect(jsonPath("$.links.self").value("/api/sources/EMPTY_SOURCE/categorymapping"));
+
+    }
 
 }

@@ -5,7 +5,8 @@ import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 
 import com.eprovement.poptavka.domain.common.ExternalSource;
-import com.eprovement.poptavka.rest.common.dto.CategoryDto;
+import com.eprovement.poptavka.domain.common.UnknownSourceException;
+import com.eprovement.poptavka.rest.ResourceNotFoundException;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,25 +57,28 @@ public class ExternalSourceResource {
 
     @RequestMapping(value = "/{source}", method = RequestMethod.GET)
     public @ResponseBody
-    CategoryDto getSourceByName(@PathVariable("source") String sourceName) {
-        notEmpty(sourceName, "source name cannot be empty!");
-
-        // TODO: implemente me!
-//        final Category category = this.categoryService.getById(id);
-//        final CategoryDto categoryDto = this.categorySerializer.convert(category);
-//        setLinks(categoryDto, category);
-//        return categoryDto;
-        return null;
+    ExternalSourceDto getSourceByName(@PathVariable("source") String sourceCode) {
+        notEmpty(sourceCode, "source code cannot be empty!");
+        final ExternalSource source = registerService.getValue(sourceCode, ExternalSource.class);
+        if (source == null) {
+            throw new ResourceNotFoundException("External source '" + sourceCode + "' has not been found!");
+        }
+        return sourceSerializer.convert(source);
     }
 
     @RequestMapping(value = "/{source}/categorymapping", method = RequestMethod.GET)
     public @ResponseBody
-    SourceCategoryMappingDto getCategoryMapping(@PathVariable("source") String externalSourceName) {
-        notEmpty(externalSourceName, "external source name has to be specified ");
-        final SourceCategoryMappingDto mappingDto =
-                categoryMappingSerializer.convert(categoryService.getCategoryMapping(externalSourceName));
-        mappingDto.setSource(externalSourceName);
-        mappingDto.setLinks(generateSelfLinks(SOURCES_RESOURCE_URI + "/" + externalSourceName, "categorymapping"));
+    SourceCategoryMappingDto getCategoryMapping(@PathVariable("source") String externalSourceCode) {
+        notEmpty(externalSourceCode, "external source name has to be specified ");
+        final SourceCategoryMappingDto mappingDto;
+        try {
+            mappingDto = categoryMappingSerializer.convert(categoryService.getCategoryMapping(externalSourceCode));
+        } catch (UnknownSourceException use) {
+            throw new ResourceNotFoundException("External source '" + externalSourceCode + "' has not been found!");
+        }
+
+        mappingDto.setSource(externalSourceCode);
+        mappingDto.setLinks(generateSelfLinks(SOURCES_RESOURCE_URI + "/" + externalSourceCode, "categorymapping"));
         return mappingDto;
     }
 
