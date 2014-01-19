@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.common.userRegistration;
 
+import com.eprovement.poptavka.client.addressSelector.AddressSelectorView;
 import com.eprovement.poptavka.client.common.forms.AccountInfoForm;
 import com.eprovement.poptavka.client.common.forms.AdditionalInfoForm;
 import com.eprovement.poptavka.client.common.forms.CompanyInfoForm;
@@ -13,8 +14,10 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -46,7 +49,7 @@ public class UserRegistrationView extends Composite
     /** UiBinder attributes. **/
     @UiField SimplePanel addressHolder;
     @UiField HTMLPanel companyChoicePanel;
-    @UiField Button personBtn, companyBtn;
+    @UiField Button personBtn, companyBtn, develBtn;
     @UiField FluidRow companyInfoPanel;
     @UiField AccountInfoForm accountInfoForm;
     @UiField CompanyInfoForm companyInfoForm;
@@ -84,6 +87,13 @@ public class UserRegistrationView extends Composite
     }
 
 
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    @UiHandler("develBtn")
+    public void setDevelBtnClickHandler(ClickEvent e) {
+        setDevelData();
+    }
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
@@ -206,5 +216,24 @@ public class UserRegistrationView extends Composite
     @Override
     public boolean getCompanySelected() {
         return companySelected;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void setDevelData() {
+        accountInfoForm.getEmail().setValue("email@gmail.com");
+        accountInfoForm.getPassword().setValue("123123");
+        accountInfoForm.getPasswordConfirm().setValue("123123");
+
+        contactInfoForm.getFirstName().setValue("FirstName");
+        contactInfoForm.getLastName().setValue("LastName");
+        contactInfoForm.getPhone().setValue("987654321");
+
+        ((AddressSelectorView) addressHolder.getWidget()).getCitySuggestBox().setText("Alabaster, Alabama");
+        ((AddressSelectorView) addressHolder.getWidget()).getStreetMonitorBox().setText("Street");
+        ((AddressSelectorView) addressHolder.getWidget()).getZipcodeMonitorBox().setText("654321");
+
+        additionalInfoForm.getDescription().setValue("oiuiup diua sd n l ansduh pasudhas nldkn as udh pa suhda");
     }
 }

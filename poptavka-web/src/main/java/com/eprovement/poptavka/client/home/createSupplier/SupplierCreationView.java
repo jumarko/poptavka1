@@ -5,9 +5,9 @@ package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
-import com.eprovement.poptavka.resources.StyleResource;
+import com.github.gwtbootstrap.client.ui.Icon;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 
 import com.google.gwt.core.client.GWT;
@@ -17,14 +17,9 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -48,16 +43,26 @@ public class SupplierCreationView extends OverflowComposite
     }
 
     /**************************************************************************/
+    /* CSS                                                                    */
+    /**************************************************************************/
+    static {
+        CssInjector.INSTANCE.ensureCommonStylesInjected();
+        CssInjector.INSTANCE.ensureCreateTabPanelStylesInjected();
+    }
+
+    /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
     @UiField SimplePanel footerPanel;
     @UiField TabLayoutPanel mainPanel;
-    @UiField HorizontalPanel agreementPanel;
-    @UiField CheckBox agreedCheck;
     @UiField ButtonsPanel buttonsPanel1, buttonsPanel2, buttonsPanel3, buttonsPanel4;
+    @UiField Modal conditionPopup;
+    @UiField Button conditionCloseBtn;
+    @UiField CheckBox conditionCheck;
     @UiField Anchor conditionLink;
+    @UiField Icon conditionValidationImage;
     /** Class attributes. **/
     private List<SimplePanel> holderPanels;
     private List<Tooltip> tooltips;
@@ -97,10 +102,6 @@ public class SupplierCreationView extends OverflowComposite
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
         }
-
-        /** style implementation and overflow tweaks **/
-        CssInjector.INSTANCE.ensureCommonStylesInjected();
-        CssInjector.INSTANCE.ensureCreateTabPanelStylesInjected();
     }
 
     /**************************************************************************/
@@ -109,11 +110,20 @@ public class SupplierCreationView extends OverflowComposite
     /**
      * Binds agreed check handler.
      */
-    @UiHandler("agreedCheck")
-    public void agreedCheckChanged(ClickEvent event) {
-        agreementPanel.setStyleName(StyleResource.INSTANCE.common().emptyStyle());
+    @UiHandler("conditionCheck")
+    public void conditionCheckClickHandler(ClickEvent event) {
+        isConditionChecked();
     }
 
+    @UiHandler("conditionLink")
+    public void conditionLinkClickHandler(ClickEvent event) {
+        conditionPopup.show();
+    }
+
+    @UiHandler("conditionCloseBtn")
+    public void conditionCloseBtnClickHandler(ClickEvent event) {
+        conditionPopup.hide();
+    }
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
@@ -155,69 +165,19 @@ public class SupplierCreationView extends OverflowComposite
     }
 
     /**
-     * @return the condition anchor
-     */
-    @Override
-    public Anchor getConditionLink() {
-        return conditionLink;
-    }
-
-    /**
      * @return agreed checkbox
      */
     @Override
     public CheckBox getAgreedCheck() {
-        return agreedCheck;
-    }
-
-    /**
-     * Shows conditinos in popup.
-     */
-    @Override
-    public void showConditions() {
-        final PopupPanel panel = new PopupPanel(true, false);
-        HTMLPanel contentPanel =
-                new HTMLPanel("<div id='text' style='overflow: auto; height: 500px;'>"
-                + "</div><hr /><div style='text-align: center' id='button'></div>");
-        HTML content = new HTML(StyleResource.INSTANCE.conditions().getText());
-        Button closeButton = new Button(Storage.MSGS.commonBtnClose());
-        closeButton.addStyleName(StyleResource.INSTANCE.common().buttonGrey());
-        contentPanel.add(content, "text");
-        contentPanel.add(closeButton, "button");
-        contentPanel.addStyleName("container-fluid");
-        panel.setWidget(contentPanel);
-        panel.setWidth("580px");
-        panel.setAnimationEnabled(true);
-        panel.setAutoHideEnabled(true);
-        panel.setGlassEnabled(true);
-        panel.addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
-
-
-        closeButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                panel.hide();
-            }
-        });
-
-        int x = (Window.getClientWidth() / 2) - 290;
-        int y = (Window.getClientHeight() / 2) - 250;
-        panel.setPopupPosition(x, y);
-
-        panel.show();
+        return conditionCheck;
     }
 
     /**
      * @return true if agreement checkbox is checked, false otherwise.
      */
     @Override
-    public boolean isAgreementChecked() {
-        if (agreedCheck.getValue()) {
-            return agreedCheck.getValue();
-        } else {
-            agreementPanel.setStyleName(StyleResource.INSTANCE.common().errorField());
-            return false;
-        }
+    public boolean isValid() {
+        return isConditionChecked();
     }
 
     /**
@@ -239,6 +199,19 @@ public class SupplierCreationView extends OverflowComposite
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
+    /**
+     * Check if Terms & Conditions are checked.
+     * @return true if checked, false otherwise
+     */
+    private boolean isConditionChecked() {
+        conditionValidationImage.setVisible(!conditionCheck.getValue());
+        if (conditionCheck.getValue()) {
+            conditionLink.removeStyleName("color-red");
+        } else {
+            conditionLink.addStyleName("color-red");
+        }
+        return conditionCheck.getValue();
+    }
     /**
      * Binds back & next buttons handlers.
      */

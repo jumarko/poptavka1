@@ -15,6 +15,7 @@ import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.eprovement.poptavka.client.root.interfaces.IRoot;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -65,6 +66,8 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
             GWT.log("++++++++++++++++++++++++++++START BY URL OF APP");
             Storage.setAppCalledByURL(true);
         }
+        //call rezize event to set correct body height
+        eventBus.resize(Document.get().getClientWidth());
     }
 
     /**

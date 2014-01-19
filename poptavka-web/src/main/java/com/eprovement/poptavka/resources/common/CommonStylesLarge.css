@@ -380,8 +380,8 @@ button.button-green {
     margin: 0 15px 0 0;
 }
 
-.selected-items-widget .selected-list {
-    /*float: left;*/
+.selected-items-widget .selected-list > *{
+    height: auto;
 }
 /*.selected-items-widget .scroll-Container {
     height: 36px;
@@ -833,6 +833,21 @@ button.button-green {
     line-height: 33px;
     margin: 3px 0 0 20px;
     padding: 0 12px;
+}
+
+.condition-panel {
+    float: left;
+}
+.condition-panel .gwt-Checkbox {
+    margin: -3px 10px 0 0;
+    float: left;
+}
+.condition-panel .link {
+    margin-right: 10px;
+    float: left;
+}
+.condition-panel .color-red {
+    color: #ff0b0b !important;
 }
 
 /* IE fixes for validation container */

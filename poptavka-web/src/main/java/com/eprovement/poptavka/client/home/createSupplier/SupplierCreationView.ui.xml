@@ -14,6 +14,7 @@
         .tabIndex3 { z-index: 3; }
         .tabIndex4 { z-index: 4; }
         .tabIndex5 { z-index: 5; }
+        .buttons-panel {width: 100%;}
     </ui:style>
 
     <g:ScrollPanel styleName='{res.layout.fullSize}'>
@@ -30,7 +31,7 @@
                     </g:customHeader>
                     <g:HTMLPanel styleName='contentContainer'>
                         <g:SimplePanel ui:field="contentHolder1" debugId="userRegistrationHolder" />
-                        <g:HorizontalPanel>
+                        <g:HorizontalPanel styleName='{style.buttons-panel}'>
                             <g:Label>
                                 <ui:msg key="formRequiredFields">* fields are required</ui:msg>
                             </g:Label>
@@ -87,14 +88,23 @@
                     <g:HTMLPanel styleName='contentContainer'>
                         <g:SimplePanel ui:field="contentHolder4" debugId="serviceContentHolder"/>
                         <!--<g:HTMLPanel styleName='formFooter formFooter2'>-->
-                        <g:HTMLPanel>
-                            <g:HorizontalPanel ui:field="agreementPanel" >
-                                <g:CheckBox ui:field="agreedCheck" debugId="agreeCheckbox"/>
-                                <g:Anchor ui:field="conditionLink">
-                                    <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
-                                </g:Anchor>
-                            </g:HorizontalPanel>
-                        </g:HTMLPanel>
+                        <g:FlowPanel styleName='{res.common.conditionPanel}'>
+                            <g:CheckBox ui:field="conditionCheck" debugId="agreeCheckbox"/>
+                            <g:Anchor ui:field="conditionLink" addStyleNames='link'>
+                                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
+                            </g:Anchor>
+                            <b:Icon ui:field='conditionValidationImage' type="EXCLAMATION" size="LARGE" visible='false'
+                                    addStyleNames='pull-left collor-red'/>
+                            <b:Modal ui:field='conditionPopup' dynamicSafe='true' keyboard='true'
+                                     title='{msgs.footerTermsConditions}'>
+                                <g:HTML HTML='{res.conditions.getText}'/>
+                                <b:ModalFooter>
+                                    <g:Button ui:field='conditionCloseBtn' styleName='{res.common.buttonGreen}'>
+                                        <ui:msg key='commonBtnClose'>Close</ui:msg>
+                                    </g:Button>
+                                </b:ModalFooter>
+                            </b:Modal>
+                        </g:FlowPanel>
                         <btns:ButtonsPanel ui:field='buttonsPanel4'
                                            backBtn='{msgs.commonBtnBack}'
                                            nextBtn='{msgs.supplierCreationRegisterBtn}'

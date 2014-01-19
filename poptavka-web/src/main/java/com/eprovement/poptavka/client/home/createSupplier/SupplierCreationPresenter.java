@@ -20,7 +20,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -47,7 +46,7 @@ public class SupplierCreationPresenter
     /**************************************************************************/
     /* View interface                                                         */
     /**************************************************************************/
-    public interface CreationViewInterface extends LazyView, IsWidget {
+    public interface CreationViewInterface extends LazyView, IsWidget, ProvidesValidate {
 
         /** Panels. **/
         TabLayoutPanel getMainPanel();
@@ -62,13 +61,7 @@ public class SupplierCreationPresenter
         /** Other. **/
         Tooltip getNextBtnTooltip(int order);
 
-        Anchor getConditionLink();
-
         CheckBox getAgreedCheck();
-
-        void showConditions();
-
-        boolean isAgreementChecked();
 
         Widget getWidgetView();
     }
@@ -120,7 +113,6 @@ public class SupplierCreationPresenter
         addMainPanelBeforeSelectionHandler();
         addMainPanelSelectionHandler();
         addRegisterButtonHandler();
-        addConditionLinkHandler();
     }
 
     /**
@@ -240,19 +232,6 @@ public class SupplierCreationPresenter
         });
     }
 
-    /**
-     * Binds condition link handler.
-     */
-    private void addConditionLinkHandler() {
-        view.getConditionLink().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent arg0) {
-                view.showConditions();
-            }
-        });
-
-    }
-
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
@@ -310,7 +289,7 @@ public class SupplierCreationPresenter
     private boolean canContinue(int step) {
         boolean valid = true;
         if (step == FOURTH_TAB_SERVICES) {
-            valid = view.isAgreementChecked();
+            valid = view.isValid();
         }
 
         ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
