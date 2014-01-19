@@ -268,10 +268,13 @@ public class DetailModulePresenter
                 setHeight(view.getDemandDetailHolder().getWidget());
                 break;
             case DetailModuleBuilder.USER_DETAIL_TAB:
-                setHeight(view.getSupplierDetail());
+                setHeight(view.getUserDetailHolder());
                 break;
             case DetailModuleBuilder.CONVERSATION_TAB:
-                setHeight(view.getConversationHolder());
+                setHeight(view.getConversationDetailHolder().getWidget());
+                break;
+            case DetailModuleBuilder.RATING_TAB:
+                setHeight(view.getRatingDetail());
                 break;
             case DetailModuleBuilder.ADVERTISEMENT_TAB:
                 setHeight(view.getAdvertisementHolder().getWidget());

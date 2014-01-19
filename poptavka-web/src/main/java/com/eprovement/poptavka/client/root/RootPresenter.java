@@ -15,7 +15,6 @@ import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.eprovement.poptavka.client.root.interfaces.IRoot;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
@@ -111,9 +110,6 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
         Window.addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent event) {
-                //set shorter dates on small screens
-                Storage.get().initDateTimeFormat(event.getWidth() > 1200);
-
                 //broadcast resize event to all listeners
                 eventBus.resize(event.getWidth());
             }
@@ -178,6 +174,8 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      * Therefore remove them on resize.
      */
     public void onResize(int actualWidth) {
+        //set shorter dates on small screens
+        Storage.get().initDateTimeFormat(actualWidth > 1200);
         //reset animation style (menu related)
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");

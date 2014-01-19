@@ -14,10 +14,8 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
@@ -49,7 +47,7 @@ public class UserRegistrationView extends Composite
     /** UiBinder attributes. **/
     @UiField SimplePanel addressHolder;
     @UiField HTMLPanel companyChoicePanel;
-    @UiField Button personBtn, companyBtn, develBtn;
+    @UiField Button personBtn, companyBtn;
     @UiField FluidRow companyInfoPanel;
     @UiField AccountInfoForm accountInfoForm;
     @UiField CompanyInfoForm companyInfoForm;
@@ -90,10 +88,13 @@ public class UserRegistrationView extends Composite
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
-    @UiHandler("develBtn")
-    public void setDevelBtnClickHandler(ClickEvent e) {
-        setDevelData();
-    }
+    //Just for devel
+//    @UiField Button develBtn;
+//    @UiHandler("develBtn")
+//    public void setDevelBtnClickHandler(ClickEvent e) {
+//        setDevelData();
+//    }
+
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
@@ -222,7 +223,7 @@ public class UserRegistrationView extends Composite
     /* Helper methods                                                         */
     /**************************************************************************/
     private void setDevelData() {
-        accountInfoForm.getEmail().setValue("email@gmail.com");
+        accountInfoForm.getEmail().setValue("supplier15@mailinator.com");
         accountInfoForm.getPassword().setValue("123123");
         accountInfoForm.getPasswordConfirm().setValue("123123");
 
