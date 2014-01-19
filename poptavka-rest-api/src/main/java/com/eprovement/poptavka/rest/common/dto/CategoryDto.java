@@ -5,11 +5,11 @@ import java.util.Map;
 /**
  * Basic dto for Category.
  * Either used as an input dto (POST demand, POST supplier), then at least {@code id} field should be filled.
- * Alternatively, {@code sicCode} can be used instead of id (id should be null in this case).
+ * Alternatively, {@code externalId} can be used instead of id (id should be null in this case).
  */
 public class CategoryDto {
     private Long id;
-    private String sicCode;
+    private String externalId;
     private String name;
     private String description;
     private Map<String, String> links;
@@ -23,12 +23,12 @@ public class CategoryDto {
         return this;
     }
 
-    public String getSicCode() {
-        return sicCode;
+    public String getExternalId() {
+        return externalId;
     }
 
-    public CategoryDto setSicCode(String sicCode) {
-        this.sicCode = sicCode;
+    public CategoryDto setExternalId(String externalId) {
+        this.externalId = externalId;
         return this;
     }
 
@@ -63,7 +63,7 @@ public class CategoryDto {
     public String toString() {
         return "CategoryDto{"
                 + "id='" + id + '\''
-                + "sicCode='" + sicCode + '\''
+                + "externalId='" + externalId + '\''
                 + ", name='" + name + '\''
                 + ", description='" + description + '\''
                 + ", links=" + links

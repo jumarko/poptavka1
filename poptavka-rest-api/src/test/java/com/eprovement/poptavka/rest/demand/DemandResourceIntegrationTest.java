@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.demand;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.StringStartsWith.startsWith;
@@ -106,8 +107,12 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
         final Map<String, Object> demand = validDemand();
         demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
 
-        // use category external code instead of direct id
-//        demand.put("categories", newArrayList(new CategoryDto().setSicCode(11L)));
+        // use category external id instead of direct internal id
+        demand.put("categories", newArrayList(
+                // this external category is mapped to three internal categories
+                new CategoryDto().setExternalId("111110"),
+                // this external category is mapped to single internal category
+                new CategoryDto().setExternalId("311211")));
 
         // use locality name instead of direct id
         final LocalityDto city = new LocalityDto();
@@ -116,7 +121,25 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
         demand.put("localities", newArrayList(city));
 
         final DemandDto createdDemand = createDemandAndCheck(demand);
+
         assertThat(createdDemand.getOrigin(), is(Origin.EXTERNAL_ORIGIN_CODE));
+        assertThat("two external categories should be mapped to four internal categories",
+                createdDemand.getCategories(), hasSize(4));
+        assertThat(createdDemand.getCategories().get(0).getId(), is(11L));
+        assertThat(createdDemand.getCategories().get(1).getId(), is(111L));
+        assertThat(createdDemand.getCategories().get(2).getId(), is(1131L));
+        assertThat(createdDemand.getCategories().get(3).getId(), is(311L));
+    }
+
+    @Test
+    public void createExternalDemandWithUnknownExternalId() throws Exception {
+        final Map<String, Object> demand = validDemand();
+        demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        // no external category for id '113' exist!
+        demand.put("categories", newArrayList(new CategoryDto().setExternalId("113")));
+
+        createAndExpectValidationError(demand);
     }
 
 
