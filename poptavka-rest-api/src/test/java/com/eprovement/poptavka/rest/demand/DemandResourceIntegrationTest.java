@@ -105,6 +105,16 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
     public void createExternalDemand() throws Exception {
         final Map<String, Object> demand = validDemand();
         demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        // use category external code instead of direct id
+//        demand.put("categories", newArrayList(new CategoryDto().setSicCode(11L)));
+
+        // use locality name instead of direct id
+        final LocalityDto city = new LocalityDto();
+        city.setRegion("locality1");
+        city.setDistrict("locality11");
+        demand.put("localities", newArrayList(city));
+
         final DemandDto createdDemand = createDemandAndCheck(demand);
         assertThat(createdDemand.getOrigin(), is(Origin.EXTERNAL_ORIGIN_CODE));
     }
@@ -118,8 +128,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
         final Map<String, Object> demandWithoutPrice = validDemand();
         demandWithoutPrice.remove("price");
         // create demand and check only id - createDemandAndCheck cannot be used because it's checking price too
-        this.mockMvc.performRequest(post("/demands")
-               .content(toJsonString(demandWithoutPrice)))
+        this.mockMvc.performRequest(post("/demands").content(toJsonString(demandWithoutPrice)))
                 .andExpect(status().isCreated())
                 // it is important to check that id has been generated and returned
                 .andExpect(jsonPath("$.id").exists());
