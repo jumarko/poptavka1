@@ -52,8 +52,9 @@ div[aria-hidden="true"] {
 }
 .toolbar .right-icon {
     float: right;
-    margin: 11px 10px 0;
+    margin: 6px 6px 0;
     display: none;
+    cursor: pointer;
 }
 
 .toolbar .button-grey {
