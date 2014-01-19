@@ -31,13 +31,11 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
     Category getCategory(Long id);
 
     /**
-     * Finds category by given sic code.
-     * Only first two digits of sic code are taken into account, the remainder is strip.
-     * That means for SIC codes {@code 0111} and {@code 0115} the same category is returned.
-     *
-     * Check <a href="http://www.naics.com/search.htm">SIC codes search.</a>
+     * Finds external category for given {@code externalId}.
+     * @return external category for given {@code externalId} or null if no such category exist
+     * @see com.eprovement.poptavka.domain.demand.ExternalCategory
      */
-    Category getCategoryBySicCode(String sicCode);
+    ExternalCategory getExternalCategory(String externalId);
 
     /**
      * Loads mapping "external categories to internal categories" for given external source.

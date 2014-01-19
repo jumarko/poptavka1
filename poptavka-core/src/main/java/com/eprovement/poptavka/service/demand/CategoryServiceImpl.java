@@ -13,7 +13,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
-import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,10 +71,9 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     @Override
     @Cacheable(cacheName = "categoryCache")
-    public Category getCategoryBySicCode(String sicCode) {
-        notEmpty(sicCode, "sicCode cannot be empty");
-        Validate.isTrue(sicCode.length() > 1, "sicCode should have at least two charactes");
-        return getDao().getCategoryBySicCode(sicCode.substring(0, 2));
+    public ExternalCategory getExternalCategory(String externalId) {
+        notEmpty(externalId, "externalId cannot be empty");
+        return getDao().getCategoryByExternalId(externalId);
     }
 
 

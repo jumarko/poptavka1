@@ -48,11 +48,12 @@ public interface CategoryDao extends GenericDao<Category> {
      */
     List<Category> getCategoriesByMinLength(int minLength, String nameSubstring);
 
-     /**
-     * Finds category by given sic code.
-     * SicCode must match the exactly with the entry in underlying data source.
+    /**
+     * Finds external category for given {@code externalId}.
+     * @see com.eprovement.poptavka.domain.demand.ExternalCategory
+     * @return external category for given {@code externalId} or null if no such category exist
      */
-    Category getCategoryBySicCode(String sicCode);
+    ExternalCategory getCategoryByExternalId(String externalId);
 
     /**
      * Loads mapping between external and internal categories

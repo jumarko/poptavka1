@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import java.util.List;
@@ -20,8 +21,13 @@ import java.util.List;
  * See <a href="http://www.naics.com/search.htm">SIC codes search.</a> as an example of different category system.
  */
 @Entity
-@NamedQuery(name = "getCategoriesMappingForExternalSource",
-            query = "from ExternalCategory ec where ec.externalSource = :source")
+@NamedQueries({
+    @NamedQuery(name = "getCategoriesMappingForExternalSource",
+            query = "from ExternalCategory ec where ec.externalSource = :source"),
+    @NamedQuery(name = "getExternalCategory",
+        query = "from ExternalCategory ec where ec.externalId = :externalId")
+})
+
 public class ExternalCategory extends DomainObject {
     /**
      * Unique identifier of category in external system.

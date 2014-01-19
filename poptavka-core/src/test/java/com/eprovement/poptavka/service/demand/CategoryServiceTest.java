@@ -2,8 +2,10 @@ package com.eprovement.poptavka.service.demand;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -122,17 +124,18 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetCategoryBySicCode() throws Exception {
-        checkCategoryBySicCode("01", "Category 1");
-        checkCategoryBySicCode("011", "Category 1");
-        checkCategoryBySicCode("0111abcx", "Category 1");
-        checkCategoryBySicCode("51", "Category 3");
+    public void testGetCategoryByExternalId() throws Exception {
+        checkCategoryByExternalId("111110", "FBOGOV", "Category 11", "Category 111", "Category 1131");
+        checkCategoryByExternalId("112111", "FBOGOV", "Category 112");
+        checkCategoryByExternalId("311211", "FBOGOV", "Category 311");
+
+        checkCategoryByExternalId("311225", "OTHER_SOURCE", "Category 311", "Category 312");
     }
 
     @Test
     public void testGetCategoryByInvalidSicCode() throws Exception {
-        assertThat(categoryService.getCategoryBySicCode("19"), nullValue());
-        assertThat(categoryService.getCategoryBySicCode("ax"), nullValue());
+        assertThat(categoryService.getExternalCategory("19"), nullValue());
+        assertThat(categoryService.getExternalCategory("ax"), nullValue());
     }
 
     @Test
@@ -167,10 +170,16 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
         }));
     }
 
-    private void checkCategoryBySicCode(String sicCode, String expectedCategoryName) {
-        final Category category = categoryService.getCategoryBySicCode(sicCode);
-        assertNotNull("category for sic code=" + sicCode + " should not be null", category);
-        assertThat(category.getName(), is(expectedCategoryName));
+    private void checkCategoryByExternalId(String externalId, String expectedSourceCode,
+                                           String... expectedCategoriesNames) {
+        final ExternalCategory externalCategory = categoryService.getExternalCategory(externalId);
+        assertNotNull("category for externalId=" + externalId + " should not be null", externalCategory);
+        assertNotNull("external category source should not be null", externalCategory.getExternalSource());
+        assertThat(externalCategory.getExternalSource().getCode(), is(expectedSourceCode));
+        assertThat(externalCategory.getCategories(), not(empty()));
+        for (int i = 0; i < expectedCategoriesNames.length; i++) {
+            assertThat(externalCategory.getCategories().get(i).getName(), is(expectedCategoriesNames[i]));
+        }
     }
 
     private Category categoryWithId(long id) {
