@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.supplier;
 
 import static com.eprovement.poptavka.rest.matchers.JsonMatchers.jsonPathMissing;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -19,6 +20,7 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.rest.ResourceIntegrationTest;
 import com.eprovement.poptavka.service.user.SupplierService;
 import org.apache.commons.collections.CollectionUtils;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,8 +132,8 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"phone\":\"123465789\","
                                 + "\"website\":\"www.qcps.com\","
                                 + "\"password\":\"kreslo\","
-                                // sicCode 20 == id 11
-                                + "\"categories\":[{\"sicCode\":20}],"
+                                // externalId 111110 == id 11, 111 and 1131
+                                + "\"categories\":[{\"externalId\":111110}],"
                                 + "\"localities\":[{\"region\":\"MM\"}],"
                                 + "\"addresses\":"
                                     + "[{\"region\":\"LL\","
@@ -148,6 +150,12 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
 
         final Supplier createdSupplier = supplierService.getById(supplierDto.getId());
         Assert.assertNotNull("No corresponding supplier found in database!", createdSupplier);
+
+        assertThat("one external category should be mapped to three internal categories",
+                createdSupplier.getCategories(), hasSize(3));
+        assertThat(createdSupplier.getCategories().get(0).getId(), Matchers.is(11L));
+        assertThat(createdSupplier.getCategories().get(1).getId(), Matchers.is(111L));
+        assertThat(createdSupplier.getCategories().get(2).getId(), Matchers.is(1131L));
 
         // check that no activation email has been sent to the external supplier
         assertThat("No activation email should be sent to the external supplier",

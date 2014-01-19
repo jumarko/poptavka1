@@ -133,7 +133,7 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetCategoryByInvalidSicCode() throws Exception {
+    public void testGetCategoryByInvalidExternalId() throws Exception {
         assertThat(categoryService.getExternalCategory("19"), nullValue());
         assertThat(categoryService.getExternalCategory("ax"), nullValue());
     }
