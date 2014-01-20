@@ -97,6 +97,7 @@ public class CellBrowserPresenter
                         false);
                 view.getCellListDataProvider().getList().remove(
                         view.getCellListSelectionModel().getSelectedObject());
+                setCellListVisibility();
             }
         });
     }
@@ -124,6 +125,7 @@ public class CellBrowserPresenter
                         view.setSelectedCountLabel(selectedList.size(), registerRestriction);
                     }
                 }
+                setCellListVisibility();
             }
         });
     }
@@ -256,5 +258,17 @@ public class CellBrowserPresenter
             }
         }
         return null;
+    }
+
+    /**
+     * Sets cell list visibility.
+     * If list is empty, it takes 100% of height.
+     */
+    private void setCellListVisibility() {
+        if (view.getCellListDataProvider().getList().isEmpty()) {
+            view.getCellList().addStyleName("hide");
+        } else {
+            view.getCellList().removeStyleName("hide");
+        }
     }
 }

@@ -22,31 +22,37 @@
                 <g:header>
                     <ui:msg key="detailsWrapperTabSupplierDetail">Professional</ui:msg>
                 </g:header>
-                <w:UserDetailView ui:field="userDetail" advancedView="false" />
+                <g:SimplePanel ui:field="userDetailHolder">
+                    <w:UserDetailView ui:field="userDetail" advancedView="false" />
+                </g:SimplePanel>
             </g:tab>
             <g:tab>
                 <g:header>
                     <ui:msg key="detailsWrapperTabRatingDetail">Ratings</ui:msg>
                 </g:header>
-                <w:RatingDetailView ui:field="ratingDetail" visible="false" />
+                <g:SimplePanel ui:field="ratingDetailHolder">
+                    <w:RatingDetailView ui:field="ratingDetail" visible="false" />
+                </g:SimplePanel>
             </g:tab>
             <g:tab>
                 <g:header>
                     <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
                 </g:header>
-                <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.details.conversationContainer}'>
-                    <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-                        <b:Column size='12'>
-                            <w:OfferQuestionWindow ui:field="replyHolder" styleName='{res.details.conversationBlock}'/>
-                        </b:Column>
-                    </b:FluidRow>
-                    <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-                        <b:Column size='12'>
-                            <c:CellList ui:field="messageList" />
-                            <!--styleName='{res.details.conversationBlock}'/>-->
-                        </b:Column>
-                    </b:FluidRow>
-                </b:FluidContainer>
+                <g:SimplePanel ui:field="conversationDetailHolder">
+                    <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.details.conversationContainer}'>
+                        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                            <b:Column size='12'>
+                                <w:OfferQuestionWindow ui:field="replyHolder" styleName='{res.details.conversationBlock}'/>
+                            </b:Column>
+                        </b:FluidRow>
+                        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                            <b:Column size='12'>
+                                <c:CellList ui:field="messageList" />
+                                <!--styleName='{res.details.conversationBlock}'/>-->
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:FluidContainer>
+                </g:SimplePanel>
             </g:tab>
             <g:tab>
                 <g:header/>

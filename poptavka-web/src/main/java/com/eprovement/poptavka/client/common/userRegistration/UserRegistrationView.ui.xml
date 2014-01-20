@@ -20,6 +20,8 @@
         <g:SimplePanel addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
             <b:FluidRow addStyleNames='well-content-only'>
                 <b:Column size="12">
+                    <!--Just for devel-->
+                    <!--<g:Button ui:field='develBtn'>Set Devel Data</g:Button>-->
                     <g:FlowPanel styleName='{style.form-indent}'>
                         <g:Label addStyleNames='pull-left'>
                             <ui:msg key="formUserRegPrivatePerson">Private Person</ui:msg>

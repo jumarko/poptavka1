@@ -64,7 +64,7 @@
                 <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
                     <vm:ValidationMonitor ui:field="descriptionMonitor">
                         <b:TextArea debugId="descriptionArea" height='160px'
-                                        placeholder="{msgs.placeholderDemandDescription}"/>
+                                    placeholder="{msgs.placeholderDemandDescription}"/>
                     </vm:ValidationMonitor>
                 </b:Column>
             </b:Column>

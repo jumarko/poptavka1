@@ -65,6 +65,8 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
             GWT.log("++++++++++++++++++++++++++++START BY URL OF APP");
             Storage.setAppCalledByURL(true);
         }
+        //call rezize event to set correct body height
+        eventBus.resize(Document.get().getClientWidth());
     }
 
     /**
@@ -108,9 +110,6 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
         Window.addResizeHandler(new ResizeHandler() {
             @Override
             public void onResize(ResizeEvent event) {
-                //set shorter dates on small screens
-                Storage.get().initDateTimeFormat(event.getWidth() > 1200);
-
                 //broadcast resize event to all listeners
                 eventBus.resize(event.getWidth());
             }
@@ -175,6 +174,8 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      * Therefore remove them on resize.
      */
     public void onResize(int actualWidth) {
+        //set shorter dates on small screens
+        Storage.get().initDateTimeFormat(actualWidth > 1200);
         //reset animation style (menu related)
         animation.getToolbarContainer().removeAttr("style");
         animation.getBodyContainer().removeAttr("style");

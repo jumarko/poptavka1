@@ -16,6 +16,11 @@
         .demandTypeChoicePanel {
         margin: 0 auto;
         }
+        .form-indent {
+        margin: 0 auto;
+        padding: 0 10px;
+        width: 315px;
+        }
     </ui:style>
 
     <b:FluidContainer addStyleNames='{res.common.formFields}'>
@@ -51,22 +56,18 @@
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="12" addStyleNames='well-padding'>
-                            <b:Column size="3">
-                                <g:Label addStyleNames='pull-right'>
+                            <g:FlowPanel styleName='{style.form-indent}'>
+                                <g:Label addStyleNames='pull-left'>
                                     <ui:msg key="formDemandAdvDemandNormal">Normal</ui:msg>
                                 </g:Label>
-                            </b:Column>
-                            <b:Column size="6">
-                                <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='{res.common.switchLeft}'>
-                                    <g:Button ui:field="normalBtn"></g:Button>
-                                    <g:Button ui:field="attractiveBtn"></g:Button>
+                                <g:HTMLPanel ui:field="demandTypeChoicePanel" addStyleNames='pull-left {res.common.switchLeft}'>
+                                    <g:Button ui:field="normalBtn" debugId="personBtn"></g:Button>
+                                    <g:Button ui:field="attractiveBtn" debugId="companyBtn"></g:Button>
                                 </g:HTMLPanel>
-                            </b:Column>
-                            <b:Column size="3">
-                                <g:Label>
+                                <g:Label addStyleNames='pull-left'>
                                     <ui:msg key="formDemandAdvDemandAttractive">Attractive</ui:msg>
                                 </g:Label>
-                            </b:Column>
+                            </g:FlowPanel>
                         </b:Column>
                     </b:FluidRow>
                 </g:HTMLPanel>

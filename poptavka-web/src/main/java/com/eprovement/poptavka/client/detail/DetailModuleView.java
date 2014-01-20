@@ -49,7 +49,8 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField TabLayoutPanel container;
-    @UiField SimplePanel demandDetailHolder, advertisementHolder;
+    @UiField SimplePanel demandDetailHolder, userDetailHolder, ratingDetailHolder;
+    @UiField SimplePanel advertisementHolder, conversationDetailHolder;
     @UiField DemandDetailView demandDetail;
     @UiField UserDetailView userDetail;
     @UiField RatingDetailView ratingDetail;
@@ -130,6 +131,30 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
     }
 
     /**
+     * @return the user detail panel
+     */
+    @Override
+    public SimplePanel getUserDetailHolder() {
+        return userDetailHolder;
+    }
+
+    /**
+     * @return the conversation fluid container
+     */
+    @Override
+    public FluidContainer getConversationHolder() {
+        return conversationHolder;
+    }
+
+    /**
+     * @return the rating detail holder
+     */
+    @Override
+    public SimplePanel getRatingDetailHolder() {
+        return ratingDetailHolder;
+    }
+
+    /**
      * @return the advertisement panel
      */
     @Override
@@ -161,6 +186,11 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
         return ratingDetail;
     }
 
+    @Override
+    public SimplePanel getConversationDetailHolder() {
+        return conversationDetailHolder;
+    }
+
     /**
      * @return the conversation cellList
      */
@@ -183,14 +213,6 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
     @Override
     public OfferQuestionWindow getReplyHolder() {
         return replyHolder;
-    }
-
-    /**
-     * @return the conversation fluid container
-     */
-    @Override
-    public FluidContainer getConversationHolder() {
-        return conversationHolder;
     }
 
     /**

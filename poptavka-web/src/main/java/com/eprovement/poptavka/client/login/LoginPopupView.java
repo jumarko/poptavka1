@@ -72,7 +72,6 @@ public class LoginPopupView extends Modal implements LoginPopupInterface {
         addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
         addStyleName(StyleResource.INSTANCE.modal().loginModal());
         setBackdrop(BackdropType.STATIC);
-        setAnimation(true);
         setDynamicSafe(true);
     }
 

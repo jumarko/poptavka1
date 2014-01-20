@@ -34,7 +34,15 @@ public interface IDetailModule {
 
         SimplePanel getDemandDetailHolder();
 
+        SimplePanel getUserDetailHolder();
+
+        FluidContainer getConversationHolder();
+
+        SimplePanel getRatingDetailHolder();
+
         SimplePanel getAdvertisementHolder();
+
+        SimplePanel getConversationDetailHolder();
 
         DemandDetailView getDemandDetail();
 
@@ -47,8 +55,6 @@ public interface IDetailModule {
         CellList getMessageList();
 
         ListDataProvider getMessageProvider();
-
-        FluidContainer getConversationHolder();
 
         void loadingDivShow(Widget holderWidget);
 

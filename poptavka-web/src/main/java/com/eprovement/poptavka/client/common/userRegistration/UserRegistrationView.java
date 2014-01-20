@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.common.userRegistration;
 
+import com.eprovement.poptavka.client.addressSelector.AddressSelectorView;
 import com.eprovement.poptavka.client.common.forms.AccountInfoForm;
 import com.eprovement.poptavka.client.common.forms.AdditionalInfoForm;
 import com.eprovement.poptavka.client.common.forms.CompanyInfoForm;
@@ -83,6 +84,16 @@ public class UserRegistrationView extends Composite
         setCompanyPanelVisibility(false);
     }
 
+
+    /**************************************************************************/
+    /* Setters                                                                */
+    /**************************************************************************/
+    //Just for devel
+//    @UiField Button develBtn;
+//    @UiHandler("develBtn")
+//    public void setDevelBtnClickHandler(ClickEvent e) {
+//        setDevelData();
+//    }
 
     /**************************************************************************/
     /* Setters                                                                */
@@ -206,5 +217,24 @@ public class UserRegistrationView extends Composite
     @Override
     public boolean getCompanySelected() {
         return companySelected;
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    private void setDevelData() {
+        accountInfoForm.getEmail().setValue("supplier15@mailinator.com");
+        accountInfoForm.getPassword().setValue("123123");
+        accountInfoForm.getPasswordConfirm().setValue("123123");
+
+        contactInfoForm.getFirstName().setValue("FirstName");
+        contactInfoForm.getLastName().setValue("LastName");
+        contactInfoForm.getPhone().setValue("987654321");
+
+        ((AddressSelectorView) addressHolder.getWidget()).getCitySuggestBox().setText("Alabaster, Alabama");
+        ((AddressSelectorView) addressHolder.getWidget()).getStreetMonitorBox().setText("Street");
+        ((AddressSelectorView) addressHolder.getWidget()).getZipcodeMonitorBox().setText("654321");
+
+        additionalInfoForm.getDescription().setValue("oiuiup diua sd n l ansduh pasudhas nldkn as udh pa suhda");
     }
 }
