@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.root.interfaces;
 
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,6 +21,6 @@ public interface IToolbar {
 
         Image getLeftSlidingMenuIcon();
 
-        IconAnchor getRightSlidingMenuIcon();
+        Image getRightSlidingMenuIcon();
     }
 }

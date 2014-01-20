@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.root.toolbar;
 import com.eprovement.poptavka.client.root.interfaces.IToolbar;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Heading;
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -35,7 +34,7 @@ public class ToolbarView extends Composite implements IToolbar.View {
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField IconAnchor detailAnchor;
+    @UiField Image detailAnchor;
     @UiField Image categoriesAnchor;
     @UiField SimplePanel customContent, fakeDetailAnchor;
     @UiField Heading title;
@@ -121,7 +120,7 @@ public class ToolbarView extends Composite implements IToolbar.View {
      * @return right menu icon anchor
      */
     @Override
-    public IconAnchor getRightSlidingMenuIcon() {
+    public Image getRightSlidingMenuIcon() {
         return detailAnchor;
     }
 }

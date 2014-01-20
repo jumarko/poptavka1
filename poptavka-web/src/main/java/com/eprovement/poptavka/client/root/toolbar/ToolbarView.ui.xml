@@ -8,8 +8,8 @@
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     
     <g:HTMLPanel styleName="{res.initial.toolbar}">
-        <b:Tooltip text="{msgs.toolbarRightMenu}" placement="LEFT">
-            <bb:IconAnchor ui:field='detailAnchor' icon="FOLDER_OPEN" iconSize="TWO_TIMES" styleName='right-icon'/>
+        <b:Tooltip text="{msgs.toolbarRightMenu}" placement="LEFT">            
+            <g:Image ui:field='detailAnchor' resource='{res.images.toolbarButtonRight}' addStyleNames='right-icon'/>
         </b:Tooltip>
         
         <g:FlowPanel>

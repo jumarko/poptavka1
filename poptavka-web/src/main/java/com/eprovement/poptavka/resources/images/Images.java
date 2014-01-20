@@ -192,4 +192,7 @@ public interface Images extends ClientBundle {
 
     @Source("toolbar-button-left.png")
     ImageResource toolbarButtonLeft();
+
+    @Source("toolbar-button-right.png")
+    ImageResource toolbarButtonRight();
 }
