@@ -20,6 +20,11 @@
 .login-modal .modal-body {
     padding: 5px;
 }
+.login-modal .gwt-TextBox,
+.login-modal .gwt-PasswordTextBox {   
+    height: 35px;
+    padding: 0 5px;
+}
 /*.login-modal .well {
     padding: 10px 10px 0;
 }*/

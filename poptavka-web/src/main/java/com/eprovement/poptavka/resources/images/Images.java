@@ -191,8 +191,14 @@ public interface Images extends ClientBundle {
     ImageResource checkboxSelected();
 
     @Source("toolbar-button-left.png")
-    ImageResource toolbarButtonLeft();
+    ImageResource toolbarButtonLeftToOpen();
+
+    @Source("toolbar-button-left-pushed.png")
+    ImageResource toolbarButtonLeftToClose();
 
     @Source("toolbar-button-right.png")
-    ImageResource toolbarButtonRight();
+    ImageResource toolbarButtonRightToOpen();
+
+    @Source("toolbar-button-right-pushed.png")
+    ImageResource toolbarButtonRightToClose();
 }

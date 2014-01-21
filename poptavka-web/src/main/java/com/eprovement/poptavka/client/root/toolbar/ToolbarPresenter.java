@@ -5,7 +5,9 @@ package com.eprovement.poptavka.client.root.toolbar;
 
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IToolbar;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -100,8 +102,15 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * @param content - custom toolbar widget
      * @param leftIconVisibile - has 3-layout-responsive-view that can be animated
      */
-    public void onSetToolbarContent(String title, Widget content) {
-        view.setToolbarContent(title, content);
+    public void onSetToolbarContent(final String title, final Widget content) {
+        //Must be in scheduler in case refresh is used
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+
+            @Override
+            public void execute() {
+                view.setToolbarContent(title, content);
+            }
+        });
     }
 
     /**
@@ -157,9 +166,11 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
     private void openCategoryTreePanel(boolean open) {
         isCategoryPanelOpen = open;
         if (open) {
+            view.getLeftSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonLeftToClose());
             animation.getLeftSlidingPanel().animate("left: -" + SLIDE_PX_CATEGORY, 0);
             animation.getLeftSlidingPanel().animate("left: +=" + SLIDE_PX_CATEGORY);
         } else {
+            view.getLeftSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonLeftToOpen());
             animation.getLeftSlidingPanel().animate("left: -=" + SLIDE_PX_CATEGORY);
         }
     }
@@ -171,9 +182,11 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
     private void openDetailPanel(boolean open) {
         isDetailPanelOpen = open;
         if (open) {
+            view.getRightSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonRightToClose());
             animation.getRightSlidingPanel().animate("right: -" + SLIDE_PX_DETAIL, 0);
             animation.getRightSlidingPanel().animate("right: +=" + SLIDE_PX_DETAIL);
         } else {
+            view.getRightSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonRightToOpen());
             animation.getRightSlidingPanel().animate("right: -=" + SLIDE_PX_DETAIL);
         }
     }

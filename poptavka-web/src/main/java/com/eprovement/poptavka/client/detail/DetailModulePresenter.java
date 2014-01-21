@@ -277,7 +277,7 @@ public class DetailModulePresenter
                 setHeight(view.getRatingDetail());
                 break;
             case DetailModuleBuilder.ADVERTISEMENT_TAB:
-                setHeight(view.getAdvertisementHolder().getWidget());
+                setHeight(view.getAdvertisementHolder());
                 break;
             default:
                 break;
