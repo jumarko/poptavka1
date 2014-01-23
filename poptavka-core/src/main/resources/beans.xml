@@ -78,6 +78,7 @@
 
     <bean id="categoryService" class="com.eprovement.poptavka.service.demand.CategoryServiceImpl">
         <constructor-arg ref="categoryDao" />
+        <constructor-arg ref="registerService" />
     </bean>
 
     <bean id="localityService" class="com.eprovement.poptavka.service.address.LocalityServiceImpl">

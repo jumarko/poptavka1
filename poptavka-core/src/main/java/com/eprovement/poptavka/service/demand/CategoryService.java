@@ -3,6 +3,7 @@ package com.eprovement.poptavka.service.demand;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.demand.CategoryDao;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.demand.ExternalCategory;
 import com.eprovement.poptavka.service.GenericService;
 
 import java.util.List;
@@ -26,17 +27,23 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
     List<Category> getRootCategories(ResultCriteria resultCriteria);
 
 
-    /** @see com.eprovement.poptavka.dao.demand.CategoryDao#getCategory(String) */
+    /** @see com.eprovement.poptavka.dao.demand.CategoryDao#getCategory(Long)  */
     Category getCategory(Long id);
 
     /**
-     * Finds category by given sic code.
-     * Only first two digits of sic code are taken into account, the remainder is strip.
-     * That means for SIC codes {@code 0111} and {@code 0115} the same category is returned.
-     *
-     * Check <a href="http://www.naics.com/search.htm">SIC codes search.</a>
+     * Finds external category for given {@code externalId}.
+     * @return external category for given {@code externalId} or null if no such category exist
+     * @see com.eprovement.poptavka.domain.demand.ExternalCategory
      */
-    Category getCategoryBySicCode(String sicCode);
+    ExternalCategory getExternalCategory(String externalId);
+
+    /**
+     * Loads mapping "external categories to internal categories" for given external source.
+     * @param externalSourceName name of external source such as FBOGOV (fbo.gov)
+     * @return list of mappings, each representing mapping [external_category, internal_categories]
+     * @see com.eprovement.poptavka.domain.demand.ExternalCategory#categories
+     */
+    List<ExternalCategory> getCategoryMapping(String externalSourceName);
 
     /**
      * Gets a list of categories whose name is shorter than <code>maxlengthExcl</code> and

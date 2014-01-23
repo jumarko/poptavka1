@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.supplier;
 
 import static com.eprovement.poptavka.rest.matchers.JsonMatchers.jsonPathMissing;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -11,57 +12,34 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.Supplier;
-import com.eprovement.poptavka.rest.common.JsonObjectMapper;
-import com.eprovement.poptavka.rest.support.MockMvcSupport;
+import com.eprovement.poptavka.rest.ResourceIntegrationTest;
 import com.eprovement.poptavka.service.user.SupplierService;
 import org.apache.commons.collections.CollectionUtils;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration("classpath:applicationContext-rest-test.xml")
-@ActiveProfiles("test")
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/SupplierDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class SupplierResourceIntegrationTest extends DBUnitBaseTest {
+public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
 
-    @Autowired
-    private WebApplicationContext wac;
     @Autowired
     private SupplierService supplierService;
-    @Autowired
-    private JsonObjectMapper jsonObjectMapper;
-
-    private MockMvcSupport mockMvc;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcSupport.build(wac);
-    }
 
     @Test
     public void listSuppliers() throws Exception {
@@ -154,8 +132,8 @@ public class SupplierResourceIntegrationTest extends DBUnitBaseTest {
                                 + "\"phone\":\"123465789\","
                                 + "\"website\":\"www.qcps.com\","
                                 + "\"password\":\"kreslo\","
-                                // sicCode 20 == id 11
-                                + "\"categories\":[{\"sicCode\":20}],"
+                                // externalId 111110 == id 11, 111 and 1131
+                                + "\"categories\":[{\"externalId\":111110}],"
                                 + "\"localities\":[{\"region\":\"MM\"}],"
                                 + "\"addresses\":"
                                     + "[{\"region\":\"LL\","
@@ -172,6 +150,12 @@ public class SupplierResourceIntegrationTest extends DBUnitBaseTest {
 
         final Supplier createdSupplier = supplierService.getById(supplierDto.getId());
         Assert.assertNotNull("No corresponding supplier found in database!", createdSupplier);
+
+        assertThat("one external category should be mapped to three internal categories",
+                createdSupplier.getCategories(), hasSize(3));
+        assertThat(createdSupplier.getCategories().get(0).getId(), Matchers.is(11L));
+        assertThat(createdSupplier.getCategories().get(1).getId(), Matchers.is(111L));
+        assertThat(createdSupplier.getCategories().get(2).getId(), Matchers.is(1131L));
 
         // check that no activation email has been sent to the external supplier
         assertThat("No activation email should be sent to the external supplier",

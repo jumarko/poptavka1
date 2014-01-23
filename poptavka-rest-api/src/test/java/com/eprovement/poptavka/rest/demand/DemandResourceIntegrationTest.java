@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.demand;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.StringStartsWith.startsWith;
@@ -12,35 +13,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.eprovement.poptavka.base.integration.DBUnitBaseTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.Origin;
+import com.eprovement.poptavka.rest.ResourceIntegrationTest;
 import com.eprovement.poptavka.rest.client.ClientDto;
 import com.eprovement.poptavka.rest.common.dto.CategoryDto;
 import com.eprovement.poptavka.rest.common.dto.LocalityDto;
-import com.eprovement.poptavka.rest.support.MockMvcSupport;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@WebAppConfiguration
-@ContextConfiguration("classpath:applicationContext-rest-test.xml")
-@ActiveProfiles("test")
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml",
@@ -49,26 +36,13 @@ import java.util.Map;
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml" },
         dtd = "classpath:test.dtd")
-public class DemandResourceIntegrationTest extends DBUnitBaseTest {
+public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
 
     private static final String DEMAND_TITLE = "New demand from external system";
     private static final String DEMAND_DESCRIPTION = "Description of New demand from external system";
     private static final int DEMAND_PRICE = 1000;
     private static final CategoryDto DEMAND_CATEGORY = new CategoryDto().setId(11L);
     private static final LocalityDto DEMAND_LOCALITY = new LocalityDto().setId(11L);
-
-    @Autowired
-    private WebApplicationContext wac;
-
-    @Autowired
-    private ObjectMapper jsonObjectMapper;
-
-    private MockMvcSupport mockMvc;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcSupport.build(wac);
-    }
 
     @Test
     public void listDemands() throws Exception {
@@ -132,8 +106,40 @@ public class DemandResourceIntegrationTest extends DBUnitBaseTest {
     public void createExternalDemand() throws Exception {
         final Map<String, Object> demand = validDemand();
         demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        // use category external id instead of direct internal id
+        demand.put("categories", newArrayList(
+                // this external category is mapped to three internal categories
+                new CategoryDto().setExternalId("111110"),
+                // this external category is mapped to single internal category
+                new CategoryDto().setExternalId("311211")));
+
+        // use locality name instead of direct id
+        final LocalityDto city = new LocalityDto();
+        city.setRegion("locality1");
+        city.setDistrict("locality11");
+        demand.put("localities", newArrayList(city));
+
         final DemandDto createdDemand = createDemandAndCheck(demand);
+
         assertThat(createdDemand.getOrigin(), is(Origin.EXTERNAL_ORIGIN_CODE));
+        assertThat("two external categories should be mapped to four internal categories",
+                createdDemand.getCategories(), hasSize(4));
+        assertThat(createdDemand.getCategories().get(0).getId(), is(11L));
+        assertThat(createdDemand.getCategories().get(1).getId(), is(111L));
+        assertThat(createdDemand.getCategories().get(2).getId(), is(1131L));
+        assertThat(createdDemand.getCategories().get(3).getId(), is(311L));
+    }
+
+    @Test
+    public void createExternalDemandWithUnknownExternalId() throws Exception {
+        final Map<String, Object> demand = validDemand();
+        demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        // no external category for id '113' exist!
+        demand.put("categories", newArrayList(new CategoryDto().setExternalId("113")));
+
+        createAndExpectValidationError(demand);
     }
 
 
@@ -145,8 +151,7 @@ public class DemandResourceIntegrationTest extends DBUnitBaseTest {
         final Map<String, Object> demandWithoutPrice = validDemand();
         demandWithoutPrice.remove("price");
         // create demand and check only id - createDemandAndCheck cannot be used because it's checking price too
-        this.mockMvc.performRequest(post("/demands")
-               .content(toJsonString(demandWithoutPrice)))
+        this.mockMvc.performRequest(post("/demands").content(toJsonString(demandWithoutPrice)))
                 .andExpect(status().isCreated())
                 // it is important to check that id has been generated and returned
                 .andExpect(jsonPath("$.id").exists());

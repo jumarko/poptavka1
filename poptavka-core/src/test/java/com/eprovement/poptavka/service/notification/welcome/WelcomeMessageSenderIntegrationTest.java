@@ -1,10 +1,10 @@
 package com.eprovement.poptavka.service.notification.welcome;
 
 import static junit.framework.Assert.assertNotNull;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.verify;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
@@ -12,12 +12,11 @@ import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
-import com.eprovement.poptavka.service.mail.MailService;
+import com.eprovement.poptavka.service.mail.MailServiceMock;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.googlecode.genericdao.search.Search;
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 
@@ -39,7 +38,7 @@ public class WelcomeMessageSenderIntegrationTest extends DBUnitIntegrationTest {
     private MessageService messageService;
     /** Mail service mock is set up in "test" bean profile */
     @Autowired
-    private MailService mailServiceMock;
+    private MailServiceMock mailServiceMock;
 
     @Test
     public void testSendWelcomeMessage() throws Exception {
@@ -59,11 +58,15 @@ public class WelcomeMessageSenderIntegrationTest extends DBUnitIntegrationTest {
     }
 
     private void checkWelcomeEmailSent() {
-        final ArgumentCaptor<SimpleMailMessage> welcomeEmail = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        // beware that mailServiceMock can be called in other tests and influence the verification
-        verify(mailServiceMock, atLeast(1)).sendAsync(welcomeEmail.capture());
-        assertNotNull("welcome email should not be null", welcomeEmail.getValue());
-        assertThat("welcome email should have proper body", welcomeEmail.getValue().getText(), is(WELCOME_MAIL_TEXT));
+        final List<SimpleMailMessage> sentEmails = mailServiceMock.getSentSimpleMailMessages();
+        assertThat("At least one email message expected!", sentEmails, hasSize(greaterThanOrEqualTo(1)));
+        SimpleMailMessage welcomeEmail = null;
+        for (SimpleMailMessage email : sentEmails) {
+            if (WELCOME_MAIL_TEXT.equals(email.getText())) {
+                welcomeEmail = email;
+            }
+        }
+        assertNotNull("no welcome email found", welcomeEmail);
     }
 
     private void checkInternalWelcomeMessageSent(User elvira) {

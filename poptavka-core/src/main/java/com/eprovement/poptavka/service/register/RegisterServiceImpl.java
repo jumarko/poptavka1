@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.service.register;
 
+import static org.apache.commons.lang.Validate.notEmpty;
+
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.genericdao.search.Search;
@@ -41,6 +43,7 @@ public class RegisterServiceImpl implements RegisterService {
     @Cacheable(cacheName = "cache5h")
     @Transactional(readOnly = true)
     public <T> T getValue(String code, Class<T> registerClass) {
+        notEmpty(code, "code cannot be empty!");
         return (T) generalService.searchUnique(new Search(registerClass)
                 .addFilterEqual("code", code));
     }

@@ -1,9 +1,13 @@
 package com.eprovement.poptavka.dao.demand;
 
+import static org.apache.commons.lang.Validate.notEmpty;
+import static org.apache.commons.lang.Validate.notNull;
+
+import com.eprovement.poptavka.domain.common.ExternalSource;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.demand.Category;
-import org.apache.commons.lang.Validate;
+import com.eprovement.poptavka.domain.demand.ExternalCategory;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -71,10 +75,17 @@ public class CategoryDaoImpl extends GenericHibernateDao<Category> implements Ca
     }
 
     @Override
-    public Category getCategoryBySicCode(String sicCode) {
-        Validate.notEmpty(sicCode, "sicCode should not be empty!");
-        return (Category) runNamedQueryForSingleResult("getCategoryBySicCode",
-                Collections.singletonMap("sicCode", sicCode));
+    public ExternalCategory getCategoryByExternalId(String externalId) {
+        notEmpty(externalId, "externalId should not be empty!");
+        return (ExternalCategory) runNamedQueryForSingleResult("getExternalCategory",
+                Collections.singletonMap("externalId", externalId));
+    }
+
+    @Override
+    public List<ExternalCategory> getCategoryMapping(ExternalSource externalSource) {
+        notNull(externalSource, "externalSource cannot be null!");
+        return runNamedQuery("getCategoriesMappingForExternalSource",
+                Collections.singletonMap("source", externalSource));
     }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------

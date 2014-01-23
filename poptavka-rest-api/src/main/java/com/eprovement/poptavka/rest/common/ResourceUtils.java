@@ -1,6 +1,3 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.rest.common;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
@@ -11,7 +8,7 @@ import org.apache.commons.lang.Validate;
 public final class ResourceUtils {
 
     // TODO jumar: is there any better way how to handle rest api prefix which is configured in web.xml ??
-    private static final String REST_API_PREFIX = "/api";
+    public static final String REST_API_PREFIX = "/api";
 
     private ResourceUtils() {
         // utility class -- DO NOT INSTANTIATE
@@ -45,6 +42,19 @@ public final class ResourceUtils {
         Validate.notNull(domainObject);
         final Map<String, String> links = new HashMap<>();
         links.put("self", generateSelfLink(baseResourceUri, domainObject));
+        return links;
+    }
+
+    /**
+     * Generate links containing link named "self" which ends with given {@code id}.
+     *
+     * @param baseResourceUri base Uri under which the object with id {@code objectId} can be found starting with "/"
+     * @param id the last part of uri
+     * @return links containing self link
+     */
+    public static Map<String, String> generateSelfLinks(String baseResourceUri, String id) {
+        final Map<String, String> links = new HashMap<>();
+        links.put("self", generateSelfLink(baseResourceUri, id));
         return links;
     }
 

@@ -71,9 +71,7 @@ MUST FOLLOW ONLY AFTER IMPORT of "applicationContext.xml" !!! -->
         </bean>
 
         <!--Mocked mail service because we do not want to send emails as a part of integration tests-->
-        <bean id="mailService" class="org.mockito.Mockito" factory-method="mock">
-            <constructor-arg value="com.eprovement.poptavka.service.mail.MailService" />
-        </bean>
+        <bean id="mailService" class="com.eprovement.poptavka.service.mail.MailServiceMock" />
 
     </beans>
 </beans>

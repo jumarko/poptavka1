@@ -60,7 +60,6 @@ public class CategoryResource extends AbstractPageableResource<Category, Categor
         return categoryDto;
     }
 
-
     //--------------------------------------------------- PRIVATE STUFF ------------------------------------------------
     private void setLinks(CategoryDto categoryDto, Category category) {
         categoryDto.setLinks(ResourceUtils.generateSelfLinks(CATEGORY_RESOURCE_URI, category));

@@ -1,16 +1,23 @@
 package com.eprovement.poptavka.service.demand;
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
+import com.eprovement.poptavka.domain.common.UnknownSourceException;
 import com.eprovement.poptavka.domain.demand.Category;
-import java.util.Arrays;
 import java.util.List;
+
+import com.eprovement.poptavka.domain.demand.ExternalCategory;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.junit.Assert;
@@ -24,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @DataSet(path = "classpath:com/eprovement/poptavka/domain/demand/CategoryDataSet.xml", dtd = "classpath:test.dtd")
 public class CategoryServiceTest extends DBUnitIntegrationTest {
 
+    private static final String EXTERNAL_SOURCE_NAME = "FBOGOV";
     @Autowired
     private CategoryService categoryService;
 
@@ -55,7 +63,7 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
     public void testGetRootCategoriesWithFirstResultOrderBy() {
         final List<Category> rootCategories = categoryService.getRootCategories(new ResultCriteria.Builder()
                 .firstResult(1)
-                .orderByColumns(Arrays.asList("name"))
+                .orderByColumns(asList("name"))
                 .build());
         Assert.assertNotNull(rootCategories);
         Assert.assertEquals(1, rootCategories.size());
@@ -116,17 +124,33 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetCategoryBySicCode() throws Exception {
-        checkCategoryBySicCode("01", "Category 1");
-        checkCategoryBySicCode("011", "Category 1");
-        checkCategoryBySicCode("0111abcx", "Category 1");
-        checkCategoryBySicCode("51", "Category 3");
+    public void testGetCategoryByExternalId() throws Exception {
+        checkCategoryByExternalId("111110", "FBOGOV", "Category 11", "Category 111", "Category 1131");
+        checkCategoryByExternalId("112111", "FBOGOV", "Category 112");
+        checkCategoryByExternalId("311211", "FBOGOV", "Category 311");
+
+        checkCategoryByExternalId("311225", "OTHER_SOURCE", "Category 311", "Category 312");
     }
 
     @Test
-    public void testGetCategoryByInvalidSicCode() throws Exception {
-        assertThat(categoryService.getCategoryBySicCode("19"), nullValue());
-        assertThat(categoryService.getCategoryBySicCode("ax"), nullValue());
+    public void testGetCategoryByInvalidExternalId() throws Exception {
+        assertThat(categoryService.getExternalCategory("19"), nullValue());
+        assertThat(categoryService.getExternalCategory("ax"), nullValue());
+    }
+
+    @Test
+    public void testGetCategoryMapping() {
+        final List<ExternalCategory> fboGovMapping = categoryService.getCategoryMapping(EXTERNAL_SOURCE_NAME);
+        assertThat("Unexpected number of mappings for FBOGOV", fboGovMapping, hasSize(3));
+        checkExternalCategoryMapping(fboGovMapping.get(0), "111110", categoryWithId(11L), categoryWithId(111L),
+                categoryWithId(1131L));
+        checkExternalCategoryMapping(fboGovMapping.get(1), "112111", categoryWithId(112L));
+        checkExternalCategoryMapping(fboGovMapping.get(2), "311211", categoryWithId(311L));
+    }
+
+    @Test(expected = UnknownSourceException.class)
+    public void testGetCategoryMappingForUnknownSource() {
+        categoryService.getCategoryMapping("UNKNOWN");
     }
 
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------
@@ -146,10 +170,31 @@ public class CategoryServiceTest extends DBUnitIntegrationTest {
         }));
     }
 
-    private void checkCategoryBySicCode(String sicCode, String expectedCategoryName) {
-        final Category category = categoryService.getCategoryBySicCode(sicCode);
-        assertNotNull("category for sic code=" + sicCode + " should not be null", category);
-        assertThat(category.getName(), is(expectedCategoryName));
+    private void checkCategoryByExternalId(String externalId, String expectedSourceCode,
+                                           String... expectedCategoriesNames) {
+        final ExternalCategory externalCategory = categoryService.getExternalCategory(externalId);
+        assertNotNull("category for externalId=" + externalId + " should not be null", externalCategory);
+        assertNotNull("external category source should not be null", externalCategory.getExternalSource());
+        assertThat(externalCategory.getExternalSource().getCode(), is(expectedSourceCode));
+        assertThat(externalCategory.getCategories(), not(empty()));
+        for (int i = 0; i < expectedCategoriesNames.length; i++) {
+            assertThat(externalCategory.getCategories().get(i).getName(), is(expectedCategoriesNames[i]));
+        }
+    }
+
+    private Category categoryWithId(long id) {
+        final Category category = new Category();
+        category.setId(id);
+        return category;
+    }
+
+    private void checkExternalCategoryMapping(ExternalCategory externalCategory,
+                                              String expectedExternalCategoryId, Category... expectedCategories) {
+        assertNotNull("mapping should not be null", externalCategory);
+        assertThat(externalCategory.getExternalId(), is(expectedExternalCategoryId));
+        assertThat(externalCategory.getCategories(), containsInAnyOrder(expectedCategories));
+        assertNotNull("source should not be null", externalCategory.getExternalSource());
+        assertNotNull(externalCategory.getExternalSource().getCode(), is("FBOGOV"));
     }
 
 
