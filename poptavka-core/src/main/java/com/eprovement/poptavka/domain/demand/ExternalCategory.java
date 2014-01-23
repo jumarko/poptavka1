@@ -33,7 +33,7 @@ public class ExternalCategory extends DomainObject {
      * Unique identifier of category in external system.
      * Typically this would be a category name but different identifiers such as SIC code or NAICS code can be used.
      */
-    @Column(unique = true, length = 255)
+    @Column(unique = true, length = 255, nullable = false)
     private String externalId;
 
     /**

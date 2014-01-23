@@ -13,7 +13,7 @@ public class ExternalSource extends DomainObject {
     /**
      * Unique code of external source. It's like a simplified name, e.g. "FBOGOV".
      */
-    @Column(unique = true, length = 64)
+    @Column(unique = true, length = 64, nullable = false)
     private String code;
 
     @Column(unique = true)
