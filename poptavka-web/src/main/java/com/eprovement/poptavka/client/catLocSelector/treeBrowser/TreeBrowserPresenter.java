@@ -151,19 +151,17 @@ public class TreeBrowserPresenter
     /**
      * Call when new intance of TreeBrowser is requested.
      */
-    public void onInitNewCatLocSelectorTreeBrowser(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
+    public void onInitNewCatLocSelectorTreeBrowser(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
         this.builder = builder;
-        this.instanceId = instanceId;
+        this.instanceId = builder.getInstanceId();
         initCatLocSelectorTreeBrowser(embedWidget);
     }
 
     /**
      * Call when same intance of TreeBrowser is requested.
      */
-    public void onInitSameCatLocSelectorTreeBrowser(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
-        if (this.instanceId == instanceId) {
+    public void onInitSameCatLocSelectorTreeBrowser(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
+        if (this.instanceId == builder.getInstanceId()) {
             initCatLocSelectorTreeBrowser(embedWidget);
         }
     }

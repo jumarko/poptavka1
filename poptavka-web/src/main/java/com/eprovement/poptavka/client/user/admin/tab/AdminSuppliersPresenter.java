@@ -165,16 +165,15 @@ public class AdminSuppliersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                eventBus.initCatLocSelector(
-                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(),
-                        new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_SUPPLIERS)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                            .build(),
-                        Constants.ADMIN_SUPPLIERS);
-                eventBus.setCatLocs(view.getAdminSupplierDetail().getCategories());
+                            .build();
+                eventBus.initCatLocSelector(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getAdminSupplierDetail().getCategories(), builder.getInstanceId());
                 view.getAdminSupplierDetail().getSelectorWidgetPopup().show();
             }
         });
@@ -182,16 +181,15 @@ public class AdminSuppliersPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                eventBus.initCatLocSelector(
-                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(),
-                        new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_SUPPLIERS)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                            .build(),
-                        -Constants.ADMIN_SUPPLIERS);
-                eventBus.setCatLocs(view.getAdminSupplierDetail().getLocalities());
+                            .build();
+                eventBus.initCatLocSelector(
+                        view.getAdminSupplierDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getAdminSupplierDetail().getLocalities(), builder.getInstanceId());
                 view.getAdminSupplierDetail().getSelectorWidgetPopup().show();
             }
         });

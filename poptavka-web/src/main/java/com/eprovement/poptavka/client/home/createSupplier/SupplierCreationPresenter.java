@@ -174,14 +174,13 @@ public class SupplierCreationPresenter
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
                     eventBus.initCatLocSelector(
                             view.getHolderPanel(SECOND_TAB_CATEGORY),
-                            new CatLocSelectorBuilder.Builder()
+                            new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initCategorySelector()
                                 .initSelectorManager()
                                 .withCheckboxesOnLeafsOnly()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                .build(),
-                            Constants.CREATE_SUPPLIER);
+                                .build());
                 }
                 setHeightSelector();
                 break;
@@ -190,14 +189,13 @@ public class SupplierCreationPresenter
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
                     eventBus.initCatLocSelector(
                             view.getHolderPanel(THIRD_TAB_LOCALITY),
-                            new CatLocSelectorBuilder.Builder()
+                            new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initLocalitySelector()
                                 .initSelectorManager()
                                 .withCheckboxesOnLeafsOnly()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                .build(),
-                            -Constants.CREATE_SUPPLIER);
+                                .build());
                 }
                 setHeightSelector();
                 break;

@@ -78,7 +78,6 @@ public class ManagerPresenter
     private CatLocSelectorBuilder browserBuilder;
     private int updatingTableItemIdx = -1;
     private int instanceId;
-    private int browserInstanceId;
     private int registerRestrition;
 
     /**************************************************************************/
@@ -89,17 +88,6 @@ public class ManagerPresenter
 
     public CatLocSelectorRPCServiceAsync getCatLocService() {
         return catLocService;
-    }
-
-    /**************************************************************************/
-    /** General Module events                                                 */
-    /**************************************************************************/
-    public void onStart() {
-        // nothing by default
-    }
-
-    public void onForward() {
-        // nothing by default
     }
 
     /**************************************************************************/
@@ -121,7 +109,7 @@ public class ManagerPresenter
             @Override
             public void onFocus(FocusEvent event) {
                 CatLocSuggestionDisplay display =
-                        ((CatLocSuggestionDisplay) view.getSearchBox().getSuggestionDisplay());
+                    ((CatLocSuggestionDisplay) view.getSearchBox().getSuggestionDisplay());
                 display.setLoadingPopupPosition(view.getSearchBox());
                 //show actual suggest list and remove error style if any
                 if (view.getSearchBox().getText().isEmpty()) {
@@ -146,7 +134,7 @@ public class ManagerPresenter
             @Override
             public void onClick(ClickEvent event) {
                 updatingTableItemIdx = -1;
-                eventBus.initCatLocSelector(popup.getSelectorPanel(), browserBuilder, browserInstanceId);
+                eventBus.initCatLocSelector(popup.getSelectorPanel(), browserBuilder);
                 popup.show();
             }
         });
@@ -157,8 +145,8 @@ public class ManagerPresenter
                     view.getTableDataProvider().getList().remove(updatingTableItemIdx);
                 }
                 final List<ICatLocDetail> selectedCatLocs = new ArrayList<ICatLocDetail>();
-                eventBus.fillCatLocs(selectedCatLocs, browserInstanceId);
-                eventBus.addCatLocs(selectedCatLocs);
+                eventBus.fillCatLocs(selectedCatLocs, browserBuilder.getInstanceId());
+                eventBus.addCatLocs(selectedCatLocs, builder.getInstanceId());
             }
         });
     }
@@ -169,33 +157,24 @@ public class ManagerPresenter
     /**
      * Call when new intance of SelectorManager is requested.
      */
-    public void onInitNewCatLocSelectorManager(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
+    public void onInitNewCatLocSelectorManager(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
         this.builder = builder;
-        this.instanceId = instanceId;
+        this.instanceId = builder.getInstanceId();
         this.registerRestrition = builder.getSelectionRestriction();
-        this.browserBuilder = new CatLocSelectorBuilder.Builder()
-                .initSelectorCellBrowser()
-                .setSelectionRestriction(builder.getSelectionRestriction())
-                .build();
-        this.browserBuilder.setCheckboxes(builder.getCheckboxes());
-        this.browserBuilder.setSelectorType(builder.getSelectorType());
-        if (builder.getSelectorType() == CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES) {
-            //Combine two instance id ids, because manager has instance's ID according to view's
-            //but manager's browse feature would have always have same ID
-            browserInstanceId = Constants.CAT_LOC_SELECTOR_MODULE + instanceId;
-        } else {
-            browserInstanceId = -Constants.CAT_LOC_SELECTOR_MODULE - instanceId;
-        }
+        this.browserBuilder = new CatLocSelectorBuilder.Builder(Constants.CAT_LOC_SELECTOR_MODULE)
+            .initSelectorCellBrowser()
+            .setSelectionRestriction(builder.getSelectionRestriction())
+            .setCheckboxes(builder.getCheckboxes())
+            .setSelectorType(builder.getSelectorType())
+            .build();
         initCatLocSelectorManager(embedWidget, builder);
     }
 
     /**
      * Call when same intance of SelectorManager is requested.
      */
-    public void onInitSameCatLocSelectorManager(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
-        if (this.instanceId == instanceId) {
+    public void onInitSameCatLocSelectorManager(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
+        if (this.instanceId == builder.getInstanceId()) {
             initCatLocSelectorManager(embedWidget, builder);
         }
     }
@@ -248,9 +227,11 @@ public class ManagerPresenter
      * Same like <b>onAddCatLocs</b> method but clears table fist.
      * @param catLocs - list of items to be set
      */
-    public void onSetCatLocs(List<ICatLocDetail> catLocs) {
-        view.getTableDataProvider().getList().clear();
-        onAddCatLocs(catLocs);
+    public void onSetCatLocs(List<ICatLocDetail> catLocs, int instanceId) {
+        if (this.instanceId == instanceId) {
+            view.getTableDataProvider().getList().clear();
+            onAddCatLocs(catLocs, instanceId);
+        }
     }
 
     /**
@@ -259,13 +240,15 @@ public class ManagerPresenter
      * Request for full item hierarchy before adding to table.
      * @param catLocs list of items to be set
      */
-    public void onAddCatLocs(List<ICatLocDetail> catLocs) {
-        updatingTableItemIdx = -1;
-        for (ICatLocDetail cat : catLocs) {
-            if (isAlreadySelected(cat)) {
-                Window.alert("Item \"".concat(cat.getName()).concat("\" already added."));
-            } else {
-                eventBus.requestHierarchy(builder.getSelectorType(), cat, instanceId);
+    public void onAddCatLocs(List<ICatLocDetail> catLocs, int instanceId) {
+        if (this.instanceId == instanceId) {
+            updatingTableItemIdx = -1;
+            for (ICatLocDetail cat : catLocs) {
+                if (isAlreadySelected(cat)) {
+                    Window.alert("Item \"".concat(cat.getName()).concat("\" already added."));
+                } else {
+                    eventBus.requestHierarchy(builder.getSelectorType(), cat, instanceId);
+                }
             }
         }
     }
@@ -279,11 +262,13 @@ public class ManagerPresenter
      * @param idx updating table row index
      * @param catLocHierarchy selected item - catLoc's hierarchy
      */
-    public void tableBrowseHandler(int idx, LinkedList<CatLocTreeItem> catLocHierarchy) {
-        updatingTableItemIdx = idx;
-        eventBus.initCatLocSelector(popup.getSelectorPanel(), browserBuilder, browserInstanceId);
-        eventBus.responseHierarchy(catLocHierarchy, browserInstanceId);
-        popup.show();
+    public void tableBrowseHandler(int idx, LinkedList<CatLocTreeItem> catLocHierarchy, int instanceId) {
+        if (this.instanceId == instanceId) {
+            updatingTableItemIdx = idx;
+            eventBus.initCatLocSelector(popup.getSelectorPanel(), browserBuilder);
+            eventBus.responseHierarchy(catLocHierarchy, browserBuilder.getInstanceId());
+            popup.show();
+        }
     }
 
     /**************************************************************************/

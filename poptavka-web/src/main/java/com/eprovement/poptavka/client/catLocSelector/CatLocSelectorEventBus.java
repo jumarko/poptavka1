@@ -42,7 +42,7 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
      * CatLocManager, CatLocCellBrowser or CatLocTreeBrowser.
      */
     @Event(handlers = CatLocSelectorInstanceManager.class)
-    void initCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     /**
      * Append given list with selected catLocs from CatLoc Selector widget.
@@ -62,10 +62,10 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     /* Business events handled by CatLocManagerPresenter                    */
     /**************************************************************************/
     @Event(generate = ManagerPresenter.class)
-    void initNewCatLocSelectorManager(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initNewCatLocSelectorManager(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = ManagerPresenter.class)
-    void initSameCatLocSelectorManager(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initSameCatLocSelectorManager(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = ManagerPresenter.class)
     void fillCatLocsFromManager(List<ICatLocDetail> selectedCatLocs, int instanceId);
@@ -74,19 +74,19 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     void responseHierarchyForManager(LinkedList<CatLocTreeItem> result, int instanceId);
 
     @Event(handlers = ManagerPresenter.class)
-    void setCatLocs(List<ICatLocDetail> catLocs);
+    void setCatLocs(List<ICatLocDetail> catLocs, int instanceId);
 
     @Event(handlers = ManagerPresenter.class)
-    void addCatLocs(List<ICatLocDetail> catLocs);
+    void addCatLocs(List<ICatLocDetail> catLocs, int instanceId);
 
     /**************************************************************************/
     /* Business events handled by TreeBrowserPresenter                        */
     /**************************************************************************/
     @Event(generate = TreeBrowserPresenter.class)
-    void initNewCatLocSelectorTreeBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initNewCatLocSelectorTreeBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = TreeBrowserPresenter.class)
-    void initSameCatLocSelectorTreeBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initSameCatLocSelectorTreeBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = TreeBrowserPresenter.class)
     void fillCatLocsFromTreeBrowser(List<ICatLocDetail> selectedCatLocs, int instanceId);
@@ -109,10 +109,10 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     /* Business events handled by CellBrowserPresenter                        */
     /**************************************************************************/
     @Event(generate = CellBrowserPresenter.class)
-    void initNewCatLocSelectorCellBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initNewCatLocSelectorCellBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = CellBrowserPresenter.class)
-    void initSameCatLocSelectorCellBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initSameCatLocSelectorCellBrowser(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(handlers = CellBrowserPresenter.class)
     void fillCatLocsFromCellBrowser(List<ICatLocDetail> selectedCatLocs, int instanceId);

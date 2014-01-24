@@ -19,13 +19,13 @@ import java.util.List;
 public interface CatLocSelectorGateway {
 
     @Event(forwardToParent = true)
-    void initCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(forwardToParent = true)
     void fillCatLocs(List<ICatLocDetail> selectedCategories, int instanceId);
 
     @Event(forwardToParent = true)
-    void setCatLocs(List<ICatLocDetail> categories);
+    void setCatLocs(List<ICatLocDetail> categories, int instanceId);
 
     @Event(forwardToParent = true)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);

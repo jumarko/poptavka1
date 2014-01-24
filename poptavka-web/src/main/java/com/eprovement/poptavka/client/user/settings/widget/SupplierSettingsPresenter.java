@@ -81,16 +81,14 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                eventBus.initCatLocSelector(
-                    view.getSelectorPopup().getSelectorPanel(),
-                    new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initCategorySelector()
                         .initSelectorManager()
                         .withCheckboxesOnLeafsOnly()
                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                        .build(),
-                    Constants.USER_SETTINGS_MODULE);
-                eventBus.setCatLocs(view.getCategories());
+                        .build();
+                eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getCategories(), builder.getInstanceId());
                 view.getSelectorPopup().show();
             }
         });
@@ -98,16 +96,14 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                eventBus.initCatLocSelector(
-                    view.getSelectorPopup().getSelectorPanel(),
-                    new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initLocalitySelector()
                         .initSelectorManager()
                         .withCheckboxesOnLeafsOnly()
                         .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                        .build(),
-                    -Constants.USER_SETTINGS_MODULE);
-                eventBus.setCatLocs(view.getLocalities());
+                        .build();
+                eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getLocalities(), builder.getInstanceId());
                 view.getSelectorPopup().show();
             }
         });
