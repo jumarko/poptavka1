@@ -254,13 +254,12 @@ public class AdvanceSearchPresenter
                         if (view.getCategorySelectorPanel().getWidget() == null) {
                             eventBus.initCatLocSelector(
                                     view.getCategorySelectorPanel(),
-                                    new CatLocSelectorBuilder.Builder()
+                                    new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
                                         .initCategorySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
                                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                        .build(),
-                                    Constants.HOME_SEARCH_MODULE);
+                                        .build());
                         }
                         break;
                     case AdvanceSearchView.LOCALITY_SELECTOR_WIDGET:
@@ -269,13 +268,12 @@ public class AdvanceSearchPresenter
                         if (view.getLocalitySelectorPanel().getWidget() == null) {
                             eventBus.initCatLocSelector(
                                     view.getLocalitySelectorPanel(),
-                                    new CatLocSelectorBuilder.Builder()
+                                    new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
                                         .initLocalitySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
                                         .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                        .build(),
-                                    -Constants.HOME_SEARCH_MODULE);
+                                        .build());
                         }
                         break;
                     default:

@@ -148,7 +148,10 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
         }, new FieldUpdater<LinkedList<CatLocTreeItem>, String>() {
             @Override
             public void update(int index, LinkedList<CatLocTreeItem> object, String value) {
-                presenter.tableBrowseHandler(dataProvider.getList().indexOf(object), object);
+                //This is not going throug eventBus, therefore doesn't need to pass instanceId.
+                //But in case of further development this can be forget, therefore pass id anyway.
+                presenter.tableBrowseHandler(dataProvider.getList().indexOf(object),
+                    object, presenter.getBuilder().getInstanceId());
             }
         }, StyleResource.INSTANCE.common().selectorButtonBrown());
 
@@ -256,8 +259,7 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
     }
 
     /**
-     * Validates view's components.
-     * @return true if valid, false otherwise
+     * {@inheritDoc}
      */
     @Override
     public boolean isValid() {

@@ -116,12 +116,11 @@ public class HomeSuppliersPresenter
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
         eventBus.initCatLocSelector(
                 view.getCategoryTreePanel(),
-                new CatLocSelectorBuilder.Builder()
+                new CatLocSelectorBuilder.Builder(Constants.HOME_SUPPLIERS_MODULE)
                     .initCategorySelector()
                     .initSelectorTreeBrowser()
                     .displayCountOfSuppliers()
-                    .build(),
-                Constants.HOME_SUPPLIERS_MODULE);
+                    .build());
         /* Registering tree selection handler must to be here, because above initialization creates new tree.
          * I haven't found a way of resetting tree to it's initial state without recreating it. */
         treeSelectionChangeHandler();

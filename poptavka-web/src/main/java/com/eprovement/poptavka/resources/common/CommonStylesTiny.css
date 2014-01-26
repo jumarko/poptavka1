@@ -84,7 +84,11 @@
 /* MyListBox - used for custom select-box */
 .myListBox {}
 /* Alert Box styles */
-.alert-container {}
+.alert-container .alert {
+    background: #DDD8C5;
+    padding: 10px;
+    font-size: 12px;
+}
 .selector-data-grid {}
 
 .catLocManager {}

@@ -136,10 +136,9 @@ public class CellBrowserPresenter
     /**
      * Call when new intance of CellBrowser is requested.
      */
-    public void onInitNewCatLocSelectorCellBrowser(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
+    public void onInitNewCatLocSelectorCellBrowser(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
         this.builder = builder;
-        this.instanceId = instanceId;
+        this.instanceId = builder.getInstanceId();
         this.registerRestriction = builder.getSelectionRestriction();
         initCatLocSelectorCellBrowser(embedWidget);
     }
@@ -147,9 +146,8 @@ public class CellBrowserPresenter
     /**
      * Call when same intance of CellBrowser is requested.
      */
-    public void onInitSameCatLocSelectorCellBrowser(
-            SimplePanel embedWidget, CatLocSelectorBuilder builder, int instanceId) {
-        if (this.instanceId == instanceId) {
+    public void onInitSameCatLocSelectorCellBrowser(SimplePanel embedWidget, CatLocSelectorBuilder builder) {
+        if (this.instanceId == builder.getInstanceId()) {
             initCatLocSelectorCellBrowser(embedWidget);
         }
     }

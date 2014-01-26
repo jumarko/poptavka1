@@ -9,13 +9,13 @@
     
     <g:HTMLPanel styleName="{res.initial.toolbar}">
         <b:Tooltip text="{msgs.toolbarRightMenu}" placement="LEFT">            
-            <g:Image ui:field='detailAnchor' resource='{res.images.toolbarButtonRight}' addStyleNames='right-icon'/>
+            <g:Image ui:field='detailAnchor' resource='{res.images.toolbarButtonRightToOpen}' addStyleNames='right-icon'/>
         </b:Tooltip>
         
         <g:FlowPanel>
             <!--Tree icon-->
             <b:Tooltip text="{msgs.toolbarLeftMenu}" placement="RIGHT">
-                <g:Image ui:field='categoriesAnchor' resource='{res.images.toolbarButtonLeft}' addStyleNames='left-icon'/>
+                <g:Image ui:field='categoriesAnchor' resource='{res.images.toolbarButtonLeftToOpen}' addStyleNames='left-icon'/>
             </b:Tooltip>
 
             <b:Heading size='2' ui:field='title' styleName='header'/>

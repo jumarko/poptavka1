@@ -143,16 +143,15 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                eventBus.initCatLocSelector(
-                        view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(),
-                        new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                            .build(),
-                        Constants.ADMIN_DEMANDS);
-                eventBus.setCatLocs(view.getAdminDemandDetail().getCategories());
+                            .build();
+                eventBus.initCatLocSelector(
+                    view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getAdminDemandDetail().getCategories(), builder.getInstanceId());
                 view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });
@@ -160,15 +159,15 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                eventBus.initCatLocSelector(
-                        view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(),
-                        new CatLocSelectorBuilder.Builder()
+                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                            .build(),
-                        -Constants.ADMIN_DEMANDS);
+                            .build();
+                eventBus.initCatLocSelector(
+                        view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
+                eventBus.setCatLocs(view.getAdminDemandDetail().getLocalities(), builder.getInstanceId());
                 view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });

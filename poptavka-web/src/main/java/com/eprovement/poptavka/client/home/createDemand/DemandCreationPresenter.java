@@ -220,13 +220,12 @@ public class DemandCreationPresenter
                 if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
                     eventBus.initCatLocSelector(
                         view.getHolderPanel(THIRD_TAB_CATEGORY),
-                        new CatLocSelectorBuilder.Builder()
+                        new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxesOnLeafsOnly()
                             .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                            .build(),
-                        Constants.CREATE_DEMAND);
+                            .build());
                 }
                 setHeightSelector();
                 break;
@@ -235,13 +234,12 @@ public class DemandCreationPresenter
                 if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
                     eventBus.initCatLocSelector(
                         view.getHolderPanel(FOURTH_TAB_LOCALITY),
-                        new CatLocSelectorBuilder.Builder()
+                        new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                            .build(),
-                        -Constants.CREATE_DEMAND);
+                            .build());
                 }
                 setHeightSelector();
                 break;

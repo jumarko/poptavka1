@@ -23,10 +23,10 @@ public final class CatLocSelectorBuilder {
     public static final int COUNTS_DISABLED = 0;
     public static final int COUNTS_DEMANDS = 1;
     public static final int COUNTS_SUPPLIERS = 2;
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    private int instanceId;
     private int selectorType;
     private int widgetType;
     private int checkboxes;
@@ -34,19 +34,12 @@ public final class CatLocSelectorBuilder {
     private int selectionRestriction;
 
     /**************************************************************************/
-    /* Setters                                                                */
-    /**************************************************************************/
-    public void setSelectorType(int selectorType) {
-        this.selectorType = selectorType;
-    }
-
-    public void setCheckboxes(int checkboxes) {
-        this.checkboxes = checkboxes;
-    }
-
-    /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    public int getInstanceId() {
+        return instanceId;
+    }
+
     public int getSelectorType() {
         return selectorType;
     }
@@ -72,6 +65,7 @@ public final class CatLocSelectorBuilder {
     /**************************************************************************/
     public static class Builder {
 
+        private int instanceBaseId;
         /**
          * Categories
          * Localities
@@ -101,7 +95,15 @@ public final class CatLocSelectorBuilder {
          */
         private int selectionRestriction = 0;
 
-        public Builder() {
+        /**
+         * Creates CatLocSelectorBuilder. Privides some unique instanceBaseId.
+         * The best practise would be to provide widgetId to bind instances to widget which uses them.
+         * InstaceBaseId is then used to creates unique instanceId from instanceBaseId(widgetId) and selectorType.
+         *
+         * @param instanceBaseId unique id which will be used to build instanceId
+         */
+        public Builder(int instanceBaseId) {
+            this.instanceBaseId = instanceBaseId;
         }
 
         public Builder initCategorySelector() {
@@ -154,6 +156,16 @@ public final class CatLocSelectorBuilder {
             return this;
         }
 
+        public Builder setSelectorType(int selectorType) {
+            this.selectorType = selectorType;
+            return this;
+        }
+
+        public Builder setCheckboxes(int checkboxes) {
+            this.checkboxes = checkboxes;
+            return this;
+        }
+
         public CatLocSelectorBuilder build() {
             return new CatLocSelectorBuilder(this);
         }
@@ -164,10 +176,31 @@ public final class CatLocSelectorBuilder {
     /**************************************************************************/
     private CatLocSelectorBuilder(Builder builder) {
 
+        //create unique instanceId from widgetId and selectorType
+        this.instanceId = buildInstanceId(builder.instanceBaseId, builder.selectorType);
         this.selectorType = builder.selectorType;
         this.widgetType = builder.widgetType;
         this.checkboxes = builder.checkboxes;
         this.displayCountsOfWhat = builder.displayCountsOfWhat;
         this.selectionRestriction = builder.selectionRestriction;
+    }
+
+    /**
+     * Creates instanceId from instanceBaseId and selectorType.
+     * <br/>
+     * Rules:<br/>
+     * instance is build: instanceBaseId * 100 +/i selectorType.<br/>
+     * +/- depends on selectorType ( + for categories, - for localities )<br/>
+     *
+     * @param instanceBaseId
+     * @param selectorType
+     * @return unique instanceId
+     */
+    private int buildInstanceId(int instanceBaseId, int selectorType) {
+        if (selectorType == SELECTOR_TYPE_CATEGORIES) {
+            return selectorType * 100 + instanceBaseId;
+        } else {
+            return -(selectorType * 100 + instanceBaseId);
+        }
     }
 }

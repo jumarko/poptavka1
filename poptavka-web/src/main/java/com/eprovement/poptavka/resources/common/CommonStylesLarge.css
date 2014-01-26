@@ -790,9 +790,8 @@ button.button-green {
     border: medium none;
     border-radius: 5px 5px 5px 5px;
     color: #000000;
-    min-height: 27px;
     margin: 0;
-    padding: 17px 35px 8px 60px;
+    padding: 12px 35px 12px 60px;
 }
 
 .alert-container .alert .gwt-Label {

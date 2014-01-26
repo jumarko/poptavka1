@@ -63,7 +63,10 @@ body > div {
     display: none;
 }
 .toolbar .item {
-    margin: 6px 5px 0 0;
+    margin: 6px 2px 0 0;
+}
+.toolbar .right-icon {
+    margin: 6px 2px 0;
 }
 /******************************************************************************/
 /*  Footer View                                                               */

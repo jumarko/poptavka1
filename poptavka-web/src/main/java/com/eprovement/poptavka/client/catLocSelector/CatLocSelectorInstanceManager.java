@@ -75,13 +75,12 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
      * @param instanceId - required instance id, if not exist yet, created new,
      *                     otherwise return coresponsing instance
      */
-    public void onInitCatLocSelector(
-            SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId) {
-        if (this.instanceIds.containsKey(instanceId)) {
-            initSameCatLocSelector(embedToWidget, builder, instanceId);
+    public void onInitCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder) {
+        if (this.instanceIds.containsKey(builder.getInstanceId())) {
+            initSameCatLocSelector(embedToWidget, builder);
         } else {
-            this.instanceIds.put(instanceId, builder.getWidgetType());
-            initNewCatLocSelector(embedToWidget, builder, instanceId);
+            this.instanceIds.put(builder.getInstanceId(), builder.getWidgetType());
+            initNewCatLocSelector(embedToWidget, builder);
         }
     }
 
@@ -140,16 +139,16 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
      * CatLocManager, CatLocCellBrowser or CatLocTreeBrowser.
      * Only same instance are allowed to response.
      */
-    private void initNewCatLocSelector(SimplePanel holder, CatLocSelectorBuilder builder, int instanceId) {
+    private void initNewCatLocSelector(SimplePanel holder, CatLocSelectorBuilder builder) {
         switch (builder.getWidgetType()) {
             case CatLocSelectorBuilder.WIDGET_TYPE_MANAGER:
-                eventBus.initNewCatLocSelectorManager(holder, builder, instanceId);
+                eventBus.initNewCatLocSelectorManager(holder, builder);
                 break;
             case CatLocSelectorBuilder.WIDGET_TYPE_TREE:
-                eventBus.initNewCatLocSelectorTreeBrowser(holder, builder, instanceId);
+                eventBus.initNewCatLocSelectorTreeBrowser(holder, builder);
                 break;
             case CatLocSelectorBuilder.WIDGET_TYPE_BROWSER:
-                eventBus.initNewCatLocSelectorCellBrowser(holder, builder, instanceId);
+                eventBus.initNewCatLocSelectorCellBrowser(holder, builder);
                 break;
             default:
                 break;
@@ -163,16 +162,16 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
      * CatLocManager, CatLocCellBrowser or CatLocTreeBrowser.
      * Only same instance are allowed to response.
      */
-    private void initSameCatLocSelector(SimplePanel holder, CatLocSelectorBuilder builder, int instanceId) {
+    private void initSameCatLocSelector(SimplePanel holder, CatLocSelectorBuilder builder) {
         switch (builder.getWidgetType()) {
             case CatLocSelectorBuilder.WIDGET_TYPE_MANAGER:
-                eventBus.initSameCatLocSelectorManager(holder, builder, instanceId);
+                eventBus.initSameCatLocSelectorManager(holder, builder);
                 break;
             case CatLocSelectorBuilder.WIDGET_TYPE_TREE:
-                eventBus.initSameCatLocSelectorTreeBrowser(holder, builder, instanceId);
+                eventBus.initSameCatLocSelectorTreeBrowser(holder, builder);
                 break;
             case CatLocSelectorBuilder.WIDGET_TYPE_BROWSER:
-                eventBus.initSameCatLocSelectorCellBrowser(holder, builder, instanceId);
+                eventBus.initSameCatLocSelectorCellBrowser(holder, builder);
                 break;
             default:
                 break;

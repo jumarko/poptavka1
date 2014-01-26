@@ -359,14 +359,13 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /** CategorySelection section. **/
     @Event(forwardToModules = CatLocSelectorModule.class)
-    void initCatLocSelector(
-            SimplePanel embedToWidget, CatLocSelectorBuilder builder, int instanceId);
+    void initCatLocSelector(SimplePanel embedToWidget, CatLocSelectorBuilder builder);
 
     @Event(forwardToModules = CatLocSelectorModule.class)
     void fillCatLocs(List<ICatLocDetail> selectedCategories, int instanceId);
 
     @Event(forwardToModules = CatLocSelectorModule.class)
-    void setCatLocs(List<ICatLocDetail> categories);
+    void setCatLocs(List<ICatLocDetail> categories, int instanceId);
 
     @Event(forwardToModules = CatLocSelectorModule.class)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
