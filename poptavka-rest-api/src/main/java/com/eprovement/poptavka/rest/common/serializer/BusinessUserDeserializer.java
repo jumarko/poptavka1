@@ -78,7 +78,8 @@ public class BusinessUserDeserializer implements Converter<BusinessUserDto, Busi
             for (LocalityDto addressDto : businessUserDto.getAddresses()) {
                 final Address address = new Address();
                 final com.eprovement.poptavka.domain.address.Locality city =
-                        localityService.findCityByName(addressDto.getRegion(), addressDto.getCity());
+                        localityService.findCityByName(addressDto.getRegion(), addressDto.getDistrict(),
+                                addressDto.getCity());
                 if (city == null) {
                     throw new IllegalArgumentException(
                             String.format("No city locality found for state name '%s' and city name '%s'",

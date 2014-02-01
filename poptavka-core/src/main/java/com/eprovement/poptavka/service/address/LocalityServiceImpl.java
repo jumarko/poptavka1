@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.service.address;
 
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notEmpty;
+
 import com.eprovement.poptavka.dao.address.LocalityDao;
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
@@ -8,7 +11,8 @@ import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.googlecode.ehcache.annotations.Cacheable;
 import java.util.List;
-import org.apache.commons.lang.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -23,6 +27,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDao> implements LocalityService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalityServiceImpl.class);
+
 
     public LocalityServiceImpl(LocalityDao localityDao) {
         setDao(localityDao);
@@ -36,29 +42,54 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     @Cacheable(cacheName = "localityCache")
-    public Locality findCityByName(String region, String cityName) {
-        Validate.notEmpty(region, "region cannot be empty!");
-        Validate.notEmpty(cityName, "cityName cannot be empty!");
-        return getDao().findCityByName(findRegion(region), cityName);
+    public Locality findCityByName(String region, String district, String city) {
+        notEmpty(region, "region cannot be empty!");
+        notEmpty(district, "district cannot be empty!");
+        notEmpty(city, "city cannot be empty!");
+        final Locality d = findDistrictByName(region, district);
+        if (d == null) {
+            return null;
+        }
+        final Locality c = getDao().findCityByName(d, city);
+        if (c == null) {
+            LOGGER.info("No city has been found for region_name={} district_name={} city_name={}",
+                    region, district, city);
+            return null;
+        }
+        return c;
     }
 
     @Override
     @Cacheable(cacheName = "localityCache")
-    public Locality findDistrictByName(String region, String districtName) {
-        Validate.notEmpty(region, "region cannot be empty!");
-        Validate.notEmpty(districtName, "districtName cannot be empty!");
-        return getDao().findDistrictByName(findRegion(region), districtName);
+    public Locality findDistrictByName(String region, String district) {
+        notEmpty(region, "region cannot be empty!");
+        notEmpty(district, "district cannot be empty!");
+        final Locality r = findRegion(region);
+        if (r == null) {
+            return null;
+        }
+        final Locality d = getDao().findDistrictByName(r, district);
+        if (d == null) {
+            LOGGER.info("No district has been found for region_name={} district_name={}", region, district);
+            return null;
+        }
+        return d;
     }
 
     @Override
     @Cacheable(cacheName = "regionCache")
     public Locality findRegion(String region) {
-        Validate.notEmpty(region, "region cannot be empty!");
+        notEmpty(region, "region cannot be empty!");
         final Locality regionByAbbr = getDao().findRegionByAbbreviation(region);
         if (regionByAbbr != null) {
             return regionByAbbr;
         }
-        return getDao().findRegionByName(region);
+        final Locality r = getDao().findRegionByName(region);
+        if (r == null) {
+            LOGGER.info("No region has been found for region_name={}", region);
+            return null;
+        }
+        return r;
     }
 
     @Override
@@ -78,7 +109,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     @Cacheable(cacheName = "localityCache")
     public List<Locality> getSubLocalities(long localityId) {
         final Locality locality = getLocality(localityId);
-        Validate.isTrue(locality != null, "No locality with id=" + localityId + " has been found!");
+        isTrue(locality != null, "No locality with id=" + localityId + " has been found!");
         return locality.getChildren();
     }
 

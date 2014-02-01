@@ -31,7 +31,8 @@ public class LocalityDeserializer {
             if (localityDto.getId() != null) {
                 locality = localityService.getLocality(localityDto.getId());
             } else if (StringUtils.isNotEmpty(localityDto.getCity())) {
-                locality = localityService.findCityByName(localityDto.getRegion(), localityDto.getCity());
+                locality = localityService.findCityByName(localityDto.getRegion(), localityDto.getDistrict(),
+                        localityDto.getCity());
             } else if (StringUtils.isNotEmpty(localityDto.getDistrict())) {
                 locality = localityService.findDistrictByName(localityDto.getRegion(), localityDto.getDistrict());
             } else {

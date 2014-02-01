@@ -25,17 +25,17 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     /**
      * Get all localities of given type.
      *
-     * @param localityType
-     * @return
+     * @param localityType type of locality
+     * @return all localities of given type
      */
     List<Locality> getLocalities(LocalityType localityType);
 
     /**
      * Same as {@link #getLocalities(com.eprovement.poptavka.domain.enums.LocalityType)}
      * but additional criteria can be applied.
-     * @param localityType
+     * @param localityType type of locality
      * @param resultCriteria optional additional criteria which can be applied to the localities
-     * @return
+     * @return all localities of given type filtered by {@code resultCriteria}
      */
     List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria);
 
@@ -43,7 +43,7 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
      * Get locality by given code. Code must be a unique identifier!
      *
      * @param id unique id for identifying locality
-     * @return
+     * @return locality with given id or null if no such locality exists
      */
     Locality getLocality(Long id);
 
@@ -59,24 +59,26 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     Locality findRegion(String region);
 
     /**
-     * Finds city by its name and region (state) to which its belongs.
-     * Region is required because there can be multiple cities with same names in one region (e.g. in USA).
+     * Finds city by its name, district and region (state) to which its belongs.
+     * Region and district are required because there
+     * can be multiple cities with same names in one region (e.g. region 'Oregon' and city 'Portland').
      *
-     * @param regionName name of region in which the city is located
-     * @param cityName name of city
+     * @param region name of region in which the city is located
+     * @param district name of district in which the city is located
+     * @param city name of city
      * @return found city or null if no such city exists
      */
-    Locality findCityByName(String regionName, String cityName);
+    Locality findCityByName(String region, String district, String city);
 
     /**
      * Finds district by its name and region (state) to which its belongs.
      * Region is required because there are multiple districts (counties) with same names in one region (e.g. in USA).
      *
-     * @param regionName name of region in which the district is located
-     * @param districtName name of district (county in USA)
+     * @param region name of region in which the district is located
+     * @param district name of district (county in USA)
      * @return found city or null if no such district exists
      */
-    Locality findDistrictByName(String regionName, String districtName);
+    Locality findDistrictByName(String region, String district);
 
     /**
      * Gets a list of localities whose name is shorter than <code>maxlengthExcl</code> and
