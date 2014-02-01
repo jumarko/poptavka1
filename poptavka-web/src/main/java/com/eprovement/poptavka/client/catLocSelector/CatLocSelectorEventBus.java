@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.event.EventBusWithLookup;
@@ -93,17 +92,6 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
 
     @Event(handlers = TreeBrowserPresenter.class)
     void responseHierarchyForTreeBrowser(LinkedList<CatLocTreeItem> result, int instanceId);
-
-    /**
-     * Register selection model to cellTree in TreeBrowser widget.
-     * Since TreeBrowser holds functionality to get data, open, close, select items over cellTree,
-     * therefor if another "outside" widget wants to act or to have access to selected items,
-     * it must implement its selection model (which holds wanted functionality) and register here.
-     * To have access to selected items selectino model must call also
-     * @see fillCatLocs(List<CatLocDetail> selectedCatLocs)
-     */
-    @Event(handlers = TreeBrowserPresenter.class)
-    void registerCatLocTreeSelectionHandler(SelectionChangeEvent.Handler selectionHandler);
 
     /**************************************************************************/
     /* Business events handled by CellBrowserPresenter                        */

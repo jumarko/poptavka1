@@ -44,7 +44,6 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -369,9 +368,6 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(forwardToModules = CatLocSelectorModule.class)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
-
-    @Event(forwardToModules = CatLocSelectorModule.class)
-    void registerCatLocTreeSelectionHandler(SelectionChangeEvent.Handler selectionHandler);
 
     /**************************************************************************/
     /* ADDRESS SELECTOR MODULE.                                               */

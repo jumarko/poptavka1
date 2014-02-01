@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.catLocSelector.others;
 
+import com.google.gwt.view.client.SelectionChangeEvent;
+
 /**
  * CatLocSelectionBuilder for making creation of CellTree, CellBrowser and Manager easier.
  * @author Martin Slavkovsky
@@ -32,6 +34,7 @@ public final class CatLocSelectorBuilder {
     private int checkboxes;
     private int displayCountsOfWhat;
     private int selectionRestriction;
+    private SelectionChangeEvent.Handler handler;
 
     /**************************************************************************/
     /* Getters                                                                */
@@ -58,6 +61,10 @@ public final class CatLocSelectorBuilder {
 
     public int getSelectionRestriction() {
         return selectionRestriction;
+    }
+
+    public SelectionChangeEvent.Handler getHandler() {
+        return handler;
     }
 
     /**************************************************************************/
@@ -94,6 +101,10 @@ public final class CatLocSelectorBuilder {
          * x - allow x selected categories
          */
         private int selectionRestriction = 0;
+        /**
+         * Additional selection hadnler for handling selection events outside module.
+         */
+        private SelectionChangeEvent.Handler handler;
 
         /**
          * Creates CatLocSelectorBuilder. Privides some unique instanceBaseId.
@@ -161,6 +172,19 @@ public final class CatLocSelectorBuilder {
             return this;
         }
 
+        /**
+         * Register selection model to cellTree in TreeBrowser widget.
+         * Since TreeBrowser holds functionality to get data, open, close, select items over cellTree,
+         * therefore if another "outside" widget wants to act or to have access to selected items,
+         * it must implement its selection model (which holds wanted functionality) and register here.
+         * To have access to selected items selectino model must call also
+         * @see fillCatLocs(List<CatLocDetail> selectedCatLocs)
+         */
+        public Builder addSelectionHandler(SelectionChangeEvent.Handler handler) {
+            this.handler = handler;
+            return this;
+        }
+
         public Builder setCheckboxes(int checkboxes) {
             this.checkboxes = checkboxes;
             return this;
@@ -177,12 +201,13 @@ public final class CatLocSelectorBuilder {
     private CatLocSelectorBuilder(Builder builder) {
 
         //create unique instanceId from widgetId and selectorType
-        this.instanceId = buildInstanceId(builder.instanceBaseId, builder.selectorType);
+        this.instanceId = buildInstanceId(builder.selectorType, builder.instanceBaseId);
         this.selectorType = builder.selectorType;
         this.widgetType = builder.widgetType;
         this.checkboxes = builder.checkboxes;
         this.displayCountsOfWhat = builder.displayCountsOfWhat;
         this.selectionRestriction = builder.selectionRestriction;
+        this.handler = builder.handler;
     }
 
     /**
@@ -196,7 +221,7 @@ public final class CatLocSelectorBuilder {
      * @param selectorType
      * @return unique instanceId
      */
-    private int buildInstanceId(int instanceBaseId, int selectorType) {
+    private int buildInstanceId(int selectorType, int instanceBaseId) {
         if (selectorType == SELECTOR_TYPE_CATEGORIES) {
             return selectorType * 100 + instanceBaseId;
         } else {
