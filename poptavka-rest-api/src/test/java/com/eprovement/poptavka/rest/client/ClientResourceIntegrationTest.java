@@ -80,6 +80,7 @@ public class ClientResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"password\":\"kreslo\","
                                 + "\"addresses\":"
                                     + "[{\"region\":\"locality1\","
+                                    + "\"district\":\"locality11\","
                                     + "\"city\":\"locality111\","
                                     + " \"street\":\"Main road\"}]}")));
 
@@ -113,6 +114,7 @@ public class ClientResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"origin\":\"" + Origin.EXTERNAL_ORIGIN_CODE
                                 + "\"," + "\"addresses\":"
                                     + "[{\"region\":\"locality1\","
+                                    + "\"district\":\"locality11\","
                                     + "\"city\":\"locality111\","
                                     + " \"street\":\"Main road\"}]}")));
 

@@ -105,5 +105,18 @@ public class LocalityDto {
         return type;
     }
 
+    @Override
+    public String toString() {
+        return "LocalityDto{"
+                + "id=" + id
+                + ", type=" + type
+                + ", region='" + region + '\''
+                + ", district='" + district + '\''
+                + ", city='" + city + '\''
+                + ", street='" + street + '\''
+                + ", houseNum='" + houseNum + '\''
+                + ", zipCode='" + zipCode + '\''
+                + ", links=" + links + '}';
+    }
 }
 

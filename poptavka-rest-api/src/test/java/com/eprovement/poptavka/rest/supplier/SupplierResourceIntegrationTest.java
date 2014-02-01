@@ -134,7 +134,10 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"password\":\"kreslo\","
                                 // externalId 111110 == id 11, 111 and 1131
                                 + "\"categories\":[{\"externalId\":111110}],"
-                                + "\"localities\":[{\"region\":\"MM\"}],"
+                                + "\"localities\":[{\"region\":\"MM\"},"
+                                        + "{\"region\":\"locality1\",\"district\":\"locality11\"},"
+                                        + "{\"region\":\"locality1\",\"district\":\"locality11\","
+                                                                    + "\"city\":\"locality111\"}],"
                                 + "\"addresses\":"
                                     + "[{\"region\":\"LL\","
                                         + "\"district\":\"locality11\","

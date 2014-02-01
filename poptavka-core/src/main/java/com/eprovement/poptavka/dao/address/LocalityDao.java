@@ -22,20 +22,22 @@ public interface LocalityDao extends GenericDao<Locality> {
     Locality getLocality(Long id);
 
     /**
-     * Finds city by its region and city name.
-     * @param region parent region
+     * Finds city by its parent district and city name.
+     * @param district parent district
      * @param cityName name of city itself
      * @return city with given name or null if no such city has been found
-     * @throws NonUniqueResultException if more than one city has been found
+     * @throws org.hibernate.NonUniqueResultException if more than one city has been found
+     * @throws IllegalArgumentException if district is null or {@code cityName} is empty
      */
-    Locality findCityByName(Locality region, String cityName);
+    Locality findCityByName(Locality district, String cityName);
 
     /**
      * Finds district by its region and district name.
      * @param region parent region
      * @param districtName name of district (County in USA) itself
      * @return district with given name or null if no such district has been found
-     * @throws NonUniqueResultException if more than one district has been found
+     * @throws org.hibernate.NonUniqueResultException if more than one district has been found
+     * @throws IllegalArgumentException if region is null or {@code districtName} is empty
      */
     Locality findDistrictByName(Locality region, String districtName);
 
@@ -52,12 +54,12 @@ public interface LocalityDao extends GenericDao<Locality> {
      * @param region region name
      * @return region matching giving name or null if no such region exists.
      */
-    Locality findRegionByName(String name);
+    Locality findRegionByName(String region);
 
     /**
      * Get all localities of given type.
      *
-     * @param localityType
+     * @param localityType type of locality
      * @param resultCriteria optional additional criteria which can be applied to the localities
      * @return localities of given type filtered further by given criteria
      */

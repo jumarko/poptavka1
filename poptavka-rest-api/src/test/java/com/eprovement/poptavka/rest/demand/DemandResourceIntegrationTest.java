@@ -114,11 +114,11 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 // this external category is mapped to single internal category
                 new CategoryDto().setExternalId("311211")));
 
-        // use locality name instead of direct id
-        final LocalityDto city = new LocalityDto();
-        city.setRegion("locality1");
-        city.setDistrict("locality11");
-        demand.put("localities", newArrayList(city));
+        // use localities names instead of direct internal id
+        demand.put("localities", newArrayList(
+                new LocalityDto().setRegion("locality1").setDistrict("locality11"),
+                new LocalityDto().setRegion("locality2").setDistrict("locality21").setCity("locality214")));
+
 
         final DemandDto createdDemand = createDemandAndCheck(demand);
 
@@ -138,6 +138,18 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
 
         // no external category for id '113' exist!
         demand.put("categories", newArrayList(new CategoryDto().setExternalId("113")));
+
+        createAndExpectValidationError(demand);
+    }
+
+    @Test
+    public void createExternalDemandInvalidLocalityMissingDistrict() throws Exception {
+        final Map<String, Object> demand = validDemand();
+        demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        demand.put("localities", newArrayList(
+                // district has to be specified to ensure that unique city is found
+                new LocalityDto().setRegion("locality1").setCity("locality111")));
 
         createAndExpectValidationError(demand);
     }

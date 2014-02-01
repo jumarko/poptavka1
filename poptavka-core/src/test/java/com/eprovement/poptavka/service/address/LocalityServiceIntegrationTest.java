@@ -1,6 +1,8 @@
 package com.eprovement.poptavka.service.address;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -10,16 +12,16 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.service.common.TreeItemService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.Predicate;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Juraj Martinka
@@ -194,18 +196,30 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void findCityByName() throws Exception {
-        final Locality city = localityService.findCityByName("locality1", "locality111");
+        final Locality city = localityService.findCityByName("locality1", "locality11", "locality111");
         assertNotNull("city locality111 should exist", city);
         assertThat(city.getName(), is("locality111"));
-        assertThat(city.getParent(), CoreMatchers.<Locality>notNullValue());
-        assertThat(city.getParent().getParent(), CoreMatchers.<Locality>notNullValue());
+        assertThat(city.getParent(), notNullValue());
+        assertThat(city.getParent().getParent(), notNullValue());
         assertThat(city.getParent().getParent().getName(), is("locality1"));
     }
 
     @Test
-    public void findCityByNameThatDoesNotExist() throws Exception {
+    public void findCityByNameCityDoesntExist() throws Exception {
         assertThat("no city localityXYZ should exist",
-                localityService.findCityByName("locality1", "localityXYZ"), CoreMatchers.<Locality>nullValue());
+                localityService.findCityByName("locality1", "locality11", "localityXYZ"), nullValue());
+    }
+
+    @Test
+    public void findCityByNameDistrictDoesntExist() throws Exception {
+        assertThat("no district locality1X should exist",
+                localityService.findCityByName("locality1", "locality1X", "locality111"), nullValue());
+    }
+
+    @Test
+    public void findCityByNameRegionDoesntExist() throws Exception {
+        assertThat("no region localityX should exist",
+                localityService.findCityByName("localityX", "locality11", "locality111"), nullValue());
     }
 
     @Test
@@ -213,7 +227,7 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
         final Locality district = localityService.findDistrictByName("locality1", "locality12");
         assertNotNull("district locality12 should exist", district);
         assertThat(district.getName(), is("locality12"));
-        assertThat(district.getParent(), CoreMatchers.<Locality>notNullValue());
+        assertThat(district.getParent(), notNullValue());
         assertThat(district.getParent().getName(), is("locality1"));
     }
 
@@ -221,7 +235,7 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     public void findDistrictByNameThatDoesNotExist() throws Exception {
         // note, that "locality111" exists but that's a city so no district should be found
         assertThat("no district locality111 should exist",
-                localityService.findDistrictByName("locality1", "locality111"), CoreMatchers.<Locality>nullValue());
+                localityService.findDistrictByName("locality1", "locality111"), nullValue());
     }
 
     @Test
@@ -235,7 +249,7 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     public void findRegionByNameThatDoesNotExist() throws Exception {
         // note, that "locality11" exists but that's a district so no region should be found
         assertThat("no region locality111 should exist",
-                localityService.findRegion("locality11"), CoreMatchers.<Locality>nullValue());
+                localityService.findRegion("locality11"), nullValue());
     }
 
     @Test
@@ -249,7 +263,7 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void findRegionByAbbreviationThatDoesNotExist() throws Exception {
         assertThat("no region with abbreviation XY should exist",
-                localityService.findRegion("XY"), CoreMatchers.<Locality>nullValue());
+                localityService.findRegion("XY"), nullValue());
     }
 
     //--------------------- HELPER METHODS -----------------------------------------------------------------------------
@@ -262,7 +276,6 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     /**
      * Basic check of localities of given type.
      *
-     * @param type
      * @param expectedNumber how many lcalities of given type exists.
      * @return checked localities to allow more specialized checks.
      */
@@ -276,7 +289,6 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     /**
      * Basic check of localities of given type.
      *
-     * @param type
      * @param expectedNumber how many lcalities of given type exists.
      * @return checked localities to allow more specialized checks.
      */
@@ -292,8 +304,6 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
 
     /**
      * Check if locality with name <code>localityName</code> is in collection of given localities.
-     * @param allLocalities
-     * @param localityName
      */
     private void checkLocalityIn(Collection<Locality> allLocalities, final String localityName) {
         Assert.assertTrue(CollectionUtils.exists(allLocalities, new Predicate() {
