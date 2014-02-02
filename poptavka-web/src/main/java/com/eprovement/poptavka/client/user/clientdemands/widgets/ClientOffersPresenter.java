@@ -74,6 +74,8 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.initActionBox(this.view.getToolbar().getActionBox(), view.getParentTable());
         eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
+
         //Set visibility
         setChildTableVisible(false);
         setParentTableVisible(true);

@@ -60,11 +60,11 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_RATINGS);
         eventBus.createTokenForHistory();
         eventBus.resetSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
-        searchDataHolder = filter;
-
         eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-
+        eventBus.setFooter(view.getFooterContainer());
         eventBus.displayView(view.getWidgetView());
+
+        searchDataHolder = filter;
         //init wrapper widget
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }

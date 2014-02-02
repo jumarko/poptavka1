@@ -96,7 +96,6 @@ public abstract class AbstractClientPresenter
     public void bindView() {
         addParentTableSelectionHandler();
         addChildTableSelectionModelHandler();
-        eventBus.setFooter(view.getFooterContainer());
     }
 
     /**

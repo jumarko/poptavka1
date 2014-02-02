@@ -6,116 +6,129 @@
 
     <!-- injecting style resources -->
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:style>
+        .dashboard-footer > div {
+        max-width: 100% !important;
+        margin: 0 10px;
+        }
+    </ui:style>
 
     <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
-        <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields} {res.layout.dashboard}'>
+        <b:FluidContainer>
+            <g:HTMLPanel addStyleNames='{res.common.wellContainer} {res.common.formFields} {res.layout.dashboard}'>
+                <b:FluidRow>
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <!--<ui:msg key="professionalDashboard">Professional Dashboard</ui:msg>-->
+                                    <ui:msg key="recentNews">Recent News</ui:msg>
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>
+
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12">
+                                <b:FluidRow ui:field="potentialDemandsRow">
+                                    <b:Column size="12">
+                                        <g:HTML ui:field="potentialDemandsUnreadMessages" addStyleNames='label-list'/>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow ui:field="offeredDemandsRow">
+                                    <b:Column size="12">
+                                        <g:HTML ui:field="offeredDemandsUnreadMessages" addStyleNames='label-list'/>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow ui:field="assignedDemandsRow">
+                                    <b:Column size="12">
+                                        <g:HTML ui:field="assignedDemandsUnreadMessages" addStyleNames='label-list'/>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow ui:field="closedDemandsRow">
+                                    <b:Column size="12">
+                                        <g:HTML ui:field="closedDemandsUnreadMessages" addStyleNames='label-list'/>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:Column>
+
+                    <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    <ui:msg key="quickGuideToSupplierMenu">Quick Guide to Professional Menu</ui:msg>
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>
+
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12" addStyleNames='well-padding'>
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label addStyleNames='pull-left'>
+                                            <ui:msg key="menuSupplierDemands">Potential Projects</ui:msg>
+                                        </g:Label>
+                                        <g:Label styleName='description'>
+                                            <ui:msg key="potentialProjectsDescription">All projects matching your profession and localities</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label addStyleNames='pull-left'>
+                                            <ui:msg key="menuSupplierOffers">Offers</ui:msg>
+                                        </g:Label>
+                                        <g:Label styleName='description'>
+                                            <ui:msg key="offersSupplierDescription">Offers you made for projects that are waiting for Client's decision</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label addStyleNames='pull-left'>
+                                            <ui:msg key="menuSupplierAssignedDemands">Assigned Projects</ui:msg>
+                                        </g:Label>
+                                        <g:Label styleName='description'>
+                                            <ui:msg key="assignedProjectsSupplierDescription">Projects in progress that are assigned to you</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label addStyleNames='pull-left'>
+                                            <ui:msg key="menuSupplierClosedDemands">Closed Projects</ui:msg>
+                                        </g:Label>
+                                        <g:Label styleName='description'>
+                                            <ui:msg key="finishedProjectsSupplierDescription">Finished Projects accepted by Client</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+
+                                <b:FluidRow>
+                                    <b:Column size="12">
+                                        <g:Label addStyleNames='pull-left'>
+                                            <ui:msg key="menuSupplierRatings">My Ratings</ui:msg>
+                                        </g:Label>
+                                        <g:Label styleName='description'>
+                                            <ui:msg key="myRatingsSupplierDescription">Here you can check Feedback for Closed Projects</ui:msg>
+                                        </g:Label>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:Column>
+                </b:FluidRow>
+            </g:HTMLPanel>
             <b:FluidRow>
-                <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
-                    <b:FluidRow addStyleNames='well-header'>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <!--<ui:msg key="professionalDashboard">Professional Dashboard</ui:msg>-->
-                                <ui:msg key="recentNews">Recent News</ui:msg>
-                            </b:Heading>
-                        </b:Column>
-                    </b:FluidRow>
-
-                    <b:FluidRow addStyleNames='well-content'>
-                        <b:Column size="12">
-                            <b:FluidRow ui:field="potentialDemandsRow">
-                                <b:Column size="12">
-                                    <g:HTML ui:field="potentialDemandsUnreadMessages" addStyleNames='label-list'/>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow ui:field="offeredDemandsRow">
-                                <b:Column size="12">
-                                    <g:HTML ui:field="offeredDemandsUnreadMessages" addStyleNames='label-list'/>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow ui:field="assignedDemandsRow">
-                                <b:Column size="12">
-                                    <g:HTML ui:field="assignedDemandsUnreadMessages" addStyleNames='label-list'/>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow ui:field="closedDemandsRow">
-                                <b:Column size="12">
-                                    <g:HTML ui:field="closedDemandsUnreadMessages" addStyleNames='label-list'/>
-                                </b:Column>
-                            </b:FluidRow>
-                        </b:Column>
-                    </b:FluidRow>
-                </b:Column>
-
-                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
-                    <b:FluidRow addStyleNames='well-header'>
-                        <b:Column size="12">
-                            <b:Heading size="4">
-                                <ui:msg key="quickGuideToSupplierMenu">Quick Guide to Professional Menu</ui:msg>
-                            </b:Heading>
-                        </b:Column>
-                    </b:FluidRow>
-
-                    <b:FluidRow addStyleNames='well-content'>
-                        <b:Column size="12" addStyleNames='well-padding'>
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label addStyleNames='pull-left'>
-                                        <ui:msg key="menuSupplierDemands">Potential Projects</ui:msg>
-                                    </g:Label>
-                                    <g:Label styleName='description'>
-                                        <ui:msg key="potentialProjectsDescription">All projects matching your profession and localities</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label addStyleNames='pull-left'>
-                                        <ui:msg key="menuSupplierOffers">Offers</ui:msg>
-                                    </g:Label>
-                                    <g:Label styleName='description'>
-                                        <ui:msg key="offersSupplierDescription">Offers you made for projects that are waiting for Client's decision</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label addStyleNames='pull-left'>
-                                        <ui:msg key="menuSupplierAssignedDemands">Assigned Projects</ui:msg>
-                                    </g:Label>
-                                    <g:Label styleName='description'>
-                                        <ui:msg key="assignedProjectsSupplierDescription">Projects in progress that are assigned to you</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label addStyleNames='pull-left'>
-                                        <ui:msg key="menuSupplierClosedDemands">Closed Projects</ui:msg>
-                                    </g:Label>
-                                    <g:Label styleName='description'>
-                                        <ui:msg key="finishedProjectsSupplierDescription">Finished Projects accepted by Client</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-
-                            <b:FluidRow>
-                                <b:Column size="12">
-                                    <g:Label addStyleNames='pull-left'>
-                                        <ui:msg key="menuSupplierRatings">My Ratings</ui:msg>
-                                    </g:Label>
-                                    <g:Label styleName='description'>
-                                        <ui:msg key="myRatingsSupplierDescription">Here you can check Feedback for Closed Projects</ui:msg>
-                                    </g:Label>
-                                </b:Column>
-                            </b:FluidRow>
-                        </b:Column>
-                    </b:FluidRow>
+                <b:Column size='12'>
+                    <g:SimplePanel ui:field="footerContainer" addStyleNames='{style.dashboard-footer}'/>
                 </b:Column>
             </b:FluidRow>
         </b:FluidContainer>

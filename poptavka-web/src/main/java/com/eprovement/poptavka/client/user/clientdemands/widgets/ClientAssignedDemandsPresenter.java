@@ -74,6 +74,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
 
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_ASSIGNED_DEMANDS);
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
         this.assignedDemandsMode = true;
 
         initWidget(filter);
@@ -91,6 +92,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
 
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_CLOSED_DEMANDS);
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         initWidget(filter);
     }

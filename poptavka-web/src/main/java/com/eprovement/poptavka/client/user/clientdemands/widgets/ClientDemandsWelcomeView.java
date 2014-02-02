@@ -9,6 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -33,6 +34,7 @@ public class ClientDemandsWelcomeView extends Composite
     @UiField HTML myDemandsUnreadMessages, offeredDemandsUnreadMessages;
     @UiField HTML assignedDemandsUnreadMessages, closedDemandsUnreadMessages;
     @UiField FluidRow myDemandsRow, offeredDemandsRow, assignedDemandsRow, closedDemandsRow;
+    @UiField SimplePanel footerContainer;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -112,6 +114,14 @@ public class ClientDemandsWelcomeView extends Composite
     @Override
     public FluidRow getClosedDemandsRow() {
         return closedDemandsRow;
+    }
+
+    /**
+     * @return footer container
+     */
+    @Override
+    public SimplePanel getFooterContainer() {
+        return footerContainer;
     }
 
     /** OTHERS. **/

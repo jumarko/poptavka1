@@ -55,6 +55,7 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
         searchDataHolder = filter;
 
         eventBus.displayView(view.getWidgetView());
+        eventBus.setFooter(view.getFooterContainer());
         //init wrapper widget
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }

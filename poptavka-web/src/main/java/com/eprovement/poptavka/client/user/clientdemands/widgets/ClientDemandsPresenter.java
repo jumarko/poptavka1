@@ -82,6 +82,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_DEMANDS);
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         //Set visibility
         setChildTableVisible(false);

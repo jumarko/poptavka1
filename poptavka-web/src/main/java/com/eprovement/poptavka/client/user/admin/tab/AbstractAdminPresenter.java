@@ -45,7 +45,6 @@ public abstract class AbstractAdminPresenter
     @Override
     public void bindView() {
         addTableSelectionModelHandler();
-        eventBus.setFooter(view.getFooterContainer());
     }
 
     /**

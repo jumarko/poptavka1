@@ -58,6 +58,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             eventBus.resetSearchBar(null);
         }
         eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
         searchDataHolder = searchModuleDataHolder;
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
 //        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
