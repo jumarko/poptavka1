@@ -184,7 +184,7 @@ public class DetailModulePresenter
         MultiSelectionModel<TableDisplayUserMessage> selectionModel = (MultiSelectionModel) table.getSelectionModel();
         for (TableDisplayUserMessage detail : selectionModel.getSelectedSet()) {
             detail.setUserMessageId(sentMessage.getUserMessageId());
-            detail.setUnreadMessagesCount(detail.getUnreadMessagesCount() + 1);
+            detail.setMessagesCount(detail.getMessagesCount() + 1);
             detail.setRead(sentMessage.isRead());
             detail.setStarred(sentMessage.isStarred());
         }

@@ -23,7 +23,7 @@ public class DisplayNameColumn extends Column<TableDisplayDisplayName, String> {
         /**
          * Provide 0 if count unavailable or if only display name alone needed.
          */
-        int getUnreadMessagesCount();
+        int getMessagesCount();
     }
 
     /**
@@ -49,23 +49,23 @@ public class DisplayNameColumn extends Column<TableDisplayDisplayName, String> {
      */
     @Override
     public String getValue(TableDisplayDisplayName object) {
-        return getCellTextAccordingToMessageCount(object.getUnreadMessagesCount(), object.getDisplayName());
+        return getCellTextAccordingToMessagesCount(object.getMessagesCount(), object.getDisplayName());
     }
 
     /**
-     * Formats display name text by adding unread messages count abter it
+     * Formats display name text by adding messages count abter it
      * if unread messages count is not 0.
      *
-     * @param messageCount value
+     * @param messagesCount value
      * @param cellText - display name text
      * @return formated cell value
      */
-    private String getCellTextAccordingToMessageCount(int messageCount, String cellText) {
-        if (messageCount > 0) {
+    private String getCellTextAccordingToMessagesCount(int messagesCount, String cellText) {
+        if (messagesCount > 0) {
             StringBuilder title = new StringBuilder();
             title.append(cellText);
             title.append(" (");
-            title.append(messageCount);
+            title.append(messagesCount);
             title.append(")");
             return title.toString();
         } else {

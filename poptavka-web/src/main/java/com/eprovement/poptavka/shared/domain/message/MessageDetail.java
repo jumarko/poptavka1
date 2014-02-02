@@ -1,9 +1,9 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C), eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @author ivan.vlcek
  */
-public class MessageDetail implements IsSerializable {
+public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
 
     public enum MessageField {
 
@@ -49,6 +49,7 @@ public class MessageDetail implements IsSerializable {
     private boolean read = false;
     private boolean starred = false;
     private long userMessageId = -1;
+    private int messagesCount;
     //Message
     private long messageId = -1;
     private long threadRootId = -1;
@@ -250,28 +251,44 @@ public class MessageDetail implements IsSerializable {
     /**************************************************************************/
     /* TableDisplayUserMessage implementations                                */
     /**************************************************************************/
+    @Override
     public long getUserMessageId() {
         return userMessageId;
     }
 
+    @Override
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
 
+    @Override
     public boolean isStarred() {
         return starred;
     }
 
+    @Override
     public void setStarred(boolean starred) {
         this.starred = starred;
     }
 
+    @Override
     public boolean isRead() {
         return read;
     }
 
+    @Override
     public void setRead(boolean read) {
         this.read = read;
+    }
+
+    @Override
+    public int getMessagesCount() {
+        return messagesCount;
+    }
+
+    @Override
+    public void setMessagesCount(int messageCount) {
+        this.messagesCount = messageCount;
     }
 
     /**************************************************************************/

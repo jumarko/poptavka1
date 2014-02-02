@@ -40,6 +40,7 @@ public final class UserMessageConverter extends AbstractConverter<UserMessage, M
         detail.setRead(source.isRead());
         detail.setStarred(source.isStarred());
         detail.setUserMessageId(source.getId());
+        detail.setMessagesCount(0);
 
         //Message
         detail.setMessageId(source.getMessage().getId());
