@@ -193,7 +193,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         setChildTableVisible(false);
         setParentTableVisible(true);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-            0, view.getToolbar().getPager().getPageSize(), searchDataHolder,
+            view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
     }
 
