@@ -164,7 +164,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             // UserMessage part
             detail.setUserMessageId(um.getId());
             detail.setStarred(um.isStarred());
-            detail.setUnreadMessagesCount(latestUserMessagesWithCount.get(um));
+            detail.setMessagesCount(latestUserMessagesWithCount.get(um));
             detail.setRead(um.isRead());
             // Demand part
             detail.setDemandId(um.getMessage().getDemand().getId());
@@ -240,7 +240,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             // set UserMessage attributes
             sod.setUserMessageId(latestUserMessage.getId());
-            sod.setUnreadMessagesCount(latestUserMessagesWithCount.get(latestUserMessage));
+            sod.setMessagesCount(latestUserMessagesWithCount.get(latestUserMessage));
             sod.setRead(latestUserMessage.isRead());
             sod.setStarred(latestUserMessage.isStarred());
 
@@ -311,7 +311,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             // set UserMessage attributes
             sod.setUserMessageId(latestUserMessage.getId());
-            sod.setUnreadMessagesCount(latestUserMessages.get(latestUserMessage));
+            sod.setMessagesCount(latestUserMessages.get(latestUserMessage));
             sod.setRead(latestUserMessage.isRead());
             sod.setStarred(latestUserMessage.isStarred());
 
@@ -387,7 +387,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             sod.setThreadRootId(latestUserMessage.getMessage().getThreadRoot().getId());
             // set UserMessage attributes
             sod.setUserMessageId(latestUserMessage.getId());
-            sod.setUnreadMessagesCount(latestUserMessages.get(latestUserMessage));
+            sod.setMessagesCount(latestUserMessages.get(latestUserMessage));
             sod.setRead(latestUserMessage.isRead());
             sod.setStarred(latestUserMessage.isStarred());
 

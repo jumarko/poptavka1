@@ -47,8 +47,8 @@ import java.util.List;
  */
 @Presenter(view = HomeSuppliersView.class)
 public class HomeSuppliersPresenter
-        extends LazyPresenter<HomeSuppliersViewInterface, HomeSuppliersEventBus>
-        implements NavigationConfirmationInterface {
+    extends LazyPresenter<HomeSuppliersViewInterface, HomeSuppliersEventBus>
+    implements NavigationConfirmationInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -72,7 +72,6 @@ public class HomeSuppliersPresenter
 
         Widget getWidgetView();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -84,6 +83,28 @@ public class HomeSuppliersPresenter
     private boolean calledFromHistory;
     private boolean sameCategorySelection;
     private int pageFromToken = 0;
+    private SelectionChangeEvent.Handler handler = new SelectionChangeEvent.Handler() {
+        @Override
+        public void onSelectionChange(SelectionChangeEvent event) {
+            //Get selected item
+            List<ICatLocDetail> selectedCategories = new ArrayList<ICatLocDetail>();
+            eventBus.fillCatLocs(selectedCategories, builder.getInstanceId());
+            //if new selection was made, need to set searchDataHolder = null before creating
+            //token for new selection made in categorySelection.onSelected.
+            if (!selectedCategories.isEmpty()) {
+                searchDataHolder = null;
+                //Tree browser supports olny single selection model, therefore can use get(0).
+                selectedCategory = selectedCategories.get(0);
+                selectCategoryChangeHandlerInner(selectedCategory);
+            }
+        }
+    };
+    private CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.HOME_SUPPLIERS_MODULE)
+        .initCategorySelector()
+        .initSelectorTreeBrowser()
+        .displayCountOfDemands()
+        .addSelectionHandler(handler)
+        .build();
 
     /**************************************************************************/
     /* RPC Service                                                            */
@@ -102,6 +123,7 @@ public class HomeSuppliersPresenter
     /**************************************************************************/
     public void onStart() {
         // nothing by default
+        eventBus.initCatLocSelector(view.getCategoryTreePanel(), builder);
     }
 
     /**
@@ -114,16 +136,6 @@ public class HomeSuppliersPresenter
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
-        eventBus.initCatLocSelector(
-                view.getCategoryTreePanel(),
-                new CatLocSelectorBuilder.Builder(Constants.HOME_SUPPLIERS_MODULE)
-                    .initCategorySelector()
-                    .initSelectorTreeBrowser()
-                    .displayCountOfSuppliers()
-                    .build());
-        /* Registering tree selection handler must to be here, because above initialization creates new tree.
-         * I haven't found a way of resetting tree to it's initial state without recreating it. */
-        treeSelectionChangeHandler();
     }
 
     @Override
@@ -166,7 +178,7 @@ public class HomeSuppliersPresenter
      * @param supplierID - Supplier's ID stored and parsed from URL
      */
     public void onGoToHomeSuppliersModuleByHistory(SearchModuleDataHolder filterHolder,
-            ICatLocDetail categoryDetail, int page, long supplierID) {
+        ICatLocDetail categoryDetail, int page, long supplierID) {
         calledFromHistory = true;
         restoreFiltering(filterHolder);
         //Restore tree opened nodes
@@ -176,7 +188,7 @@ public class HomeSuppliersPresenter
         } else {
             //if category selection -> select and display in tree
             eventBus.requestHierarchy(
-                    CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, Constants.HOME_SUPPLIERS_MODULE);
+                CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, Constants.HOME_SUPPLIERS_MODULE);
         }
         //Restore table page
         this.calledFromHistory = true;
@@ -247,31 +259,6 @@ public class HomeSuppliersPresenter
     }
 
     /**
-     * Handle user selection event on CellTree, when selecting node's object/value.
-     * Handles also setting pager and retrieving data.
-     * Only one subtree is displayed.
-     */
-    private void treeSelectionChangeHandler() {
-        eventBus.registerCatLocTreeSelectionHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                //Get selected item
-                List<ICatLocDetail> selectedCategories = new ArrayList<ICatLocDetail>();
-                eventBus.fillCatLocs(selectedCategories, Constants.HOME_SUPPLIERS_MODULE);
-                //if new selection was made, need to set searchDataHolder = null before creating
-                //token for new selection made in categorySelection.onSelected.
-                if (!selectedCategories.isEmpty()) {
-                    searchDataHolder = null;
-                    //Tree browser supports olny single selection model, therefore can use get(0).
-                    selectedCategory = selectedCategories.get(0);
-                }
-
-                selectCategoryChangeHandlerInner(selectedCategory);
-            }
-        });
-    }
-
-    /**
      * Is called either from by selecting SelectionCategoryModel or when reestablishing history.
      * @param selected
      */
@@ -337,7 +324,7 @@ public class HomeSuppliersPresenter
                 //Retrieve data
                 view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
-                        0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
+                    0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
             }
         }
 
@@ -355,17 +342,17 @@ public class HomeSuppliersPresenter
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected supplier
                 FullSupplierDetail selected =
-                        (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                        .getSelectedObject();
+                    (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                    .getSelectedObject();
 
                 if (selected != null) {
                     selectedSupplierId = selected.getSupplierId();
                     //retrieve supplier detail info and display it
                     eventBus.buildDetailSectionTabs(
-                            new DetailModuleBuilder.Builder()
-                                .addUserTab(selectedSupplierId)
-                                .selectTab(DetailModuleBuilder.USER_DETAIL_TAB)
-                                .build());
+                        new DetailModuleBuilder.Builder()
+                            .addUserTab(selectedSupplierId)
+                            .selectTab(DetailModuleBuilder.USER_DETAIL_TAB)
+                            .build());
                     eventBus.openDetail();
                     //create token for this selection
                     createTokenForHistory();
@@ -435,8 +422,8 @@ public class HomeSuppliersPresenter
      */
     private void createTokenForHistory() {
         FullSupplierDetail supplier =
-                (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                .getSelectedObject();
+            (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+            .getSelectedObject();
 
         eventBus.createTokenForHistory(searchDataHolder, selectedCategory, view.getPager().getPage(), supplier);
     }

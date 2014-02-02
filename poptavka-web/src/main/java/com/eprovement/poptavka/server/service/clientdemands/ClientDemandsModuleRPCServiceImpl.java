@@ -269,7 +269,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             cdcd.setUserMessageId(userMessage.getId());
             cdcd.setStarred(userMessage.isStarred());
             cdcd.setRead(userMessage.isRead());
-            cdcd.setUnreadMessagesCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            cdcd.setMessagesCount(latestSupplierUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             // set Message attributes
             cdcd.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             cdcd.setMessageBody(userMessage.getMessage().getBody());
@@ -399,7 +399,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set UserMessage attributes
             codod.setRead(userMessage.isRead());
             codod.setStarred(userMessage.isStarred());
-            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            codod.setMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
@@ -501,7 +501,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setRead(userMessage.isRead());
             codod.setStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            codod.setMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             final Supplier supplier = findSupplier(
@@ -573,7 +573,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setRead(userMessage.isRead());
             codod.setStarred(userMessage.isStarred());
             codod.setUserMessageId(userMessage.getId());
-            codod.setUnreadMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
+            codod.setMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
             codod.setSupplierId(offer.getSupplier().getId());

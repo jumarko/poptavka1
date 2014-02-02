@@ -62,10 +62,16 @@ public abstract class AbstractClientPresenter
             }
         }
     };
-    protected RowStyles rowStyles = new RowStyles<TableDisplayUserMessage>() {
+    protected RowStyles rowStyles = new RowStyles() {
             @Override
-            public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
-                if (row.getUnreadMessagesCount() > 0) {
+            public String getStyleNames(Object row, int rowIndex) {
+                boolean unread = false;
+                if (row instanceof TableDisplayUserMessage) {
+                    unread = !((TableDisplayUserMessage) row).isRead();
+                } else if (row instanceof TableDisplayDemandTitle) {
+                    unread = ((TableDisplayDemandTitle) row).getUnreadMessagesCount() > 0;
+                }
+                if (unread) {
                     return Storage.GRSCS.dataGridStyle().unread();
                 }
                 return "";
@@ -90,7 +96,6 @@ public abstract class AbstractClientPresenter
     public void bindView() {
         addParentTableSelectionHandler();
         addChildTableSelectionModelHandler();
-        eventBus.setFooter(view.getFooterContainer());
     }
 
     /**

@@ -19,7 +19,7 @@ public interface TableDisplayUserMessage {
     boolean isRead();
     void setRead(boolean isStarred);
 
-    int getUnreadMessagesCount();
-    void setUnreadMessagesCount(int messageCount);
+    int getMessagesCount();
+    void setMessagesCount(int messageCount);
 
 }

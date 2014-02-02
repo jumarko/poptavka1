@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandStatusColumn.TableDisplayDemandStatus;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
 import com.eprovement.poptavka.client.user.widget.grid.columns.EndDateColumn.TableDisplayEndDate;
@@ -22,7 +21,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  */
 public class ClientDemandDetail implements IsSerializable,
-    TableDisplayDemandTitle, TableDisplayUserMessage, TableDisplayDetailModule,
+    TableDisplayDemandTitle, TableDisplayDetailModule,
     TableDisplayDemandStatus, TableDisplayEndDate, TableDisplayValidTo,
     TableDisplayPrice {
 
@@ -30,17 +29,13 @@ public class ClientDemandDetail implements IsSerializable,
     /* Attributes                                                             */
     /**************************************************************************/
     private long demandId;
-    private long messageId;
-    private long userMessageId;
     private long threadRootId;
     private DemandStatus demandStatus;
-    private String demandTitle; //title
+    private String demandTitle;
     private BigDecimal price;
     private Date endDate;
     private Date validTo;
-    private boolean isRead = false;
-    private boolean isStarred = false;
-    private int unreadSubmessagesCount;
+    private int unreadMessagesCount;
     /**
      * Key provider
      */
@@ -89,18 +84,6 @@ public class ClientDemandDetail implements IsSerializable,
     }
 
     /**
-     * User message id pair.
-     */
-    @Override
-    public long getUserMessageId() {
-        return userMessageId;
-    }
-
-    public void setUserMessageId(long userMessageId) {
-        this.userMessageId = userMessageId;
-    }
-
-    /**
      * Demand status pair.
      */
     @Override
@@ -137,18 +120,6 @@ public class ClientDemandDetail implements IsSerializable,
     }
 
     /**
-     * Is message starred pair.
-     */
-    @Override
-    public boolean isStarred() {
-        return isStarred;
-    }
-
-    public void setStarred(boolean isStarred) {
-        this.isStarred = isStarred;
-    }
-
-    /**
      * Demand price pair.
      */
     @Override
@@ -173,27 +144,15 @@ public class ClientDemandDetail implements IsSerializable,
     }
 
     /**
-     * Is message read pair.
-     */
-    @Override
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public void setRead(boolean isRead) {
-        this.isRead = isRead;
-    }
-
-    /**
      * Unread messages count pair.
      */
     @Override
     public int getUnreadMessagesCount() {
-        return unreadSubmessagesCount;
+        return unreadMessagesCount;
     }
 
-    public void setUnreadMessagesCount(int unreadSubmessagesCount) {
-        this.unreadSubmessagesCount = unreadSubmessagesCount;
+    public void setUnreadMessagesCount(int messagesCount) {
+        this.unreadMessagesCount = messagesCount;
     }
 
     @Override

@@ -72,6 +72,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
 
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_ASSIGNED_DEMANDS);
         eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         initWidget(filter);
     }
@@ -85,6 +86,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
 
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_CLOSED_DEMANDS);
         eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         initWidget(filter);
     }

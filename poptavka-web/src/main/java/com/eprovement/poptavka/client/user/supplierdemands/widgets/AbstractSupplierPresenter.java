@@ -45,7 +45,6 @@ public abstract class AbstractSupplierPresenter
     @Override
     public void bindView() {
         addTableSelectionModelHandler();
-        eventBus.setFooter(view.getFooterContainer());
     }
 
     /**
@@ -91,7 +90,7 @@ public abstract class AbstractSupplierPresenter
     protected RowStyles rowStyles = new RowStyles<TableDisplayUserMessage>() {
             @Override
             public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
-                if (row.getUnreadMessagesCount() > 0) {
+                if (!row.isRead()) {
                     return Storage.GRSCS.dataGridStyle().unread();
                 }
                 return "";

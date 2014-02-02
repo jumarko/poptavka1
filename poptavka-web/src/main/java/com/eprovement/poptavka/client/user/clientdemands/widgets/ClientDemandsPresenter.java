@@ -82,6 +82,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_DEMANDS);
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         //Set visibility
         setChildTableVisible(false);
@@ -264,7 +265,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         setChildTableVisible(false);
         setParentTableVisible(true);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-            0, view.getToolbar().getPager().getPageSize(), searchDataHolder,
+            view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
     }
 

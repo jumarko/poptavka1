@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.root.gateways;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Event;
 import java.util.List;
 
@@ -29,7 +28,4 @@ public interface CatLocSelectorGateway {
 
     @Event(forwardToParent = true)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
-
-    @Event(forwardToParent = true)
-    void registerCatLocTreeSelectionHandler(SelectionChangeEvent.Handler selectionHandler);
 }

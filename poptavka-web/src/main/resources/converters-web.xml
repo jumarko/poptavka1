@@ -25,7 +25,6 @@
         <constructor-arg ref="businessUserConverter"/>
     </bean>
     <bean id="clientDemandConverter" class="com.eprovement.poptavka.server.converter.ClientDemandConverter" />
-    <bean id="clientDemandUserMessageConverter" class="com.eprovement.poptavka.server.converter.ClientDemandUserMessageConverter" />
     <bean id="demandMessageConverter" class="com.eprovement.poptavka.server.converter.DemandMessageConverter" >
         <constructor-arg index="0" ref="demandTypeConverter"/>
         <constructor-arg index="1" ref="messageConverter"/>

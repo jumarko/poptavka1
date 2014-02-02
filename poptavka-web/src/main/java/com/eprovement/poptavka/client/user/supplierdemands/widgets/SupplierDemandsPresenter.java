@@ -54,6 +54,7 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
         eventBus.createTokenForHistory();
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
         eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
 
         eventBus.resetSearchBar(new Label("Supplier's projects attibure's selector will be here."));
         searchDataHolder = filter;

@@ -14,6 +14,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -48,6 +49,8 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         FluidRow getAssignedDemandsRow();
 
         FluidRow getClosedDemandsRow();
+
+        SimplePanel getFooterContainer();
 
         IsWidget getWidgetView();
     }
@@ -97,6 +100,7 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         eventBus.getSupplierDashboardDetail();
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_DEMANDS_WELCOME);
         eventBus.displayView(view.getWidgetView());
+        eventBus.setFooter(view.getFooterContainer());
         eventBus.createTokenForHistory();
     }
 

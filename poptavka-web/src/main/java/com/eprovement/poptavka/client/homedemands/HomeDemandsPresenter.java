@@ -41,8 +41,8 @@ import java.util.List;
  */
 @Presenter(view = HomeDemandsView.class)
 public class HomeDemandsPresenter
-        extends LazyPresenter<HomeDemandsViewInterface, HomeDemandsEventBus>
-        implements NavigationConfirmationInterface {
+    extends LazyPresenter<HomeDemandsViewInterface, HomeDemandsEventBus>
+    implements NavigationConfirmationInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -66,7 +66,6 @@ public class HomeDemandsPresenter
 
         Widget getWidgetView();
     }
-
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
@@ -79,6 +78,28 @@ public class HomeDemandsPresenter
     private boolean calledFromHistory;
     private boolean sameCategorySelection;
     private int pageFromToken = 0;
+    private SelectionChangeEvent.Handler handler = new SelectionChangeEvent.Handler() {
+        @Override
+        public void onSelectionChange(SelectionChangeEvent event) {
+            //Get selected item
+            List<ICatLocDetail> selectedCategories = new ArrayList<ICatLocDetail>();
+            eventBus.fillCatLocs(selectedCategories, builder.getInstanceId());
+            //if new selection was made, need to set searchDataHolder = null before creating
+            //token for new selection made in categorySelection.onSelected.
+            if (!selectedCategories.isEmpty()) {
+                searchDataHolder = null;
+                //Tree browser supports olny single selection model, therefore can use get(0).
+                selectedCategory = selectedCategories.get(0);
+                selectCategoryChangeHandlerInner(selectedCategory);
+            }
+        }
+    };
+    private CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.HOME_DEMANDS_MODULE)
+        .initCategorySelector()
+        .initSelectorTreeBrowser()
+        .displayCountOfDemands()
+        .addSelectionHandler(handler)
+        .build();
 
     /**************************************************************************/
     /* RPC Service                                                            */
@@ -96,7 +117,7 @@ public class HomeDemandsPresenter
     /* General Module events                                                  */
     /**************************************************************************/
     public void onStart() {
-        // nothing by default
+        eventBus.initCatLocSelector(view.getCategoryTreePanel(), builder);
     }
 
     /**
@@ -109,16 +130,6 @@ public class HomeDemandsPresenter
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);
         eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
-        eventBus.initCatLocSelector(
-                view.getCategoryTreePanel(),
-                new CatLocSelectorBuilder.Builder(Constants.HOME_DEMANDS_MODULE)
-                    .initCategorySelector()
-                    .initSelectorTreeBrowser()
-                    .displayCountOfDemands()
-                    .build());
-        /* Registering tree selection handler must to be here, because above initialization creates new tree.
-         * I haven't found a way of resetting tree to it's initial state without recreating it. */
-        treeSelectionChangeHandler();
     }
 
     @Override
@@ -151,7 +162,7 @@ public class HomeDemandsPresenter
         defaultCommonInit(searchDataHolder);
         //Get data - category selector tree will take care of data retrieving according to selected category
         eventBus.requestHierarchy(
-                CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, category, Constants.HOME_DEMANDS_MODULE);
+            CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, category, Constants.HOME_DEMANDS_MODULE);
 
     }
 
@@ -165,7 +176,7 @@ public class HomeDemandsPresenter
      * @param demandId - Demand's ID stored and parsed from URL
      */
     public void onGoToHomeDemandsModuleByHistory(SearchModuleDataHolder filterHolder,
-            ICatLocDetail categoryDetail, int page, long demandId) {
+        ICatLocDetail categoryDetail, int page, long demandId) {
         defaultCommonInit(filterHolder);
         //Restore tree opened nodes
         if (categoryDetail == null) {
@@ -174,7 +185,7 @@ public class HomeDemandsPresenter
         } else {
             //if category selection -> select and display in tree
             eventBus.requestHierarchy(
-                    CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, Constants.HOME_DEMANDS_MODULE);
+                CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, Constants.HOME_DEMANDS_MODULE);
         }
         //Restore table page
         this.calledFromHistory = true;
@@ -259,31 +270,6 @@ public class HomeDemandsPresenter
     }
 
     /**
-     * Handle user selection event on CellTree, when selecting node's object/value.
-     * Handles also setting pager and retrieving data.
-     * Only one subtree is displayed.
-     */
-    private void treeSelectionChangeHandler() {
-        eventBus.registerCatLocTreeSelectionHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                //Get selected item
-                List<ICatLocDetail> selectedCategories = new ArrayList<ICatLocDetail>();
-                eventBus.fillCatLocs(selectedCategories, Constants.HOME_DEMANDS_MODULE);
-                //if new selection was made, need to set searchDataHolder = null before creating
-                //token for new selection made in categorySelection.onSelected.
-                if (!selectedCategories.isEmpty()) {
-                    searchDataHolder = null;
-                    //Tree browser supports olny single selection model, therefore can use get(0).
-                    selectedCategory = selectedCategories.get(0);
-                }
-
-                selectCategoryChangeHandlerInner(selectedCategory);
-            }
-        });
-    }
-
-    /**
      * Is called either from by selecting SelectionCategoryModel or when reestablishing history.
      * @param selected
      */
@@ -349,7 +335,7 @@ public class HomeDemandsPresenter
                 //Retrieve data
                 view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
-                        0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
+                    0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
             }
         }
 
@@ -367,17 +353,17 @@ public class HomeDemandsPresenter
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected demand
                 FullDemandDetail selected =
-                        (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                        .getSelectedObject();
+                    (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                    .getSelectedObject();
 
                 if (selected != null) {
                     selectedDemandId = selected.getDemandId();
                     //retrieve demand detail info and display it
                     eventBus.buildDetailSectionTabs(
-                            new DetailModuleBuilder.Builder()
-                                .addDemandTab(selectedDemandId)
-                                .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
-                                .build());
+                        new DetailModuleBuilder.Builder()
+                            .addDemandTab(selectedDemandId)
+                            .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
+                            .build());
                     eventBus.openDetail();
                     //create token for this selection
                     createTokenForHistory();
@@ -443,8 +429,8 @@ public class HomeDemandsPresenter
      */
     private void createTokenForHistory() {
         FullDemandDetail demand =
-                (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
-                .getSelectedObject();
+            (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+            .getSelectedObject();
 
         eventBus.createTokenForHistory(searchDataHolder, selectedCategory, view.getPager().getPage(), demand);
     }

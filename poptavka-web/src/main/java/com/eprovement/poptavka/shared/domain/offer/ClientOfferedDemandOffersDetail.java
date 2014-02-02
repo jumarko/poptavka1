@@ -43,7 +43,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     private Integer rating;
     private Date receivedDate;
     private Date finishDate;
-    private int unreadMessagesCount;
+    private int messagesCount;
     //Keyprovider
     public static final ProvidesKey<IUniversalDetail> KEY_PROVIDER =
         new ProvidesKey<IUniversalDetail>() {
@@ -175,12 +175,21 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
      * Unread messages count pair.
      */
     @Override
-    public int getUnreadMessagesCount() {
-        return unreadMessagesCount;
+    public int getMessagesCount() {
+        return messagesCount;
     }
 
-    public void setUnreadMessagesCount(int unreadMessagesCount) {
-        this.unreadMessagesCount = unreadMessagesCount;
+    @Override
+    public void setMessagesCount(int messagesCount) {
+        this.messagesCount = messagesCount;
+    }
+
+    /**
+     * @return unread messages count, 0 couse its unvailable
+     */
+    @Override
+    public int getUnreadMessagesCount() {
+        return 0;
     }
 
     /**
@@ -191,6 +200,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
         return isStarred;
     }
 
+    @Override
     public void setStarred(boolean value) {
         this.isStarred = value;
     }
@@ -215,6 +225,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
         return userMessageId;
     }
 
+    @Override
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
@@ -239,6 +250,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
         return isRead;
     }
 
+    @Override
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
@@ -252,7 +264,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
             + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
             + senderId + ", isStarred=" + isStarred + ", supplierName="
             + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
-            + ", deliveryDate=" + finishDate + ", messageCount=" + unreadMessagesCount + ", isRead="
+            + ", deliveryDate=" + finishDate + ", messageCount=" + messagesCount + ", isRead="
             + isRead + '}';
     }
 }

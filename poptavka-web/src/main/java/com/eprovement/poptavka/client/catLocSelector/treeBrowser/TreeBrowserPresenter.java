@@ -155,6 +155,9 @@ public class TreeBrowserPresenter
         this.builder = builder;
         this.instanceId = builder.getInstanceId();
         initCatLocSelectorTreeBrowser(embedWidget);
+        if (builder.getHandler() != null) {
+            view.getTreeSelectionModel().addSelectionChangeHandler(builder.getHandler());
+        }
     }
 
     /**
@@ -214,18 +217,6 @@ public class TreeBrowserPresenter
                 selectedCatLocs.add(view.getTreeSelectionModel().getSelectedObject());
             }
         }
-    }
-
-    /**
-     * Register selection model to cellTree in TreeBrowser widget.
-     * Since TreeBrowser holds functionality to get data, open, close, select items over cellTree,
-     * therefor if another "outside" widget wants to act or to have access to selected items,
-     * it must implement its selection model (which holds wanted functionality) and register here.
-     * To have access to selected items selectino model must call also
-     * @see fillCatLocs(List<CatLocDetail> selectedCatLocs)
-     */
-    public void onRegisterCatLocTreeSelectionHandler(SelectionChangeEvent.Handler selectionHandler) {
-        view.getTreeSelectionModel().addSelectionChangeHandler(selectionHandler);
     }
 
     /**************************************************************************/

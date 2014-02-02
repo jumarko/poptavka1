@@ -31,14 +31,12 @@ public final class ClientDemandConverter extends AbstractConverter<Demand, Clien
     @Override
     public ClientDemandDetail convertToTarget(Demand demand) {
         final ClientDemandDetail detail = new ClientDemandDetail();
-        detail.setUserMessageId(-1);
         detail.setDemandId(demand.getId());
         detail.setDemandStatus(demand.getStatus());
         detail.setDemandTitle(demand.getTitle());
         detail.setPrice(demand.getPrice());
         detail.setEndDate(convertDate(demand.getEndDate()));
         detail.setValidTo(convertDate(demand.getValidTo()));
-        detail.setStarred(false);
         return detail;
     }
 

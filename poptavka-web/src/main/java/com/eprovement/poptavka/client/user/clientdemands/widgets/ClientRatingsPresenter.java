@@ -59,9 +59,11 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
         eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_RATINGS);
         eventBus.createTokenForHistory();
         eventBus.resetSearchBar(new Label("Client's ratings attibure's selector will be here."));
-        searchDataHolder = filter;
-
+        eventBus.setFooter(view.getFooterContainer());
         eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
+
+        searchDataHolder = filter;
         setParentTableVisible(true);
 
         eventBus.displayView(view.getWidgetView());

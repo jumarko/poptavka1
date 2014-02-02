@@ -49,23 +49,23 @@ public class DemandTitleColumn extends Column<TableDisplayDemandTitle, String> {
      */
     @Override
     public String getValue(TableDisplayDemandTitle object) {
-        return getCellTextAccordingToMessageCount(object.getUnreadMessagesCount(), object.getDemandTitle());
+        return getCellTextAccordingToUnreadMessagesCount(object.getUnreadMessagesCount(), object.getDemandTitle());
     }
 
     /**
      * Formats demand title text by adding unread messages count abter it
      * if unread messages count is not 0.
      *
-     * @param messageCount value
+     * @param unreadMessageCount value
      * @param cellText - demand title text
      * @return formated cell value
      */
-    private String getCellTextAccordingToMessageCount(int messageCount, String cellText) {
-        if (messageCount > 0) {
+    private String getCellTextAccordingToUnreadMessagesCount(int unreadMessageCount, String cellText) {
+        if (unreadMessageCount > 0) {
             StringBuilder title = new StringBuilder();
             title.append(cellText);
             title.append(" (");
-            title.append(messageCount);
+            title.append(unreadMessageCount);
             title.append(")");
             return title.toString();
         } else {

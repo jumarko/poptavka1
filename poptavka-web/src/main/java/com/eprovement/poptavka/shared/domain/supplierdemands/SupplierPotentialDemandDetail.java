@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2013, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.shared.domain.supplierdemands;
 
@@ -19,6 +18,8 @@ import java.util.Date;
 /**
  *
  * @author Ivan
+ * @author Martin Slavkovksy
+ * @since 02.02.2014
  */
 public class SupplierPotentialDemandDetail implements IsSerializable,
     TableDisplayRating, TableDisplayUserMessage, TableDisplayDemandTitle, TableDisplayPrice,
@@ -32,7 +33,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
     private long senderId;
     private long userMessageId;
     private boolean isStarred;
-    private int unreadMessagesCount;
+    private int messagesCount;
     private boolean isRead;
     private long demandId;
     private long supplierId;
@@ -103,6 +104,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
         return userMessageId;
     }
 
+    @Override
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
@@ -115,20 +117,30 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
         return isStarred;
     }
 
+    @Override
     public void setStarred(boolean isStarred) {
         this.isStarred = isStarred;
     }
 
     /**
-     * Unread messages count pair.
+     * Messages count pair.
+     */
+    @Override
+    public int getMessagesCount() {
+        return messagesCount;
+    }
+
+    @Override
+    public void setMessagesCount(int messagesCount) {
+        this.messagesCount = messagesCount;
+    }
+
+    /**
+     * @return unread messages count
      */
     @Override
     public int getUnreadMessagesCount() {
-        return unreadMessagesCount;
-    }
-
-    public void setUnreadMessagesCount(int unreadMessagesCount) {
-        this.unreadMessagesCount = unreadMessagesCount;
+        return 0;
     }
 
     /**
@@ -187,6 +199,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
         return isRead;
     }
 
+    @Override
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }

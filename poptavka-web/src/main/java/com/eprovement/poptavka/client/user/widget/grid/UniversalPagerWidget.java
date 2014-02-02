@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasRows;
-import com.google.gwt.view.client.Range;
 
 /**
  * Holds SimplePager and Menu for choosing page size. Default page size choices are: 10,20,30.
@@ -102,14 +101,7 @@ public class UniversalPagerWidget extends Composite {
         UniversalPagerResources pagerResources = GWT.create(UniversalPagerResources.class);
         CssInjector.INSTANCE.ensurePagerStylesInjected(pagerResources);
 
-        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true) {
-            @Override
-            public boolean hasNextPage() {
-                HasRows display = getDisplay();
-                Range range = display.getVisibleRange();
-                return range.getStart() + range.getLength() < display.getRowCount();
-            }
-        };
+        pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
         pager.setRangeLimited(false);
     }
 

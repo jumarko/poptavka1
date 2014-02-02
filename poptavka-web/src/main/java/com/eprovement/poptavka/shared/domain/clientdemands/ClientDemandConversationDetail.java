@@ -35,7 +35,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
     private String messageText;
     private boolean isRead;
     private boolean isStarred;
-    private int unreadMessagesCount;
+    private int messagesCount;
     private Integer rating;
     /**
      * Key provider.
@@ -77,12 +77,13 @@ public class ClientDemandConversationDetail implements IsSerializable,
      * Unread messages count pair.
      */
     @Override
-    public int getUnreadMessagesCount() {
-        return unreadMessagesCount;
+    public int getMessagesCount() {
+        return messagesCount;
     }
 
-    public void setUnreadMessagesCount(int unreadMessagesCount) {
-        this.unreadMessagesCount = unreadMessagesCount;
+    @Override
+    public void setMessagesCount(int messagesCount) {
+        this.messagesCount = messagesCount;
     }
 
     /**
@@ -93,6 +94,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
         return isStarred;
     }
 
+    @Override
     public void setStarred(boolean isStarred) {
         this.isStarred = isStarred;
     }
@@ -117,6 +119,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
         return userMessageId;
     }
 
+    @Override
     public void setUserMessageId(long userMessageId) {
         this.userMessageId = userMessageId;
     }
@@ -201,6 +204,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
         return isRead;
     }
 
+    @Override
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
