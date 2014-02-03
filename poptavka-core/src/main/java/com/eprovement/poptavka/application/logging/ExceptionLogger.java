@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.application.logging;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.eprovement.poptavka.service.mail.MailService;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -31,17 +32,20 @@ public class ExceptionLogger {
     private static final int DEFAULT_STACKTRASE_SIZE = 1000;
     private static final String DEFAUL_MAIL_SENDER_ADDRESS = "noreply@want-something.com";
 
+    /** if true the emails will be send on error. */
+    private boolean emailEnabled;
     /** Email address of sender: This will be set to FROM header of sent emails. */
     private String mailSenderAddress = DEFAUL_MAIL_SENDER_ADDRESS;
     private MailService mailService;
     private List<String> recipients;
 
-    /**
-     * Indicates whether notification will be sent when exception is thrown while executing tests. Default is true,
-     * which means that notification IS NOT sent.
-     */
-    private boolean excludeExceptionsInTestPhase = true;
+    public boolean isEmailEnabled() {
+        return emailEnabled;
+    }
 
+    public void setEmailEnabled(boolean emailEnabled) {
+        this.emailEnabled = emailEnabled;
+    }
 
     public void setMailSenderAddress(String mailSenderAddress) {
         this.mailSenderAddress = mailSenderAddress;
@@ -68,10 +72,6 @@ public class ExceptionLogger {
         return Collections.unmodifiableList(recipients);
     }
 
-    public void setExcludeExceptionsInTestPhase(boolean excludeExceptionsInTestPhase) {
-        this.excludeExceptionsInTestPhase = excludeExceptionsInTestPhase;
-    }
-
     public void setMailService(MailService mailService) {
         this.mailService = mailService;
     }
@@ -90,14 +90,8 @@ public class ExceptionLogger {
 
     //--------------------------------------------------- PRIVATE STUFF ------------------------------------------------
     private void sendNotificationMail(Exception exception) {
-        if (CollectionUtils.isNotEmpty(recipients)) {
-            Preconditions.checkNotNull(exception);
-
-            if (excludeExceptionsInTestPhase && isExceptionFromTest(exception)) {
-                // DO NOT send any notification for exceptions occurred in unit test - this might be the regular case
-                // and even if not, it is guarded by test itself
-                return;
-            }
+        if (isEmailEnabled() && CollectionUtils.isNotEmpty(recipients)) {
+            checkNotNull(exception);
 
             final SimpleMailMessage exceptionNotificationMessage = createNotificationMessage(exception);
             try {
@@ -107,23 +101,6 @@ public class ExceptionLogger {
                 LOGGER.warn("An error occured while sending exception notification mail: ", me);
             }
         }
-    }
-
-    private boolean isExceptionFromTest(Exception exception) {
-        if (exception.getStackTrace().length < 1) {
-            throw new IllegalStateException("There is something very strange with exception " + exception + "."
-                    + " It does not contain StackTraceElement-s!");
-        }
-
-        for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
-            // JUnitStarter is called by IDEA, SurefireStarter is called by Maven
-            if ("JUnitStarter.java".equalsIgnoreCase(stackTraceElement.getFileName())
-                    || "SurefireStarter.java".equalsIgnoreCase(stackTraceElement.getFileName())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private SimpleMailMessage createNotificationMessage(Exception exception) {

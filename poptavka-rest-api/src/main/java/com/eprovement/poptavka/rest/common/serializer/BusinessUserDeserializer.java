@@ -82,8 +82,8 @@ public class BusinessUserDeserializer implements Converter<BusinessUserDto, Busi
                                 addressDto.getCity());
                 if (city == null) {
                     throw new IllegalArgumentException(
-                            String.format("No city locality found for state name '%s' and city name '%s'",
-                                    addressDto.getRegion(), addressDto.getCity()));
+                            String.format("No city locality found for state '%s', district %s and city '%s'",
+                                    addressDto.getRegion(), addressDto.getDistrict(), addressDto.getCity()));
                 }
                 address.setCity(city);
                 address.setStreet(addressDto.getStreet());
