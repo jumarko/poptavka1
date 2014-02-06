@@ -21,6 +21,9 @@ public interface CommonStyles extends CssResource {
     @ClassName("universal-pager")
     String pager();
 
+    @ClassName("ws-page-size-list")
+    String pagerList();
+
     @ClassName("small-loader")
     String smallLoader(); //not used
 

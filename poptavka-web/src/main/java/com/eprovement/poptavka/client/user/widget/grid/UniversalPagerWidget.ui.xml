@@ -5,12 +5,14 @@
 	
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 	
-    <g:HTMLPanel styleName='{res.common.pager}'>
-        <c:SimplePager ui:field='pager' styleName='ws-pager' />
-        <g:MenuBar vertical="false" styleName='ws-pager-size-box'>
-            <g:MenuItem ui:field="pageSize" styleName='ws-pager-size-item'>
-                <g:MenuBar vertical="true" ui:field="pageSizeList" styleName='ws-page-size-list'/>
-            </g:MenuItem>
-        </g:MenuBar>
+    <g:HTMLPanel>
+        <g:HTMLPanel styleName='{res.common.pager}'>
+            <c:SimplePager ui:field='pager' styleName='ws-pager' />
+            <g:MenuBar vertical="false" styleName='ws-pager-size-box'>
+                <g:MenuItem ui:field="pageSize" styleName='ws-pager-size-item'>
+                    <g:MenuBar vertical="true" ui:field="pageSizeList" styleName='{res.common.pagerList}'/>
+                </g:MenuItem>
+            </g:MenuBar>
+        </g:HTMLPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

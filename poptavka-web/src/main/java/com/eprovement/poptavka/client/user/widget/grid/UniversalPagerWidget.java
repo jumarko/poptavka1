@@ -50,12 +50,12 @@ public class UniversalPagerWidget extends Composite {
      * Creates UniversalPagerWidget view's components.
      */
     public UniversalPagerWidget() {
+        StyleResource.INSTANCE.common().ensureInjected();
+
         initPager();
         initWidget(uiBinder.createAndBindUi(this));
         initPageSizeListBox();
         pager.setPageSize(Integer.parseInt(pageSize.getText()));
-
-        StyleResource.INSTANCE.common().ensureInjected();
     }
 
     /**
