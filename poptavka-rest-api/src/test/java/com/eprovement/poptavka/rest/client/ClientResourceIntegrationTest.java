@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.client;
 
 import static com.eprovement.poptavka.rest.matchers.JsonMatchers.jsonPathMissing;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -138,6 +139,55 @@ public class ClientResourceIntegrationTest extends ResourceIntegrationTest {
         assertThat("Only 'new.message' notification should be set for external client, but found:"
                     + notifications.get(0),
                 notifications.get(0).getNotification().getCode(), is(Registers.Notification.NEW_MESSAGE.getCode()));
+    }
+
+    @Test
+    public void createExternalClientWithAddressByZipCodeAndCity() throws Exception {
+        MvcResult createdClientResult =
+                performRequestAndCheckNewClient(HttpStatus.CREATED,
+                        mockMvc.performRequest(post("/clients").content("{\"email\":\"poptavka3@mailinator.com\","
+                                + "\"personFirstName\":\"Janko\","
+                                + "\"personLastName\":\"Hraško\","
+                                + "\"password\":\"kreslo\","
+                                + "\"origin\":\"" + Origin.EXTERNAL_ORIGIN_CODE
+                                + "\"," + "\"addresses\":"
+                                    + "[{\"city\":\"locality111\","
+                                    + "\"zipCode\":\"60200\","
+                                    + " \"street\":\"Main road\"}]}")));
+
+        final ClientDto clientDto =
+                jsonObjectMapper.readValue(createdClientResult.getResponse().getContentAsString(), ClientDto.class);
+        assertThat(clientDto.getAddresses(), hasSize(1));
+        assertThat(clientDto.getAddresses().get(0).getRegion(), is("locality111"));
+        assertThat(clientDto.getAddresses().get(0).getDistrict(), is("locality11"));
+        assertThat(clientDto.getAddresses().get(0).getCity(), is("locality111"));
+        assertThat(clientDto.getAddresses().get(0).getZipCode(), is("60200"));
+    }
+
+    @Test
+    public void createExternalClientWithAddressByCityOnly() throws Exception {
+        mockMvc.performRequest(post("/clients").content("{\"email\":\"poptavka3@mailinator.com\","
+                + "\"personFirstName\":\"Janko\","
+                + "\"personLastName\":\"Hraško\","
+                + "\"password\":\"kreslo\","
+                + "\"origin\":\"" + Origin.EXTERNAL_ORIGIN_CODE
+                + "\"," + "\"addresses\":"
+                + "[{\"city\":\"locality111\","
+                + " \"street\":\"Main road\"}]}"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void createExternalClientWithAddressByZipcodeOnly() throws Exception {
+        mockMvc.performRequest(post("/clients").content("{\"email\":\"poptavka3@mailinator.com\","
+                + "\"personFirstName\":\"Janko\","
+                + "\"personLastName\":\"Hraško\","
+                + "\"password\":\"kreslo\","
+                + "\"origin\":\"" + Origin.EXTERNAL_ORIGIN_CODE
+                + "\"," + "\"addresses\":"
+                + "[{\"zipCode\":\"60200\","
+                + " \"street\":\"Main road\"}]}"))
+                .andExpect(status().isBadRequest());
     }
 
     @Test

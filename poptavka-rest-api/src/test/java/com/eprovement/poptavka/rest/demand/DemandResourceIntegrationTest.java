@@ -43,6 +43,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
     private static final int DEMAND_PRICE = 1000;
     private static final CategoryDto DEMAND_CATEGORY = new CategoryDto().setId(11L);
     private static final LocalityDto DEMAND_LOCALITY = new LocalityDto().setId(11L);
+    private static final String ZIPCODE = "60200";
 
     @Test
     public void listDemands() throws Exception {
@@ -152,6 +153,21 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 new LocalityDto().setRegion("locality1").setCity("locality111")));
 
         createAndExpectValidationError(demand);
+    }
+
+    @Test
+    public void createExternalDemandLocalityByZipCode() throws Exception {
+        final Map<String, Object> demand = validDemand();
+        demand.put("origin", Origin.EXTERNAL_ORIGIN_CODE);
+
+        demand.put("localities", newArrayList(
+                // if we don't know the regino or district then city and zip code should be sufficient
+                new LocalityDto().setCity("locality111").setZipCode(ZIPCODE)));
+
+        this.mockMvc.performRequest(post("/demands")
+                .content(toJsonString(demand)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.localities[0].id").value(111));
     }
 
 
