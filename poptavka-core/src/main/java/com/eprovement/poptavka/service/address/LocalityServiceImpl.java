@@ -10,10 +10,11 @@ import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.googlecode.ehcache.annotations.Cacheable;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Provides methods for handling addresses and localities.
@@ -38,6 +39,25 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     @Cacheable(cacheName = "localityCache")
     public Locality getLocality(Long id) {
         return getDao().getLocality(id);
+    }
+
+
+    @Override
+    @Cacheable(cacheName = "localityCache")
+    public Locality findCityByZipCode(String cityName, String zipCode) {
+        notEmpty(cityName, "cityName should not be empty!");
+        notEmpty(zipCode, "zipCode should not be empty!");
+
+        final List<Locality> localitiesForZipCode = getDao().findLocalitiesForZipCode(zipCode);
+        for (Locality locality : localitiesForZipCode) {
+            if (cityName.equals(locality.getName())) {
+                // found matching city - this should be the only one (we rely on DB data consistency)
+                return locality;
+            }
+        }
+
+        LOGGER.info("action=find_city_by_zipcode status=not_found city={}, zipcode={}", cityName, zipCode);
+        return null;
     }
 
     @Override

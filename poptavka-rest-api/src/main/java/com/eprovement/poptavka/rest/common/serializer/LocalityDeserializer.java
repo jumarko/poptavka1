@@ -35,12 +35,11 @@ public class LocalityDeserializer implements Converter<LocalityDto, Locality> {
     @Override
     public Locality convert(LocalityDto localityDto) {
         // try to find locality - ID always takes a precedence
-        final Locality locality;
+        Locality locality;
         if (localityDto.getId() != null) {
             locality = localityService.getLocality(localityDto.getId());
         } else if (isNotEmpty(localityDto.getCity())) {
-            locality = localityService.findCityByName(localityDto.getRegion(), localityDto.getDistrict(),
-                    localityDto.getCity());
+            locality = findCity(localityDto);
         } else if (isNotEmpty(localityDto.getDistrict())) {
             locality = localityService.findDistrictByName(localityDto.getRegion(), localityDto.getDistrict());
         } else {
@@ -48,5 +47,18 @@ public class LocalityDeserializer implements Converter<LocalityDto, Locality> {
         }
         notNull(locality, "No locality has been found for dto=" + localityDto);
         return locality;
+    }
+
+    private Locality findCity(LocalityDto localityDto) {
+        if (isNotEmpty(localityDto.getRegion()) && isNotEmpty(localityDto.getDistrict())) {
+            // we have full locality info (region, district, city) - use it!
+            return localityService.findCityByName(localityDto.getRegion(), localityDto.getDistrict(),
+                localityDto.getCity());
+        } else  if (isNotEmpty(localityDto.getZipCode())) {
+            // (city, zipcode) should be a unique identifier - try to find proper locality
+            // this case is especially frequent in data imports (demands, suppliers) from external systems
+            return localityService.findCityByZipCode(localityDto.getCity(), localityDto.getZipCode());
+        }
+        return null;
     }
 }

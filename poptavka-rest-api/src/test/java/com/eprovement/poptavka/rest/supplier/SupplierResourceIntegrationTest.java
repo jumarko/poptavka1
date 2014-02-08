@@ -177,7 +177,7 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
     @Test
     public void createExternalSupplierWithAddressByZipcode() throws Exception {
         MvcResult createdSupplierResult =
-                performRequestAndCheckNewSupplier(HttpStatus.CREATED, this.mockMvc.performRequest(post("/suppliers")
+                this.mockMvc.performRequest(post("/suppliers")
                         .content("{\"email\":\"import@mailinator.com\","
                                 + "\"personFirstName\":\"Scot\","
                                 + "\"personLastName\":\"Teasdale\","
@@ -195,7 +195,9 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"addresses\":"
                                     + "[{\"city\":\"locality111\","
                                         + "\"zipCode\":\"60200\","
-                                        + " \"street\":\"1634 State St\"}]}")));
+                                        + " \"street\":\"1634 State St\"}]}"))
+                .andExpect(status().isCreated())
+                .andReturn();
 
         final SupplierDto supplierDto =
                 jsonObjectMapper.readValue(createdSupplierResult.getResponse().getContentAsString(), SupplierDto.class);

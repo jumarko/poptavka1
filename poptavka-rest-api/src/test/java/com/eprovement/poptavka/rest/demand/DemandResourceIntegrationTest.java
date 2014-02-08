@@ -166,7 +166,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
 
         this.mockMvc.performRequest(post("/demands")
                 .content(toJsonString(demand)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.localities[0].id").value(111));
     }
 

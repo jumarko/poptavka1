@@ -195,6 +195,26 @@ public class LocalityServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     @Test
+    public void findCityByZipCode() throws Exception {
+        final Locality city = localityService.findCityByZipCode("locality111", "60200");
+        assertNotNull("city locality111 with zip code '60200' should exist", city);
+        assertThat(city.getName(), is("locality111"));
+        assertThat(city.getType(), is(LocalityType.CITY));
+    }
+
+    @Test
+    public void findCityByZipCodeForUnknownZipCode() throws Exception {
+        assertThat("zip code 00011 is not registered, therefore no locality should be found",
+                localityService.findCityByZipCode("locality111", "00011"), nullValue());
+    }
+
+    @Test
+    public void findCityByZipCodeForUnknownLocality() throws Exception {
+        assertThat("zip code 60200 shouldn't have assigned any locality with name 'locality211'",
+                localityService.findCityByZipCode("locality211", "60200"), nullValue());
+    }
+
+    @Test
     public void findCityByName() throws Exception {
         final Locality city = localityService.findCityByName("locality1", "locality11", "locality111");
         assertNotNull("city locality111 should exist", city);

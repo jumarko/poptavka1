@@ -144,7 +144,6 @@ public class ClientResourceIntegrationTest extends ResourceIntegrationTest {
     @Test
     public void createExternalClientWithAddressByZipCodeAndCity() throws Exception {
         MvcResult createdClientResult =
-                performRequestAndCheckNewClient(HttpStatus.CREATED,
                         mockMvc.performRequest(post("/clients").content("{\"email\":\"poptavka3@mailinator.com\","
                                 + "\"personFirstName\":\"Janko\","
                                 + "\"personLastName\":\"Hraško\","
@@ -153,12 +152,14 @@ public class ClientResourceIntegrationTest extends ResourceIntegrationTest {
                                 + "\"," + "\"addresses\":"
                                     + "[{\"city\":\"locality111\","
                                     + "\"zipCode\":\"60200\","
-                                    + " \"street\":\"Main road\"}]}")));
+                                    + " \"street\":\"Main road\"}]}"))
+                .andExpect(status().isCreated())
+                .andReturn();
 
         final ClientDto clientDto =
                 jsonObjectMapper.readValue(createdClientResult.getResponse().getContentAsString(), ClientDto.class);
-        assertThat(clientDto.getAddresses(), hasSize(1));
-        assertThat(clientDto.getAddresses().get(0).getRegion(), is("locality111"));
+        assertThat("Unexpected number of addresses: " + clientDto.getAddresses(), clientDto.getAddresses(), hasSize(1));
+        assertThat(clientDto.getAddresses().get(0).getRegion(), is("locality1"));
         assertThat(clientDto.getAddresses().get(0).getDistrict(), is("locality11"));
         assertThat(clientDto.getAddresses().get(0).getCity(), is("locality111"));
         assertThat(clientDto.getAddresses().get(0).getZipCode(), is("60200"));

@@ -59,6 +59,17 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
     Locality findRegion(String region);
 
     /**
+     * Finds city by its name and zipcode.
+     * This information should be unique across all cities in given country.
+     * Note, that zip code alone is not sufficient, because there can be multiple cities sharing the same zip code.
+     *
+     * @param cityName name of city,
+     * @param zipCode city's zip code
+     * @return city identified by given name and zip code or null if no such city exists
+     */
+    Locality findCityByZipCode(String cityName, String zipCode);
+
+    /**
      * Finds city by its name, district and region (state) to which its belongs.
      * Region and district are required because there
      * can be multiple cities with same names in one region (e.g. region 'Oregon' and city 'Portland').
@@ -125,4 +136,5 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
      * @return all direct children of given locality
      */
     List<Locality> getSubLocalities(long localityId);
+
 }
