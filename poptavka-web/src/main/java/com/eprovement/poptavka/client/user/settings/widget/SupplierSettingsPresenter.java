@@ -68,6 +68,8 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
     /**************************************************************************/
     //history of changes
     private boolean editingCategories;
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**************************************************************************/
     /* BIND                                                                   */
@@ -81,14 +83,16 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initCategorySelector()
                         .initSelectorManager()
                         .withCheckboxesOnLeafsOnly()
                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                         .build();
+                instaceIdCategories = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getCategories(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getCategories(), instaceIdCategories);
                 view.getSelectorPopup().show();
             }
         });
@@ -96,14 +100,16 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initLocalitySelector()
                         .initSelectorManager()
                         .withCheckboxesOnLeafsOnly()
                         .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                         .build();
+                instaceIdLocalities = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getLocalities(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getLocalities(), instaceIdLocalities);
                 view.getSelectorPopup().show();
             }
         });
@@ -111,9 +117,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<SupplierSettingsVie
             @Override
             public void onClick(ClickEvent event) {
                 if (editingCategories) {
-                    eventBus.fillCatLocs(view.getCategories(), Constants.USER_SETTINGS_MODULE);
+                    eventBus.fillCatLocs(view.getCategories(), instaceIdCategories);
                 } else {
-                    eventBus.fillCatLocs(view.getLocalities(), -Constants.USER_SETTINGS_MODULE);
+                    eventBus.fillCatLocs(view.getLocalities(), instaceIdLocalities);
                 }
             }
         });
