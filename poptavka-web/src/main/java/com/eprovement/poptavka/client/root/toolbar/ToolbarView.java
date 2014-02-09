@@ -74,7 +74,7 @@ public class ToolbarView extends Composite implements IToolbar.View {
             title.setVisible(false);
         } else {
             if (leftPanel == null) {
-                title.setWidth("350px");
+                title.setWidth("100%");
             } else {
                 title.setWidth(leftPanel.getClientWidth() + "px");
             }

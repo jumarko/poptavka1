@@ -50,6 +50,8 @@
             <g:Label>
                 <ui:msg key="faq5r">Yes, you can demand any product or service without limitation. Want-Something.com is first demand marketplace website offering few thousands categories so that any professional or company can find new business opportunities here.</ui:msg>
             </g:Label>
+            <br />
+            <br />
 
             <g:SimplePanel ui:field="footer"/>
         </g:HTMLPanel>
