@@ -40,7 +40,8 @@
         <g:HTMLPanel styleName='{res.layout.contentContainer} user'>
             <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                 <g:HTMLPanel>
-                    <g:SimplePanel ui:field="contentContainer" height='auto'/>
+                    <g:SimplePanel ui:field="contentContainer" height='auto'
+                        addStyleNames="{res.common.wellContainer} {res.common.formFields} {res.layout.dashboardSettings}" />
                     <g:SimplePanel ui:field="footerContainer"/>
                 </g:HTMLPanel>
             </g:ScrollPanel>

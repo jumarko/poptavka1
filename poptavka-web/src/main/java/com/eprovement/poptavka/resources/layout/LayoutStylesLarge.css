@@ -316,4 +316,13 @@
     padding-left: 15px;
 }
 
+.dashboard-settings {
+    background: #e3deca;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
 .notification-panel {}

@@ -73,12 +73,10 @@ public class ToolbarView extends Composite implements IToolbar.View {
         if (title == null) {
             title.setVisible(false);
         } else {
-            title.setWidth("350px");
-            if (isLeftVisible) {
-                Element slidePanel = DOM.getElementById("gwt-debug-leftSlidingPanel");
-                if (slidePanel != null) {
-                    title.setWidth(slidePanel.getClientWidth() + "px");
-                }
+            if (leftPanel == null) {
+                title.setWidth("350px");
+            } else {
+                title.setWidth(leftPanel.getClientWidth() + "px");
             }
             title.setVisible(true);
             title.setText(titleText);

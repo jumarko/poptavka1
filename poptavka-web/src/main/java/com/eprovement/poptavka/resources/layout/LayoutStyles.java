@@ -88,6 +88,9 @@ public interface LayoutStyles extends CssResource {
     @ClassName("dashboard")
     String dashboard();
 
+    @ClassName("dashboard-settings")
+    String dashboardSettings();
+
     @ClassName("notification-panel")
     String notificationPanel();
 }
