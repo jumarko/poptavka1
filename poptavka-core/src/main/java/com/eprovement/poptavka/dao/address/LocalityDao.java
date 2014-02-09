@@ -22,6 +22,14 @@ public interface LocalityDao extends GenericDao<Locality> {
     Locality getLocality(Long id);
 
     /**
+     * Find all localities matching given {@code zipCode}.
+     *
+     * @param zipCode zip code in a valid format
+     * @return all localities matching given zip code or empty list
+     */
+    List<Locality> findLocalitiesForZipCode(String zipCode);
+
+    /**
      * Finds city by its parent district and city name.
      * @param district parent district
      * @param cityName name of city itself

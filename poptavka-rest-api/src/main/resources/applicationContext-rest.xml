@@ -29,7 +29,7 @@
     <!--common-->
     <bean id="businessUserSerializer" class="com.eprovement.poptavka.rest.common.serializer.BusinessUserSerializer" />
     <bean id="businessUserDeserializer" class="com.eprovement.poptavka.rest.common.serializer.BusinessUserDeserializer">
-        <constructor-arg ref="localityService" />
+        <constructor-arg ref="localityDeserializer" />
         <constructor-arg ref="registerService" />
     </bean>
 

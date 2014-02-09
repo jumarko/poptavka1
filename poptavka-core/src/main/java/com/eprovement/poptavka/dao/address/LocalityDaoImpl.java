@@ -1,20 +1,17 @@
 package com.eprovement.poptavka.dao.address;
 
+import static java.util.Collections.singletonMap;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 
-import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.enums.LocalityType;
-
-import java.util.Collections;
-import java.util.HashMap;
-
-import org.apache.commons.lang.Validate;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,6 +36,12 @@ public class LocalityDaoImpl extends GenericHibernateDao<Locality> implements Lo
     }
 
     @Override
+    public List<Locality> findLocalitiesForZipCode(String zipCode) {
+        notEmpty(zipCode, "zipCode should not be empty");
+        return runNamedQuery("getLocalitiesByZipCode", singletonMap("zipCode", zipCode));
+    }
+
+    @Override
     public Locality findCityByName(Locality district, String cityName) {
         notNull(district, "district should not be null");
         notEmpty(cityName, "city name should not be empty");
@@ -51,7 +54,7 @@ public class LocalityDaoImpl extends GenericHibernateDao<Locality> implements Lo
 
     @Override
     public Locality findDistrictByName(Locality region, String districtName) {
-        Validate.notNull(region, "region should not be null");
+        notNull(region, "region should not be null");
         notEmpty(districtName, "district name should not be empty");
         return (Locality) getHibernateSession().createCriteria(Locality.class)
                 .add(Restrictions.eq("type", LocalityType.DISTRICT))
@@ -64,7 +67,7 @@ public class LocalityDaoImpl extends GenericHibernateDao<Locality> implements Lo
     public Locality findRegionByAbbreviation(String abbreviation) {
         notEmpty(abbreviation, "abbreviation should not be empty!");
         return (Locality) runNamedQueryForSingleResult("getRegionByAbbreviation",
-                Collections.singletonMap("abbreviation", abbreviation));
+                singletonMap("abbreviation", abbreviation));
     }
 
     @Override

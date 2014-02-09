@@ -1,15 +1,18 @@
 package com.eprovement.poptavka.rest.common.serializer;
 
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
+
 import com.eprovement.poptavka.domain.address.Address;
+import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.Origin;
+import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.rest.common.dto.BusinessUserDto;
 import com.eprovement.poptavka.rest.common.dto.LocalityDto;
-import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.Validate;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
 
@@ -25,20 +28,20 @@ import java.util.List;
 public class BusinessUserDeserializer implements Converter<BusinessUserDto, BusinessUser> {
 
 
-    private final LocalityService localityService;
+    private final LocalityDeserializer localityDeserializer;
     private final RegisterService registerService;
 
-    public BusinessUserDeserializer(LocalityService localityService, RegisterService registerService) {
-        Validate.notNull(localityService, "localityService cannot be null");
-        Validate.notNull(registerService, "registerService cannot be null");
-        this.localityService = localityService;
+    public BusinessUserDeserializer(LocalityDeserializer localityDeserializer, RegisterService registerService) {
+        notNull(localityDeserializer, "localityDeserializer cannot be null");
+        notNull(registerService, "registerService cannot be null");
+        this.localityDeserializer = localityDeserializer;
         this.registerService = registerService;
     }
 
     @Override
     public BusinessUser convert(BusinessUserDto businessUserDto) {
-        Validate.notNull(businessUserDto);
-        Validate.notNull(businessUserDto);
+        notNull(businessUserDto);
+        notNull(businessUserDto);
 
         final BusinessUser businessUser = new BusinessUser();
         businessUser.setEmail(businessUserDto.getEmail());
@@ -59,8 +62,8 @@ public class BusinessUserDeserializer implements Converter<BusinessUserDto, Busi
     private void setOrigin(BusinessUserDto businessUserDto, BusinessUser businessUser) {
         if (businessUserDto.getOrigin() != null) {
             final Origin origin = registerService.getValue(businessUserDto.getOrigin(), Origin.class);
-            Validate.notNull(origin, String.format("No record found for origin code '%s'. "
-                    + "Make sure that external system has geen properly registrated",
+            notNull(origin, String.format("No record found for origin code '%s'. "
+                    + "Make sure that external system has been properly registrated",
                     businessUserDto.getOrigin()));
             businessUser.setOrigin(origin);
         }
@@ -76,16 +79,10 @@ public class BusinessUserDeserializer implements Converter<BusinessUserDto, Busi
         final List<Address> addresses = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(businessUserDto.getAddresses())) {
             for (LocalityDto addressDto : businessUserDto.getAddresses()) {
+                final Locality addressLoc = localityDeserializer.convert(addressDto);
+                isTrue(LocalityType.CITY == addressLoc.getType(), "expected city but found: " + addressLoc.getType());
                 final Address address = new Address();
-                final com.eprovement.poptavka.domain.address.Locality city =
-                        localityService.findCityByName(addressDto.getRegion(), addressDto.getDistrict(),
-                                addressDto.getCity());
-                if (city == null) {
-                    throw new IllegalArgumentException(
-                            String.format("No city locality found for state '%s', district %s and city '%s'",
-                                    addressDto.getRegion(), addressDto.getDistrict(), addressDto.getCity()));
-                }
-                address.setCity(city);
+                address.setCity(addressLoc);
                 address.setStreet(addressDto.getStreet());
                 address.setHouseNum(addressDto.getHouseNum());
                 address.setZipCode(addressDto.getZipCode());

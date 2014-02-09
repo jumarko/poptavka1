@@ -175,6 +175,41 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
     }
 
     @Test
+    public void createExternalSupplierWithAddressByZipcode() throws Exception {
+        MvcResult createdSupplierResult =
+                this.mockMvc.performRequest(post("/suppliers")
+                        .content("{\"email\":\"import@mailinator.com\","
+                                + "\"personFirstName\":\"Scot\","
+                                + "\"personLastName\":\"Teasdale\","
+                                + "\"companyName\":\"Quad City Port Svc\","
+                                + "\"origin\":\""
+                                + Origin.EXTERNAL_ORIGIN_CODE + "\","
+                                + "\"phone\":\"123465789\","
+                                + "\"website\":\"www.qcps.com\","
+                                + "\"password\":\"kreslo\","
+                                // externalId 111110 == id 11, 111 and 1131
+                                + "\"categories\":[{\"externalId\":111110}],"
+                                + "\"localities\":[{\"region\":\"MM\"},"
+                                        + "{\"region\":\"locality1\",\"district\":\"locality11\"},"
+                                        + "{\"city\":\"locality111\", \"zipCode\":\"60200\"}],"
+                                + "\"addresses\":"
+                                    + "[{\"city\":\"locality111\","
+                                        + "\"zipCode\":\"60200\","
+                                        + " \"street\":\"1634 State St\"}]}"))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        final SupplierDto supplierDto =
+                jsonObjectMapper.readValue(createdSupplierResult.getResponse().getContentAsString(), SupplierDto.class);
+        assertThat(supplierDto.getAddresses(), hasSize(1));
+        assertThat(supplierDto.getAddresses().get(0).getRegion(), is("locality1"));
+        assertThat(supplierDto.getAddresses().get(0).getDistrict(), is("locality11"));
+        assertThat(supplierDto.getAddresses().get(0).getCity(), is("locality111"));
+        assertThat(supplierDto.getAddresses().get(0).getZipCode(), is("60200"));
+    }
+
+
+    @Test
     public void createSupplierMissingEmail() throws Exception {
         this.mockMvc.performRequest(post("/suppliers").content("{\"personFirstName\":\"Janko\", "
                 + "\"personLastName\":\"Hraško\", "

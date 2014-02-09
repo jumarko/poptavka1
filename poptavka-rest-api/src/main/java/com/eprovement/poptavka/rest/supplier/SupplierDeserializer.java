@@ -8,7 +8,6 @@ import com.eprovement.poptavka.rest.common.dto.BusinessUserDto;
 import com.eprovement.poptavka.rest.common.serializer.CategoryDeserializer;
 import com.eprovement.poptavka.rest.common.serializer.LocalityDeserializer;
 import com.eprovement.poptavka.service.user.SupplierService;
-import org.apache.commons.lang.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class SupplierDeserializer implements Converter<SupplierDto, Supplier> {
 
     @Override
     public Supplier convert(SupplierDto supplierDto) {
-        Validate.notNull(supplierDto, "supplierDto cannot be null");
+        notNull(supplierDto, "supplierDto cannot be null");
 
         if (supplierDto.getId() != null) {
             // existing client, load him from DB
