@@ -188,7 +188,7 @@ public class HomeSuppliersPresenter
         } else {
             //if category selection -> select and display in tree
             eventBus.requestHierarchy(
-                CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, Constants.HOME_SUPPLIERS_MODULE);
+                CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, categoryDetail, builder.getInstanceId());
         }
         //Restore table page
         this.calledFromHistory = true;
