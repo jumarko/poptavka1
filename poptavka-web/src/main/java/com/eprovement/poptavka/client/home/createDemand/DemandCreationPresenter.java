@@ -99,6 +99,8 @@ public class DemandCreationPresenter
     private static final int FOURTH_TAB_LOCALITY = 3;
     private static final int FIFTH_TAB_DEMAND_ADVANCE_FORM = 4;
     private int maxSelectedTab = 1;
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -218,28 +220,28 @@ public class DemandCreationPresenter
             case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
                 if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
-                    eventBus.initCatLocSelector(
-                        view.getHolderPanel(THIRD_TAB_CATEGORY),
-                        new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
+                    CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxesOnLeafsOnly()
                             .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                            .build());
+                            .build();
+                    instaceIdCategories = builder.getInstanceId();
+                    eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_CATEGORY), builder);
                 }
                 setHeightSelector();
                 break;
             case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
                 if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
-                    eventBus.initCatLocSelector(
-                        view.getHolderPanel(FOURTH_TAB_LOCALITY),
-                        new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
+                    CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                            .build());
+                            .build();
+                    instaceIdLocalities = builder.getInstanceId();
+                    eventBus.initCatLocSelector(view.getHolderPanel(FOURTH_TAB_LOCALITY), builder);
                 }
                 setHeightSelector();
                 break;
@@ -408,8 +410,8 @@ public class DemandCreationPresenter
         FullDemandDetail demand = new FullDemandDetail();
         demand = basicValues.updateBasicDemandInfo(demand);
         demand = advValues.updateAdvDemandInfo(demand);
-        eventBus.fillCatLocs(demand.getCategories(), Constants.CREATE_DEMAND);
-        eventBus.fillCatLocs(demand.getLocalities(), -Constants.CREATE_DEMAND);
+        eventBus.fillCatLocs(demand.getCategories(), instaceIdCategories);
+        eventBus.fillCatLocs(demand.getLocalities(), instaceIdLocalities);
         eventBus.createDemand(demand, client.getClientId());
     }
 

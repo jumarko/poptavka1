@@ -69,6 +69,8 @@ public class EditableDemandDetailPresenter extends
     /* Attributes                                                             */
     /**************************************************************************/
     private boolean editingCategories;
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**************************************************************************/
     /* Bind events                                                            */
@@ -82,14 +84,16 @@ public class EditableDemandDetailPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_CLIENT_MODULE)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.USER_CLIENT_MODULE)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxesOnLeafsOnly()
                             .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                             .build();
+                instaceIdCategories = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getCategories(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getCategories(), instaceIdCategories);
                 view.getSelectorPopup().show();
             }
         });
@@ -97,14 +101,16 @@ public class EditableDemandDetailPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.USER_CLIENT_MODULE)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.USER_CLIENT_MODULE)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxesOnLeafsOnly()
                             .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                             .build();
+                instaceIdLocalities = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getLocalities(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getLocalities(), instaceIdLocalities);
                 view.getSelectorPopup().show();
             }
         });
@@ -113,9 +119,9 @@ public class EditableDemandDetailPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 if (editingCategories) {
-                    eventBus.fillCatLocs(view.getCategories(), Constants.USER_CLIENT_MODULE);
+                    eventBus.fillCatLocs(view.getCategories(), instaceIdCategories);
                 } else {
-                    eventBus.fillCatLocs(view.getLocalities(), -Constants.USER_CLIENT_MODULE);
+                    eventBus.fillCatLocs(view.getLocalities(), instaceIdLocalities);
                 }
                 view.getSelectorPopup().show();
             }

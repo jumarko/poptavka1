@@ -100,6 +100,8 @@ public class AdvanceSearchPresenter
             animation.getSearchBtn2().fadeIn(FADE_ANIMATION_TIME, null);
         }
     };
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**************************************************************************/
     /** Navigation events                                                     */
@@ -167,9 +169,9 @@ public class AdvanceSearchPresenter
         //fill attributes
         view.fillAttributes(filter);
         //fill categories
-        eventBus.fillCatLocs(filter.getCategories(), Constants.HOME_SEARCH_MODULE);
+        eventBus.fillCatLocs(filter.getCategories(), instaceIdCategories);
         //fill localities
-        eventBus.fillCatLocs(filter.getLocalities(), -Constants.HOME_SEARCH_MODULE);
+        eventBus.fillCatLocs(filter.getLocalities(), instaceIdLocalities);
     }
 
     /**
@@ -249,35 +251,34 @@ public class AdvanceSearchPresenter
                 hideSearchBtns(1000);
                 switch (event.getItem()) {
                     case AdvanceSearchView.CATEGORY_SELECTOR_WIDGET:
-//                        animation.getAdvanceSearchPopup().animate("max-width: 1075px", null);
                         //If not yet initialized, do it
                         if (view.getCategorySelectorPanel().getWidget() == null) {
-                            eventBus.initCatLocSelector(
-                                    view.getCategorySelectorPanel(),
-                                    new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
+                            CatLocSelectorBuilder builder =
+                                new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
                                         .initCategorySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
                                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                        .build());
+                                        .build();
+                            instaceIdCategories = builder.getInstanceId();
+                            eventBus.initCatLocSelector(view.getCategorySelectorPanel(), builder);
                         }
                         break;
                     case AdvanceSearchView.LOCALITY_SELECTOR_WIDGET:
-//                        animation.getAdvanceSearchPopup().animate("max-width: 1075px", null);
                         //If not yet initialized, do it
                         if (view.getLocalitySelectorPanel().getWidget() == null) {
-                            eventBus.initCatLocSelector(
-                                    view.getLocalitySelectorPanel(),
-                                    new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
+                            CatLocSelectorBuilder builder =
+                                new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
                                         .initLocalitySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
                                         .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                        .build());
+                                        .build();
+                            instaceIdLocalities = builder.getInstanceId();
+                            eventBus.initCatLocSelector(view.getLocalitySelectorPanel(), builder);
                         }
                         break;
                     default:
-//                        animation.getAdvanceSearchPopup().animate("max-width: 500px", null);
                         break;
                 }
             }

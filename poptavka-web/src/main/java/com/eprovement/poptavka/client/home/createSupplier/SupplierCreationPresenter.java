@@ -76,6 +76,8 @@ public class SupplierCreationPresenter
     private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private int maxSelectedTab = 1;
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -172,30 +174,30 @@ public class SupplierCreationPresenter
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
-                    eventBus.initCatLocSelector(
-                            view.getHolderPanel(SECOND_TAB_CATEGORY),
-                            new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
+                    CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initCategorySelector()
                                 .initSelectorManager()
                                 .withCheckboxesOnLeafsOnly()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                .build());
+                                .build();
+                    instaceIdCategories = builder.getInstanceId();
+                    eventBus.initCatLocSelector(view.getHolderPanel(SECOND_TAB_CATEGORY), builder);
                 }
                 setHeightSelector();
                 break;
             case THIRD_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
-                    eventBus.initCatLocSelector(
-                            view.getHolderPanel(THIRD_TAB_LOCALITY),
-                            new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
+                    CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initLocalitySelector()
                                 .initSelectorManager()
                                 .withCheckboxesOnLeafsOnly()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                .build());
+                                .build();
+                    instaceIdLocalities = builder.getInstanceId();
+                    eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_LOCALITY), builder);
                 }
                 setHeightSelector();
                 break;
@@ -270,8 +272,8 @@ public class SupplierCreationPresenter
         FullSupplierDetail newSupplier = new FullSupplierDetail();
 
         eventBus.fillBusinessUserDetail(newSupplier.getUserData());
-        eventBus.fillCatLocs(newSupplier.getCategories(), Constants.CREATE_SUPPLIER);
-        eventBus.fillCatLocs(newSupplier.getLocalities(), -Constants.CREATE_SUPPLIER);
+        eventBus.fillCatLocs(newSupplier.getCategories(), instaceIdCategories);
+        eventBus.fillCatLocs(newSupplier.getLocalities(), instaceIdLocalities);
         eventBus.fillServices(newSupplier.getServices());
 
         eventBus.registerSupplier(newSupplier);

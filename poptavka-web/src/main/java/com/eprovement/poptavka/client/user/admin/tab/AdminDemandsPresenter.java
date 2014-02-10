@@ -43,6 +43,8 @@ public class AdminDemandsPresenter
     //need to remember for asynchDataProvider if asking for more data
     private SearchModuleDataHolder searchDataHolder;
     private boolean editingCategories;
+    private int instaceIdCategories;
+    private int instaceIdLocalities;
 
     /**
      * Interface for widget AdminMessagesView.
@@ -143,15 +145,17 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = true;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                             .build();
+                instaceIdCategories = builder.getInstanceId();
                 eventBus.initCatLocSelector(
                     view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getAdminDemandDetail().getCategories(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getAdminDemandDetail().getCategories(), instaceIdCategories);
                 view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });
@@ -159,15 +163,17 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 editingCategories = false;
-                final CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
+                final CatLocSelectorBuilder builder =
+                    new CatLocSelectorBuilder.Builder(Constants.ADMIN_DEMANDS)
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
                             .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                             .build();
+                instaceIdLocalities = builder.getInstanceId();
                 eventBus.initCatLocSelector(
                         view.getAdminDemandDetail().getSelectorWidgetPopup().getSelectorPanel(), builder);
-                eventBus.setCatLocs(view.getAdminDemandDetail().getLocalities(), builder.getInstanceId());
+                eventBus.setCatLocs(view.getAdminDemandDetail().getLocalities(), instaceIdLocalities);
                 view.getAdminDemandDetail().getSelectorWidgetPopup().show();
             }
         });
@@ -175,13 +181,9 @@ public class AdminDemandsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (editingCategories) {
-                    eventBus.fillCatLocs(
-                            view.getAdminDemandDetail().getCategories(),
-                            Constants.ADMIN_DEMANDS);
+                    eventBus.fillCatLocs(view.getAdminDemandDetail().getCategories(), instaceIdCategories);
                 } else {
-                    eventBus.fillCatLocs(
-                            view.getAdminDemandDetail().getLocalities(),
-                            -Constants.ADMIN_DEMANDS);
+                    eventBus.fillCatLocs(view.getAdminDemandDetail().getLocalities(), instaceIdLocalities);
                 }
             }
         });
