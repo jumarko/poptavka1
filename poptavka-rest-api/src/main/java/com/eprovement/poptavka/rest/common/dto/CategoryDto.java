@@ -1,5 +1,7 @@
 package com.eprovement.poptavka.rest.common.dto;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import java.util.Map;
 
 /**
@@ -61,12 +63,12 @@ public class CategoryDto {
 
     @Override
     public String toString() {
-        return "CategoryDto{"
-                + "id='" + id + '\''
-                + "externalId='" + externalId + '\''
-                + ", name='" + name + '\''
-                + ", description='" + description + '\''
-                + ", links=" + links
-                + '}';
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("externalId", externalId)
+                .append("name", name)
+                .append("description", description)
+                .append("links", links)
+                .toString();
     }
 }
