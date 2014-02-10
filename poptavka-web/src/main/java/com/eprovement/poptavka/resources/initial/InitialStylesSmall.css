@@ -57,6 +57,12 @@ body > div {
 .expand-small {
     width: 100% !important;
 }
+.expand-small {
+    margin-top: 10px;
+}
+.expand-small:first-child {
+    margin-top: 0px;
+}
 .half-expand-small {
     width: 50% !important;
 }

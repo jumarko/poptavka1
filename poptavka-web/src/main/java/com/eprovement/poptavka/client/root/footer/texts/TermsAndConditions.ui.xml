@@ -42,7 +42,9 @@
             The subject of this Terms and Conditions is to adjust the contractual relationship between registered user and provider of Want-Something.com portal.
             The contractual relationship becomes valid as soon as Professional finishes his registration.
             This Terms and Conditions become valid by publishing and Want-Something.com has the right to change Terms and Conditions anytime. Every change will be properly displayed on Want-Something.com portal.
-
+            <br />
+            <br />
+            
             <g:SimplePanel ui:field="footer" />
         </g:HTMLPanel>
     </g:ScrollPanel>

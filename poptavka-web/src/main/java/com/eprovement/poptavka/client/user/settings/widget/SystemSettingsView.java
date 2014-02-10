@@ -64,7 +64,6 @@ public class SystemSettingsView extends Composite
         for (NotificationDetail item : detail.getNotifications()) {
             notifications.add(new NotificationItemView(item));
         }
-        fluidContainer.setHeight(((detail.getNotifications().size() + 1) * ITEM_HEIGHT) + "px");
     }
 
     /**

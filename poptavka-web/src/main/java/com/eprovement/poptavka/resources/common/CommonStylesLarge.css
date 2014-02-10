@@ -76,7 +76,7 @@
     cursor: pointer;
 }
 
-.universal-pager .ws-page-size-list {
+.ws-page-size-list {
     background: #2b2e31;
     border: 1px solid #1a1d1e;
     border-radius: 4px 4px 4px 4px;
@@ -86,15 +86,15 @@
     width: 48px;
 }
 
-.universal-pager .ws-page-size-list table {
+.ws-page-size-list table {
     width: 100%;
 }
 
-.universal-pager .ws-page-size-list tr:first-child td {
+.ws-page-size-list tr:first-child td {
     border-top: none;
 }
 
-.universal-pager .ws-page-size-list td {
+.ws-page-size-list td {
     width: 100%;
     border-top: 1px solid #52585c;
     border-bottom: 1px solid #111111;
@@ -103,7 +103,7 @@
     color: #D5D5D5;
 }
 
-.universal-pager .ws-page-size-list td:hover {
+.ws-page-size-list td:hover {
     color: #ffffff;
 }
 
@@ -558,6 +558,7 @@ button.button-green {
     /*border: 1px solid #D2C9A9;*/
     height: 40px;
     width: 100%;
+    max-width: 100%;
 }
 .form-fields input[type="checkbox"] {
     margin: 1px 4px 0 0;
@@ -843,6 +844,7 @@ button.button-green {
 }
 .condition-panel .link {
     margin-right: 10px;
+    color: #237E00;
     float: left;
 }
 .condition-panel .color-red {
