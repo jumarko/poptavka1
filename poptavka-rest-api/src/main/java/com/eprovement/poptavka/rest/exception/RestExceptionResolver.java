@@ -56,6 +56,7 @@ public class RestExceptionResolver extends ExceptionHandlerExceptionResolver
             responseStatus = responseStatusAnnotation.value();
         } else if (e instanceof IllegalArgumentException) {
             responseStatus = HttpStatus.BAD_REQUEST;
+            responseBody = e.getMessage();
         } else if (e instanceof ConstraintViolationException) {
             responseStatus = HttpStatus.BAD_REQUEST;
             responseBody = getResponseBodyForViolationException((ConstraintViolationException) e);
