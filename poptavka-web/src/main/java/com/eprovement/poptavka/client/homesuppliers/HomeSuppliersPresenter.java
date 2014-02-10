@@ -102,7 +102,7 @@ public class HomeSuppliersPresenter
     private CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.HOME_SUPPLIERS_MODULE)
         .initCategorySelector()
         .initSelectorTreeBrowser()
-        .displayCountOfDemands()
+        .displayCountOfSuppliers()
         .addSelectionHandler(handler)
         .build();
 
