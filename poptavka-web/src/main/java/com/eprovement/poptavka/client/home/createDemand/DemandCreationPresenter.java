@@ -224,7 +224,8 @@ public class DemandCreationPresenter
                             .initCategorySelector()
                             .initSelectorManager()
                             .withCheckboxesOnLeafsOnly()
-                            .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                            .displayCountOfDemands()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                             .build();
                     instaceIdCategories = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_CATEGORY), builder);
@@ -238,7 +239,8 @@ public class DemandCreationPresenter
                             .initLocalitySelector()
                             .initSelectorManager()
                             .withCheckboxes()
-                            .displayCountOfDemands().setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                            .displayCountOfDemands()
+                            .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                             .build();
                     instaceIdLocalities = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(FOURTH_TAB_LOCALITY), builder);
