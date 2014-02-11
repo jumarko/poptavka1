@@ -46,7 +46,7 @@ public final class ClientConverter extends AbstractConverter<Client, FullClientD
         Preconditions.checkArgument(source != null, "Client cannot be null!");
         FullClientDetail detail = new FullClientDetail();
         detail.setClientId(source.getId());
-        detail.setOveralRating(source.getOveralRating());
+        detail.setOveralRating(source.getOveralRating() == null ? 0 : source.getOveralRating());
         if (source.getBusinessUser() != null) {
             detail.setUserData(businessUserConverter.convertToTarget(source.getBusinessUser()));
         }

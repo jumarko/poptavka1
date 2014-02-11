@@ -62,7 +62,7 @@ public final class SupplierConverter extends AbstractConverter<Supplier, FullSup
     public FullSupplierDetail convertToTarget(Supplier source) {
         FullSupplierDetail detail = new FullSupplierDetail();
         detail.setSupplierId(source.getId());
-        detail.setOveralRating(source.getOveralRating());
+        detail.setOveralRating(source.getOveralRating() == null ? 0 : source.getOveralRating());
         if (source.isCertified() != null) {
             detail.setCertified(source.isCertified());
         }

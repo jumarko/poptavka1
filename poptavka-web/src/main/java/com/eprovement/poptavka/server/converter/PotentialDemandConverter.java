@@ -57,7 +57,11 @@ public final class PotentialDemandConverter extends AbstractConverter<UserMessag
                 detail.setEndDate(convertDate(userMessage.getMessage().getDemand().getEndDate()));
                 detail.setValidToDate(convertDate(userMessage.getMessage().getDemand().getValidTo()));
                 if (userMessage.getMessage().getDemand().getClient() != null) {
-                    detail.setRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
+                    if (userMessage.getMessage().getDemand().getClient().getOveralRating() != null) {
+                        detail.setRating(userMessage.getMessage().getDemand().getClient().getOveralRating());
+                    } else {
+                        detail.setRating(0);
+                    }
                     if (userMessage.getMessage().getDemand().getClient().getBusinessUser() != null
                             && userMessage.getMessage().getDemand().getClient()
                             .getBusinessUser().getBusinessUserData() != null) {
