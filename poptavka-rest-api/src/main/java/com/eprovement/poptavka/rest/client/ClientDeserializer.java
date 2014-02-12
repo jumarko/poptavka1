@@ -38,7 +38,9 @@ public class ClientDeserializer implements Converter<ClientDto, Client> {
         final Client client = new Client();
         final BusinessUser businessUser = businessUserDeserializer.convert(clientDto);
         client.setBusinessUser(businessUser);
-        client.setOveralRating(clientDto.getOverallRating());
+        if (clientDto.getOverallRating() != null) {
+            client.setOveralRating(clientDto.getOverallRating());
+        }
         return client;
     }
 

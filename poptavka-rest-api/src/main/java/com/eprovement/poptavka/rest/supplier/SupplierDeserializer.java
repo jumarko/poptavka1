@@ -49,7 +49,9 @@ public class SupplierDeserializer implements Converter<SupplierDto, Supplier> {
         final Supplier supplier = new Supplier();
         final BusinessUser businessUser = businessUserDeserializer.convert(supplierDto);
         supplier.setBusinessUser(businessUser);
-        supplier.setOveralRating(supplierDto.getOveralRating());
+        if (supplierDto.getOveralRating() != null) {
+            supplier.setOveralRating(supplierDto.getOveralRating());
+        }
         supplier.setCertified(supplierDto.isCertified());
         supplier.setCategories(categoryDeserializer.convertCategories(supplierDto.getCategories()));
         supplier.setLocalities(localityDeserializer.convertLocalities(supplierDto.getLocalities()));
