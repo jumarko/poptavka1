@@ -112,7 +112,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierCategories(supplier, newSupplier);
         setNewSupplierUserServices(supplier, newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
-        newSupplier.setOveralRating(Integer.valueOf(0));
+        newSupplier.setOveralRating(0);
         /** registration process **/
         final Supplier supplierFromDB = supplierService.create(newSupplier);
 
@@ -167,7 +167,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      * @param newSupplier
      */
     private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
-        final List<UserService> us = new ArrayList<UserService>();
+        final List<UserService> us = new ArrayList<>();
 
         for (ServiceDetail serviceDetail : supplier.getServices()) {
             Service service = generalService.find(Service.class, serviceDetail.getId());
@@ -214,7 +214,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      * @return list of addresses
      */
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
-        final List<Address> addresses = new ArrayList<Address>();
+        final List<Address> addresses = new ArrayList<>();
         for (AddressDetail detail : supplier.getAddresses()) {
             //Ziskaj mesto typu Locality (String -> Locality)
             final Locality cityLoc = generalService.find(Locality.class, detail.getCityId());
