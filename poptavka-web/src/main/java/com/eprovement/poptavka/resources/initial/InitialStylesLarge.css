@@ -435,7 +435,7 @@ div[aria-hidden="true"] {
     height: 100%;
 }
 
-/*.scroll-container h1 {
+.scroll-container h1 {
     font-size: 26px;
     color: #6f6b59;
 }
@@ -457,7 +457,7 @@ div[aria-hidden="true"] {
 .scroll-container .list-style .gwt-Label {
     background: url(images/list-arrow.png) no-repeat scroll left 8px transparent;
     padding: 0 0 0 10px;
-}*/
+}
 
 /******************************************************************************/
 /*  Common Responsive                                                         */

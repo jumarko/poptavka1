@@ -754,6 +754,20 @@ button.button-green {
     -webkit-border-radius: 5px 5px 0 0;
 }
 
+.how-it-works-container .content-block-middle {
+    background: none repeat scroll 0 0 #FAF7EB;
+    border-bottom: 1px solid #ABA798;
+    border-left: 1px solid #D1CCBB;
+    border-radius: 0 0 5px 5px;
+    border-right: 1px solid #D1CCBB;
+    padding: 20px;
+}
+
+.how-it-works-container .content-block-middle .span4, .how-it-works-container .container-fluid .span6 {
+    background: url("images/how-it-works-arrow.png") no-repeat scroll 0 6px rgba(0, 0, 0, 0);
+    padding: 0 0 0 12px;
+}
+
 /* MyListBox - used for custom select-box */
 .myListBox {    
     background: #F8F4E4;

@@ -19,7 +19,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="clientStep1">Post a Project</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="6">
                                 <g:HTMLPanel>
@@ -48,7 +48,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="clientStep2">Professionals will receive your project</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="6">
                                 <g:HTMLPanel>
@@ -77,7 +77,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="clientStep3">Receive offers from Professionals</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="4">
                                 <g:HTMLPanel>
