@@ -243,6 +243,9 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = InfoWidgetsModule.class)
     void showAlertPopup(String message);
 
+    @Event(forwardToModules = InfoWidgetsModule.class)
+    void displayTermsAndConditionsPopup();
+
     /**************************************************************************/
     /* Navigation events - Other control sections                             */
     /**************************************************************************/
