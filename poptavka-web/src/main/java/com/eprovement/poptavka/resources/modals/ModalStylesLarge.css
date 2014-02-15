@@ -426,6 +426,20 @@
     padding: 0 0 10px 0; 
 }
 
+/******************************************************************************/
+/*  Terms and Conditions popup                                                */
+/******************************************************************************/
+.terms-and-conditions {
+    margin-left: -425px;
+    width: 850px;
+}
+
+.terms-and-conditions .modal-content {
+    height: 400px;
+    color: #6F6B59;
+    margin-bottom: 20px;
+}
+
 /* IE fixes for login modal */
 /*@if user.agent ie8 ie9 ie10 { 
     .login-modal .gwt-TextBox,

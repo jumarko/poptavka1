@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
@@ -46,7 +45,6 @@ public final class TermsAndConditionsPopup extends Modal implements ITermsAndCon
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    @UiField HTMLPanel popupContent;
     @UiField Button closeButton;
 
     /**************************************************************************/
@@ -60,7 +58,7 @@ public final class TermsAndConditionsPopup extends Modal implements ITermsAndCon
         add(uiBinder.createAndBindUi(this));
 
         addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
-        addStyleName(StyleResource.INSTANCE.modal().contactUsModal());
+        addStyleName(StyleResource.INSTANCE.modal().termsAndConditions());
         setBackdrop(BackdropType.STATIC);
 
         setAnimation(true);

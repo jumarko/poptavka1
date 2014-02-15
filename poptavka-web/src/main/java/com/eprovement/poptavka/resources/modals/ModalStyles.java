@@ -59,4 +59,8 @@ public interface ModalStyles extends CssResource {
     /* Thank You Modal Styles*/
     @ClassName("thankyou")
     String thankYouPopupStyle();
+
+    /* Thank You Modal Styles*/
+    @ClassName("terms-and-conditions")
+    String termsAndConditions();
 }

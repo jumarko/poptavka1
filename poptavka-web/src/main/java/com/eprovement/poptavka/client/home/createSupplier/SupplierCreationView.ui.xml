@@ -94,16 +94,7 @@
                                 <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
                             </g:Anchor>
                             <b:Icon ui:field='conditionValidationImage' type="EXCLAMATION" size="LARGE" visible='false'
-                                    addStyleNames='pull-left collor-red'/>
-                            <b:Modal ui:field='conditionPopup' dynamicSafe='true' keyboard='true'
-                                     title='{msgs.footerTermsConditions}'>
-                                <g:HTML HTML='{res.conditions.getText}'/>
-                                <b:ModalFooter>
-                                    <g:Button ui:field='conditionCloseBtn' styleName='{res.common.buttonGreen}'>
-                                        <ui:msg key='commonBtnClose'>Close</ui:msg>
-                                    </g:Button>
-                                </b:ModalFooter>
-                            </b:Modal>
+                                    addStyleNames='pull-left collor-red'/>                            
                         </g:FlowPanel>
                         <btns:ButtonsPanel ui:field='buttonsPanel4'
                                            backBtn='{msgs.commonBtnBack}'

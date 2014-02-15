@@ -7,23 +7,21 @@
 
     <b:FluidContainer addStyleNames='{res.common.formFields}'>
         <b:FluidRow>
-            <b:Column size='12'>
+            <b:Column size='12'>                
                 <g:Label styleName="modal-header">
-                    <ui:msg key="footerTermsConditions">Terms and Conditions</ui:msg>
+                    <ui:msg key="footerTermsConditions">Terms &amp; Conditions</ui:msg>
                 </g:Label>
             </b:Column>
         </b:FluidRow>
         
-        <b:FluidRow>
-            <b:Column size='12'>
-                <g:HTMLPanel ui:field="popupContent"></g:HTMLPanel>
-            </b:Column>
-        </b:FluidRow>
-
         <b:WellForm>            
+            <g:ScrollPanel styleName="modal-content">
+                <g:HTML HTML='{res.conditions.getText}'/>
+            </g:ScrollPanel>
+                                            
             <b:FluidRow>
                 <b:Column size="12">
-                    <g:Button ui:field="closeButton" styleName="{res.common.buttonGrey}">
+                    <g:Button ui:field="closeButton" styleName="{res.common.buttonGreen}">
                         <ui:msg key="commonBtnClose">Close</ui:msg>
                     </g:Button>
                 </b:Column>

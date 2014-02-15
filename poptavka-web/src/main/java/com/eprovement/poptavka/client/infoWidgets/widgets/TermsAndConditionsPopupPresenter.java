@@ -3,9 +3,7 @@
  */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
-import com.eprovement.poptavka.client.common.ui.WSListBox;
 import com.eprovement.poptavka.client.infoWidgets.InfoWidgetsEventBus;
-import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
