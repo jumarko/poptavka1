@@ -114,24 +114,6 @@
                         <g:HTMLPanel styleName='{style.members-block}'>
                             <g:HTMLPanel styleName='{style.members-inside-block}'>
                                 <h4>
-                                    <ui:msg key="aboutUsVojtechHubr">Vojtech Hubr</ui:msg>
-                                </h4>
-                                <g:HTMLPanel styleName='{style.members-content}'>
-                                    <ui:msg key="aboutUsBackendDeveloper">Backend developer</ui:msg>
-                                </g:HTMLPanel>
-                                <img src="images/team-members/vojto.jpg" />
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12"></b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="4">
-                        <g:HTMLPanel styleName='{style.members-block}'>
-                            <g:HTMLPanel styleName='{style.members-inside-block}'>
-                                <h4>
                                     <ui:msg key="aboutUsMartinSlavkovsky">Martin Slavkovsky</ui:msg>
                                 </h4>
                                 <g:HTMLPanel styleName='{style.members-content}'>
@@ -140,21 +122,8 @@
                                 <img src="images/team-members/martin.jpg" />
                             </g:HTMLPanel>
                         </g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="4">
-                        <g:HTMLPanel styleName='{style.members-block}'>
-                            <g:HTMLPanel styleName='{style.members-inside-block}'>
-                                <h4>
-                                    <ui:msg key="aboutUsJaroslavKrivus">Jaroslav Krivus</ui:msg>
-                                </h4>
-                                <g:HTMLPanel styleName='{style.members-content}'>
-                                    <ui:msg key="aboutUsFrontendDeveloper">Frontend developer</ui:msg>
-                                </g:HTMLPanel>
-                                <img src="images/team-members/jaro.jpg" />
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
-                    </b:Column>
-                </b:FluidRow>
+                    </b:Column>                    
+                </b:FluidRow>                
             </b:FluidContainer>
             <g:SimplePanel ui:field="footer" />
         </g:HTMLPanel>
