@@ -555,7 +555,7 @@ button.button-green {
 .form-fields textarea,
 .form-fields select {
     background: none repeat scroll 0 0 #F8F4E4;
-    /*border: 1px solid #D2C9A9;*/
+    border: 1px solid #D2C9A9;
     height: 40px;
     width: 100%;
     max-width: 100%;
