@@ -57,7 +57,7 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(handlers = DetailModulePresenter.class)
-    void resize(int actualWidth);
+    void resize(int detailModuleTab);
 
     /**************************************************************************/
     /* Business events handled by DetailModulePresenter - init methods        */

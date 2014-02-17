@@ -65,6 +65,23 @@ public class DetailModulePresenter
      */
     @Override
     public void bindView() {
+        /* OfferQuestionWindow doesn't have presenter (There was no need so far).
+         * Main UI action change on reply and offer buttons is made directly in OfferQuestionWindow.java.
+         * But additional actions that requires more logic or eventBus access are added here */
+        view.getReplyHolder().getQuestionReplyBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.resize(DetailModuleBuilder.CONVERSATION_TAB);
+            }
+        });
+        view.getReplyHolder().getOfferReplyBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.resize(DetailModuleBuilder.CONVERSATION_TAB);
+            }
+        });
         view.getReplyHolder().getSubmitBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -218,6 +235,7 @@ public class DetailModulePresenter
                     view.getDemandDetailHolder().setWidget(view.getDemandDetail());
                     requestActualTabData();
                 }
+                eventBus.resize(DetailModuleBuilder.DEMAND_DETAIL_TAB);
                 break;
             case DetailModuleBuilder.USER_DETAIL_TAB:
                 break;
@@ -262,13 +280,13 @@ public class DetailModulePresenter
     /**
      * Recalculate current widget height for scrollpanel.
      */
-    public void onResize(int actualWidth) {
+    public void onResize(int detailModuleTab) {
         switch (view.getContainer().getSelectedIndex()) {
             case DetailModuleBuilder.DEMAND_DETAIL_TAB:
                 setHeight(view.getDemandDetailHolder().getWidget());
                 break;
             case DetailModuleBuilder.USER_DETAIL_TAB:
-                setHeight(view.getUserDetailHolder());
+                setHeight(view.getUserDetailHolder().getWidget());
                 break;
             case DetailModuleBuilder.CONVERSATION_TAB:
                 setHeight(view.getConversationDetailHolder().getWidget());
@@ -368,7 +386,7 @@ public class DetailModulePresenter
     public void onResponseDemandDetail(FullDemandDetail demandDetail) {
         view.getDemandDetail().setDemanDetail(demandDetail);
         view.getDemandDetail().setVisible(true);
-        setHeight(view.getDemandDetail());
+        eventBus.resize(DetailModuleBuilder.DEMAND_DETAIL_TAB);
         view.loadingDivHide(view.getDemandDetailHolder().getParent());
     }
 
@@ -380,7 +398,7 @@ public class DetailModulePresenter
     public void onResponseClientDetail(FullClientDetail clientDetail) {
         view.getSupplierDetail().setClientDetail(clientDetail);
         view.getSupplierDetail().setVisible(true);
-        setHeight(view.getSupplierDetail());
+        eventBus.resize(DetailModuleBuilder.USER_DETAIL_TAB);
         view.loadingDivHide(view.getSupplierDetail().getParent());
     }
 
@@ -392,7 +410,7 @@ public class DetailModulePresenter
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
         view.getSupplierDetail().setSupplierDetail(supplierDetail);
         view.getSupplierDetail().setVisible(true);
-        setHeight(view.getSupplierDetail());
+        eventBus.resize(DetailModuleBuilder.USER_DETAIL_TAB);
         view.loadingDivHide(view.getSupplierDetail().getParent());
     }
 
@@ -404,7 +422,7 @@ public class DetailModulePresenter
     public void onResponseRatingDetail(FullRatingDetail ratingDetail) {
         view.getRatingDetail().setRatingDetail(ratingDetail);
         view.getRatingDetail().setVisible(true);
-        setHeight(view.getRatingDetail());
+        eventBus.resize(DetailModuleBuilder.RATING_TAB);
         view.loadingDivHide(view.getRatingDetail().getParent());
     }
 
@@ -419,7 +437,7 @@ public class DetailModulePresenter
             eventBus.updateUserMessagesReadStatus(Storage.getUser().getUserId(), chatMessages);
             view.getConversationHolder().setVisible(true);
         }
-        setHeight(view.getConversationHolder());
+        eventBus.resize(DetailModuleBuilder.CONVERSATION_TAB);
         view.loadingDivHide(view.getConversationHolder().getParent().getParent());
     }
 
