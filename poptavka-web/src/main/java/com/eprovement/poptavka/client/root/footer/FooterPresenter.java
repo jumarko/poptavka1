@@ -93,7 +93,6 @@ public class FooterPresenter extends BasePresenter<IFooterView, RootEventBus>
      * @param footerPanel - footer holder panel
      */
     public void onSetFooter(SimplePanel footerPanel) {
-        eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
         footerPanel.setWidget(view.getWidgetView());
     }
 
