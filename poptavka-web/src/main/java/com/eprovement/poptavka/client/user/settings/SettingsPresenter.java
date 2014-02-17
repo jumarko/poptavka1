@@ -143,6 +143,16 @@ public class SettingsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (isValid()) {
+                    //Just to ensure update won't fire multiple times
+                    //in case user click update button multiple times by mistake
+                    Timer timer = new Timer() {
+                        @Override
+                        public void run() {
+                            ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setEnabled(true);
+                        }
+                    };
+                    timer.schedule(2000);
+                    ((SettingsToolbarView) view.getToolbarContent()).getUpdateButton().setEnabled(false);
                     updateProfile();
                 } else {
                     ((SettingsToolbarView) view.getToolbarContent()).getUpdateBtnTooltip().show();

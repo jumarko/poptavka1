@@ -119,7 +119,11 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
      */
     @Override
     public boolean isValid() {
-        return email.isValid() && password.isValid() && passwordConfirm.isValid();
+        boolean valid = true;
+        valid = email.isValid() && valid;
+        valid = password.isValid() && valid;
+        valid = passwordConfirm.isValid() && valid;
+        return valid;
     }
 
     /**************************************************************************/

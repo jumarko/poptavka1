@@ -61,6 +61,7 @@ public class SystemSettingsView extends Composite
     @Override
     public void setSystemSettings(SettingDetail detail) {
         //notifications
+        notifications.clear();
         for (NotificationDetail item : detail.getNotifications()) {
             notifications.add(new NotificationItemView(item));
         }

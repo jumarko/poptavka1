@@ -10,18 +10,18 @@
     <b:FluidContainer>
         <b:FluidRow>
             <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
-                <g:SimplePanel ui:field="addressHolder"/>
+                <f:ContactInfoForm ui:field="contactInfoForm"/>
             </b:Column>
             <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
-                <f:CompanyInfoForm ui:field="companyInfoForm"/>
+                <g:SimplePanel ui:field="addressHolder"/>
             </b:Column>
         </b:FluidRow>
         <b:FluidRow>
             <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
-                <f:ContactInfoForm ui:field="contactInfoForm"/>
+                <f:AdditionalInfoForm ui:field="additionalInfoForm"/>
             </b:Column>                
             <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
-                <f:AdditionalInfoForm ui:field="additionalInfoForm"/>
+                <f:CompanyInfoForm ui:field="companyInfoForm"/>
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

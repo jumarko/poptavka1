@@ -120,6 +120,10 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
      */
     @Override
     public boolean isValid() {
-        return companyName.isValid() && taxNumber.isValid() && vatNumber.isValid();
+        boolean valid = true;
+        valid = companyName.isValid() && valid;
+        valid = taxNumber.isValid() && valid;
+        valid = vatNumber.isValid() && valid;
+        return valid;
     }
 }

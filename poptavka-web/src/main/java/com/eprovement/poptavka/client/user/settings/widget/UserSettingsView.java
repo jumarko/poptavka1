@@ -65,10 +65,12 @@ public class UserSettingsView extends Composite
      */
     @Override
     public void setUserSettings(SettingDetail detail) {
-        companyInfoForm.getParent().setVisible(!detail.getUser().getCompanyName().isEmpty());
-        companyInfoForm.getCompanyName().setValue(detail.getUser().getCompanyName());
-        companyInfoForm.getTaxNumber().setValue(detail.getUser().getIdentificationNumber());
-        companyInfoForm.getVatNumber().setValue(detail.getUser().getTaxId());
+        companyInfoForm.setVisible(!detail.getUser().getCompanyName().isEmpty());
+        if (companyInfoForm.isVisible()) {
+            companyInfoForm.getCompanyName().setValue(detail.getUser().getCompanyName());
+            companyInfoForm.getTaxNumber().setValue(detail.getUser().getIdentificationNumber());
+            companyInfoForm.getVatNumber().setValue(detail.getUser().getTaxId());
+        }
         contactInfoForm.getPhone().setValue(detail.getUser().getPhone());
         contactInfoForm.getFirstName().setValue(detail.getUser().getPersonFirstName());
         contactInfoForm.getLastName().setValue(detail.getUser().getPersonLastName());
@@ -83,9 +85,11 @@ public class UserSettingsView extends Composite
      */
     @Override
     public SettingDetail updateUserSettings(SettingDetail detail) {
-        detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
-        detail.getUser().setIdentificationNumber((String) companyInfoForm.getTaxNumber().getValue());
-        detail.getUser().setTaxId((String) companyInfoForm.getVatNumber().getValue());
+        if (companyInfoForm.isVisible()) {
+            detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
+            detail.getUser().setIdentificationNumber((String) companyInfoForm.getTaxNumber().getValue());
+            detail.getUser().setTaxId((String) companyInfoForm.getVatNumber().getValue());
+        }
         detail.getUser().setPhone((String) contactInfoForm.getPhone().getValue());
         detail.getUser().setPersonFirstName((String) contactInfoForm.getFirstName().getValue());
         detail.getUser().setPersonLastName((String) contactInfoForm.getLastName().getValue());
@@ -112,16 +116,12 @@ public class UserSettingsView extends Composite
     @Override
     public boolean isValid() {
         boolean valid = true;
-        valid = contactInfoForm.getPhone().isValid() && valid;
-        valid = contactInfoForm.getFirstName().isValid() && valid;
-        valid = contactInfoForm.getLastName().isValid() && valid;
-        valid = additionalInfoForm.getWebsite().isValid() && valid;
-        valid = additionalInfoForm.getDescription().isValid() && valid;
+        valid = contactInfoForm.isValid() && valid;
         if (companyInfoForm.isVisible()) {
-            valid = companyInfoForm.getCompanyName().isValid() && valid;
-            valid = companyInfoForm.getTaxNumber().isValid() && valid;
-            valid = companyInfoForm.getVatNumber().isValid() && valid;
+            valid = companyInfoForm.isValid() && valid;
         }
+        valid = ((ProvidesValidate) addressHolder.getWidget()).isValid() && valid;
+        valid = additionalInfoForm.isValid() && valid;
         return valid;
     }
 
