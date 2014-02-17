@@ -165,7 +165,7 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
                         dataProvider.getList().remove(contact);
                         setSelectedCountLabel(dataProvider.getList().size(), presenter.getRegisterRestriction());
                     }
-                }), "70px", new GetValue<LinkedList<CatLocTreeItem>>() {
+                }), "75px", new GetValue<LinkedList<CatLocTreeItem>>() {
                     @Override
                     public LinkedList<CatLocTreeItem> getValue(LinkedList<CatLocTreeItem> detail) {
                         return detail;
