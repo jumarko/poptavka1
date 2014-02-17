@@ -19,7 +19,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="supplierStep1">Sign up as Professional or Company</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="6">
                                 <g:HTMLPanel>
@@ -48,7 +48,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="supplierStep2">Receive projects matching your profile</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="6">
                                 <g:HTMLPanel>
@@ -77,7 +77,7 @@
                     <b:Heading size='4'>
                         <ui:msg key="supplierStep3">Start working and get new reference</ui:msg>
                     </b:Heading>
-                    <b:FluidContainer>
+                    <b:FluidContainer addStyleNames='content-block-middle'>
                         <b:FluidRow>
                             <b:Column size="4">
                                 <g:HTMLPanel>

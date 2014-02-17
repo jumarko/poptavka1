@@ -15,6 +15,7 @@ html {
 
 body {
     background: url(images/content_bg.jpg) repeat;
+    color: #6f6b59;
 }
 
 body > div {
@@ -23,6 +24,10 @@ body > div {
 
 div[aria-hidden="true"] {
     width: 0px !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
 }
 
 /******************************************************************************/
@@ -435,7 +440,7 @@ div[aria-hidden="true"] {
     height: 100%;
 }
 
-/*.scroll-container h1 {
+.scroll-container h1 {
     font-size: 26px;
     color: #6f6b59;
 }
@@ -457,7 +462,7 @@ div[aria-hidden="true"] {
 .scroll-container .list-style .gwt-Label {
     background: url(images/list-arrow.png) no-repeat scroll left 8px transparent;
     padding: 0 0 0 10px;
-}*/
+}
 
 /******************************************************************************/
 /*  Common Responsive                                                         */

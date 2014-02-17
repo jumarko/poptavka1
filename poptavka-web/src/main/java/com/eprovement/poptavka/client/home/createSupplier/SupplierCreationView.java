@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
 import com.github.gwtbootstrap.client.ui.Icon;
-import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 
 import com.google.gwt.core.client.GWT;
@@ -58,8 +57,6 @@ public class SupplierCreationView extends OverflowComposite
     @UiField SimplePanel footerPanel;
     @UiField TabLayoutPanel mainPanel;
     @UiField ButtonsPanel buttonsPanel1, buttonsPanel2, buttonsPanel3, buttonsPanel4;
-    @UiField Modal conditionPopup;
-    @UiField Button conditionCloseBtn;
     @UiField CheckBox conditionCheck;
     @UiField Anchor conditionLink;
     @UiField Icon conditionValidationImage;
@@ -115,15 +112,6 @@ public class SupplierCreationView extends OverflowComposite
         isConditionChecked();
     }
 
-    @UiHandler("conditionLink")
-    public void conditionLinkClickHandler(ClickEvent event) {
-        conditionPopup.show();
-    }
-
-    @UiHandler("conditionCloseBtn")
-    public void conditionCloseBtnClickHandler(ClickEvent event) {
-        conditionPopup.hide();
-    }
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
@@ -152,6 +140,11 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public Button getRegisterButton() {
         return buttonsPanel4.getNextBtn();
+    }
+
+    @Override
+    public Anchor getTermsAndConditionsButton() {
+        return conditionLink;
     }
 
     /** OTHERS. **/

@@ -17,7 +17,6 @@
         border-left: 1px solid #D1CCBB;
         border-right: 1px solid #D1CCBB;
         box-shadow: 1px 1px 2px 0 #CCCCCC;
-        height: 150px;
         padding: 8px;
         border-radius: 5px;
         -moz-border-radius: 5px;
@@ -25,13 +24,12 @@
         }
 
         .members-inside-block {
-        height: 100%;
         position: relative;
         }
 
         .members-block h4 {
         text-align: left;
-        padding: 10px;
+        padding: 10px 130px 10px 10px;
         font-size:19px;
         }
 
@@ -82,9 +80,9 @@
                 <ui:msg key="aboutUsEstablished">Want-Something.com was established in 2013 to making it easy
                     to get things done.</ui:msg>
             </g:Label>
-            <b:FluidContainer styleName='{style.members-container}'>
+            <b:FluidContainer addStyleNames='{style.members-container}'>
                 <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:HTMLPanel styleName='{style.members-block}'>
                             <g:HTMLPanel styleName='{style.members-inside-block}'>
                                 <h4>
@@ -97,7 +95,7 @@
                             </g:HTMLPanel>
                         </g:HTMLPanel>
                     </b:Column>
-                    <b:Column size="4">
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:HTMLPanel styleName='{style.members-block}'>
                             <g:HTMLPanel styleName='{style.members-inside-block}'>
                                 <h4>
@@ -110,25 +108,7 @@
                             </g:HTMLPanel>
                         </g:HTMLPanel>
                     </b:Column>
-                    <b:Column size="4">
-                        <g:HTMLPanel styleName='{style.members-block}'>
-                            <g:HTMLPanel styleName='{style.members-inside-block}'>
-                                <h4>
-                                    <ui:msg key="aboutUsVojtechHubr">Vojtech Hubr</ui:msg>
-                                </h4>
-                                <g:HTMLPanel styleName='{style.members-content}'>
-                                    <ui:msg key="aboutUsBackendDeveloper">Backend developer</ui:msg>
-                                </g:HTMLPanel>
-                                <img src="images/team-members/vojto.jpg" />
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
-                    </b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="12"></b:Column>
-                </b:FluidRow>
-                <b:FluidRow>
-                    <b:Column size="4">
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:HTMLPanel styleName='{style.members-block}'>
                             <g:HTMLPanel styleName='{style.members-inside-block}'>
                                 <h4>
@@ -140,21 +120,8 @@
                                 <img src="images/team-members/martin.jpg" />
                             </g:HTMLPanel>
                         </g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="4">
-                        <g:HTMLPanel styleName='{style.members-block}'>
-                            <g:HTMLPanel styleName='{style.members-inside-block}'>
-                                <h4>
-                                    <ui:msg key="aboutUsJaroslavKrivus">Jaroslav Krivus</ui:msg>
-                                </h4>
-                                <g:HTMLPanel styleName='{style.members-content}'>
-                                    <ui:msg key="aboutUsFrontendDeveloper">Frontend developer</ui:msg>
-                                </g:HTMLPanel>
-                                <img src="images/team-members/jaro.jpg" />
-                            </g:HTMLPanel>
-                        </g:HTMLPanel>
-                    </b:Column>
-                </b:FluidRow>
+                    </b:Column>                    
+                </b:FluidRow>                
             </b:FluidContainer>
             <g:SimplePanel ui:field="footer" />
         </g:HTMLPanel>

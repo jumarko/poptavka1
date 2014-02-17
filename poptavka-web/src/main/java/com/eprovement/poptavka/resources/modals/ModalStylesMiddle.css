@@ -33,3 +33,10 @@
 
 /* Thank You Modal Styles */
 .thankyou {}
+
+/* Terms and Conditions Popup */
+.terms-and-conditions {
+    margin: -350px 0 0 0;
+    width: 90%;
+    left: 5%;
+}

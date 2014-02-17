@@ -85,3 +85,11 @@
 .thankyou .text {
     font-size: 17px;
 }
+
+/* Terms and Conditions Popup */
+.terms-and-conditions {
+    margin: 0;
+}
+.terms-and-conditions .modal-content {
+    height: 300px;
+}

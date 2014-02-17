@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.infoWidgets;
 
 import com.eprovement.poptavka.client.infoWidgets.widgets.ContactUsPopupPresenter;
 import com.eprovement.poptavka.client.infoWidgets.widgets.ErrorPresenter;
+import com.eprovement.poptavka.client.infoWidgets.widgets.TermsAndConditionsPopupPresenter;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -60,4 +61,7 @@ public interface InfoWidgetsEventBus extends EventBusWithLookup {
 
     @Event(handlers = InfoWidgetsHandler.class)
     void showAlertPopup(String message);
+
+    @Event(handlers = TermsAndConditionsPopupPresenter.class)
+    void displayTermsAndConditionsPopup();
 }

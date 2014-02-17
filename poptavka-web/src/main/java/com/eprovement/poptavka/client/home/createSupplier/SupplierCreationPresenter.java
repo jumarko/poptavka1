@@ -20,6 +20,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -57,6 +58,8 @@ public class SupplierCreationPresenter
 
         /** Buttons. **/
         Button getRegisterButton();
+
+        Anchor getTermsAndConditionsButton();
 
         /** Other. **/
         Tooltip getNextBtnTooltip(int order);
@@ -115,6 +118,7 @@ public class SupplierCreationPresenter
         addMainPanelBeforeSelectionHandler();
         addMainPanelSelectionHandler();
         addRegisterButtonHandler();
+        addTermsAndConditionsHandler();
     }
 
     /**
@@ -228,6 +232,15 @@ public class SupplierCreationPresenter
                     LOGGER.fine("cannot continue");
                     displayTooltip();
                 }
+            }
+        });
+    }
+
+    private void addTermsAndConditionsHandler() {
+        view.getTermsAndConditionsButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.displayTermsAndConditionsPopup();
             }
         });
     }
