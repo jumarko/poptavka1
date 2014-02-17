@@ -79,6 +79,7 @@ public class ClientToolbarView extends Composite implements IsWidget {
         acceptBtn.setVisible(false);
         closeBtn.setVisible(false);
         actionBox.setVisible(false);
+        pager.setVisible(true);
     }
 
     /**

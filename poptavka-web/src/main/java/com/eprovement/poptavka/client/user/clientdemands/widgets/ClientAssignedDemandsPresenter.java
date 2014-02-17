@@ -67,17 +67,8 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      * @param filter - search criteria
      */
     public void onInitClientAssignedDemands(SearchModuleDataHolder filter) {
-        //Must be present here. Loading data rely on this atrtibute
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_ASSIGNED_DEMANDS);
-
-        setChildTableVisible(true);
-
-        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_ASSIGNED_DEMANDS);
-        eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
+        initWidget(filter, Constants.CLIENT_ASSIGNED_DEMANDS);
         this.assignedDemandsMode = true;
-
-        initWidget(filter);
     }
 
     /**
@@ -85,16 +76,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      * @param filter - search criteria
      */
     public void onInitClientClosedDemands(SearchModuleDataHolder filter) {
-        //Must be present here. Loading data rely on this atrtibute
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_CLOSED_DEMANDS);
-
-        setChildTableVisible(true);
-
-        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_CLOSED_DEMANDS);
-        eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-
-        initWidget(filter);
+        initWidget(filter, Constants.CLIENT_CLOSED_DEMANDS);
     }
 
     /**
@@ -131,18 +113,20 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      * Creates common parts of ClientAssigendDemands and ClientClosedDemands widgets.
      * @param filter - saerch criteria
      */
-    private void initWidget(SearchModuleDataHolder filter) {
-        eventBus.resetSearchBar(new Label("Client's closed projects attibure's selector will be here."));
-        eventBus.createTokenForHistory();
-        searchDataHolder = filter;
-        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
+    private void initWidget(SearchModuleDataHolder filter, int widgetId) {
+        super.initAbstractPresenter(filter, widgetId);
 
-        eventBus.displayView(view.getWidgetView());
-        eventBus.loadingDivHide();
-        //init wrapper widget
-        view.getChildTable().getDataCount(eventBus, new SearchDefinition(
-            0, view.getChildTable().getPageSize(), searchDataHolder,
-            view.getChildTable().getSort().getSortOrder()));
+        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
+        eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+
+        //Set visibility
+        setParentTableVisible(false);
+        setChildTableVisible(true);
+
+        eventBus.resetSearchBar(new Label("Client's assigned/closed projects attibure's selector will be here."));
+
+        //request data
+        view.getChildTable().getDataCount(eventBus, new SearchDefinition(filter));
     }
 
     /**************************************************************************/

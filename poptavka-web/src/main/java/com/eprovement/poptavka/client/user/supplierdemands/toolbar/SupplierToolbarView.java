@@ -66,6 +66,7 @@ public class SupplierToolbarView extends Composite implements IsWidget {
     public void resetBasic() {
         finishBtn.setVisible(false);
         actionBox.setVisible(false);
+        pager.setVisible(true);
     }
 
     /**

@@ -4,13 +4,11 @@
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
@@ -55,18 +53,9 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
      * @param filter - search criteria
      */
     public void onInitSupplierRatings(SearchModuleDataHolder filter) {
-        //Must be present here. Loading data rely on this atrtibute
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_RATINGS);
-        eventBus.supplierMenuStyleChange(Constants.SUPPLIER_RATINGS);
-        eventBus.createTokenForHistory();
-        eventBus.resetSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-        eventBus.displayView(view.getWidgetView());
+        super.initAbstractPresenter(filter, Constants.SUPPLIER_RATINGS);
 
-        searchDataHolder = filter;
-        //init wrapper widget
-        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.resetSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
     }
 
     /**************************************************************************/

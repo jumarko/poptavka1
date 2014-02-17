@@ -108,6 +108,23 @@ public abstract class AbstractClientPresenter
         view.getChildTable().resize(actualWidth);
     }
 
+    /**
+     * Constuctor for common initialization.
+     */
+    public void initAbstractPresenter(SearchModuleDataHolder filter, int widgetId) {
+        //Must be present here. Loading data rely on this atrtibute
+        Storage.setCurrentlyLoadedView(widgetId);
+        eventBus.clientDemandsMenuStyleChange(widgetId);
+        eventBus.createTokenForHistory();
+
+        eventBus.setFooter(view.getFooterContainer());
+
+        searchDataHolder = filter;
+
+        eventBus.loadingDivHide();
+        eventBus.displayView(view.getWidgetView());
+    }
+
     /**************************************************************************/
     /* Protected methods                                                      */
     /**************************************************************************/

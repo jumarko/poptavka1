@@ -66,6 +66,7 @@ public class MessagesToolbarView extends Composite implements IsWidget {
     public void resetBasic() {
         replyBtn.setVisible(false);
         actionBox.setVisible(false);
+        pager.setVisible(true);
     }
 
     /**

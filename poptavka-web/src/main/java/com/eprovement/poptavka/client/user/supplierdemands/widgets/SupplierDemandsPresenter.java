@@ -4,12 +4,10 @@
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
@@ -49,19 +47,9 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
      * Creates SupplierDemands widget.
      */
     public void onInitSupplierDemands(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_POTENTIAL_DEMANDS);
-        eventBus.supplierMenuStyleChange(Constants.SUPPLIER_POTENTIAL_DEMANDS);
-        eventBus.createTokenForHistory();
-        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
+        super.initAbstractPresenter(filter, Constants.SUPPLIER_POTENTIAL_DEMANDS);
 
         eventBus.resetSearchBar(new Label("Supplier's projects attibure's selector will be here."));
-        searchDataHolder = filter;
-
-        eventBus.displayView(view.getWidgetView());
-        //init wrapper widget
-        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
     /**

@@ -4,7 +4,6 @@
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
@@ -54,22 +53,18 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
      * @param filter - search criteria
      */
     public void onInitClientRatings(SearchModuleDataHolder filter) {
-        //Must be present here. Loading data rely on this atrtibute
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_RATINGS);
-        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_RATINGS);
-        eventBus.createTokenForHistory();
-        eventBus.resetSearchBar(new Label("Client's ratings attibure's selector will be here."));
-        eventBus.setFooter(view.getFooterContainer());
+        super.initAbstractPresenter(filter, Constants.CLIENT_RATINGS);
+
         eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
 
-        searchDataHolder = filter;
+        //Set visibility
         setParentTableVisible(true);
+        setChildTableVisible(false);
 
-        eventBus.displayView(view.getWidgetView());
-        eventBus.loadingDivHide();
+        eventBus.resetSearchBar(new Label("Client's ratings attibure's selector will be here."));
+
         //init wrapper widget
-        view.getParentTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        view.getParentTable().getDataCount(eventBus, new SearchDefinition(filter));
     }
 
     /**************************************************************************/

@@ -69,28 +69,20 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      * @param filter - search criteria
      */
     public void onInitClientOffers(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
+        super.initAbstractPresenter(filter, Constants.CLIENT_OFFERED_DEMANDS);
 
-        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.initActionBox(this.view.getToolbar().getActionBox(), view.getParentTable());
         eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
 
         //Set visibility
         setChildTableVisible(false);
         setParentTableVisible(true);
 
         eventBus.resetSearchBar(new Label("Client's contests attibure's selector will be here."));
-        searchDataHolder = filter;
-        eventBus.createTokenForHistory();
 
-        eventBus.displayView(view.getWidgetView());
-        eventBus.loadingDivHide();
         //request data to demand(parent) table
         if (view.getParentTable().isVisible()) {
-            view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-                0, this.view.getToolbar().getPager().getPageSize(), searchDataHolder,
-                view.getParentTable().getSort().getSortOrder()));
+            view.getParentTable().getDataCount(eventBus, new SearchDefinition(filter));
         } else {
             backBtnClickHandlerInner();
         }
@@ -204,8 +196,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         view.getToolbar().getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(
-                    selectedOfferedDemandOfferObject.getOfferId());
+                eventBus.requestAcceptOffer(selectedOfferedDemandOfferObject.getOfferId());
             }
         });
     }
