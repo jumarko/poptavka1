@@ -26,4 +26,7 @@ public interface InfoWidgetsGateway {
 
     @Event(forwardToParent = true)
     void showAlertPopup(String message);
+
+    @Event(forwardToParent = true)
+    void showTermsAndConditionsPopup();
 }

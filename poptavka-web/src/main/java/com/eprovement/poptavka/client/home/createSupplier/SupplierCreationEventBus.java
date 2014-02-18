@@ -62,9 +62,6 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     @Event(forwardToParent = true)
     void checkCompanySelected();
 
-    @Event(forwardToParent = true)
-    void displayTermsAndConditionsPopup();
-
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/

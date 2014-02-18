@@ -3,15 +3,15 @@
  */
 package com.eprovement.poptavka.client.infoWidgets.widgets;
 
-import com.eprovement.poptavka.client.infoWidgets.widgets.TermsAndConditionsPopupPresenter.ITermsAndConditionsPopup;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.constants.BackdropType;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
  * @author Jaroslav
  */
 @Singleton
-public final class TermsAndConditionsPopup extends Modal implements ITermsAndConditionsPopup {
+public final class TermsAndConditionsPopup extends Modal {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -48,13 +48,20 @@ public final class TermsAndConditionsPopup extends Modal implements ITermsAndCon
     @UiField Button closeButton;
 
     /**************************************************************************/
+    /* UiHandlers                                                             */
+    /**************************************************************************/
+    @UiHandler("closeButton")
+    public void closeButtonClickHandler(ClickEvent e) {
+        hide();
+    }
+
+    /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     /**
      * Creates contact us popup view's components.
      */
-    @Override
-    public void createView() {
+    public TermsAndConditionsPopup() {
         add(uiBinder.createAndBindUi(this));
 
         addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
@@ -64,21 +71,4 @@ public final class TermsAndConditionsPopup extends Modal implements ITermsAndCon
         setAnimation(true);
         setDynamicSafe(true);
     }
-
-    /**
-     * @return the close button hasClickHandler
-     */
-    @Override
-    public HasClickHandlers getCloseButton() {
-        return closeButton;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public TermsAndConditionsPopup getWidgetView() {
-        return this;
-    }
-
 }

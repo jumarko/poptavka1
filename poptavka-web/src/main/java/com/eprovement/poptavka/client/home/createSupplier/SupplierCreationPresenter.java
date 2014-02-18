@@ -240,7 +240,7 @@ public class SupplierCreationPresenter
         view.getTermsAndConditionsButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.displayTermsAndConditionsPopup();
+                eventBus.showTermsAndConditionsPopup();
             }
         });
     }

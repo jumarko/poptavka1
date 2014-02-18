@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.infoWidgets;
 
 import com.eprovement.poptavka.client.infoWidgets.widgets.AlertBoxPopup;
+import com.eprovement.poptavka.client.infoWidgets.widgets.TermsAndConditionsPopup;
 import com.eprovement.poptavka.client.infoWidgets.widgets.ThankYouPopup;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Timer;
@@ -21,6 +22,7 @@ public class InfoWidgetsHandler extends BaseEventHandler<InfoWidgetsEventBus> {
 
     @Inject ThankYouPopup thankYouPopup;
     @Inject AlertBoxPopup alertBoxPopup;
+    @Inject TermsAndConditionsPopup termAndConditionsPopup;
 
     /**
      * Creates thank you popup.
@@ -38,5 +40,12 @@ public class InfoWidgetsHandler extends BaseEventHandler<InfoWidgetsEventBus> {
      */
     public void onShowAlertPopup(String message) {
         alertBoxPopup.create(eventBus, message);
+    }
+
+    /**
+     * Displays terms and conditions popup.
+     */
+    public void onShowTermsAndConditionsPopup() {
+        termAndConditionsPopup.show();
     }
 }
