@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.client.user.settings.toolbar;
 
-import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -33,7 +32,6 @@ public class SettingsToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField Button updateButton;
-    @UiField Tooltip updateBtnTooltip;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -53,12 +51,5 @@ public class SettingsToolbarView extends Composite implements IsWidget {
      */
     public Button getUpdateButton() {
         return updateButton;
-    }
-
-    /**
-     * @return the update button tooltip
-     */
-    public Tooltip getUpdateBtnTooltip() {
-        return updateBtnTooltip;
     }
 }

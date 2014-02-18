@@ -4,7 +4,7 @@
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.forms.RatingInfoForm;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.user.settings.interfaces.IClientSettings;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -17,14 +17,12 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class ClientSettingsView extends Composite
-    implements ClientSettingsPresenter.ClientSettingsViewInterface, ProvidesValidate {
+public class ClientSettingsView extends Composite implements IClientSettings.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
     /**************************************************************************/
-    private static ClientSettingsView.ClientSettingsViewUiBinder uiBinder = GWT
-            .create(ClientSettingsView.ClientSettingsViewUiBinder.class);
+    private static ClientSettingsViewUiBinder uiBinder = GWT.create(ClientSettingsViewUiBinder.class);
 
     interface ClientSettingsViewUiBinder extends UiBinder<Widget, ClientSettingsView> {
     }
@@ -49,8 +47,7 @@ public class ClientSettingsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Sets client's profile data.
-     * @param detail carring profile data
+     * @{inheritDoc}
      */
     @Override
     public void setClientSettings(SettingDetail detail) {
@@ -58,30 +55,21 @@ public class ClientSettingsView extends Composite
     }
 
     /**
-     * Updates client's profile data of given object with actual widget's data.
-     * @param detail to be updated
-     * @return updated detail object
+     * @{inheritDoc}
      */
     @Override
-    public SettingDetail updateClientSettings(SettingDetail detail) {
+    public void fillClientSettings(SettingDetail detail) {
         // nothing to set - ratings will be calculated automatically.
-        return detail;
     }
 
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
-    /** @{inheritDoc} */
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         return true;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }

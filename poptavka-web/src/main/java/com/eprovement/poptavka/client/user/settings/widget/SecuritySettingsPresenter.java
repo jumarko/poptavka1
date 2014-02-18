@@ -3,11 +3,10 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
-import com.eprovement.poptavka.client.user.settings.widget.SecuritySettingsPresenter.SecuritySettingsViewInterface;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISecuritySettings;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -17,13 +16,10 @@ import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
 /**
  * SecuritySettings widget is part of Settings module's widgets.
@@ -31,33 +27,19 @@ import com.mvp4g.client.view.LazyView;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = SecuritySettingsView.class, multiple = true)
-public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsViewInterface, SettingsEventBus> {
+@Presenter(view = SecuritySettingsView.class)
+public class SecuritySettingsPresenter extends LazyPresenter<ISecuritySettings.View, SettingsEventBus>
+    implements ISecuritySettings.Presenter {
 
     /**************************************************************************/
-    /* VIEW INTERFACE                                                         */
+    /* INITIALIZATION                                                         */
     /**************************************************************************/
-    public interface SecuritySettingsViewInterface extends LazyView {
-
-        void setSecuritySettings(SettingDetail detail);
-
-        void setCurrentPasswordStyles(boolean correct);
-
-        void setDefaultPasswordsStyles();
-
-        ValidationMonitor getEmailMonitor();
-
-        ValidationMonitor getPasswordCurrentMonitor();
-
-        ValidationMonitor getPasswordNewMonitor();
-
-        ValidationMonitor getPasswordNewConfirmMonitor();
-
-        Button getChangeBtn();
-
-        boolean isNewPasswordValid();
-
-        Widget getWidgetView();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onInitSecuritySettings(SimplePanel holder) {
+        holder.setWidget(view);
     }
 
     /**************************************************************************/
@@ -73,7 +55,7 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
             public void onClick(ClickEvent event) {
                 if (view.isNewPasswordValid()) {
                     eventBus.requestCheckCurrentPassword(Storage.getUser().getUserId(),
-                            (String) view.getPasswordCurrentMonitor().getValue());
+                        (String) view.getPasswordCurrentMonitor().getValue());
                 }
             }
         });
@@ -115,23 +97,12 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     }
 
     /**************************************************************************/
-    /* INITIALIZATION                                                         */
+    /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Inits SecuritySettings widget.
-     * @param holder panel
+     * {@inheritDoc}
      */
-    public void initSecuritySettings(SimplePanel holder) {
-        holder.setWidget(view.getWidgetView());
-    }
-
-    /**************************************************************************/
-    /* METHODS                                                                */
-    /**************************************************************************/
-    /**
-     * Sets security settings data.
-     * @param detail carrieng security data
-     */
+    @Override
     public void onSetSecuritySettings(SettingDetail detail) {
         view.setSecuritySettings(detail);
     }
@@ -157,7 +128,7 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
         view.setCurrentPasswordStyles(correct);
         if (correct) {
             eventBus.requestResetPassword(Storage.getUser().getUserId(),
-                    (String) view.getPasswordNewMonitor().getValue());
+                (String) view.getPasswordNewMonitor().getValue());
         }
     }
 
@@ -171,11 +142,11 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
         int passwordLength = ((String) view.getPasswordNewMonitor().getValue()).length();
         if ((passwordLength <= Constants.LONG_PASSWORD) && (passwordLength > Constants.SHORT_PASSWORD)) {
             view.getPasswordNewMonitor().setExternalValidation(
-                    ControlGroupType.WARNING, Storage.MSGS.formUserRegSemiStrongPassword());
+                ControlGroupType.WARNING, Storage.MSGS.formUserRegSemiStrongPassword());
         }
         if (passwordLength > Constants.LONG_PASSWORD) {
             view.getPasswordNewMonitor().setExternalValidation(
-                    ControlGroupType.SUCCESS, Storage.MSGS.formUserRegStrongPassword());
+                ControlGroupType.SUCCESS, Storage.MSGS.formUserRegStrongPassword());
         }
     }
 
@@ -185,10 +156,10 @@ public class SecuritySettingsPresenter extends LazyPresenter<SecuritySettingsVie
     private void initVisualPasswordConfirmCheck() {
         if (!(view.getPasswordNewMonitor().getValue()).equals(view.getPasswordNewConfirmMonitor().getValue())) {
             view.getPasswordNewConfirmMonitor().setExternalValidation(
-                    ControlGroupType.ERROR, Storage.MSGS.formUserRegPasswordsUnmatch());
+                ControlGroupType.ERROR, Storage.MSGS.formUserRegPasswordsUnmatch());
         } else {
             view.getPasswordNewConfirmMonitor().setExternalValidation(
-                    ControlGroupType.SUCCESS, Storage.MSGS.formUserRegPasswordsMatch());
+                ControlGroupType.SUCCESS, Storage.MSGS.formUserRegPasswordsMatch());
         }
     }
 }

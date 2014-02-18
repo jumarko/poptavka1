@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.user.settings;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISettings;
 import com.eprovement.poptavka.client.user.settings.toolbar.SettingsToolbarView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -22,8 +23,7 @@ import com.google.inject.Inject;
  * View consists of left vertical menu and content area for placing module's widgets.
  * @author Martin Slavkovsky
  */
-public class SettingsView extends Composite implements
-        SettingsPresenter.SttingsViewInterface {
+public class SettingsView extends Composite implements ISettings.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -53,8 +53,8 @@ public class SettingsView extends Composite implements
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
         if (Storage.getBusinessUserDetail() != null
-                && !Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                    BusinessUserDetail.BusinessRole.CLIENT)) {
+            && !Storage.getBusinessUserDetail().getBusinessRoles().contains(
+                BusinessUserDetail.BusinessRole.CLIENT)) {
             menuClientBtn.setVisible(false);
         }
 
@@ -75,71 +75,43 @@ public class SettingsView extends Composite implements
     }
 
     /**
-     * Sets active style for user menu button style.
+     * {@inheritDoc}
      */
     @Override
-    public void settingsUserStyleChange() {
-        menuUserBtn.addStyleName(Constants.ACT);
-        menuClientBtn.removeStyleName(Constants.ACT);
-        menuSupplierBtn.removeStyleName(Constants.ACT);
-        menuSystemBtn.removeStyleName(Constants.ACT);
-        menuSecurityBtn.removeStyleName(Constants.ACT);
-    }
-
-    /**
-     * Sets active style for client menu button style.
-     */
-    @Override
-    public void settingsClientStyleChange() {
-        menuUserBtn.removeStyleName(Constants.ACT);
-        menuClientBtn.addStyleName(Constants.ACT);
-        menuSupplierBtn.removeStyleName(Constants.ACT);
-        menuSystemBtn.removeStyleName(Constants.ACT);
-        menuSecurityBtn.removeStyleName(Constants.ACT);
-    }
-
-    /**
-     * Sets active style for supplier menu button style.
-     */
-    @Override
-    public void settingsSupplierStyleChange() {
-        menuUserBtn.removeStyleName(Constants.ACT);
-        menuClientBtn.removeStyleName(Constants.ACT);
-        menuSupplierBtn.addStyleName(Constants.ACT);
-        menuSystemBtn.removeStyleName(Constants.ACT);
-        menuSecurityBtn.removeStyleName(Constants.ACT);
-    }
-
-    /**
-     * Sets active style for system menu button style.
-     */
-    @Override
-    public void settingsSystemsStyleChange() {
-        menuUserBtn.removeStyleName(Constants.ACT);
-        menuClientBtn.removeStyleName(Constants.ACT);
-        menuSupplierBtn.removeStyleName(Constants.ACT);
-        menuSystemBtn.addStyleName(Constants.ACT);
-        menuSecurityBtn.removeStyleName(Constants.ACT);
-    }
-
-    /**
-     * Sets active style for security menu button style.
-     */
-    @Override
-    public void settingsSecurityStyleChange() {
+    public void settingsTabStyleChange(ISettings.SettingsTab tab) {
+        //Remove ACT style from all tabs
         menuUserBtn.removeStyleName(Constants.ACT);
         menuClientBtn.removeStyleName(Constants.ACT);
         menuSupplierBtn.removeStyleName(Constants.ACT);
         menuSystemBtn.removeStyleName(Constants.ACT);
-        menuSecurityBtn.addStyleName(Constants.ACT);
+        menuSecurityBtn.removeStyleName(Constants.ACT);
+        //Add ACT style to given tab
+        switch (tab) {
+            case USER:
+                menuUserBtn.addStyleName(Constants.ACT);
+                break;
+            case CLIENT:
+                menuClientBtn.addStyleName(Constants.ACT);
+                break;
+            case SUPPLIER:
+                menuSupplierBtn.addStyleName(Constants.ACT);
+                break;
+            case SYSTEM:
+                menuSystemBtn.addStyleName(Constants.ACT);
+                break;
+            case SECURITY:
+                menuSecurityBtn.addStyleName(Constants.ACT);
+                break;
+            default:
+                break;
+        }
     }
 
     /**************************************************************************/
     /*  Getters                                                               */
     /**************************************************************************/
-    /** PANELS. **/
     /**
-     * @return the content container
+     * {@inheritDoc}
      */
     @Override
     public SimplePanel getContentPanel() {
@@ -147,52 +119,11 @@ public class SettingsView extends Composite implements
     }
 
     /**
-     * @return the footer container
+     * {@inheritDoc}
      */
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
-    }
-
-    /** BUTTONS. **/
-    /**
-     * @return the use menu button
-     */
-    @Override
-    public Button getMenuUserBtn() {
-        return menuUserBtn;
-    }
-
-    /**
-     * @return the client menu button
-     */
-    @Override
-    public Button getMenuClientBtn() {
-        return menuClientBtn;
-    }
-
-    /**
-     * @return the supplier menu button
-     */
-    @Override
-    public Button getMenuSupplierBtn() {
-        return menuSupplierBtn;
-    }
-
-    /**
-     * @return the system menu button
-     */
-    @Override
-    public Button getMenuSystemBtn() {
-        return menuSystemBtn;
-    }
-
-    /**
-     * @return the security menut button
-     */
-    @Override
-    public Button getMenuSecurityBtn() {
-        return menuSecurityBtn;
     }
 
     /**
@@ -204,10 +135,23 @@ public class SettingsView extends Composite implements
     }
 
     /**
-     * @return the widget view
+     * {@inheritDoc}
      */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public Button getTabBtn(ISettings.SettingsTab tab) {
+        switch (tab) {
+            case USER:
+                return menuUserBtn;
+            case CLIENT:
+                return menuClientBtn;
+            case SUPPLIER:
+                return menuSupplierBtn;
+            case SYSTEM:
+                return menuSystemBtn;
+            case SECURITY:
+                return menuSecurityBtn;
+            default:
+                return null;
+        }
     }
 }

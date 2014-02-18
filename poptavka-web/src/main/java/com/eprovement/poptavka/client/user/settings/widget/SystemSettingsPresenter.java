@@ -4,13 +4,11 @@
 package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
-import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter.SystemSettingsViewInterface;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISystemSettings;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 
 /**
  * SystemSettings widget is part of Settings module widgets.
@@ -18,50 +16,37 @@ import com.mvp4g.client.view.LazyView;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = SystemSettingsView.class, multiple = true)
-public class SystemSettingsPresenter extends LazyPresenter<SystemSettingsViewInterface, SettingsEventBus> {
+@Presenter(view = SystemSettingsView.class)
+public class SystemSettingsPresenter extends LazyPresenter<ISystemSettings.View, SettingsEventBus>
+    implements ISystemSettings.Presenter {
 
     /**************************************************************************/
-    /* VIEW INTERFACE                                                         */
-    /**************************************************************************/
-    public interface SystemSettingsViewInterface extends LazyView {
-
-        void setSystemSettings(SettingDetail detail);
-
-        SettingDetail updateSystemSettings(SettingDetail detail);
-
-        boolean isValid();
-
-        Widget getWidgetView();
-    }
-
-    /**************************************************************************/
-    /* INITIALIZATION                                                         */
+    /* Initialization                                                         */
     /**************************************************************************/
     /**
-     * Creates SystemSettings widget.
+     * @{inheritDoc}
      */
-    public void initSystemSettings(SimplePanel holder) {
-        holder.setWidget(view.getWidgetView());
+    @Override
+    public void onInitSystemSettings(SimplePanel holder) {
+        holder.setWidget(view);
     }
 
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Sets system's profile data.
-     * @param detail object carrying system's profile data
+     * @{inheritDoc}
      */
+    @Override
     public void onSetSystemSettings(SettingDetail detail) {
         view.setSystemSettings(detail);
     }
 
     /**
-     * Updates system's profile data of given object for current widget's data.
-     * @param detail to be updated
-     * @return updated detail object
+     * @{inheritDoc}
      */
-    public SettingDetail updateSystemSettings(SettingDetail detail) {
-        return view.updateSystemSettings(detail);
+    @Override
+    public void onFillSystemSettings(SettingDetail detail) {
+        view.fillSystemSettings(detail);
     }
 }

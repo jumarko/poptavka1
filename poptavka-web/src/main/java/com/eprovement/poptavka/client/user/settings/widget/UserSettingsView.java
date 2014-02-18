@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.forms.CompanyInfoForm;
 import com.eprovement.poptavka.client.common.forms.ContactInfoForm;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.user.settings.interfaces.IUserSettings;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,14 +22,12 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class UserSettingsView extends Composite
-    implements UserSettingsPresenter.UserSettingsViewInterface, ProvidesValidate {
+public class UserSettingsView extends Composite implements IUserSettings.View {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
     /**************************************************************************/
-    private static UserSettingsView.UserSettingsViewUiBinder uiBinder = GWT
-            .create(UserSettingsView.UserSettingsViewUiBinder.class);
+    private static UserSettingsViewUiBinder uiBinder = GWT.create(UserSettingsViewUiBinder.class);
 
     interface UserSettingsViewUiBinder extends
             UiBinder<Widget, UserSettingsView> {
@@ -60,8 +59,7 @@ public class UserSettingsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Sets user's profile data.
-     * @param detail object carrying user's profile data
+     * {@inheritDoc}
      */
     @Override
     public void setUserSettings(SettingDetail detail) {
@@ -79,12 +77,10 @@ public class UserSettingsView extends Composite
     }
 
     /**
-     * Updates user's profile data of given object for current widget's data.
-     * @param detail to be updated
-     * @return updated detail object
+     * {@inheritDoc}
      */
     @Override
-    public SettingDetail updateUserSettings(SettingDetail detail) {
+    public void fillUserSettings(SettingDetail detail) {
         if (companyInfoForm.isVisible()) {
             detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
             detail.getUser().setIdentificationNumber((String) companyInfoForm.getTaxNumber().getValue());
@@ -95,15 +91,13 @@ public class UserSettingsView extends Composite
         detail.getUser().setPersonLastName((String) contactInfoForm.getLastName().getValue());
         detail.getUser().setWebsite((String) additionalInfoForm.getWebsite().getValue());
         detail.getUser().setDescription((String) additionalInfoForm.getDescription().getValue());
-
-        return detail;
     }
 
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
     /**
-     * @return the address container.
+     * {@inheritDoc}
      */
     @Override
     public SimplePanel getAddressHolder() {
@@ -123,13 +117,5 @@ public class UserSettingsView extends Composite
         valid = ((ProvidesValidate) addressHolder.getWidget()).isValid() && valid;
         valid = additionalInfoForm.isValid() && valid;
         return valid;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }

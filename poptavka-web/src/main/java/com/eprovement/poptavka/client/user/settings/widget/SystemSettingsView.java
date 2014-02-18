@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.settings.widget;
 
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISystemSettings;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.shared.domain.settings.NotificationDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
@@ -20,8 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class SystemSettingsView extends Composite
-        implements SystemSettingsPresenter.SystemSettingsViewInterface, ProvidesValidate {
+public class SystemSettingsView extends Composite implements ISystemSettings.View {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -37,8 +36,6 @@ public class SystemSettingsView extends Composite
     /** UiBinder attributes. **/
     @UiField FluidContainer fluidContainer;
     @UiField FlowPanel notifications;
-    /** Constants. **/
-    private static final int ITEM_HEIGHT = 50;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -55,8 +52,7 @@ public class SystemSettingsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Sets system's profile data.
-     * @param detail object carrying system's profile data
+     * @{inheritDoc}
      */
     @Override
     public void setSystemSettings(SettingDetail detail) {
@@ -68,12 +64,10 @@ public class SystemSettingsView extends Composite
     }
 
     /**
-     * Updates system's profile data of given object for current widget's data.
-     * @param detail to be updated
-     * @return updated detail object
+     * @{inheritDoc}
      */
     @Override
-    public SettingDetail updateSystemSettings(SettingDetail detail) {
+    public void fillSystemSettings(SettingDetail detail) {
         //notifications
         for (int i = 0; i < detail.getNotifications().size(); i++) {
             NotificationItemView notificationWidget = (NotificationItemView) notifications.getWidget(i);
@@ -83,8 +77,6 @@ public class SystemSettingsView extends Composite
             notificationDetail.setName(notificationWidget.getName().getText());
             notificationDetail.setPeriod(Period.valueOf(notificationWidget.getPeriod()));
         }
-
-        return detail;
     }
 
     /**************************************************************************/
@@ -96,13 +88,5 @@ public class SystemSettingsView extends Composite
     @Override
     public boolean isValid() {
         return true;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }
