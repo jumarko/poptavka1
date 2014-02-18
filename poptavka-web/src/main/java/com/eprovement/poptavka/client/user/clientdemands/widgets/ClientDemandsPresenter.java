@@ -43,6 +43,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /* Attributes                                                             */
     /**************************************************************************/
     private EditableDemandDetailPresenter editDemandPresenter;
+    private boolean isInitializing;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -78,6 +79,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      */
     public void onInitClientDemands(SearchModuleDataHolder filter) {
         super.initAbstractPresenter(filter, Constants.CLIENT_DEMANDS);
+        isInitializing = true;
 
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
@@ -194,8 +196,11 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
-                view.getToolbar().setEditDemandBtnsVisibility(true);
+                if (!isInitializing) {
+                    Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
+                    view.getToolbar().setEditDemandBtnsVisibility(true);
+                }
+                isInitializing = false;
             }
         });
     }
