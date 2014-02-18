@@ -8,11 +8,11 @@ import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.ServiceSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.AddressSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
-import com.eprovement.poptavka.client.user.settings.widget.ClientSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.SecuritySettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.SystemSettingsPresenter;
-import com.eprovement.poptavka.client.user.settings.widget.UserSettingsPresenter;
+import com.eprovement.poptavka.client.user.settings.interfaces.IClientSettings;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISecuritySettings;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISupplierSettings;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISystemSettings;
+import com.eprovement.poptavka.client.user.settings.interfaces.IUserSettings;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
@@ -31,7 +31,9 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SettingsPresenter.class, module = SettingsModule.class)
 public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus,
-    CatLocSelectorGateway, ServiceSelectorGateway, AddressSelectorGateway, InfoWidgetsGateway {
+    CatLocSelectorGateway, ServiceSelectorGateway, AddressSelectorGateway, InfoWidgetsGateway,
+    IUserSettings.Gateway, IClientSettings.Gateway, ISupplierSettings.Gateway, ISystemSettings.Gateway,
+    ISecuritySettings.Gateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -76,24 +78,6 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus,
     void responseUpdateSettings(Boolean updated);
 
     /**************************************************************************/
-    /* Display settings by appropriate widget                                 */
-    /**************************************************************************/
-    @Event(handlers = UserSettingsPresenter.class)
-    void setUserSettings(SettingDetail detail);
-
-    @Event(handlers = ClientSettingsPresenter.class)
-    void setClientSettings(SettingDetail detail);
-
-    @Event(handlers = SupplierSettingsPresenter.class)
-    void setSupplierSettings(SettingDetail detail);
-
-    @Event(handlers = SystemSettingsPresenter.class)
-    void setSystemSettings(SettingDetail detail);
-
-    @Event(handlers = SecuritySettingsPresenter.class)
-    void setSecuritySettings(SettingDetail detail);
-
-    /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = SettingsHandler.class)
@@ -104,31 +88,4 @@ public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus,
 
     @Event(handlers = SettingsHandler.class)
     void requestUpdateSettings(SettingDetail settingsDetail);
-
-    /**************************************************************************/
-    /* Request/response pairs                                                 */
-    /**************************************************************************/
-    /**
-     * Send/Response method pair for checking whether given password match current user's password.
-     * @param userId - user whose password is going to be checked
-     * @param password - provided password to be checked
-     * @param correct - true if given password matches user's current password, false if not
-     */
-    @Event(handlers = SettingsHandler.class)
-    void requestCheckCurrentPassword(long userId, String password);
-
-    @Event(handlers = SecuritySettingsPresenter.class)
-    void responseCheckCurrentPassword(boolean correct);
-
-    /**
-     * Send/Response method pair for changing password.
-     * Send request to change the password and notify user.
-     * @param userId - user whose password is going to be reset
-     * @param newPassword - user's new password
-     */
-    @Event(handlers = SettingsHandler.class)
-    void requestResetPassword(long userId, String newPassword);
-
-    @Event(handlers = SecuritySettingsPresenter.class)
-    void responseResetPassword(boolean result);
 }

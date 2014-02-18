@@ -77,28 +77,20 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      * @param filter - search criteria
      */
     public void onInitClientDemands(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
+        super.initAbstractPresenter(filter, Constants.CLIENT_DEMANDS);
 
-        eventBus.clientDemandsMenuStyleChange(Constants.CLIENT_DEMANDS);
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
         eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
 
         //Set visibility
         setChildTableVisible(false);
         setParentTableVisible(true);
 
         eventBus.resetSearchBar(new Label("Client's projects attibure's selector will be here."));
-        searchDataHolder = filter;
-        eventBus.createTokenForHistory();
 
-        eventBus.displayView(view.getWidgetView());
-        eventBus.loadingDivHide();
         //request data to demand(parent) table
         if (view.getParentTable().isVisible()) {
-            view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-                0, view.getToolbar().getPager().getPageSize(), searchDataHolder,
-                view.getParentTable().getSort().getSortOrder()));
+            view.getParentTable().getDataCount(eventBus, new SearchDefinition(filter));
         } else {
             backBtnClickHandlerInner();
         }
@@ -217,7 +209,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         view.getChildTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getChildTableSelectedUserMessageIds().size() != 1) {
+                if (view.getChildTableSelectedObjects().size() != 1) {
                     view.getToolbar().setEditDemandBtnsVisibility(false);
                 }
             }

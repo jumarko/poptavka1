@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
@@ -68,13 +67,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
      * @param filter - search criteria
      */
     public void onInitSupplierAssignedDemands(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_ASSIGNED_DEMANDS);
-
-        eventBus.supplierMenuStyleChange(Constants.SUPPLIER_ASSIGNED_DEMANDS);
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-
-        initWidget(filter);
+        initWidget(filter, Constants.SUPPLIER_ASSIGNED_DEMANDS);
     }
 
     /**
@@ -82,13 +75,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
      * @param filter - search criteria
      */
     public void onInitSupplierClosedDemands(SearchModuleDataHolder filter) {
-        Storage.setCurrentlyLoadedView(Constants.SUPPLIER_CLOSED_DEMANDS);
-
-        eventBus.supplierMenuStyleChange(Constants.SUPPLIER_CLOSED_DEMANDS);
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-
-        initWidget(filter);
+        initWidget(filter, Constants.SUPPLIER_CLOSED_DEMANDS);
     }
 
     /**
@@ -121,15 +108,10 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
      * Creates widget's commons.
      * @param filter - search criteria
      */
-    private void initWidget(SearchModuleDataHolder filter) {
-        eventBus.resetSearchBar(new Label("Supplier's assigned/closed projects attibure's selector will be here."));
-        eventBus.createTokenForHistory();
-        searchDataHolder = filter;
-        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
+    private void initWidget(SearchModuleDataHolder filter, int widgetId) {
+        super.initAbstractPresenter(filter, widgetId);
 
-        eventBus.displayView(view.getWidgetView());
-        //init wrapper widget
-        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        eventBus.resetSearchBar(new Label("Supplier's assigned/closed projects attibure's selector will be here."));
     }
 
     /**************************************************************************/
@@ -144,7 +126,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //init details
-                if (view.getSelectedUserMessageIds().size() == 1) {
+                if (view.getSelectedObjects().size() == 1) {
                     view.getToolbar().getFinishBtn().setVisible(
                         Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS ? true : false);
                 } else {

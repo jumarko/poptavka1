@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.forms.CompanyInfoForm;
 import com.eprovement.poptavka.client.common.forms.ContactInfoForm;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.user.settings.interfaces.IUserSettings;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,14 +22,12 @@ import com.google.gwt.user.client.ui.Widget;
  *
  * @author Martin Slavkovsky
  */
-public class UserSettingsView extends Composite
-    implements UserSettingsPresenter.UserSettingsViewInterface, ProvidesValidate {
+public class UserSettingsView extends Composite implements IUserSettings.View {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
     /**************************************************************************/
-    private static UserSettingsView.UserSettingsViewUiBinder uiBinder = GWT
-            .create(UserSettingsView.UserSettingsViewUiBinder.class);
+    private static UserSettingsViewUiBinder uiBinder = GWT.create(UserSettingsViewUiBinder.class);
 
     interface UserSettingsViewUiBinder extends
             UiBinder<Widget, UserSettingsView> {
@@ -60,15 +59,16 @@ public class UserSettingsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Sets user's profile data.
-     * @param detail object carrying user's profile data
+     * {@inheritDoc}
      */
     @Override
     public void setUserSettings(SettingDetail detail) {
-        companyInfoForm.getParent().setVisible(!detail.getUser().getCompanyName().isEmpty());
-        companyInfoForm.getCompanyName().setValue(detail.getUser().getCompanyName());
-        companyInfoForm.getTaxNumber().setValue(detail.getUser().getIdentificationNumber());
-        companyInfoForm.getVatNumber().setValue(detail.getUser().getTaxId());
+        companyInfoForm.setVisible(!detail.getUser().getCompanyName().isEmpty());
+        if (companyInfoForm.isVisible()) {
+            companyInfoForm.getCompanyName().setValue(detail.getUser().getCompanyName());
+            companyInfoForm.getTaxNumber().setValue(detail.getUser().getIdentificationNumber());
+            companyInfoForm.getVatNumber().setValue(detail.getUser().getTaxId());
+        }
         contactInfoForm.getPhone().setValue(detail.getUser().getPhone());
         contactInfoForm.getFirstName().setValue(detail.getUser().getPersonFirstName());
         contactInfoForm.getLastName().setValue(detail.getUser().getPersonLastName());
@@ -77,29 +77,27 @@ public class UserSettingsView extends Composite
     }
 
     /**
-     * Updates user's profile data of given object for current widget's data.
-     * @param detail to be updated
-     * @return updated detail object
+     * {@inheritDoc}
      */
     @Override
-    public SettingDetail updateUserSettings(SettingDetail detail) {
-        detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
-        detail.getUser().setIdentificationNumber((String) companyInfoForm.getTaxNumber().getValue());
-        detail.getUser().setTaxId((String) companyInfoForm.getVatNumber().getValue());
+    public void fillUserSettings(SettingDetail detail) {
+        if (companyInfoForm.isVisible()) {
+            detail.getUser().setCompanyName((String) companyInfoForm.getCompanyName().getValue());
+            detail.getUser().setIdentificationNumber((String) companyInfoForm.getTaxNumber().getValue());
+            detail.getUser().setTaxId((String) companyInfoForm.getVatNumber().getValue());
+        }
         detail.getUser().setPhone((String) contactInfoForm.getPhone().getValue());
         detail.getUser().setPersonFirstName((String) contactInfoForm.getFirstName().getValue());
         detail.getUser().setPersonLastName((String) contactInfoForm.getLastName().getValue());
         detail.getUser().setWebsite((String) additionalInfoForm.getWebsite().getValue());
         detail.getUser().setDescription((String) additionalInfoForm.getDescription().getValue());
-
-        return detail;
     }
 
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
     /**
-     * @return the address container.
+     * {@inheritDoc}
      */
     @Override
     public SimplePanel getAddressHolder() {
@@ -112,24 +110,12 @@ public class UserSettingsView extends Composite
     @Override
     public boolean isValid() {
         boolean valid = true;
-        valid = contactInfoForm.getPhone().isValid() && valid;
-        valid = contactInfoForm.getFirstName().isValid() && valid;
-        valid = contactInfoForm.getLastName().isValid() && valid;
-        valid = additionalInfoForm.getWebsite().isValid() && valid;
-        valid = additionalInfoForm.getDescription().isValid() && valid;
+        valid = contactInfoForm.isValid() && valid;
         if (companyInfoForm.isVisible()) {
-            valid = companyInfoForm.getCompanyName().isValid() && valid;
-            valid = companyInfoForm.getTaxNumber().isValid() && valid;
-            valid = companyInfoForm.getVatNumber().isValid() && valid;
+            valid = companyInfoForm.isValid() && valid;
         }
+        valid = ((ProvidesValidate) addressHolder.getWidget()).isValid() && valid;
+        valid = additionalInfoForm.isValid() && valid;
         return valid;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }

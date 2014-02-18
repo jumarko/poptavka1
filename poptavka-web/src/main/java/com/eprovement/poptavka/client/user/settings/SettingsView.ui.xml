@@ -4,6 +4,12 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:style>
+        .dashboard-footer > div {
+        max-width: 100% !important;
+        margin: 0 10px;
+        }
+    </ui:style>
 
     <g:FlowPanel>
         <!-- Settings submenu -->
@@ -42,7 +48,7 @@
                 <g:HTMLPanel>
                     <g:SimplePanel ui:field="contentContainer" height='auto'
                         addStyleNames="{res.common.wellContainer} {res.common.formFields} {res.layout.dashboardSettings}" />
-                    <g:SimplePanel ui:field="footerContainer"/>
+                    <g:SimplePanel ui:field="footerContainer" addStyleNames='{style.dashboard-footer}'/>
                 </g:HTMLPanel>
             </g:ScrollPanel>
         </g:HTMLPanel>

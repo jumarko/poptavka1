@@ -84,6 +84,9 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
      */
     @Override
     public boolean isValid() {
-        return website.isValid() && description.isValid();
+        boolean valid = true;
+        valid = website.isValid() && valid;
+        valid = description.isValid() && valid;
+        return valid;
     }
 }

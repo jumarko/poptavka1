@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.user.clientdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.clientdemands.interfaces.IAbstractClient;
 import com.eprovement.poptavka.client.user.clientdemands.toolbar.ClientToolbarView;
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -19,9 +18,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,11 +96,9 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
         parentTable.setVisible(visible);
         parentTable.redraw();
         //clear selection
-        if (!visible) {
-            SingleSelectionModel selectionModel = (SingleSelectionModel) parentTable.getSelectionModel();
-            if (selectionModel.getSelectedObject() != null) {
-                selectionModel.setSelected(selectionModel.getSelectedObject(), false);
-            }
+        SingleSelectionModel selectionModel = (SingleSelectionModel) parentTable.getSelectionModel();
+        if (selectionModel != null) {
+            selectionModel.clear();
         }
     }
 
@@ -114,7 +108,10 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public void setChildTableVisible(boolean visible) {
-        ((MultiSelectionModel) childTable.getSelectionModel()).clear();
+        MultiSelectionModel selectionModel = (MultiSelectionModel) childTable.getSelectionModel();
+        if (selectionModel != null) {
+            selectionModel.clear();
+        }
         childTable.setVisible(visible);
         childTable.redraw();
         childTableLabel.setVisible(visible);
@@ -132,20 +129,6 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-    /**
-     * @return child table selected userMessage ids.
-     */
-    @Override
-    public List<Long> getChildTableSelectedUserMessageIds() {
-        List<Long> idList = new ArrayList<Long>();
-        Set<TableDisplayUserMessage> set = getChildTableSelectedObjects();
-        Iterator<TableDisplayUserMessage> it = set.iterator();
-        while (it.hasNext()) {
-            idList.add(it.next().getUserMessageId());
-        }
-        return idList;
-    }
-
     /**
      * @return child table selected objects
      */

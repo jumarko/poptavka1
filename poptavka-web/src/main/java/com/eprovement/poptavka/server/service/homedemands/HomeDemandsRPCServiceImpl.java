@@ -270,12 +270,14 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         final Search search = getDemandFilter(definition);
         final List<Demand> foundDemandsFilteredByStatus = Searcher.searchCollection(foundDemands, search);
 
-        if (foundDemands.size() < (definition.getFirstResult() + definition.getMaxResult())) {
-            return demandConverter.convertToTargetList(
-                    foundDemandsFilteredByStatus);
+        if (foundDemands.size() <= definition.getFirstResult() + definition.getMaxResult()) {
+            return demandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
+                definition.getFirstResult(),
+                foundDemandsFilteredByStatus.size() - 1));
         } else {
-            return demandConverter.convertToTargetList(
-                    foundDemandsFilteredByStatus.subList(definition.getFirstResult(), definition.getMaxResult()));
+            return demandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
+                definition.getFirstResult(),
+                definition.getFirstResult() + definition.getMaxResult() - 1));
         }
     }
 

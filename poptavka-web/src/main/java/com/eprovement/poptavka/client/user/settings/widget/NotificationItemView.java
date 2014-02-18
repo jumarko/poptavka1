@@ -45,7 +45,7 @@ public class NotificationItemView extends Composite {
     @UiField Button offBtn;
     @UiField(provided = true) WSListBox period;
     /** Class attributes. **/
-    private boolean onSelected;
+    private boolean isEnabled;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -59,7 +59,7 @@ public class NotificationItemView extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         name.setText(item.getName());
-        onSelected = item.isEnabled();
+        isEnabled = item.isEnabled();
         period.setSelected(item.getPeriod().getValue());
 
         StyleResource.INSTANCE.common().ensureInjected();
@@ -90,7 +90,7 @@ public class NotificationItemView extends Composite {
      */
     @UiHandler("onBtn")
     public void onBtnClickHandler(ClickEvent e) {
-        onSelected = false;
+        isEnabled = true;
         notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchRight());
         notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchLeft());
     }
@@ -100,7 +100,7 @@ public class NotificationItemView extends Composite {
      */
     @UiHandler("offBtn")
     public void offBtnClickHandler(ClickEvent e) {
-        onSelected = true;
+        isEnabled = false;
         notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchRight());
         notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchLeft());
     }
@@ -119,7 +119,7 @@ public class NotificationItemView extends Composite {
      * @return true if notification is enabled (is ON), false otherwise
      */
     public boolean getEnabled() {
-        return onSelected;
+        return isEnabled;
     }
 
     /**

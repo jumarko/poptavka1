@@ -1,17 +1,13 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-             xmlns:g="urn:import:com.google.gwt.user.client.ui"
-             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+             xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:FlowPanel styleName="{res.initial.toolbar}">
         <!--Buttons-->
-        <b:Tooltip ui:field="updateBtnTooltip" text="{msgs.tooltipUpdateProfile}" placement="RIGHT" trigger="MANUAL">
-            <g:Button ui:field='updateButton' styleName='button-green item'>
-                <ui:msg key='settingsUpdateButton'>Update Profile</ui:msg>
-            </g:Button>
-        </b:Tooltip>
+        <g:Button ui:field='updateButton' styleName='button-green item'>
+            <ui:msg key='settingsUpdateButton'>Update Profile</ui:msg>
+        </g:Button>
     </g:FlowPanel>
 </ui:UiBinder>

@@ -143,6 +143,7 @@ public class ManagerPresenter
             public void onClick(ClickEvent event) {
                 if (updatingTableItemIdx != -1) {
                     view.getTableDataProvider().getList().remove(updatingTableItemIdx);
+                    view.setSelectedCountLabel(view.getTableDataProvider().getList().size(), registerRestrition);
                 }
                 final List<ICatLocDetail> selectedCatLocs = new ArrayList<ICatLocDetail>();
                 eventBus.fillCatLocs(selectedCatLocs, browserBuilder.getInstanceId());

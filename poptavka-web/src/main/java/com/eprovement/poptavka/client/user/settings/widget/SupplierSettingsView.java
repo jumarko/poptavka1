@@ -7,7 +7,7 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLogSimpleCell;
 import com.eprovement.poptavka.client.common.forms.RatingInfoForm;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISupplierSettings;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
@@ -32,8 +32,7 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-public class SupplierSettingsView extends Composite
-    implements SupplierSettingsPresenter.SupplierSettingsViewInterface, ProvidesValidate {
+public class SupplierSettingsView extends Composite implements ISupplierSettings.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -107,7 +106,7 @@ public class SupplierSettingsView extends Composite
     /**************************************************************************/
     /** PANELS. **/
     /**
-     * @return the SimpleConfirmPopup
+     * @{inheritDoc}
      */
     @Override
     public SimpleConfirmPopup getSelectorPopup() {
@@ -115,7 +114,7 @@ public class SupplierSettingsView extends Composite
     }
 
     /**
-     * @return the services container
+     * @{inheritDoc}
      */
     @Override
     public SimplePanel getServicePanel() {
@@ -124,7 +123,7 @@ public class SupplierSettingsView extends Composite
 
     /** BUTTONS. **/
     /**
-     * @return the edit categories button
+     * @{inheritDoc}
      */
     @Override
     public Button getEditCatBtn() {
@@ -132,7 +131,7 @@ public class SupplierSettingsView extends Composite
     }
 
     /**
-     * @return the edit localities button
+     * @{inheritDoc}
      */
     @Override
     public Button getEditLocBtn() {
@@ -141,7 +140,7 @@ public class SupplierSettingsView extends Composite
 
     /** OTHERES. **/
     /**
-     * @return list of updated categories
+     * @{inheritDoc}
      */
     @Override
     public List<ICatLocDetail> getCategories() {
@@ -149,7 +148,7 @@ public class SupplierSettingsView extends Composite
     }
 
     /**
-     * @return list of updated localities
+     * @{inheritDoc}
      */
     @Override
     public List<ICatLocDetail> getLocalities() {
@@ -162,13 +161,5 @@ public class SupplierSettingsView extends Composite
     @Override
     public boolean isValid() {
         return !categoryProvider.getList().isEmpty() && !localityProvider.getList().isEmpty();
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public SupplierSettingsView getWidgetView() {
-        return this;
     }
 }

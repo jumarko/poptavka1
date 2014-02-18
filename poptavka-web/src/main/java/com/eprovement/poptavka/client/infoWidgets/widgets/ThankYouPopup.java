@@ -62,7 +62,6 @@ public final class ThankYouPopup extends Modal {
         addStyleName(StyleResource.INSTANCE.modal().thankYouPopupStyle());
         setBackdrop(BackdropType.STATIC);
         setKeyboard(false);
-        setAnimation(true);
         setDynamicSafe(true);
     }
 

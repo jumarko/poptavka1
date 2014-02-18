@@ -1,9 +1,12 @@
 package com.google.gwt.i18n.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import java.util.Date;
 
 public interface LocalizableMessages extends Messages {
+
+    LocalizableMessages INSTANCE = GWT.create(LocalizableMessages.class);
 
     /**************************************************************************/
     /*  0 - Root module view                                                  */
@@ -62,7 +65,6 @@ public interface LocalizableMessages extends Messages {
     String tooltipReply();
     String tooltipSystemMessages();
     String tooltipTaxNumber();
-    String tooltipUpdateProfile();
 
     /** Common labels. **/
     String commonCategoriesLabel();
@@ -658,6 +660,7 @@ public interface LocalizableMessages extends Messages {
     String settingsClientSettings();
     String settingsSupplierSettings();
     String settingsSystemSettings();
+    String settingsInvalidFields();
 
     /** Notifications. **/
     String notifyImmediately();

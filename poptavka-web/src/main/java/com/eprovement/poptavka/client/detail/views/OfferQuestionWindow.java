@@ -208,6 +208,13 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /* GETTER                                                                 */
     /**************************************************************************/
     /**
+     * @return the question reply button
+     */
+    public Button getQuestionReplyBtn() {
+        return questionReplyBtn;
+    }
+
+    /**
      * @return the offer reply button
      */
     public Button getOfferReplyBtn() {

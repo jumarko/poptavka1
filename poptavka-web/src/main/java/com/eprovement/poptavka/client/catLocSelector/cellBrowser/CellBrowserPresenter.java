@@ -238,6 +238,7 @@ public class CellBrowserPresenter
         view.createCellBrowser();
         this.bindCellBrowserHanlders();
         view.getCellListDataProvider().getList().clear();
+        view.getCellList().setVisible(false);
         view.setSelectedCountLabel(0, registerRestriction);
         lastOpened = view.getCellBrowser().getRootTreeNode();
         todoOpen = null;

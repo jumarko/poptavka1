@@ -123,6 +123,10 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
      */
     @Override
     public boolean isValid() {
-        return firstName.isValid() && lastName.isValid() && phone.isValid();
+        boolean valid = true;
+        valid = firstName.isValid() && valid;
+        valid = lastName.isValid() && valid;
+        valid = phone.isValid() && valid;
+        return valid;
     }
 }

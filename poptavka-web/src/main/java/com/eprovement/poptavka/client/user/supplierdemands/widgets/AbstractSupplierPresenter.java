@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.interfaces.IAbstractS
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -27,34 +28,6 @@ import java.util.Arrays;
 public abstract class AbstractSupplierPresenter
     extends LazyPresenter<IAbstractSupplier.View, SupplierDemandsModuleEventBus>
     implements IAbstractSupplier.Presenter {
-
-    /**************************************************************************/
-    /* General Widget events                                                  */
-    /**************************************************************************/
-    /**
-     * Inits table when creating presenter.
-     */
-    @Override
-    public void createPresenter() {
-        view.initTable(initTable());
-    }
-
-    /**
-     * Binds table selection handler and sets footer.
-     */
-    @Override
-    public void bindView() {
-        addTableSelectionModelHandler();
-    }
-
-    /**
-     * Recalculate table height if resize event occurs.
-     * Usually paddings or margins changes on smaller resolutions.
-     * @param actualWidth
-     */
-    public void onResize(int actualWidth) {
-        view.getTable().resize(actualWidth);
-    }
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -98,6 +71,57 @@ public abstract class AbstractSupplierPresenter
         };
 
     /**************************************************************************/
+    /* General Widget events                                                  */
+    /**************************************************************************/
+    /**
+     * Inits table when creating presenter.
+     */
+    @Override
+    public void createPresenter() {
+        view.initTable(initTable());
+    }
+
+    /**
+     * Binds table selection handler and sets footer.
+     */
+    @Override
+    public void bindView() {
+        addTableSelectionModelHandler();
+    }
+
+    /**
+     * Recalculate table height if resize event occurs.
+     * Usually paddings or margins changes on smaller resolutions.
+     * @param actualWidth
+     */
+    public void onResize(int actualWidth) {
+        view.getTable().resize(actualWidth);
+    }
+
+    /**
+     * Constuctor for common initialization.
+     */
+    public void initAbstractPresenter(SearchModuleDataHolder filter, int widgetId) {
+        //Must be present here. Loading data rely on this atrtibute
+        Storage.setCurrentlyLoadedView(widgetId);
+        eventBus.supplierMenuStyleChange(widgetId);
+        eventBus.createTokenForHistory();
+
+        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
+        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
+
+        searchDataHolder = filter;
+
+        eventBus.displayView(view.getWidgetView());
+
+        if (view.getTable().getSelectionModel() != null) {
+            ((MultiSelectionModel) view.getTable().getSelectionModel()).clear();
+        }
+        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+    }
+
+    /**************************************************************************/
     /* Protected methods                                                      */
     /**************************************************************************/
     // Detail section
@@ -132,9 +156,9 @@ public abstract class AbstractSupplierPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //  display actionBox if needed (more than one item selected)
-                view.getToolbar().getActionBox().setVisible(view.getSelectedUserMessageIds().size() > 0);
+                view.getToolbar().getActionBox().setVisible(view.getSelectedObjects().size() > 0);
 
-                if (view.getSelectedUserMessageIds().size() == 1) {
+                if (view.getSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
                     selectedObject =
                         (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();

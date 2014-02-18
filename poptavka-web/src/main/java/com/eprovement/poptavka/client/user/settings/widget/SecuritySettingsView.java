@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.settings.interfaces.ISecuritySettings;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
@@ -20,8 +21,7 @@ import com.google.gwt.user.client.ui.Widget;
  * View consists of forms for changing password and email (not implemented yet).
  * @author Martin Slavkovsky
  */
-public class SecuritySettingsView extends Composite
-        implements SecuritySettingsPresenter.SecuritySettingsViewInterface {
+public class SecuritySettingsView extends Composite implements ISecuritySettings.View {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -74,8 +74,7 @@ public class SecuritySettingsView extends Composite
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Sets security settings data.
-     * @param detail object carring security data
+     * {@inheritDoc}
      */
     @Override
     public void setSecuritySettings(SettingDetail detail) {
@@ -83,8 +82,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * Sets password validation monitor styles.
-     * @param correct true if valid, false if invalid
+     * {@inheritDoc}
      */
     @Override
     public void setCurrentPasswordStyles(boolean correct) {
@@ -97,7 +95,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * Resets validation monitors' styles.
+     * {@inheritDoc}
      */
     @Override
     public void setDefaultPasswordsStyles() {
@@ -113,7 +111,7 @@ public class SecuritySettingsView extends Composite
     /* GETTERS                                                                */
     /**************************************************************************/
     /**
-     * @return the email validation monitor
+     * {@inheritDoc}
      */
     @Override
     public ValidationMonitor getEmailMonitor() {
@@ -121,7 +119,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * @return the current password validation monitor
+     * {@inheritDoc}
      */
     @Override
     public ValidationMonitor getPasswordCurrentMonitor() {
@@ -129,7 +127,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * @return the new password validation monitor
+     * {@inheritDoc}
      */
     @Override
     public ValidationMonitor getPasswordNewMonitor() {
@@ -137,7 +135,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * @return the new password confirm validation monitor
+     * {@inheritDoc}
      */
     @Override
     public ValidationMonitor getPasswordNewConfirmMonitor() {
@@ -145,7 +143,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * @return the change button
+     * {@inheritDoc}
      */
     @Override
     public Button getChangeBtn() {
@@ -153,8 +151,7 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * Validates if password change form is valid.
-     * @return true if valid, false otherwise
+     * {@inheritDoc}
      */
     @Override
     public boolean isNewPasswordValid() {
@@ -166,10 +163,10 @@ public class SecuritySettingsView extends Composite
     }
 
     /**
-     * @return widget view
+     * {@inheritDoc}
      */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        return true;
     }
 }
