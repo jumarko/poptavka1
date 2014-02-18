@@ -15,6 +15,8 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * Clickable cell displaying star status of message.
@@ -129,16 +131,20 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
         }
         displayed = true;
 
+        HorizontalPanel holder = new HorizontalPanel();
+        SimplePanel arrow = new SimplePanel();
+        arrow.addStyleName("arrow-left");
+
+        HTMLPanel panel = new HTMLPanel(getExplanationText(demandStauts));
+        panel.addStyleName("panel");
+
+        holder.add(arrow);
+        holder.add(panel);
+
         popup.clear();
-        HTMLPanel htmlPanel2 = new HTMLPanel(getExplanationText(demandStauts));
-        htmlPanel2.addStyleName("container-fluid");
-        htmlPanel2.addStyleName("short-message");
-        HTMLPanel htmlPanel1 = new HTMLPanel("");
-        //popup.getElement().setInnerText(getExplanationText(demandStauts));
-        htmlPanel1.add(htmlPanel2);
-        htmlPanel1.setStylePrimaryName(StyleResource.INSTANCE.modal().commonModalStyle());
-        popup.add(htmlPanel1);
-        popup.setPopupPosition(event.getClientX() + 32, event.getClientY() + 32);
+        popup.add(holder);
+        popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
+        popup.setPopupPosition(event.getClientX() + 32, event.getClientY());
         popup.show();
     }
 
