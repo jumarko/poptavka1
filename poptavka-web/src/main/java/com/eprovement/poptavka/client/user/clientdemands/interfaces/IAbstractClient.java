@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.view.LazyView;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,8 +26,6 @@ public interface IAbstractClient {
         UniversalAsyncGrid getParentTable();
 
         UniversalAsyncGrid getChildTable();
-
-        List<Long> getChildTableSelectedUserMessageIds();
 
         Set getChildTableSelectedObjects();
 

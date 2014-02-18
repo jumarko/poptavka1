@@ -209,7 +209,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         view.getChildTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getChildTableSelectedUserMessageIds().size() != 1) {
+                if (view.getChildTableSelectedObjects().size() != 1) {
                     view.getToolbar().setEditDemandBtnsVisibility(false);
                 }
             }

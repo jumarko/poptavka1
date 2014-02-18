@@ -230,9 +230,9 @@ public abstract class AbstractClientPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //  display actionBox if needed (more than one item selected)
-                view.getToolbar().getActionBox().setVisible(view.getChildTableSelectedUserMessageIds().size() > 0);
+                view.getToolbar().getActionBox().setVisible(view.getChildTableSelectedObjects().size() > 0);
 
-                if (view.getChildTableSelectedUserMessageIds().size() == 1) {
+                if (view.getChildTableSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
                     selectedChildObject =
                         (TableDisplayDetailModule) view.getChildTableSelectedObjects().iterator().next();

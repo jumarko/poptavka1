@@ -72,7 +72,7 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getSelectedUserMessageIds().size() == 1) {
+                if (view.getSelectedObjects().size() == 1) {
                     eventBus.allowSendingOffer();
                 }
             }

@@ -140,7 +140,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //  display Close button in toolbar if needed
-                if (view.getChildTableSelectedUserMessageIds().size() == 1) {
+                if (view.getChildTableSelectedObjects().size() == 1) {
                     if (assignedDemandsMode) {
                         view.getToolbar().getCloseBtn().setVisible(true);
                     }

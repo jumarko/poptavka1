@@ -126,7 +126,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //init details
-                if (view.getSelectedUserMessageIds().size() == 1) {
+                if (view.getSelectedObjects().size() == 1) {
                     view.getToolbar().getFinishBtn().setVisible(
                         Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS ? true : false);
                 } else {

@@ -18,6 +18,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -157,7 +158,13 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //tool bar items
-                view.getToolbar().getAcceptBtn().setVisible(view.getChildTableSelectedUserMessageIds().size() == 1);
+                view.getToolbar().getAcceptBtn().setVisible(view.getChildTableSelectedObjects().size() == 1);
+                if (view.getChildTableSelectedObjects().size() == 1) {
+                    selectedOfferedDemandOfferObject =
+                        (ClientOfferedDemandOffersDetail) view.getChildTableSelectedObjects().iterator().next();
+                } else {
+                    selectedOfferedDemandOfferObject = null;
+                }
             }
         });
     }
@@ -196,7 +203,11 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         view.getToolbar().getAcceptBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestAcceptOffer(selectedOfferedDemandOfferObject.getOfferId());
+                if (selectedOfferedDemandOfferObject != null) {
+                    eventBus.requestAcceptOffer(selectedOfferedDemandOfferObject.getOfferId());
+                } else {
+                    Window.alert("To accept an offer you need to select one (just one).");
+                }
             }
         });
     }

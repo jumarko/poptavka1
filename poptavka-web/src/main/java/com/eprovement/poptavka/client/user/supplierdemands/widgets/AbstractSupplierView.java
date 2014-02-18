@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.supplierdemands.interfaces.IAbstractSupplier;
 import com.eprovement.poptavka.client.user.supplierdemands.toolbar.SupplierToolbarView;
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -17,9 +16,6 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.inject.Inject;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -87,20 +83,6 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
-    /**
-     * @return list of selected user messages ids.
-     */
-    @Override
-    public List<Long> getSelectedUserMessageIds() {
-        List<Long> idList = new ArrayList<Long>();
-        Set<TableDisplayUserMessage> set = getSelectedObjects();
-        Iterator<TableDisplayUserMessage> it = set.iterator();
-        while (it.hasNext()) {
-            idList.add(it.next().getUserMessageId());
-        }
-        return idList;
-    }
-
     /**
      * @return list of selected objects.
      */
