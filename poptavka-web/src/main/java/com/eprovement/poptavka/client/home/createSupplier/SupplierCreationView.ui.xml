@@ -85,6 +85,7 @@
                             <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
                         </g:HTML>
                     </g:customHeader>
+                    <g:FlowPanel>
                     <g:HTMLPanel styleName='contentContainer'>
                         <g:SimplePanel ui:field="contentHolder4" debugId="serviceContentHolder"/>
                         <!--<g:HTMLPanel styleName='formFooter formFooter2'>-->
@@ -96,12 +97,13 @@
                             <b:Icon ui:field='conditionValidationImage' type="EXCLAMATION" size="LARGE" visible='false'
                                     addStyleNames='pull-left collor-red'/>                            
                         </g:FlowPanel>
+                        </g:HTMLPanel>
                         <btns:ButtonsPanel ui:field='buttonsPanel4'
                                            backBtn='{msgs.commonBtnBack}'
                                            nextBtn='{msgs.supplierCreationRegisterBtn}'
                                            nextBtnTooltip='{msgs.tooltipInvalidFields}'
-                                           size='LARGE'/>
-                    </g:HTMLPanel>
+                                           size='LARGE'/>                    
+                    </g:FlowPanel>
                 </g:tab>
             </g:TabLayoutPanel>
             <!--Footer-->
