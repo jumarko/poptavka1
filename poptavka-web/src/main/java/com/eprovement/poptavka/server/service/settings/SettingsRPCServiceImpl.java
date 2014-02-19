@@ -247,16 +247,13 @@ public class SettingsRPCServiceImpl extends AutoinjectingRemoteService
         user.setAddresses(addresses);
 
         /** NOTIFICATIONS. **/
-        List<NotificationItem> notificationsItems = new ArrayList<NotificationItem>();
         for (int i = 0; i < user.getSettings().getNotificationItems().size(); i++) {
             NotificationItem domainItem = user.getSettings().getNotificationItems().get(i);
             NotificationDetail item = settingsDetail.getNotifications().get(i);
 
             domainItem.setPeriod(item.getPeriod());
             domainItem.setEnabled(item.isEnabled());
-            notificationsItems.add(domainItem);
         }
-        user.getSettings().setNotificationItems(notificationsItems);
 
         generalService.save(user);
         return true;
