@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -27,15 +25,11 @@ public class AdminMessagesViewView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminMessagesViewView> {
     }
-    @UiField
-    TextBox messageIdFrom, messageIdTo, demandIdFrom, demandIdTo, parentIdFrom,
-    parentIdTo, senderIdFrom, senderIdTo, subject, body;
-    @UiField
-    DateBox createdFrom, createdTo, sentFrom, sentTo;
-    @UiField
-    ListBox type, state;
-    @UiField
-    Button clearBtn;
+
+    @UiField TextBox messageIdFrom, messageIdTo, demandIdFrom, demandIdTo, parentIdFrom;
+    @UiField TextBox parentIdTo, senderIdFrom, senderIdTo, subject, body;
+    @UiField DateBox createdFrom, createdTo, sentFrom, sentTo;
+    @UiField ListBox type, state;
 
     public AdminMessagesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -162,13 +156,11 @@ public class AdminMessagesViewView extends Composite implements
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         messageIdFrom.setText("");
         messageIdTo.setText("");
         demandIdFrom.setText("");
@@ -187,8 +179,12 @@ public class AdminMessagesViewView extends Composite implements
         state.setSelectedIndex(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors
+        return true;
     }
 }

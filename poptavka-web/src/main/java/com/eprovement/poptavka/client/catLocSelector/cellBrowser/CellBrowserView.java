@@ -163,6 +163,15 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
     }
 
     /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        setSelectedCountLabel(0, presenter.getBuilder().getSelectionRestriction());
+        cellListDataProvider.getList().clear();
+    }
+
+    /**
      * Validate view's compontents.
      * @return true if valid, false otherwise
      */

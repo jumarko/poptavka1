@@ -119,6 +119,16 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
      * @{inheritDoc}
      */
     @Override
+    public void reset() {
+        companyName.reset();
+        taxNumber.reset();
+        vatNumber.reset();
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public boolean isValid() {
         boolean valid = true;
         valid = companyName.isValid() && valid;

@@ -79,6 +79,14 @@ public class SystemSettingsView extends Composite implements ISystemSettings.Vie
         }
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/

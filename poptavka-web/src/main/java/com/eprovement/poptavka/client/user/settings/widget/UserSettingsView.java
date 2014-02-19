@@ -93,6 +93,17 @@ public class UserSettingsView extends Composite implements IUserSettings.View {
         detail.getUser().setDescription((String) additionalInfoForm.getDescription().getValue());
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        companyInfoForm.reset();
+        contactInfoForm.reset();
+        additionalInfoForm.reset();
+        ((ProvidesValidate) addressHolder.getWidget()).reset();
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/

@@ -92,6 +92,15 @@ public class TreeBrowserView extends ReverseCompositeView<PresentersInterface>
     }
 
     /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        //TODO close all nodes
+        treeSelectionModel.getSelectedSet().clear();
+    }
+
+    /**
      * Validate view's compontents.
      * @return true if valid, false otherwise
      */

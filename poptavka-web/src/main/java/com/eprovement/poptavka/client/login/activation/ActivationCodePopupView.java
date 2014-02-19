@@ -8,7 +8,9 @@ import com.github.gwtbootstrap.client.ui.Alert;
 import com.github.gwtbootstrap.client.ui.ControlGroup;
 import com.github.gwtbootstrap.client.ui.Modal;
 import com.github.gwtbootstrap.client.ui.TextBox;
+import com.github.gwtbootstrap.client.ui.constants.AlertType;
 import com.github.gwtbootstrap.client.ui.constants.BackdropType;
+import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -129,6 +131,16 @@ public class ActivationCodePopupView extends Modal
     @Override
     public Label getStatusLabel() {
         return statusLabel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        controlGroup.setType(ControlGroupType.INFO);
+        status.setType(AlertType.INFO);
+        statusLabel.setText("Please insert your activation code");
     }
 
     /**

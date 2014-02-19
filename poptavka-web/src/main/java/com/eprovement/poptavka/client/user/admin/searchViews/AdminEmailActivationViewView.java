@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,12 +21,9 @@ public class AdminEmailActivationViewView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminEmailActivationViewView> {
     }
-    @UiField
-    TextBox idFrom, idTo, activationCode;
-    @UiField
-    DateBox timeoutFrom, timeoutTo;
-    @UiField
-    Button clearBtn;
+
+    @UiField TextBox idFrom, idTo, activationCode;
+    @UiField DateBox timeoutFrom, timeoutTo;
 
     public AdminEmailActivationViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -71,13 +66,11 @@ public class AdminEmailActivationViewView extends Composite implements
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         idFrom.setText("");
         idTo.setText("");
         activationCode.setText("");
@@ -85,8 +78,12 @@ public class AdminEmailActivationViewView extends Composite implements
         timeoutTo.setValue(null);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors
+        return true;
     }
 }

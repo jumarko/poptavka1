@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Tooltip;
@@ -163,6 +164,18 @@ public class SupplierCreationView extends OverflowComposite
     @Override
     public CheckBox getAgreedCheck() {
         return conditionCheck;
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        for (SimplePanel holder : holderPanels) {
+            if (holder.getWidget() != null) {
+                ((ProvidesValidate) holder.getWidget()).reset();
+            }
+        }
     }
 
     /**

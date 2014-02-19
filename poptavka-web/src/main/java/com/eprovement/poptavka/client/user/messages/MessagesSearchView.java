@@ -4,11 +4,8 @@
 package com.eprovement.poptavka.client.user.messages;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -37,7 +34,6 @@ public class MessagesSearchView extends Composite implements
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField TextBox sender, subject, body;
-    @UiField Button clearBtn;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -47,17 +43,6 @@ public class MessagesSearchView extends Composite implements
      */
     public MessagesSearchView() {
         initWidget(uiBinder.createAndBindUi(this));
-    }
-
-    /**************************************************************************/
-    /* UiHandlers                                                             */
-    /**************************************************************************/
-    /**
-     * Binds clear button handler. Clears view's compontents.
-     */
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
     }
 
     /**************************************************************************/
@@ -83,20 +68,21 @@ public class MessagesSearchView extends Composite implements
     }
 
     /**
-     * Clears view's compontents.
+     * {@inheritDoc}
      */
     @Override
-    public void clear() {
+    public void reset() {
         sender.setText("");
         subject.setText("");
         body.setText("");
     }
 
     /**
-     * @return the widget view
+     * {@inheritDoc}
      */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors
+        return true;
     }
 }

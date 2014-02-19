@@ -69,12 +69,12 @@ public class HomeDemandsSearchView extends Composite implements
      * Clear view components.
      */
     @Override
-    public void clear() {
+    public void reset() {
         titleMonitor.setValue("");
         ((WSBigDecimalBox) priceMonitorFrom.getWidget()).setText("");
-        priceMonitorFrom.resetValidation();
+        priceMonitorFrom.reset();
         ((WSBigDecimalBox) priceMonitorTo.getWidget()).setText("");
-        priceMonitorTo.resetValidation();
+        priceMonitorTo.reset();
         demandTypes.setSelected(Storage.MSGS.columnType());
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());
         endDateFrom.getTextBox().setText("");
@@ -85,8 +85,19 @@ public class HomeDemandsSearchView extends Composite implements
     /*  Getters                                                               */
     /**************************************************************************/
     /**
-     * Gets search filters.
-     * @return list of search filters
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid() {
+        boolean valid = true;
+        valid = titleMonitor.isValid() && valid;
+        valid = priceMonitorFrom.isValid() && valid;
+        valid = priceMonitorTo.isValid() && valid;
+        return valid;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public ArrayList<FilterItem> getFilter() {
@@ -128,14 +139,6 @@ public class HomeDemandsSearchView extends Composite implements
                 Operation.OPERATION_TO, endDateTo.getValue(), group++));
         }
         return filters;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /**************************************************************************/

@@ -137,6 +137,17 @@ public abstract class AbstractValidationMonitor<T> extends AbstractMonitor imple
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        setValue(null);
+        setValidationStyles(true, "");
+        valid = null;
+        externalValidation = false;
+    }
+
     public void setExternalValidation(ControlGroupType controlGroupType, String validationMessage) {
         externalValidation = true;
         errorPanel.setVisible(true);
@@ -144,15 +155,6 @@ public abstract class AbstractValidationMonitor<T> extends AbstractMonitor imple
         errorLabel.setText(validationMessage);
         errorPanel.setVisible(!validationMessage.isEmpty());
         controlGroup.setType(controlGroupType);
-    }
-
-    /**
-     * Cancel validation in some cases.
-     */
-    public void resetValidation() {
-        setValidationStyles(true, "");
-        valid = null;
-        externalValidation = false;
     }
 
     /**************************************************************************/

@@ -294,7 +294,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
         }
         EditableDemandDetailView editDemandView = (EditableDemandDetailView) editDemandPresenter.getView();
-        editDemandView.resetFields();
+        editDemandView.reset();
         editDemandView.setDemanDetail(
             ((DetailModuleView) view.getDetailPanel().getWidget()).getDemandDetail().getDemandDetail());
         return editDemandView;

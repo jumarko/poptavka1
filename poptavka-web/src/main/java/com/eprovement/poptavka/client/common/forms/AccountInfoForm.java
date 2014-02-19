@@ -118,6 +118,16 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
      * @{inheritDoc}
      */
     @Override
+    public void reset() {
+        email.reset();
+        password.reset();
+        passwordConfirm.reset();
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public boolean isValid() {
         boolean valid = true;
         valid = email.isValid() && valid;
@@ -148,7 +158,7 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
     private void initVisualPasswordCheck() {
         int passwordLength = ((String) password.getValue()).length();
         if (passwordLength == 0) {
-            password.resetValidation();
+            password.reset();
         }
         if ((passwordLength <= Constants.LONG_PASSWORD) && (passwordLength > Constants.SHORT_PASSWORD)) {
             password.setExternalValidation(ControlGroupType.WARNING, Storage.MSGS.formUserRegSemiStrongPassword());
@@ -164,7 +174,7 @@ public class AccountInfoForm extends Composite implements ProvidesValidate {
      */
     private void initVisualPasswordConfirmCheck() {
         if (((String) passwordConfirm.getValue()).length() == 0) {
-            passwordConfirm.resetValidation();
+            passwordConfirm.reset();
         } else {
             if (!(password.getValue()).equals(passwordConfirm.getValue())) {
                 passwordConfirm.setExternalValidation(

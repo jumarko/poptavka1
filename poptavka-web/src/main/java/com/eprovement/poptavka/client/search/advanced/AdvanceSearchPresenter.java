@@ -7,8 +7,8 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilde
 import com.eprovement.poptavka.client.search.SearchModuleEventBus;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
-import com.eprovement.poptavka.client.search.SearchModulePresenter.SearchModulesViewInterface;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -194,7 +194,7 @@ public class AdvanceSearchPresenter
             @Override
             public void onClick(ClickEvent event) {
                 Widget visibleWidget = view.getTabLayoutPanel().getWidget(view.getTabLayoutPanel().getSelectedIndex());
-                ((SearchModulesViewInterface) visibleWidget).clear();
+                ((ProvidesValidate) visibleWidget).reset();
             }
         });
         view.getCloseBtn().addClickHandler(new ClickHandler() {

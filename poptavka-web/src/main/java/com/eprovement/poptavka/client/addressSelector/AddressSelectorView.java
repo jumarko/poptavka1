@@ -156,8 +156,17 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
     //Others
     //--------------------------------------------------------------------------
     /**
-     * Validate view's compontents.
-     * @return true if valid, false otherwise
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        cityMonitor.reset();
+        streetMonitor.reset();
+        zipcodeMonitor.reset();
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public boolean isValid() {

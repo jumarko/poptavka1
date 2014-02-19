@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.search;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -57,13 +58,9 @@ public class SearchModulePresenter
      * Advance search view interface.
      * Martin 1.5.2013 - don't know why but cannot be Lazy because advaced search views are not initializing.
      */
-    public interface SearchModulesViewInterface {
+    public interface SearchModulesViewInterface extends IsWidget, ProvidesValidate {
 
         ArrayList<FilterItem> getFilter();
-
-        void clear();
-
-        Widget getWidgetView();
     }
 
     /**************************************************************************/

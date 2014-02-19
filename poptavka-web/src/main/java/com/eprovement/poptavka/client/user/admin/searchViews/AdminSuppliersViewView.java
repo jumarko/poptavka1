@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -26,12 +24,9 @@ public class AdminSuppliersViewView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminSuppliersViewView> {
     }
-    @UiField
-    TextBox ratingFrom, ratingTo, supplierDescription, idFrom, idTo, supplierName;
-    @UiField
-    ListBox type, certified, verified;
-    @UiField
-    Button clearBtn;
+
+    @UiField TextBox ratingFrom, ratingTo, supplierDescription, idFrom, idTo, supplierName;
+    @UiField ListBox type, certified, verified;
 
     public AdminSuppliersViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -123,13 +118,12 @@ public class AdminSuppliersViewView extends Composite implements
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         supplierName.setText("");
         supplierDescription.setText("");
         ratingFrom.setText("0");
@@ -141,8 +135,12 @@ public class AdminSuppliersViewView extends Composite implements
         idTo.setText("");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors
+        return true;
     }
 }

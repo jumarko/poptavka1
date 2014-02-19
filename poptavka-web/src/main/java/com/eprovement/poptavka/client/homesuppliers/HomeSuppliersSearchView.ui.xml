@@ -50,7 +50,9 @@
                         </g:Label>
                     </b:Column>
                     <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
-                        <b:TextBox ui:field="supplierDescription" placeholder="Description" styleName='full-width' />
+                        <cm:ValidationMonitor ui:field="descriptionMonitor">
+                            <b:TextArea placeholder="{msgs.placeholderCompanyDescription}" styleName='full-width'/>
+                        </cm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
             </b:Column>

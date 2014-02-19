@@ -37,4 +37,17 @@ public class WSBigDecimalBox extends BigDecimalBox {
             ValueChangeEvent.fireIfNotEqual(this, oldValue, value);
         }
     }
+
+    /**
+     * Set big decimal value
+     * @param value to be set, if null, empty string is set
+     */
+    @Override
+    public void setValue(BigDecimal value) {
+        if (value == null) {
+            setText("");
+        } else {
+            super.setValue(value);
+        }
+    }
 }

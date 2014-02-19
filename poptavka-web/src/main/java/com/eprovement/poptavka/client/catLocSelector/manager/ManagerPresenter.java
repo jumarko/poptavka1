@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLocSuggestionDisp
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocSuggestionDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
@@ -22,11 +23,11 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -49,7 +50,7 @@ public class ManagerPresenter
     /**************************************************************************/
     /* View interface                                                         */
     /**************************************************************************/
-    public interface ManagerInterface extends LazyView {
+    public interface ManagerInterface extends LazyView, ProvidesValidate, IsWidget {
 
         void setSelectedCountLabel(int count, int countRestriction);
 
@@ -66,8 +67,6 @@ public class ManagerPresenter
         DataGrid<LinkedList<CatLocTreeItem>> getDataGrid();
 
         ListDataProvider<LinkedList<CatLocTreeItem>> getTableDataProvider();
-
-        Widget getWidgetView();
     }
 
     /**************************************************************************/
@@ -314,7 +313,7 @@ public class ManagerPresenter
         view.setSelectedCountLabel(0, registerRestrition);
         view.setSelectorType(builder.getSelectorType());
 
-        embedToWidget.setWidget(view.getWidgetView());
+        embedToWidget.setWidget(view);
     }
 
     /**

@@ -35,4 +35,16 @@ public class WSIntegerBox extends IntegerBox {
         }
     }
 
+    /**
+     * Set Integer value
+     * @param value to be set, if null, empty string is set
+     */
+    @Override
+    public void setValue(Integer value) {
+        if (value == null) {
+            setText("");
+        } else {
+            super.setValue(value);
+        }
+    }
 }

@@ -125,6 +125,14 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
         dataProvider.setList(services);
     }
 
+    /**
+     * {@inheritDoc}
+    */
+    @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/

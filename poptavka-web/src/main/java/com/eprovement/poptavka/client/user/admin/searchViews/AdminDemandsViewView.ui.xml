@@ -116,11 +116,6 @@
                         </tr>
                     </table>
                 </li>
-                <li>
-                    <g:Button ui:field="clearBtn">
-                        <ui:msg key="commonBtnClear">Clear</ui:msg>
-                    </g:Button>
-                </li>
             </ul>
         </div>
     </g:HTMLPanel>

@@ -95,6 +95,13 @@ public class FormDemandAdvView extends Composite
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        //nothing by default
+    }
 
     /**************************************************************************/
     /* Getters                                                                */
