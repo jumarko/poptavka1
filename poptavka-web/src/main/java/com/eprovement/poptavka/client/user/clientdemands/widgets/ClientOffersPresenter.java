@@ -38,6 +38,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     /* Attributes                                                             */
     /**************************************************************************/
     private ClientOfferedDemandOffersDetail selectedOfferedDemandOfferObject;
+    private boolean isInitializing;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -71,6 +72,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      */
     public void onInitClientOffers(SearchModuleDataHolder filter) {
         super.initAbstractPresenter(filter, Constants.CLIENT_OFFERED_DEMANDS);
+        isInitializing = true;
 
         eventBus.initActionBox(this.view.getToolbar().getActionBox(), view.getParentTable());
         eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
@@ -143,7 +145,10 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
+                if (!isInitializing) {
+                    Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
+                }
+                isInitializing = false;
             }
         });
     }
@@ -185,12 +190,14 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      * Displays parent table and hides child table on back button action.
      */
     private void backBtnClickHandlerInner() {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         eventBus.displayAdvertisement();
         selectedOfferedDemandOfferObject = null;
+        isInitializing = true;
         view.getToolbar().getPager().getPager().startLoading();
         setChildTableVisible(false);
         setParentTableVisible(true);
+
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
             view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));

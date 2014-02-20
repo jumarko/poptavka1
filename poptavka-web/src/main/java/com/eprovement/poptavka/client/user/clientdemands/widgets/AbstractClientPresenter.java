@@ -15,8 +15,8 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public abstract class AbstractClientPresenter
         public void update(int index, TableDisplayUserMessage object, String value) {
             object.setRead(true);
 
-            MultiSelectionModel selectionModel = (MultiSelectionModel) view.getChildTable().getSelectionModel();
+            SetSelectionModel selectionModel = (SetSelectionModel) view.getChildTable().getSelectionModel();
             selectionModel.clear();
             selectionModel.setSelected(object, true);
         }
@@ -58,7 +58,7 @@ public abstract class AbstractClientPresenter
         @Override
         public void update(Boolean value) {
             for (Object row : view.getChildTable().getVisibleItems()) {
-                ((MultiSelectionModel) view.getChildTable().getSelectionModel()).setSelected(row, value);
+                ((SetSelectionModel) view.getChildTable().getSelectionModel()).setSelected(row, value);
             }
         }
     };

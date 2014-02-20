@@ -39,8 +39,11 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                initDetailSection((RatingDetail) ((SingleSelectionModel) view.getTable()
-                            .getSelectionModel()).getSelectedObject());
+                if (view.getTable().getSelectionModel() != null
+                    && ((SingleSelectionModel) view.getTable().getSelectionModel()).getSelectedObject() != null) {
+                    initDetailSection((RatingDetail) ((SingleSelectionModel) view.getTable()
+                                        .getSelectionModel()).getSelectedObject());
+                }
             }
         });
     }

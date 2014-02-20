@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.google.inject.Inject;
 import java.util.Set;
 
@@ -88,8 +88,11 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
      */
     @Override
     public Set getSelectedObjects() {
-        MultiSelectionModel model = (MultiSelectionModel) table.getSelectionModel();
-        return model.getSelectedSet();
+        if (table.getSelectionModel() != null) {
+            return ((SetSelectionModel) table.getSelectionModel()).getSelectedSet();
+        } else {
+            return null;
+        }
     }
 
     /**

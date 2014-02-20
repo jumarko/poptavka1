@@ -39,8 +39,11 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
         view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                initDetailSection((RatingDetail) ((SingleSelectionModel) view.getParentTable()
-                            .getSelectionModel()).getSelectedObject());
+                if (view.getParentTable().getSelectionModel() != null
+                    && ((SingleSelectionModel) view.getParentTable().getSelectionModel()).getSelectedObject() != null) {
+                    initDetailSection((RatingDetail) ((SingleSelectionModel) view.getParentTable()
+                                        .getSelectionModel()).getSelectedObject());
+                }
             }
         });
     }
