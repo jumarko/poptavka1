@@ -83,7 +83,6 @@ public class AdvanceSearchView extends Modal
         bindHandlers();
 
         addStyleName(StyleResource.INSTANCE.modal().advancedSearchPopup());
-        setId("gwt-debug-advanceSearchPopup");
         setDynamicSafe(true);
     }
 
