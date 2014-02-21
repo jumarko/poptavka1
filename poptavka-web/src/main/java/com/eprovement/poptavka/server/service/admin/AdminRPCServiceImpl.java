@@ -350,7 +350,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         if (client.getOveralRating() != clientDetail.getOveralRating()) {
             client.setOveralRating(clientDetail.getOveralRating());
         }
-        client.setVerification(Verification.valueOf(clientDetail.getVerification()));
+        client.getBusinessUser().setVerification(Verification.valueOf(clientDetail.getVerification()));
         //TODO LATER Martin - how to update businessUserData, supplierBlackList, demandsIds???
         generalService.save(client);
     }

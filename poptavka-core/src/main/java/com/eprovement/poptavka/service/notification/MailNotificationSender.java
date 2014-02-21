@@ -48,7 +48,13 @@ public class MailNotificationSender implements NotificationSender {
                 "User email address must be valid! user=" + user);
         Validate.notNull(notification, "notification cannot be null!");
 
-        LOGGER.info("action=notification_email_async status=startuser={} notification={}", user, notification);
+        if (! user.isVerified()) {
+            LOGGER.info("action=notification_email status=skip user={} is not verified. "
+                    + "Notification email won't be sent!", user.getEmail());
+            return;
+        }
+
+        LOGGER.info("action=notification_email_async status=start user={} notification={}", user, notification);
         final SimpleMailMessage notificationMailMessage = new SimpleMailMessage();
         notificationMailMessage.setFrom(notificationFromAddress);
         notificationMailMessage.setTo(user.getEmail());

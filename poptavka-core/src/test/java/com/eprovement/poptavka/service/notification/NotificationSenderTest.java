@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.service.notification;
 
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.User;
@@ -55,6 +56,7 @@ public abstract class NotificationSenderTest {
 
     private void checkNotificationMessage(Map<String, String> messageVariables, String expectedMessageBody) {
         final User notifiedUser = new User("user@gmail.com", "myPassword");
+        notifiedUser.setVerification(Verification.VERIFIED);
         getNotificationSender().sendNotification(notifiedUser, newMessageNotification, messageVariables);
 
         verifyNotificationSent(notifiedUser, MESSAGE_SUBJECT, expectedMessageBody);

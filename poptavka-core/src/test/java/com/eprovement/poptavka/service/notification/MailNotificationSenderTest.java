@@ -5,12 +5,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.mail.MailService;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.mail.SimpleMailMessage;
+
+import java.util.Collections;
 
 public class MailNotificationSenderTest extends NotificationSenderTest {
 
@@ -22,6 +25,21 @@ public class MailNotificationSenderTest extends NotificationSenderTest {
     public void testSendNotificationForInvalidUserEmailAddress() throws Exception {
         getNotificationSender().sendNotification(new User(), newMessageNotification, null);
     }
+
+    /**
+     * Tests that email notification is not sent to unverified user.
+     * Only verified users can receive notifications.
+     * @throws Exception
+     */
+    @Test
+    public void testNotificationNotSentToUnverifiedUser() throws Exception {
+        final User notifiedUser = new User("user@gmail.com", "myPassword");
+        getNotificationSender().sendNotification(notifiedUser, newMessageNotification,
+                Collections.<String, String>emptyMap());
+
+        verifyZeroInteractions(mailServiceMock);
+    }
+
 
 
     @Override

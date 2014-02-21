@@ -1,15 +1,10 @@
 package com.eprovement.poptavka.domain.user;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.util.orm.OrmConstants;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
@@ -39,14 +34,6 @@ public abstract class BusinessUserRole extends DomainObject {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private BusinessUser businessUser = new BusinessUser();
 
-    /**
-     *  Verification state of client. No default value!
-     * @see {@link com.eprovement.poptavka.domain.enums.Verification} enum
-     */
-    @Enumerated(value = EnumType.STRING)
-    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
-    private Verification verification;
-
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
 
@@ -58,21 +45,9 @@ public abstract class BusinessUserRole extends DomainObject {
         this.businessUser = businessUser;
     }
 
-    public Verification getVerification() {
-        return verification;
-    }
-
-    public void setVerification(Verification verification) {
-        this.verification = verification;
-    }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("BusinessUserRole");
-        sb.append("{businessUser=").append(businessUser);
-        sb.append(", verification=").append(verification);
-        sb.append('}');
-        return sb.toString();
+        return "BusinessUserRole" + "{businessUser=" + businessUser + '}';
     }
 }

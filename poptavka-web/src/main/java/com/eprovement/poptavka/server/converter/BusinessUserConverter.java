@@ -57,9 +57,9 @@ public final class BusinessUserConverter extends AbstractConverter<BusinessUser,
 //        detail.setAccessRoles(accessRoleConverter.convertToTargetList(user.getAccessRoles())_;
         detail.setAddresses(addressConverter.convertToTargetList(source.getAddresses()));
         detail.setBusinessType(source.getBusinessType());
+        detail.setVerification(source.getVerification());
         //BusinessRole
         for (BusinessUserRole role : source.getBusinessUserRoles()) {
-            detail.setVerification(role.getVerification());
             if (role instanceof Client) {
                 detail.setClientId(role.getId());
                 detail.getBusinessRoles().add(BusinessUserDetail.BusinessRole.CLIENT);
