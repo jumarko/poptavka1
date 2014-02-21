@@ -61,6 +61,8 @@ public class DemandDeserializer implements Converter<com.eprovement.poptavka.res
         }
 
         demand.setEndDate(demandDto.getEndDate());
+        // set validTo to the same value - it's represented as a urgency level on frontend
+        demand.setValidTo(demandDto.getEndDate());
 
         /** localities **/
         if (CollectionUtils.isNotEmpty(demandDto.getLocalities())) {
@@ -82,7 +84,7 @@ public class DemandDeserializer implements Converter<com.eprovement.poptavka.res
     private void setOrigin(DemandDto demandDto, Demand demand) {
         final Origin origin = registerService.getValue(demandDto.getOrigin(), Origin.class);
         Validate.notNull(origin, String.format("No record found for origin code '%s'. "
-                + "Make sure that external system has geen properly registrated", demandDto.getOrigin()));
+                + "Make sure that external system has been properly registered", demandDto.getOrigin()));
         demand.setOrigin(origin);
     }
 

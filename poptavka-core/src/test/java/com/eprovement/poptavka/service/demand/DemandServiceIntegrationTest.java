@@ -15,7 +15,6 @@ import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
-import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -37,6 +36,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -72,9 +74,6 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     private GeneralService generalService;
 
 
-    private User user;
-    private BusinessUser businessUser;
-
     @Test
     public void testGetDemandTypes() {
         final List<DemandType> demandTypes = this.demandService.getDemandTypes();
@@ -100,14 +99,12 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetDemandTypeForNullCode() {
-        String demandTypeCode = null;
-        DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+        this.demandService.getDemandType(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetDemandTypeForBlankCode() {
-        String demandTypeCode = null;
-        DemandType demandType = this.demandService.getDemandType(demandTypeCode);
+        this.demandService.getDemandType(" ");
     }
 
 
@@ -371,7 +368,6 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Demand demand = new Demand();
         demand.setTitle("Title poptavka");
         demand.setDescription("Test poptavka description");
-        demand.setType(this.demandService.getDemandType(DemandTypeType.NORMAL.getValue()));
         final BigDecimal price = BigDecimal.valueOf(10000);
         demand.setPrice(price);
         demand.setMaxSuppliers(20);
@@ -406,13 +402,14 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         demandService.create(demand);
 
         final Demand createdDemand = this.demandService.getById(demand.getId());
-        Assert.assertNotNull(createdDemand);
-        Assert.assertEquals(price, createdDemand.getPrice());
-        Assert.assertEquals(DemandStatus.NEW, createdDemand.getStatus());
-        Assert.assertEquals(validTo, createdDemand.getValidTo());
-        Assert.assertEquals(clientSurname,
-                createdDemand.getClient().getBusinessUser().getBusinessUserData().getPersonLastName());
-
+        assertNotNull(createdDemand);
+        assertThat(createdDemand.getPrice(), is(price));
+        assertThat(createdDemand.getStatus(), is(DemandStatus.NEW));
+        assertThat(createdDemand.getType(), not(nullValue()));
+        assertThat(createdDemand.getType().getCode(), is(DemandTypeType.NORMAL.getValue()));
+        assertThat(validTo, is(createdDemand.getValidTo()));
+        assertThat(clientSurname,
+                is(createdDemand.getClient().getBusinessUser().getBusinessUserData().getPersonLastName()));
     }
 
 
@@ -540,7 +537,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
         checkDemandExists(demand22, clientDemandsWithOffer.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
-                (Object) 1, (Object) clientDemandsWithOffer.get(demand22));
+                1, (Object) clientDemandsWithOffer.get(demand22));
     }
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
@@ -597,7 +594,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 resultCriteria,
                 localities.toArray(new Locality[localities.size()]));
         final String message = "Locality codes [" + Arrays.toString(localityIds) + "]";
-        Assert.assertNotNull(message, demandsForLocalities);
+        assertNotNull(message, demandsForLocalities);
         Assert.assertEquals(message, expectedDemandsNumber, demandsForLocalities.size());
 
         return demandsForLocalities;
@@ -631,7 +628,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Collection<Demand> demandsForCategories = this.demandService.getDemands(
                 categories.toArray(new Category[categories.size()]));
         final String message = "Category ids [" + categoryIds + "]";
-        Assert.assertNotNull(message, demandsForCategories);
+        assertNotNull(message, demandsForCategories);
         Assert.assertEquals(message, expectedDemandsNumber, demandsForCategories.size());
     }
 
