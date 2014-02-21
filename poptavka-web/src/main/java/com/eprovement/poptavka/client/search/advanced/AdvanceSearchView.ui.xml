@@ -128,5 +128,11 @@
                 <g:SimplePanel ui:field="localitySelectorWidgetPanel" />
             </g:tab>
         </g:TabLayoutPanel>
+
+        <g:HTMLPanel ui:field='advancedInfoPanel' styleName='advanced-info-panel' debugId='advanceSearchPopupNoCriteriaPanel'>
+            <g:Label>
+                <ui:msg key='searchNoSearchingCriteria'>No criteria specified</ui:msg>
+            </g:Label>
+        </g:HTMLPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLocSuggestOracle;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSuggestionDisplay;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.selectordatagrid.SelectorDataGrid;
@@ -42,8 +41,7 @@ import java.util.LinkedList;
  *
  * @author Martin Slavkovsky
  */
-public class ManagerView extends ReverseCompositeView<ManagerPresenter>
-        implements ProvidesValidate, ManagerInterface {
+public class ManagerView extends ReverseCompositeView<ManagerPresenter> implements ManagerInterface {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -213,8 +211,18 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
             default:
                 break;
         }
-
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        setSelectedCountLabel(0, presenter.getRegisterRestriction());
+        dataProvider.getList().clear();
+        dataGrid.redraw();
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
@@ -264,14 +272,6 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter>
     @Override
     public boolean isValid() {
         return !dataProvider.getList().isEmpty();
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /******************************************************w********************/

@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
-import com.eprovement.poptavka.client.common.ui.WSIntegerBox;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -40,8 +39,7 @@ public class HomeSuppliersSearchView extends Composite implements
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) ValidationMonitor companyMonitor, ratingMonitorFrom, ratingMonitorTo;
-    @UiField TextBox supplierDescription;
+    @UiField(provided = true) ValidationMonitor companyMonitor, ratingMonitorFrom, ratingMonitorTo, descriptionMonitor;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -55,16 +53,14 @@ public class HomeSuppliersSearchView extends Composite implements
     /* Setters                                                                */
     /**************************************************************************/
     /**
-     * Clear view components.
+     * @{inheritDoc}
      */
     @Override
-    public void clear() {
-        companyMonitor.setValue("");
-        supplierDescription.setText("");
-        ((WSIntegerBox) ratingMonitorFrom.getWidget()).setText("");
-        ratingMonitorFrom.resetValidation();
-        ((WSIntegerBox) ratingMonitorTo.getWidget()).setText("");
-        ratingMonitorTo.resetValidation();
+    public void reset() {
+        companyMonitor.reset();
+        descriptionMonitor.reset();
+        ratingMonitorFrom.reset();
+        ratingMonitorTo.reset();
     }
 
     /**************************************************************************/
@@ -89,10 +85,10 @@ public class HomeSuppliersSearchView extends Composite implements
                     Constants.PATH_TO_BUSINESS_DATA.concat(UserField.LAST_NAME.getValue()),
                     Operation.OPERATION_LIKE, companyMonitor.getValue(), group++));
         }
-        if (!supplierDescription.getText().isEmpty()) {
+        if (!((TextBox) descriptionMonitor.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
                     Constants.PATH_TO_BUSINESS_DATA.concat(UserField.DESCRIPTION.getValue()),
-                    Operation.OPERATION_LIKE, supplierDescription.getText(), group++));
+                    Operation.OPERATION_LIKE, descriptionMonitor.getValue(), group++));
         }
         if (ratingMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
@@ -108,11 +104,16 @@ public class HomeSuppliersSearchView extends Composite implements
     }
 
     /**
-     * @return the widget view
+     * @{inheritDoc}
      */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        boolean valid = true;
+        valid = companyMonitor.isValid() && valid;
+        valid = descriptionMonitor.isValid() && valid;
+        valid = ratingMonitorFrom.isValid() && valid;
+        valid = ratingMonitorTo.isValid() && valid;
+        return valid;
     }
 
     /**************************************************************************/
@@ -126,6 +127,7 @@ public class HomeSuppliersSearchView extends Composite implements
         companyMonitor = createValidationMonitor(BusinessUserDetail.UserField.COMPANY_NAME, groups);
         ratingMonitorFrom = createValidationMonitor(BusinessUserDetail.UserField.OVERALL_RATING, groups);
         ratingMonitorTo = createValidationMonitor(BusinessUserDetail.UserField.OVERALL_RATING, groups);
+        descriptionMonitor = createValidationMonitor(BusinessUserDetail.UserField.DESCRIPTION, groups);
     }
 
     /**

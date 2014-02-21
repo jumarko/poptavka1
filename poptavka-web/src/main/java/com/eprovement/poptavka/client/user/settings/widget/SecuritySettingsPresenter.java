@@ -63,21 +63,21 @@ public class SecuritySettingsPresenter extends LazyPresenter<ISecuritySettings.V
         ((TextBox) view.getPasswordCurrentMonitor().getWidget()).addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                view.getPasswordCurrentMonitor().resetValidation();
+                view.getPasswordCurrentMonitor().reset();
                 ((TextBox) view.getPasswordCurrentMonitor().getWidget()).setText("");
             }
         });
         ((TextBox) view.getPasswordNewMonitor().getWidget()).addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                view.getPasswordNewMonitor().resetValidation();
+                view.getPasswordNewMonitor().reset();
                 ((TextBox) view.getPasswordNewMonitor().getWidget()).setText("");
             }
         });
         ((TextBox) view.getPasswordNewConfirmMonitor().getWidget()).addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                view.getPasswordNewConfirmMonitor().resetValidation();
+                view.getPasswordNewConfirmMonitor().reset();
                 ((TextBox) view.getPasswordNewConfirmMonitor().getWidget()).setText("");
             }
         });
@@ -114,7 +114,7 @@ public class SecuritySettingsPresenter extends LazyPresenter<ISecuritySettings.V
     public void onResponseResetPassword(boolean result) {
         if (result) {
             Window.alert(Storage.MSGS.userSettingsPasswordChangedSucceeded());
-            view.setDefaultPasswordsStyles();
+            view.reset();
         } else {
             Window.alert(Storage.MSGS.userSettingsPasswordChangedFailed());
         }

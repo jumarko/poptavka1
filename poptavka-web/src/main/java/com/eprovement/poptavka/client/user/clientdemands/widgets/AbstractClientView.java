@@ -15,8 +15,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.MultiSelectionModel;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.google.inject.Inject;
 import java.util.Set;
 
@@ -93,13 +92,12 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public void setParentTableVisible(boolean visible) {
-        parentTable.setVisible(visible);
-        parentTable.redraw();
-        //clear selection
-        SingleSelectionModel selectionModel = (SingleSelectionModel) parentTable.getSelectionModel();
+        SetSelectionModel selectionModel = (SetSelectionModel) parentTable.getSelectionModel();
         if (selectionModel != null) {
             selectionModel.clear();
         }
+        parentTable.setVisible(visible);
+        parentTable.redraw();
     }
 
     /**
@@ -108,7 +106,7 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public void setChildTableVisible(boolean visible) {
-        MultiSelectionModel selectionModel = (MultiSelectionModel) childTable.getSelectionModel();
+        SetSelectionModel selectionModel = (SetSelectionModel) childTable.getSelectionModel();
         if (selectionModel != null) {
             selectionModel.clear();
         }
@@ -134,8 +132,11 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public Set getChildTableSelectedObjects() {
-        MultiSelectionModel model = (MultiSelectionModel) childTable.getSelectionModel();
-        return model.getSelectedSet();
+        if (childTable.getSelectionModel() != null) {
+            return ((SetSelectionModel) childTable.getSelectionModel()).getSelectedSet();
+        } else {
+            return null;
+        }
     }
 
     /**

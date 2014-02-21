@@ -154,6 +154,15 @@ public class FeedbackPopupView extends Modal implements ProvidesValidate {
         this.displayName.setText(displayName + " ?");
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        controlGroup.setType(ControlGroupType.NONE);
+        errorPanel.setVisible(false);
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/

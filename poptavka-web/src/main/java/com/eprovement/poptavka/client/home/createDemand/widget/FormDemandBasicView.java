@@ -70,6 +70,20 @@ public class FormDemandBasicView extends Composite
         return demandToUpdate;
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        titleMonitor.reset();
+        priceMonitor.reset();
+        endDateMonitor.reset();
+        descriptionMonitor.reset();
+    }
+
+    /**
+     * @{inheritDoc}
+     */
     @Override
     public boolean isValid() {
         boolean valid = true;

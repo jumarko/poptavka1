@@ -104,11 +104,6 @@ public interface ISecuritySettings {
         void setCurrentPasswordStyles(boolean correct);
 
         /**
-         * Resets validation monitors' styles.
-         */
-        void setDefaultPasswordsStyles();
-
-        /**
          * @return the email validation monitor
          */
         ValidationMonitor getEmailMonitor();

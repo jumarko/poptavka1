@@ -62,6 +62,14 @@ public class ClientSettingsView extends Composite implements IClientSettings.Vie
         // nothing to set - ratings will be calculated automatically.
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        //nothing by default
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/

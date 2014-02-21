@@ -59,7 +59,7 @@ public class NotificationItemView extends Composite {
         initWidget(uiBinder.createAndBindUi(this));
 
         name.setText(item.getName());
-        isEnabled = item.isEnabled();
+        setOnOffStyles(item.isEnabled());
         period.setSelected(item.getPeriod().getValue());
 
         StyleResource.INSTANCE.common().ensureInjected();
@@ -90,9 +90,7 @@ public class NotificationItemView extends Composite {
      */
     @UiHandler("onBtn")
     public void onBtnClickHandler(ClickEvent e) {
-        isEnabled = true;
-        notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchRight());
-        notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchLeft());
+        setOnOffStyles(true);
     }
 
     /**
@@ -100,9 +98,7 @@ public class NotificationItemView extends Composite {
      */
     @UiHandler("offBtn")
     public void offBtnClickHandler(ClickEvent e) {
-        isEnabled = false;
-        notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchRight());
-        notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchLeft());
+        setOnOffStyles(false);
     }
 
     /**************************************************************************/
@@ -127,5 +123,23 @@ public class NotificationItemView extends Composite {
      */
     public String getPeriod() {
         return period.getSelected();
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * Sets on-off style according to given value.
+     * @param isOn true if ON should be selected, false if OFF
+     */
+    private void setOnOffStyles(boolean isOn) {
+        isEnabled = isOn;
+        if (isOn) {
+            notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchRight());
+            notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchLeft());
+        } else {
+            notificationChoicePanel.removeStyleName(StyleResource.INSTANCE.common().switchLeft());
+            notificationChoicePanel.addStyleName(StyleResource.INSTANCE.common().switchRight());
+        }
     }
 }

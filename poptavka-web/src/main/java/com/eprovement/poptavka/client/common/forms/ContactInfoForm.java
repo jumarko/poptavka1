@@ -122,6 +122,16 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
      * @{inheritDoc}
      */
     @Override
+    public void reset() {
+        firstName.reset();
+        lastName.reset();
+        phone.reset();
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public boolean isValid() {
         boolean valid = true;
         valid = firstName.isValid() && valid;

@@ -173,15 +173,15 @@ public class AdminDemandInfoView extends Composite {
     }
 
     public void resetValidationMonitors() {
-        titleMonitor.resetValidation();
-        descriptionMonitor.resetValidation();
-        endDateMonitor.resetValidation();
-        expirationMonitor.resetValidation();
-        priceMonitor.resetValidation();
-        maxOffersMonitor.resetValidation();
-        minRatingMonitor.resetValidation();
-        demandStatusMonitor.resetValidation();
-        demandTypeMonitor.resetValidation();
+        titleMonitor.reset();
+        descriptionMonitor.reset();
+        endDateMonitor.reset();
+        expirationMonitor.reset();
+        priceMonitor.reset();
+        maxOffersMonitor.reset();
+        minRatingMonitor.reset();
+        demandStatusMonitor.reset();
+        demandTypeMonitor.reset();
     }
 
     /**************************************************************************/

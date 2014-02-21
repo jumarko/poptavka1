@@ -159,6 +159,14 @@ public class SupplierSettingsView extends Composite implements ISupplierSettings
      * @{inheritDoc}
      */
     @Override
+    public void reset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public boolean isValid() {
         return !categoryProvider.getList().isEmpty() && !localityProvider.getList().isEmpty();
     }

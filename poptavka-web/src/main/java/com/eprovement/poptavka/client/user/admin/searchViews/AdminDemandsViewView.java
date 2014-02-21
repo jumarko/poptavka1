@@ -8,11 +8,9 @@ import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
@@ -26,14 +24,10 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminDemandsViewView> {
     }
-    @UiField
-    TextBox demandIdFrom, demandIdTo, clientIdFrom, clientIdTo, demandTitle;
-    @UiField
-    DateBox expirationDateFrom, expirationDateTo, endDateFrom, endDateTo;
-    @UiField
-    ListBox demandType, demandStatus;
-    @UiField
-    Button clearBtn;
+
+    @UiField TextBox demandIdFrom, demandIdTo, clientIdFrom, clientIdTo, demandTitle;
+    @UiField DateBox expirationDateFrom, expirationDateTo, endDateFrom, endDateTo;
+    @UiField ListBox demandType, demandStatus;
 
     public AdminDemandsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -117,13 +111,11 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         demandIdFrom.setText("");
         demandIdTo.setText("");
         clientIdFrom.setText("");
@@ -137,8 +129,12 @@ public class AdminDemandsViewView extends Composite implements SearchModulePrese
         demandStatus.setSelectedIndex(0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors
+        return true;
     }
 }

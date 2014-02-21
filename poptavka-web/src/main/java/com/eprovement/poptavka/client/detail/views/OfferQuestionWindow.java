@@ -99,7 +99,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
      */
     @UiHandler("offerReplyBtn")
     public void offerReplyBtnHandler(ClickEvent event) {
-        resetValidationStyles();
+        reset();
         setSendingOfferStyle();
         selectedResponse = RESPONSE_OFFER;
     }
@@ -109,7 +109,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
      */
     @UiHandler("questionReplyBtn")
     public void questionReplyBtnHandler(ClickEvent event) {
-        resetValidationStyles();
+        reset();
         setSendingQuestionStyle();
         selectedResponse = RESPONSE_QUESTION;
     }
@@ -165,10 +165,11 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     /**
      * Reset validation styles.
      */
-    private void resetValidationStyles() {
-        bodyMonitor.resetValidation();
-        priceMonitor.resetValidation();
-        finishDateMonitor.resetValidation();
+    @Override
+    public void reset() {
+        bodyMonitor.reset();
+        priceMonitor.reset();
+        finishDateMonitor.reset();
     }
 
     /**

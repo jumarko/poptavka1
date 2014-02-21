@@ -94,19 +94,6 @@ public class SecuritySettingsView extends Composite implements ISecuritySettings
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDefaultPasswordsStyles() {
-        passwordCurrentMonitor.resetValidation();
-        passwordNewMonitor.resetValidation();
-        passwordNewConfirmMonitor.resetValidation();
-        ((TextBox) passwordCurrentMonitor.getWidget()).setText("");
-        ((TextBox) passwordNewMonitor.getWidget()).setText("");
-        ((TextBox) passwordNewConfirmMonitor.getWidget()).setText("");
-    }
-
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
@@ -160,6 +147,19 @@ public class SecuritySettingsView extends Composite implements ISecuritySettings
         valid = passwordNewMonitor.isValid() && valid;
         valid = passwordNewConfirmMonitor.isValid() && valid;
         return valid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        passwordCurrentMonitor.reset();
+        passwordNewMonitor.reset();
+        passwordNewConfirmMonitor.reset();
+        ((TextBox) passwordCurrentMonitor.getWidget()).setText("");
+        ((TextBox) passwordNewMonitor.getWidget()).setText("");
+        ((TextBox) passwordNewConfirmMonitor.getWidget()).setText("");
     }
 
     /**

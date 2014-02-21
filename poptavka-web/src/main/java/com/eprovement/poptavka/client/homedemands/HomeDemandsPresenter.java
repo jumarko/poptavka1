@@ -30,6 +30,7 @@ import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,6 +78,7 @@ public class HomeDemandsPresenter
     private long selectedDemandIdByHistory = -1;
     private boolean calledFromHistory;
     private boolean sameCategorySelection;
+    private boolean fromWelcome;
     private int pageFromToken = 0;
     private SelectionChangeEvent.Handler handler = new SelectionChangeEvent.Handler() {
         @Override
@@ -142,13 +144,13 @@ public class HomeDemandsPresenter
     /**************************************************************************/
     /**
      * Main Navigation method called either by default application startup or by searching mechanism.
-     * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
+     * @param filter - if searching is needed, this object holds conditions to do so.
      *                               - it's also used as pointer to differ root and child sections
      */
-    public void onGoToHomeDemandsModule(SearchModuleDataHolder searchModuleDataHolder) {
-        defaultCommonInit(searchDataHolder);
+    public void onGoToHomeDemandsModule(SearchModuleDataHolder filter) {
+        defaultCommonInit(filter);
         //Get data
-        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchModuleDataHolder));
+        view.getDataGrid().getDataCount(eventBus, new SearchDefinition(filter));
     }
 
     /**
@@ -158,8 +160,11 @@ public class HomeDemandsPresenter
      * @param category
      */
     public void onGoToHomeDemandsModuleFromWelcome(final int categoryIdx, ICatLocDetail category) {
+        fromWelcome = true;
         Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_WELCOME);
-        defaultCommonInit(searchDataHolder);
+        SearchModuleDataHolder filter = SearchModuleDataHolder.getSearchModuleDataHolder();
+        filter.setCategories(Arrays.asList(category));
+        defaultCommonInit(filter);
         //Get data - category selector tree will take care of data retrieving according to selected category
         eventBus.requestHierarchy(
             CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES, category, builder.getInstanceId());
@@ -328,7 +333,10 @@ public class HomeDemandsPresenter
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
             } else {
                 //cancel filtering if user selected category from celltree
-                view.getFilterLabel().setVisible(false);
+                if (!fromWelcome) {
+                    fromWelcome = false;
+                    view.getFilterLabel().setVisible(false);
+                }
                 //Set selected category as filter and pass it to filter through that category
                 SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);

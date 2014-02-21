@@ -83,6 +83,15 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
      * @{inheritDoc}
      */
     @Override
+    public void reset() {
+        website.reset();
+        description.reset();
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
     public boolean isValid() {
         boolean valid = true;
         valid = website.isValid() && valid;

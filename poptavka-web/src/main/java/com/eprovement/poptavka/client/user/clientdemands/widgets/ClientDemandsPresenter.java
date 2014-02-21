@@ -253,14 +253,16 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      * Displays parent table and hides child table on back button action.
      */
     private void backBtnClickHandlerInner() {
-        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         eventBus.displayAdvertisement();
         selectedParentObject = null;
         selectedChildObject = null;
+        isInitializing = true;
         view.getToolbar().setEditDemandBtnsVisibility(false);
 //        view.getToolbar().getPager().getPager().startLoading();
         setChildTableVisible(false);
         setParentTableVisible(true);
+
+        Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
             view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
@@ -294,7 +296,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             editDemandPresenter = eventBus.addHandler(EditableDemandDetailPresenter.class);
         }
         EditableDemandDetailView editDemandView = (EditableDemandDetailView) editDemandPresenter.getView();
-        editDemandView.resetFields();
+        editDemandView.reset();
         editDemandView.setDemanDetail(
             ((DetailModuleView) view.getDetailPanel().getWidget()).getDemandDetail().getDemandDetail());
         return editDemandView;

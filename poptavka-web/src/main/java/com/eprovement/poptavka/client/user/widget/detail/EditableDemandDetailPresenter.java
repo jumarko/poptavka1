@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.user.widget.detail;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter.IEditableDemandDetailView;
@@ -34,7 +35,7 @@ public class EditableDemandDetailPresenter extends
     /**************************************************************************/
     /* View interface                                                         */
     /**************************************************************************/
-    public interface IEditableDemandDetailView extends LazyView, IsWidget {
+    public interface IEditableDemandDetailView extends LazyView, IsWidget, ProvidesValidate {
 
         void setDemanDetail(FullDemandDetail demandDetail);
 
@@ -59,10 +60,6 @@ public class EditableDemandDetailPresenter extends
         List<ICatLocDetail> getCategories();
 
         List<ICatLocDetail> getLocalities();
-
-        boolean isValid();
-
-        void resetFields();
     }
 
     /**************************************************************************/

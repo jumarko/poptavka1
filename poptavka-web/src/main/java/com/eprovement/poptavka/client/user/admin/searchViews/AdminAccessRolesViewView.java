@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,10 +24,7 @@ public class AdminAccessRolesViewView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminAccessRolesViewView> {
     }
-    @UiField
-    TextBox idFrom, idTo, code, roleName, roleDescription, permissions;
-    @UiField
-    Button clearBtn;
+    @UiField TextBox idFrom, idTo, code, roleName, roleDescription, permissions;
 
     public AdminAccessRolesViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -75,13 +70,11 @@ public class AdminAccessRolesViewView extends Composite implements
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         idFrom.setText("");
         idTo.setText("");
         code.setText("");
@@ -90,8 +83,12 @@ public class AdminAccessRolesViewView extends Composite implements
         permissions.setText("");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation monitors provided
+        return true;
     }
 }

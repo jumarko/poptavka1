@@ -136,9 +136,9 @@ public class AddressSelectorPresenter
         view.getCityMonitor().setValue("");
         view.getZipcodeMonitor().setValue("");
         view.getStreetMonitor().setValue("");
-        view.getCityMonitor().resetValidation();
-        view.getZipcodeMonitor().resetValidation();
-        view.getStreetMonitor().resetValidation();
+        view.getCityMonitor().reset();
+        view.getZipcodeMonitor().reset();
+        view.getStreetMonitor().reset();
     }
 
     /**************************************************************************/

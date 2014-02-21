@@ -15,8 +15,8 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.user.cellview.client.RowStyles;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.Arrays;
 
@@ -39,7 +39,7 @@ public abstract class AbstractSupplierPresenter
         public void update(int index, TableDisplayUserMessage object, String value) {
             object.setRead(true);
 
-            MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTable().getSelectionModel();
+            SetSelectionModel selectionModel = (SetSelectionModel) view.getTable().getSelectionModel();
             selectionModel.clear();
             selectionModel.setSelected(object, true);
         }
@@ -56,7 +56,7 @@ public abstract class AbstractSupplierPresenter
         @Override
         public void update(Boolean value) {
             for (Object row : view.getTable().getVisibleItems()) {
-                ((MultiSelectionModel) view.getTable().getSelectionModel()).setSelected(row, value);
+                ((SetSelectionModel) view.getTable().getSelectionModel()).setSelected(row, value);
             }
         }
     };
@@ -116,7 +116,7 @@ public abstract class AbstractSupplierPresenter
         eventBus.displayView(view.getWidgetView());
 
         if (view.getTable().getSelectionModel() != null) {
-            ((MultiSelectionModel) view.getTable().getSelectionModel()).clear();
+            ((SetSelectionModel) view.getTable().getSelectionModel()).clear();
         }
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }

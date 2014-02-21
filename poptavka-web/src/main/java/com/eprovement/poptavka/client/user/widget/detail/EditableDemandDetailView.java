@@ -119,16 +119,6 @@ public class EditableDemandDetailView extends Composite implements
     /* SETTERS                                                                */
     /**************************************************************************/
     /**
-     * Resets validation monitors.
-     */
-    @Override
-    public void resetFields() {
-        for (ValidationMonitor monitor : monitors) {
-            monitor.resetValidation();
-        }
-    }
-
-    /**
      * Sets demand detail data.
      * @param demandDetail carrying data.
      */
@@ -252,7 +242,16 @@ public class EditableDemandDetailView extends Composite implements
         return this.localityProvider.getList();
     }
 
-    /** Validation. **/
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        for (ValidationMonitor monitor : monitors) {
+            monitor.reset();
+        }
+    }
+
     /**
      * @{inheritDoc}
      */
@@ -265,14 +264,5 @@ public class EditableDemandDetailView extends Composite implements
         valid = !categoryProvider.getList().isEmpty() && valid;
         valid = !localityProvider.getList().isEmpty() && valid;
         return valid;
-    }
-
-    /** Widget view. **/
-    /**
-     * @return the wiget view
-     */
-    @Override
-    public Widget asWidget() {
-        return this;
     }
 }

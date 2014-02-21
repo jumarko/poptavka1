@@ -1,19 +1,19 @@
 @CHARSET "UTF-8";
 
 .height-registration-extended {
-    height: 1130px;
+    height: 1045px;
 }
 .height-registration {
-    height: 770px;
+    height: 780px;
 }
 .height-selector {
-    height: 620px;
+    height: 590px;
 }
 .height-advanced {
     height: 500px;
 }
 .height-basic {
-    height: 450px;
+    height: 460px;
 }
 
 .createTabPanel {
@@ -158,7 +158,7 @@
 
 
 .buttons-panel.small {
-    width: 225px;
+    /*width: 225px;*/
     float: right;
 }
 .buttons-panel.middle {

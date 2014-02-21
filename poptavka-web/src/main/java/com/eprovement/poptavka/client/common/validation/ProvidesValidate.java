@@ -16,4 +16,9 @@ public interface ProvidesValidate {
      */
     boolean isValid();
 
+    /**
+     * Resets view's components.
+     * Clears them or sets to default values.
+     */
+    void reset();
 }

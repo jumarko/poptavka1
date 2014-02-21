@@ -2,11 +2,9 @@ package com.eprovement.poptavka.client.user.admin.searchViews;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,10 +20,8 @@ public class AdminPermissionsViewView extends Composite implements
 
     interface SearchModulViewUiBinder extends UiBinder<Widget, AdminPermissionsViewView> {
     }
-    @UiField
-    TextBox idFrom, idTo, code, name, description;
-    @UiField
-    Button clearBtn;
+
+    @UiField TextBox idFrom, idTo, code, name, description;
 
     public AdminPermissionsViewView() {
         initWidget(uiBinder.createAndBindUi(this));
@@ -67,13 +63,11 @@ public class AdminPermissionsViewView extends Composite implements
         }
     }
 
-    @UiHandler("clearBtn")
-    void clearBtnAction(ClickEvent event) {
-        clear();
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void clear() {
+    public void reset() {
         idFrom.setText("");
         idTo.setText("");
         code.setText("");
@@ -81,8 +75,12 @@ public class AdminPermissionsViewView extends Composite implements
         description.setText("");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Widget getWidgetView() {
-        return this;
+    public boolean isValid() {
+        //no validation moinitors
+        return true;
     }
 }

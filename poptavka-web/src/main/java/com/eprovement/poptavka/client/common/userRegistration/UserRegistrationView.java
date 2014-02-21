@@ -113,9 +113,9 @@ public class UserRegistrationView extends Composite
             companyChoicePanel.removeStyleName(Storage.RSCS.common().switchRight());
             companyChoicePanel.addStyleName(Storage.RSCS.common().switchLeft());
         }
-        companyInfoForm.getCompanyName().resetValidation();
-        companyInfoForm.getTaxNumber().resetValidation();
-        companyInfoForm.getVatNumber().resetValidation();
+        companyInfoForm.getCompanyName().reset();
+        companyInfoForm.getTaxNumber().reset();
+        companyInfoForm.getVatNumber().reset();
     }
 
     /**
@@ -149,6 +149,18 @@ public class UserRegistrationView extends Composite
         //Additional information
         user.setWebsite((String) additionalInfoForm.getWebsite().getValue());
         user.setDescription((String) additionalInfoForm.getDescription().getValue());
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void reset() {
+        accountInfoForm.reset();
+        contactInfoForm.reset();
+        companyInfoForm.reset();
+        additionalInfoForm.reset();
+        ((ProvidesValidate) addressHolder.getWidget()).reset();
     }
 
     /**************************************************************************/

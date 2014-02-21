@@ -7,8 +7,8 @@ import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilde
 import com.eprovement.poptavka.client.search.SearchModuleEventBus;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
-import com.eprovement.poptavka.client.search.SearchModulePresenter.SearchModulesViewInterface;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -91,6 +91,7 @@ public class AdvanceSearchPresenter
     /**************************************************************************/
     private IRootSelectors animation = GWT.create(IRootSelectors.class);
     private static final int FADE_ANIMATION_TIME = 200;
+    private static final int NO_CRITERIA_INFO_DISPLAY_TIME = 3500;
     private Timer searchBtnDisplay = new Timer() {
 
         @Override
@@ -154,7 +155,15 @@ public class AdvanceSearchPresenter
         fillSearchCriteria(filter);
 
         if (filter.getCategories().isEmpty() && filter.getLocalities().isEmpty() && filter.getAttributes().isEmpty()) {
-            eventBus.showPopupNoSearchCriteria();
+            animation.getAdvanceSearchPopupNoCriteriaPanel().fadeIn(null);
+            Timer timer = new Timer() {
+
+                @Override
+                public void run() {
+                    animation.getAdvanceSearchPopupNoCriteriaPanel().fadeOut(null);
+                }
+            };
+            timer.schedule(NO_CRITERIA_INFO_DISPLAY_TIME);
         } else {
             view.getWidgetView().hide();
             forwardAccordingToSearchWhat(filter);
@@ -193,8 +202,14 @@ public class AdvanceSearchPresenter
         view.getClearBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                Widget visibleWidget = view.getTabLayoutPanel().getWidget(view.getTabLayoutPanel().getSelectedIndex());
-                ((SearchModulesViewInterface) visibleWidget).clear();
+                Widget tabWidget = view.getTabLayoutPanel().getWidget(view.getTabLayoutPanel().getSelectedIndex());
+                if (view.getTabLayoutPanel().getSelectedIndex() > 1) {
+                    if (((SimplePanel) tabWidget).getWidget() != null) {
+                        ((ProvidesValidate) ((SimplePanel) tabWidget).getWidget()).reset();
+                    }
+                } else {
+                    ((ProvidesValidate) tabWidget).reset();
+                }
             }
         });
         view.getCloseBtn().addClickHandler(new ClickHandler() {

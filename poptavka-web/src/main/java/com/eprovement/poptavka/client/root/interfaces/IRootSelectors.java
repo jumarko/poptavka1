@@ -32,6 +32,6 @@ public interface IRootSelectors extends Selectors {
     @Selector("#gwt-debug-searchBtn2")
     GQuery getSearchBtn2();
 
-    @Selector("#gwt-debug-advanceSearchPopup")
-    GQuery getAdvanceSearchPopup();
+    @Selector("#gwt-debug-advanceSearchPopupNoCriteriaPanel")
+    GQuery getAdvanceSearchPopupNoCriteriaPanel();
 }
