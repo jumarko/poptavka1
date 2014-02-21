@@ -259,8 +259,8 @@
 
 .advanced-search-tabPanel .container-fluid {
     background: #E7E3D6;
-    max-width: 900px;
-    margin: 40px auto;
+    /*max-width: 900px;*/
+    margin: 40px;
 }
 .advanced-search-tabPanel .row-fluid {
     margin-bottom: 12px;
