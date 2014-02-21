@@ -62,10 +62,6 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     private Converter<Demand, FullDemandDetail> demandConverter;
 
     @Autowired
-    @Qualifier("supplierConverter")
-    private Converter<Supplier, FullSupplierDetail> supplierConverter;
-
-    @Autowired
     private ClientService clientService;
 
     @Autowired
@@ -81,7 +77,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
     private LoginService loginService;
 
 
-    private ClientDemandsModuleRPCServiceImpl clientDemandsRPCService;
+    private ClientDemandsModuleRPCServiceImpl  clientDemandsRPCService;
 
 
     @Before
@@ -93,7 +89,6 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         // converters
         clientDemandsRPCService.setClientDemandConverter(clientDemandConverter);
         clientDemandsRPCService.setDemandConverter(demandConverter);
-        clientDemandsRPCService.setSupplierConverter(supplierConverter);
 
         // services
         clientDemandsRPCService.setClientService(clientService);
@@ -157,7 +152,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         clientDemandsRPCService.acceptOffer(offerToBeAccepted);
 
         for (Offer offer : demand.getOffers()) {
-            if (offer.getId().longValue() != offerToBeAccepted) {
+            if (offer.getId() != offerToBeAccepted) {
                 Assert.assertEquals("Offer status [offer.state.code=" + offer.getState().getCode()
                         + "] for offer [offer.id=" + offer.getId() + "] is not in DECLINED state",
                         OfferStateType.DECLINED.getValue(), offer.getState().getCode());
