@@ -22,8 +22,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -158,9 +158,13 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      * @param result
      */
     public void onResponseDeleteDemand(boolean result) {
-        //TODO LATER Martin - make proper notify popup and change layout
-        backBtnClickHandlerInner();
-        Window.alert("deleted succesfully");
+        if (result) {
+            eventBus.showThankYouPopup(LocalizableMessages.INSTANCE.clientDemandsDeleteSucceeded(), null);
+            backBtnClickHandlerInner();
+        } else {
+            eventBus.showThankYouPopup(LocalizableMessages.INSTANCE.clientDemandsDeleteFailed(), null);
+        }
+        view.getToolbar().getDeleteBtn().setEnabled(true);
     }
 
     /**
@@ -281,7 +285,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         view.getToolbar().getDeleteBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                view.getToolbar().setEditDemandBtnsVisibility(false);
+                view.getToolbar().getDeleteBtn().setEnabled(false);
                 eventBus.requestDeleteDemand(selectedParentObject.getDemandId());
             }
         });
