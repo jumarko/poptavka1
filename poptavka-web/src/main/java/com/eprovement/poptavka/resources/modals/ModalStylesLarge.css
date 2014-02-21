@@ -204,6 +204,18 @@
     z-index: 1;
 }
 
+.advanced-search-popup .advanced-info-panel {
+    display: none;
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    background: #FFFFFF;
+    border: 5px solid #000000;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: 700;
+}
+
 .advanced-search-tabPanel {
     height: 100%;
 }

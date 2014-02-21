@@ -705,6 +705,8 @@ public interface LocalizableMessages extends Messages {
 
     /** ClientDemandsView.ui. **/
     String clientDemandsBackBtn();
+    SafeHtml clientDemandsDeleteSucceeded();
+    SafeHtml clientDemandsDeleteFailed();
 
     /** ClientOffersView.ui. **/
     String clientOffersBackBtn();

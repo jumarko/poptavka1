@@ -39,7 +39,6 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -80,7 +79,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     private Converter<Category, ICatLocDetail> categoryConverter;
     private Converter<Locality, ICatLocDetail> localityConverter;
     private Converter<Demand, FullDemandDetail> demandConverter;
-    private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private SearchConverter searchConverter;
     private Converter<Demand, ClientDemandDetail> clientDemandConverter;
 
@@ -135,12 +133,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     public void setDemandConverter(
             @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
         this.demandConverter = demandConverter;
-    }
-
-    @Autowired
-    public void setSupplierConverter(
-            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
-        this.supplierConverter = supplierConverter;
     }
 
     @Autowired
@@ -796,9 +788,9 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
     @Override
     @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
     public FullDemandDetail requestDeleteDemand(long demandId) throws RPCException, ApplicationSecurityException {
-        Demand demand = generalService.find(Demand.class, demandId);
+        Demand demand = demandService.getById(demandId);
         demand.setStatus(DemandStatus.CANCELED);
-        return demandConverter.convertToTarget(generalService.save(demand));
+        return demandConverter.convertToTarget(demandService.update(demand));
     }
 
     /**

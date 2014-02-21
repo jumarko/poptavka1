@@ -92,9 +92,11 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public void setParentTableVisible(boolean visible) {
-        SetSelectionModel selectionModel = (SetSelectionModel) parentTable.getSelectionModel();
-        if (selectionModel != null) {
-            selectionModel.clear();
+        if (visible) {
+            SetSelectionModel selectionModel = (SetSelectionModel) parentTable.getSelectionModel();
+            if (selectionModel != null) {
+                selectionModel.clear();
+            }
         }
         parentTable.setVisible(visible);
         parentTable.redraw();
@@ -106,9 +108,11 @@ public class AbstractClientView extends Composite implements IAbstractClient.Vie
      */
     @Override
     public void setChildTableVisible(boolean visible) {
-        SetSelectionModel selectionModel = (SetSelectionModel) childTable.getSelectionModel();
-        if (selectionModel != null) {
-            selectionModel.clear();
+        if (visible) {
+            SetSelectionModel selectionModel = (SetSelectionModel) childTable.getSelectionModel();
+            if (selectionModel != null) {
+                selectionModel.clear();
+            }
         }
         childTable.setVisible(visible);
         childTable.redraw();
