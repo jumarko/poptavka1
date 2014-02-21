@@ -5,7 +5,7 @@ import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.offer.Offer;
-import com.eprovement.poptavka.domain.user.Supplier;
+
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
 import com.eprovement.poptavka.server.service.clientdemands.ClientDemandsModuleRPCServiceImpl;
@@ -18,7 +18,7 @@ import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import java.util.List;
