@@ -1,9 +1,5 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.service.user;
 
-import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
@@ -11,7 +7,7 @@ import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
 public interface UserVerificationService {
 
     /**
-     * Generates new activation code for given {@code businessUser} and send it to his mail in a synchronous fashion.
+     * Generates new activation code for given {@code user} and send it to his mail in a synchronous fashion.
      * New activation code is persisted.
      *
      * @return generated activation code
@@ -28,7 +24,7 @@ public interface UserVerificationService {
     /**
      * Generates new activation code for given user.
      * Activation dode is encrypted with symmetric cipher.
-     * @param user
+     * @param user user for which the activation code should be generated
      * @return encrypted activation code
      */
     String generateActivationCode(User user);
@@ -36,29 +32,27 @@ public interface UserVerificationService {
     /**
      * Verifies given activation code if it belongs to the existing user.
      *
-     * @param user
+     * @param user user to be verified with given activation code
      * @param activationCode activation code to be verified
      * @throws com.eprovement.poptavka.exception.IncorrectActivationCodeException
      *          if activationCode does not correspond to some valid (generated) activation activationCode
      * @throws com.eprovement.poptavka.exception.ExpiredActivationCodeException if activationCode already expired
      */
-    void verifyActivationCode(BusinessUser user, String activationCode) throws ExpiredActivationCodeException,
+    void verifyActivationCode(User user, String activationCode) throws ExpiredActivationCodeException,
             IncorrectActivationCodeException;
 
 
     /**
-     * Verifies given {@code user} using {@code activationCode}, that means if correct activation code is provided,
-     * all user's {@link BusinessUser#businessUserRoles}
-     * verification status ( {@link com.eprovement.poptavka.domain.user.BusinessUserRole#verification} ) is set to
+     * Activates given {@code user} using {@code activationCode}, that means if correct activation code is provided
+     * verification status {@link User#verification} is set to
      * {@link com.eprovement.poptavka.domain.enums.Verification#VERIFIED}.
      *
-     *
-     * @param user
+     * @param user user to be activated
      * @param activationCode activation code which will be checked and corresponded user will be verified
      *
-     * @see #verifyActivationCode(com.eprovement.poptavka.domain.user.BusinessUser, String)
+     * @see #verifyActivationCode(com.eprovement.poptavka.domain.user.User, String)
      *      for various preconditions and exception states
      */
-    void activateUser(BusinessUser user, String activationCode);
+    void activateUser(User user, String activationCode);
 
 }

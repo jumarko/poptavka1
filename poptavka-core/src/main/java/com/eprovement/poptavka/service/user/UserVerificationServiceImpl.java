@@ -1,12 +1,7 @@
-/*
- * Copyright (C) 2007-2011, GoodData(R) Corporation. All rights reserved.
- */
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.enums.Verification;
-import com.eprovement.poptavka.domain.user.BusinessUser;
-import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
 import com.eprovement.poptavka.exception.IncorrectActivationCodeException;
@@ -96,18 +91,16 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
     @Override
     @Transactional
-    public void activateUser(BusinessUser user, String activationCode) {
+    public void activateUser(User user, String activationCode) {
         Validate.notNull(user, "user to be actiavted cannot be null!");
         LOGGER.debug("action=verify_user status=start user={}", user);
 
         verifyActivationCode(user, activationCode);
         boolean alreadyVerified = true;
-        for (BusinessUserRole role : user.getBusinessUserRoles()) {
-            if (role.getVerification() != Verification.VERIFIED) {
-                alreadyVerified = false;
-                role.setVerification(Verification.VERIFIED);
-                LOGGER.debug("action=verify_user status=set_verification_for_role role={}", role);
-            }
+        if (! user.isVerified()) {
+            alreadyVerified = false;
+            user.setVerification(Verification.VERIFIED);
+            LOGGER.debug("action=verify_user status=set_verification_for_role user={}", user);
         }
 
         if (alreadyVerified) {
@@ -122,7 +115,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
     @Override
     @Transactional(readOnly = true)
-    public void verifyActivationCode(BusinessUser user, String activationCode) throws ExpiredActivationCodeException,
+    public void verifyActivationCode(User user, String activationCode) throws ExpiredActivationCodeException,
             IncorrectActivationCodeException {
         Validate.notNull(user, "user to be activated cannot be null");
         Validate.notEmpty(activationCode, "Activation code to be verified must not be null!");

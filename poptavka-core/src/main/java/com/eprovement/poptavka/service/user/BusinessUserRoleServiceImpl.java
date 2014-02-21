@@ -3,7 +3,6 @@ package com.eprovement.poptavka.service.user;
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.enums.Status;
-import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
@@ -126,7 +125,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         }
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
-        businessUserRole.setVerification(Verification.UNVERIFIED);
 
         createBusinessUserIfNotExist(businessUserRole);
         final BUR createdBusinessUserRole = super.create(businessUserRole);

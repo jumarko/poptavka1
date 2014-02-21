@@ -3,9 +3,15 @@ package com.eprovement.poptavka.domain.user;
 import com.eprovement.poptavka.application.security.aspects.Encrypted;
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
+
+import com.eprovement.poptavka.util.orm.OrmConstants;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -44,6 +50,14 @@ public class User extends DomainObject {
     /** User's email, serves also as a login.  */
     @Email
     private String email;
+
+    /**
+     *  Verification state of user. By default, each user is UNVERIFIED!
+     * @see {@link com.eprovement.poptavka.domain.enums.Verification} enum
+     */
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
+    private Verification verification = Verification.UNVERIFIED;
 
     /** Roles assigned to this user in the application. */
     @ManyToMany
@@ -95,6 +109,17 @@ public class User extends DomainObject {
         this.email = email;
     }
 
+    public Verification getVerification() {
+        return verification;
+    }
+
+    public void setVerification(Verification verification) {
+        this.verification = verification;
+    }
+
+    public boolean isVerified() {
+        return Verification.VERIFIED == verification;
+    }
 
     public List<AccessRole> getAccessRoles() {
         return accessRoles;
@@ -137,10 +162,6 @@ public class User extends DomainObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("User");
-        sb.append(", email='").append(email).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "User" + ", email='" + email + '\'' + '}';
     }
 }
