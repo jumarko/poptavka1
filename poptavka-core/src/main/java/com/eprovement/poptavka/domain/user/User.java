@@ -57,6 +57,7 @@ public class User extends DomainObject {
      */
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
+    @NotAudited
     private Verification verification = Verification.UNVERIFIED;
 
     /** Roles assigned to this user in the application. */
