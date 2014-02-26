@@ -61,6 +61,10 @@
     -webkit-border-radius: 5px;
 }
 
+.universal-pager .ws-pager-size-box:hover {
+    background-image: url(images/dropdown-icon_hover.png);
+}
+
 .universal-pager .ws-pager-size-box table {
     display: block;
     float: left;        
