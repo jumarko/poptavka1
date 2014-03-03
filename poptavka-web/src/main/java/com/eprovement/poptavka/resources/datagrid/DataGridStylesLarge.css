@@ -30,7 +30,7 @@
 
 }
 
-.dataGridLastColumn div img {
+.dataGridLastColumn span img {
     margin: 0 5px 0 auto;
     display: block;
     float: left;
@@ -93,7 +93,7 @@
 @sprite .dataGridSortableHeader {
     cursor: pointer;
     cursor: hand;
-    gwt-image: 'dataGridSortableHeader';
+    gwt-image: 'dataGridHeader';
     width: auto;
     background-position: top right;
 }
@@ -106,6 +106,10 @@
     -moz-border-radius: 0 6px 0 0;
     -webkit-border-radius: 0 6px 0 0;
     border-right: 1px solid #d0cbba;
+}
+
+.dataGridLastColumnHeader span {
+    margin: 0 auto;
 }
 
 .dataGridSortableHeader:hover {

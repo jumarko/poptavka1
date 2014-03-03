@@ -33,7 +33,7 @@ body > div {
 .homepage .banner2 {
     margin: 0;
     width: 100%;
-    background-position: top center;
+    background-position: center -315px;
 }
 .homepage .banner-link2-position {
     top:225px;
