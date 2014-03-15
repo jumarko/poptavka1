@@ -215,6 +215,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      * @return user's password
      */
     private String getUserPassword() {
-        return view.getPassword().getText();
+        return view.getPassword().getText().trim();
     }
 }
