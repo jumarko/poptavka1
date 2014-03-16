@@ -122,6 +122,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         //Set visibility
         setParentTableVisible(false);
         setChildTableVisible(true);
+        view.getToolbar().getCloseBtn().setVisible(assignedDemandsMode);
 
         eventBus.resetSearchBar(new Label("Client's assigned/closed projects attibure's selector will be here."));
 
