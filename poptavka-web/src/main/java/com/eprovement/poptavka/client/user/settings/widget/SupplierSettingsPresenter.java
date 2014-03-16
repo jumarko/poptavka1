@@ -74,7 +74,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
                     new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initCategorySelector()
                         .initSelectorManager()
-                        .withCheckboxesOnLeafsOnly()
+                        .withCheckboxes()
                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                         .build();
                 instaceIdCategories = builder.getInstanceId();
@@ -91,7 +91,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
                     new CatLocSelectorBuilder.Builder(Constants.USER_SETTINGS_MODULE)
                         .initLocalitySelector()
                         .initSelectorManager()
-                        .withCheckboxesOnLeafsOnly()
+                        .withCheckboxes()
                         .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                         .build();
                 instaceIdLocalities = builder.getInstanceId();
