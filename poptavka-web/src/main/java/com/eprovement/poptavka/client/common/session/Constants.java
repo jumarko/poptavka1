@@ -96,6 +96,7 @@ public final class Constants {
     /* Administration module contants */
     public static final int ADMIN_ACCESS_ROLE = 44;
     public static final int ADMIN_ACTIVE_DEMANDS = 45;
+    public static final int ADMIN_ASSIGEND_DEMANDS = 145;
     public static final int ADMIN_CLIENTS = 46;
     public static final int ADMIN_DEMANDS = 47;
     public static final int ADMIN_EMAILS_ACTIVATION = 48;

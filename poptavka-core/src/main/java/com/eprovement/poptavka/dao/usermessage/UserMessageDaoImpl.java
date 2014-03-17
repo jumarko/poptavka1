@@ -7,6 +7,7 @@ package com.eprovement.poptavka.dao.usermessage;
 import com.eprovement.poptavka.dao.GenericHibernateDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
@@ -87,6 +88,21 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
     public Map<UserMessage, Integer> getSupplierConversationsWithoutOffer(BusinessUser user) {
         return getSupplierConversationsHelper(user,
                 "getSupplierConversationsWithoutOffer");
+    }
+
+    @Override
+    public Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status) {
+        final HashMap<String, Object> queryParams = new HashMap<String, Object>();
+        queryParams.put("userId", userId);
+        queryParams.put("demandStatus", status);
+        List<Object[]> unread = runNamedQuery(
+                "getAdminDemandsByItsState",
+                queryParams);
+        Map<UserMessage, Integer> unreadMap = new HashMap();
+        for (Object[] entry : unread) {
+            unreadMap.put((UserMessage) entry[0], ((Long) entry[1]).intValue());
+        }
+        return unreadMap;
     }
 
     /** {@inheritDoc} */

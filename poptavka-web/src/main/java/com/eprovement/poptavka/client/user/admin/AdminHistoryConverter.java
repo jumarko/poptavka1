@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -91,7 +92,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
             eventBus.loginFromSession(Constants.ADMIN_NEW_DEMANDS);
             return;
         }
-        eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
+        eventBus.goToAdminModule(null, IAdmin.AdminWidget.NEW_DEMANDS);
     }
 
     @Override

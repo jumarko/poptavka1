@@ -20,6 +20,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -58,11 +59,17 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.ADMIN_ACCESS_ROLE:
-                getAdminAccessRolesCount(grid, searchDefinition);
+            case Constants.ADMIN_NEW_DEMANDS:
+                getAdminNewDemandsCount(grid, searchDefinition);
+                break;
+            case Constants.ADMIN_ASSIGEND_DEMANDS:
+                getAdminAssignedDemandsCount(grid, searchDefinition);
                 break;
             case Constants.ADMIN_ACTIVE_DEMANDS:
                 getAdminActiveDemandsCount(grid, searchDefinition);
+                break;
+            case Constants.ADMIN_ACCESS_ROLE:
+                getAdminAccessRolesCount(grid, searchDefinition);
                 break;
             case Constants.ADMIN_CLIENTS:
                 getAdminClientsCount(grid, searchDefinition);
@@ -78,9 +85,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 break;
             case Constants.ADMIN_MESSAGES:
                 getAdminMessagesCount(grid, searchDefinition);
-                break;
-            case Constants.ADMIN_NEW_DEMANDS:
-                getAdminNewDemandsCount(grid, searchDefinition);
                 break;
             case Constants.ADMIN_OFFERS:
                 getAdminOffersCount(grid, searchDefinition);
@@ -416,6 +420,31 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     /**********************************************************************************************
+     ***********************  Assigned Demands SECTION. *******************************************
+     **********************************************************************************************/
+    public void getAdminAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        adminService.getAdminAssignedDemandsByItsStatusCount(
+            Storage.getUser().getUserId(), searchDefinition, DemandStatus.ACTIVE,
+                new SecuredAsyncCallback<Long>(eventBus) {
+                @Override
+                public void onSuccess(Long result) {
+                    grid.getDataProvider().updateRowCount(result.intValue(), true);
+                }
+            });
+    }
+
+    public void getAdminAssignedDemands(SearchDefinition searchDefinition) {
+        adminService.getAdminAssignedDemandsByItsStatus(
+            Storage.getUser().getUserId(), DemandStatus.ACTIVE, searchDefinition,
+                new SecuredAsyncCallback<List<AdminDemandDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<AdminDemandDetail> result) {
+                    eventBus.displayAdminNewDemands(result);
+                }
+            });
+    }
+
+    /**********************************************************************************************
      ***********************  Active Demands SECTION. *********************************************
      **********************************************************************************************/
     public void getAdminActiveDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
@@ -429,10 +458,10 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminActiveDemands(SearchDefinition searchDefinition) {
-        adminService.getAdminDemandsByItsStatus(searchDefinition, DemandStatus.ACTIVE,
-                new SecuredAsyncCallback<List<NewDemandDetail>>(eventBus) {
+        adminService.getAdminDemandsByItsStatus(Storage.getUser().getUserId(), DemandStatus.ACTIVE, searchDefinition,
+                new SecuredAsyncCallback<List<AdminDemandDetail>>(eventBus) {
                 @Override
-                public void onSuccess(List<NewDemandDetail> result) {
+                public void onSuccess(List<AdminDemandDetail> result) {
                     eventBus.displayAdminNewDemands(result);
                 }
             });
@@ -452,10 +481,10 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminNewDemands(SearchDefinition searchDefinition) {
-        adminService.getAdminDemandsByItsStatus(searchDefinition, DemandStatus.NEW,
-                new SecuredAsyncCallback<List<NewDemandDetail>>(eventBus) {
+        adminService.getAdminDemandsByItsStatus(Storage.getUser().getUserId(), DemandStatus.NEW, searchDefinition,
+                new SecuredAsyncCallback<List<AdminDemandDetail>>(eventBus) {
                 @Override
-                public void onSuccess(List<NewDemandDetail> result) {
+                public void onSuccess(List<AdminDemandDetail> result) {
                     eventBus.displayAdminNewDemands(result);
                 }
             });

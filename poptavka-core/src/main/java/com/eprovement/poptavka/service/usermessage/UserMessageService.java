@@ -7,6 +7,7 @@ package com.eprovement.poptavka.service.usermessage;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -405,6 +406,9 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      * @return number of client's conversations where an offer has been made
      */
     int getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
+
+    Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status, Search search);
+    Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status);
 
     /**
      * Creates a <code>UserMessage</code> for a given <code>Message</code>

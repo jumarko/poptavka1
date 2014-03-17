@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -84,11 +85,17 @@ public interface AdminRPCServiceAsync {
     void updateMessage(MessageDetail detailObject, AsyncCallback<MessageDetail> callback);
 
     //---------------------- NEW DEMANDS --------------------------------------------
+    void getAdminAssignedDemandsByItsStatusCount(
+        long userId, SearchDefinition searchDefinition, DemandStatus demandStatus, AsyncCallback<Long> callback);
+
+    void getAdminAssignedDemandsByItsStatus(long userId, DemandStatus demandStatus, SearchDefinition searchDefinition,
+            AsyncCallback<List<AdminDemandDetail>> callback);
+
     void getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus,
             AsyncCallback<Long> callback);
 
-    void getAdminDemandsByItsStatus(SearchDefinition searchDefinition, DemandStatus demandStatus,
-            AsyncCallback<List<NewDemandDetail>> callback);
+    void getAdminDemandsByItsStatus(long userId, DemandStatus demandStatus, SearchDefinition searchDefinition,
+            AsyncCallback<List<AdminDemandDetail>> callback);
 
     void getConversation(long threadRootId, long loggedUserId, long counterPartyUserId,
             AsyncCallback<List<MessageDetail>> callback);

@@ -243,8 +243,21 @@ import javax.persistence.NamedQuery;
                         + " and subUserMessage.user = supplier"
                         + " and subUserMessage.message.offer is not null"
                         + "\n"
-                        + "group by latestUserMessage.id, supplier.id")
-}
+                        + "group by latestUserMessage.id, supplier.id"),
+            @NamedQuery(name = "getAdminDemandsByItsState",
+                query = "select userMessage, count(message.id), max(message.sent) \n"
+                        + "from (select um from UserMessage as um where um.user.id = :userId) as userMessage"
+                        + " right join Message as message \n"
+                        + "on userMessage.message.id = message.id \n"
+                        + "where message.demand.status = :demandStatus \n"
+                        + "group by message.threadRoot.id") }
+//            @NamedQuery(name = "getAdminDemandsByItsState",
+//                query = "select userMessage, count(message.id), max(message.sent) \n"
+//                        + "from (select um from UserMessage as um where um.user.id = :userId) as userMessage"
+//                        + " right join Message as message \n"
+//                        + "on userMessage.message.id = message.id \n"
+//                        + "where message.demand.status = :demandStatus \n"
+//                        + "group by message.threadRoot.id") }
 )
 public class UserMessage extends DomainObject {
     @ManyToOne

@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.user.settings.widget.SupplierSettingsPresenter;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -99,6 +100,9 @@ public interface ISupplierSettings {
          */
         List<ICatLocDetail> getLocalities();
 
+        CellList getCategoriesList();
+
+        CellList getLocalitiesList();
         //Buttons
         /**
          * @return the edit categories button

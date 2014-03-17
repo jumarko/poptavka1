@@ -14,7 +14,8 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminEmailActivationsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminInvoicesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminMessagesPresenter;
-import com.eprovement.poptavka.client.user.admin.tab.AdminNewDemandsPresenter;
+import com.eprovement.poptavka.client.user.admin.demand.AdminNewDemandsPresenter;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOffersPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPaymentMethodsPresenter;
@@ -35,6 +36,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -85,7 +87,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     void forward();
 
     /**************************************************************************/
-
     /* Navigation events.                                                     */
     /**************************************************************************/
     /**
@@ -95,7 +96,10 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
      * @param loadWidget - prosim doplnit ???
      */
     @Event(handlers = AdminPresenter.class, historyConverter = AdminHistoryConverter.class, navigationEvent = true)
-    String goToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget);
+    String goToAdminModule(SearchModuleDataHolder searchDataHolder, IAdmin.AdminWidget loadWidget);
+
+    @Event(handlers = AdminPresenter.class)
+    void setClientMenuActStyle(IAdmin.AdminWidget widget);
 
     /**************************************************************************/
     /* Parent events                                                          */
@@ -123,6 +127,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     /** Submodule Initializatin section. **/
     @Event(handlers = AdminNewDemandsPresenter.class)
     void initNewDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void initAssignedDemands(SearchModuleDataHolder filter);
 
     @Event(handlers = AdminNewDemandsPresenter.class)
     void initActiveDemands(SearchModuleDataHolder filter);
@@ -235,7 +242,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     void displayAdminTabMessages(List<MessageDetail> messages);
 
     @Event(handlers = AdminNewDemandsPresenter.class)
-    void displayAdminNewDemands(List<NewDemandDetail> demands);
+    void displayAdminNewDemands(List<AdminDemandDetail> demands);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void displayAdminTabPaymentMethods(List<PaymentMethodDetail> clients);

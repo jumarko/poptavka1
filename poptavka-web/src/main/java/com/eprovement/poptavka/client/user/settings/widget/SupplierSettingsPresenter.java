@@ -80,6 +80,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
                 instaceIdCategories = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
                 eventBus.setCatLocs(view.getCategories(), instaceIdCategories);
+                view.getCategoriesList().setVisible(!view.getCategories().isEmpty());
                 view.getSelectorPopup().show();
             }
         });
@@ -97,6 +98,7 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
                 instaceIdLocalities = builder.getInstanceId();
                 eventBus.initCatLocSelector(view.getSelectorPopup().getSelectorPanel(), builder);
                 eventBus.setCatLocs(view.getLocalities(), instaceIdLocalities);
+                view.getLocalitiesList().setVisible(!view.getLocalities().isEmpty());
                 view.getSelectorPopup().show();
             }
         });
