@@ -196,7 +196,7 @@ public class SupplierCreationPresenter
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initLocalitySelector()
                                 .initSelectorManager()
-                                .withCheckboxesOnLeafsOnly()
+                                .withCheckboxes()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                                 .build();
