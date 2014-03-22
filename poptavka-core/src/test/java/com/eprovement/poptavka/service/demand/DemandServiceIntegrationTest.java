@@ -31,6 +31,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,6 +41,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+
+import javax.validation.ConstraintViolationException;
 
 /**
  * @author Juraj Martinka
@@ -58,6 +61,9 @@ import static org.junit.Assert.assertThat;
         disableForeignKeyChecks = true)
 public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
+    private static final String DEMAND_TITLE = "Title poptavka";
+    private static final String DEMAND_DESCRIPTION = "Test poptavka description";
+    private static final BigDecimal DEMAND_PRICE = BigDecimal.valueOf(10000);
     @Autowired
     private DemandService demandService;
 
@@ -72,7 +78,21 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Autowired
     private GeneralService generalService;
+    private Locality locality211;
+    private Category category211;
+    private Date validTo;
+    private Date endDate;
 
+
+    @Before
+    public void setUp() throws Exception {
+        locality211 = this.localityService.getLocality(211L);
+        category211 = this.categoryService.getCategory(211L);
+        // one day to the future
+        endDate = new Date(System.currentTimeMillis() + 8640000);
+        // ten days to the future
+        validTo = new Date(System.currentTimeMillis() + 86400000);
+    }
 
     @Test
     public void testGetDemandTypes() {
@@ -362,48 +382,13 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testCreateDemand() {
 
-        final Locality locality211 = this.localityService.getLocality(211L);
-        final Category category211 = this.categoryService.getCategory(211L);
+        final Demand demand = newDemand();
 
-        final Demand demand = new Demand();
-        demand.setTitle("Title poptavka");
-        demand.setDescription("Test poptavka description");
-        final BigDecimal price = BigDecimal.valueOf(10000);
-        demand.setPrice(price);
-        demand.setMaxSuppliers(20);
-        demand.setMinRating(99);
-        demand.setStatus(DemandStatus.NEW);
-        demand.setCategories(asList(category211));
-        demand.setLocalities(asList(locality211));
-        // one day to the future
-        final Date endDate = new Date(System.currentTimeMillis() + 8640000);
-        demand.setEndDate(endDate);
-        // ten days to the future
-        final Date validTo = new Date(System.currentTimeMillis() + 86400000);
-        demand.setValidTo(validTo);
-
-
-        final Client newClient = new Client();
-        newClient.getBusinessUser().setEmail("test@poptavam.com");
-        newClient.getBusinessUser().setPassword("myPassword");
-        newClient.getBusinessUser().setAccessRoles(asList(this.generalService.find(AccessRole.class, 1L)));
-        final Address clientAddress = new Address();
-        clientAddress.setCity(locality211);
-        clientAddress.setStreet("Gotham city");
-        clientAddress.setZipCode("12");
-        newClient.getBusinessUser().setAddresses(asList(clientAddress));
-        final String clientSurname = "Client";
-        newClient.getBusinessUser().setBusinessUserData(
-                new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());
-        newClient.getBusinessUser().setSettings(new Settings());
-        this.clientService.create(newClient);
-
-        demand.setClient(clientService.getById(newClient.getId()));
-        demandService.create(demand);
+        final String clientSurname = createDemandWithClient(demand);
 
         final Demand createdDemand = this.demandService.getById(demand.getId());
         assertNotNull(createdDemand);
-        assertThat(createdDemand.getPrice(), is(price));
+        assertThat(createdDemand.getPrice(), is(DEMAND_PRICE));
         assertThat(createdDemand.getStatus(), is(DemandStatus.NEW));
         assertThat(createdDemand.getType(), not(nullValue()));
         assertThat(createdDemand.getType().getCode(), is(DemandTypeType.NORMAL.getValue()));
@@ -412,7 +397,19 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 is(createdDemand.getClient().getBusinessUser().getBusinessUserData().getPersonLastName()));
     }
 
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateDemandWithoutValidTo() {
+        final Demand demand = newDemand();
+        demand.setValidTo(null);
+        createDemandWithClient(demand);
+    }
 
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateDemandWithoutEndDate() {
+        final Demand demand = newDemand();
+        demand.setEndDate(null);
+        createDemandWithClient(demand);
+    }
 
 
     @Test
@@ -681,4 +678,41 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 allDemands.contains(demand)
         );
     }
+
+    private String createDemandWithClient(Demand demand) {
+        final Client newClient = new Client();
+        newClient.getBusinessUser().setEmail("test@poptavam.com");
+        newClient.getBusinessUser().setPassword("myPassword");
+        newClient.getBusinessUser().setAccessRoles(asList(this.generalService.find(AccessRole.class, 1L)));
+        final Address clientAddress = new Address();
+        clientAddress.setCity(locality211);
+        clientAddress.setStreet("Gotham city");
+        clientAddress.setZipCode("12");
+        newClient.getBusinessUser().setAddresses(asList(clientAddress));
+        final String clientSurname = "Client";
+        newClient.getBusinessUser().setBusinessUserData(
+                new BusinessUserData.Builder().personFirstName("Test").personLastName(clientSurname).build());
+        newClient.getBusinessUser().setSettings(new Settings());
+        this.clientService.create(newClient);
+
+        demand.setClient(clientService.getById(newClient.getId()));
+        demandService.create(demand);
+        return clientSurname;
+    }
+
+    private Demand newDemand() {
+        final Demand demand = new Demand();
+        demand.setTitle(DEMAND_TITLE);
+        demand.setDescription(DEMAND_DESCRIPTION);
+        demand.setPrice(DEMAND_PRICE);
+        demand.setMaxSuppliers(20);
+        demand.setMinRating(99);
+        demand.setStatus(DemandStatus.NEW);
+        demand.setCategories(asList(category211));
+        demand.setLocalities(asList(locality211));
+        demand.setEndDate(endDate);
+        demand.setValidTo(validTo);
+        return demand;
+    }
+
 }
