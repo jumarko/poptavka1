@@ -20,6 +20,7 @@ import com.eprovement.poptavka.rest.client.ClientDto;
 import com.eprovement.poptavka.rest.common.dto.CategoryDto;
 import com.eprovement.poptavka.rest.common.dto.LocalityDto;
 import org.apache.commons.collections.CollectionUtils;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -255,6 +256,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 put("title", DEMAND_TITLE);
                 put("description", DEMAND_DESCRIPTION);
                 put("price", DEMAND_PRICE);
+                put("endDate", new DateTime().plusDays(30).toDate());
                 put("categories", newArrayList(DEMAND_CATEGORY));
                 put("localities", newArrayList(DEMAND_LOCALITY));
                 put("client", new ClientDto().setId(111111113L));

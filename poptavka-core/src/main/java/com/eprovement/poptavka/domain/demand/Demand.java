@@ -160,15 +160,18 @@ public class Demand extends DomainObject {
     private BigDecimal price;
 
     /** The max date when the demand should be finished. */
+    @NotNull
     @Temporal(value = TemporalType.TIMESTAMP)
     @Past
     private Date createdDate = new Date();
 
     /** The max date when the demand should be finished. */
+    @NotNull
     @Temporal(value = TemporalType.DATE)
     private Date endDate;
 
     /** This demand is considered to be valid in system until this day. */
+    @NotNull
     @Temporal(value = TemporalType.DATE)
     private Date validTo;
 
