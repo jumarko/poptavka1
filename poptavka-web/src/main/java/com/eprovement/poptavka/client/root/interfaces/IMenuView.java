@@ -26,6 +26,14 @@ public interface IMenuView extends IsWidget {
 
     Button getAdministration();
 
+    Button getMenuOpenButton();
+
+    void setMenuPanelVisibility();
+
+    void resetMenuVisbilityFlag();
+
+    void hideMenu();
+
     void menuStyleChange(int loadedModule);
 
     void setSupplierButtonVerticalNoLine(boolean noLine);

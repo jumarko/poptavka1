@@ -13,7 +13,7 @@
         <g:Button ui:field='logo' styleName='{res.header.logo}' />
 
         <!--Menu-->
-        <h:MenuElement ui:field='menu' />
+        <g:SimplePanel ui:field="menu"  debugId='menuPanel' styleName='{res.header.menuPanel}'/>
 
         <!--Search-->
         <h:SearchElement ui:field="search" />

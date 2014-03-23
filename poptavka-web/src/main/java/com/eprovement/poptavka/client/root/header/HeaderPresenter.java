@@ -54,9 +54,9 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getLogin().setVisible(true);
         view.getLogout().setVisible(false);
         view.getNotifications().setVisible(false);
-        view.getMenu().getMenuPanel().removeStyleName(ADMIN);
+        view.getMenu().removeStyleName(ADMIN);
         view.getSearch().getSearchPanel().removeStyleName(ADMIN);
-        view.getMenu().getMenuPanel().removeStyleName(USER);
+        view.getMenu().removeStyleName(USER);
         view.getSearch().getSearchPanel().removeStyleName(USER);
         view.getSettingsAnchor().setVisible(false);
     }
@@ -69,10 +69,10 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getLogout().setVisible(true);
         view.getNotifications().setVisible(true);
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-            view.getMenu().getMenuPanel().addStyleName(ADMIN);
+            view.getMenu().addStyleName(ADMIN);
             view.getSearch().getSearchPanel().addStyleName(ADMIN);
         } else {
-            view.getMenu().getMenuPanel().addStyleName(USER);
+            view.getMenu().addStyleName(USER);
             view.getSearch().getSearchPanel().addStyleName(USER);
         }
         view.getSettingsAnchor().setVisible(true);
@@ -89,7 +89,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
      */
     public void onSetMenu(IsWidget menu) {
         GWT.log("Menu widget set");
-        view.getMenu().setMenu(menu);
+        view.getMenu().setWidget(menu);
     }
 
     /**
@@ -117,31 +117,11 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 eventBus.goToHomeWelcomeModule();
             }
         });
-        bindMenuHandlers();
         bindLoginHandlers();
         bindLogoutHandlers();
         bindSearchHandlers();
         bindSettingsHandlers();
         bindNotificationHandlers();
-    }
-
-    /**
-     * Bind menu handlers.
-     * On tiny-middle screens, left menu icon is visible and slides hidden left menu panel.
-     */
-    private void bindMenuHandlers() {
-        view.getMenu().getMenuAnchor().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (isMenuVisible) {
-                    isMenuVisible = false;
-                    eventBus.closeMenu();
-                } else {
-                    isMenuVisible = true;
-                    eventBus.openMenu();
-                }
-            }
-        });
     }
 
     /**

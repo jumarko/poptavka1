@@ -11,27 +11,31 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView.IUserMenuPresenter;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.mvp4g.client.SingleSplitter;
 
 /**
- * Menu presenter provides handlers for menu buttons and
- * correct menu layout according to type of logged user.
+ * Menu presenter provides handlers for menu buttons and correct menu layout
+ * according to type of logged user.
  *
  * @author Martin Slavkovsky
  */
 @Presenter(view = MenuView.class, async = SingleSplitter.class)
 public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
-        implements IUserMenuPresenter {
+        implements IUserMenuPresenter, HandleResizeEvent {
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* General Module events                                                  */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * Sets menu widget to page layout.
      */
@@ -39,91 +43,103 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         eventBus.setMenu(view);
     }
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Bind methods.                                                          */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * Bind menu buttons handlers.
      */
     @Override
     public void bind() {
         view.getHome().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeWelcomeModule();
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getClient().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToClientDemandsModule(null, Constants.NONE);
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getSupplier().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
+                view.hideMenu();
                 eventBus.goToSupplierDemandsModule(null, Constants.NONE);
-                eventBus.closeMenu();
             }
         });
         view.getInbox().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getAdministration().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
-                eventBus.closeMenu();
+                eventBus.goToAdminModule(null, Constants.NONE);
+                view.hideMenu();
             }
         });
         view.getDemands().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeDemandsModule(null);
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getSuppliers().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToHomeSuppliersModule(null);
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getCreateDemand().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateDemandModule();
-                eventBus.closeMenu();
+                view.hideMenu();
             }
         });
         view.getCreateSupplier().addClickHandler(new ClickHandler() {
-
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.goToCreateSupplierModule();
-                eventBus.closeMenu();
+                view.hideMenu();
+            }
+        });
+        view.getMenuOpenButton().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                view.setMenuPanelVisibility();
             }
         });
     }
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Layout events                                                          */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    public void onResize(int actualWidth) {
+        //set shorter dates on small screens
+        if (actualWidth > 1200) {
+            view.resetMenuVisbilityFlag();
+        }
+    }
+
     /**
      * Sets menu layout for unlogged user.
      */
@@ -138,9 +154,10 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         view.getInbox().setVisible(false);
         view.getAdministration().setVisible(false);
     }
+
     /**
-     * Sets menu layout for logged user.
-     * Different layout according to user's access and business role is used.
+     * Sets menu layout for logged user. Different layout according to user's
+     * access and business role is used.
      */
     public void onAtAccount() {
         GWT.log("User menu view loaded");
@@ -187,11 +204,16 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         }
     }
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Business events                                                        */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * Loads right styles to menu buttons.
+     *
      * @param loadedModule - use module constants from class Contants.
      */
     public void onMenuStyleChange(int loadedModule) {

@@ -19,13 +19,28 @@ body > div {
     width: 490px;
 }
 .homepage .banner1 {
+    background:url(images/homepage/homebanners.png) no-repeat;
+    display: block;
+    float: left;
+    height: 315px;
     margin: -13px 0 0 14px;
+    width: 462px;
+    position: relative;
 }
 .homepage .banner2 {
+    background:url(images/homepage/homebanners.png) 0 -315px no-repeat;
+    display: block;
+    float: left;
+    height: 315px;
     margin: -13px 0 0 14px;
+    width: 462px;
+    position: relative;
 }
 
-.root-category-cell {}
+.root-category-cell {
+    margin: 2px 3%;
+    width: 94%;
+}
 
 .scroll-container {}
 

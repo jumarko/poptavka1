@@ -1,9 +1,11 @@
 .header-container {
-    background: url(images/header_bg_480.jpg) repeat-x;
-    height: 150px;
+    background: url(images/header_medium.jpg) no-repeat;
+    height: 94px;
 }
 
 .toolbar-container {
+    margin-top: 0;
+    background: url("images/header_medium.jpg") no-repeat 0 -94px;
     float: left;
     padding-bottom: 5px;
     min-height: 40px;

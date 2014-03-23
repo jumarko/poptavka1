@@ -10,6 +10,6 @@
         <b:Tooltip text="Menu" placement="RIGHT">
             <bb:IconAnchor ui:field='menuAnchor' icon="LIST_UL" iconSize="TWO_TIMES" styleName='{res.header.menuIcon}'/>
         </b:Tooltip>
-        <g:SimplePanel ui:field="menuPanel" styleName='{res.header.menuPanel}' debugId='menuPanel'/>
+        <g:SimplePanel ui:field="menuPanel" styleName='{res.header.menuPanel}'/>
     </g:HTMLPanel>
 </ui:UiBinder>

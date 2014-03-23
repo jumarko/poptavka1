@@ -17,6 +17,9 @@ public interface IRootSelectors extends Selectors {
     @Selector("#gwt-debug-bodyContainer")
     GQuery getBodyContainer();
 
+    @Selector("#gwt-debug-menuPanel")
+    GQuery getMenuPanel();
+
     @Selector("#gwt-debug-submenuContainer")
     GQuery getSubmenuContainer();
 

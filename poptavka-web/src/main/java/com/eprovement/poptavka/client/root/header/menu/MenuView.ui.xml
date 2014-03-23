@@ -4,7 +4,8 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:HTMLPanel styleName='{res.header.menu}'>
+    <g:HTMLPanel ui:field="menuPanel" styleName='{res.header.menu}'>
+        <g:Button ui:field="menuOpenButton" styleName='menu-open-button'></g:Button>
         <ul>
             <li>
                 <g:Button ui:field="home" styleName='button1'>

@@ -10,12 +10,14 @@ import com.google.gwt.user.client.ui.Button;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView;
+import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Menu view includes buttons for: home, client, supplier, demands, createDemand,
- * suppliers, createSupplier, inbox, administration.
+ * Menu view includes buttons for: home, client, supplier, demands,
+ * createDemand, suppliers, createSupplier, inbox, administration.
  *
  * @author Martin Slavkovsky
  */
@@ -25,16 +27,34 @@ public class MenuView extends Composite implements IMenuView {
 
     interface UserMenuViewUiBinder extends UiBinder<Widget, MenuView> {
     }
-
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Attributes                                                             */
-    /**************************************************************************/
-    /** UiBinder attributes. **/
-    @UiField Button home, client, supplier, demands, createDemand, suppliers, createSupplier, inbox, administration;
+    /**
+     * ***********************************************************************
+     */
+    private IRootSelectors animation = GWT.create(IRootSelectors.class);
+    private static final String SLIDE_PX = "280px";
+    private static final int SLIDE_DURATION = 500;
+    /**
+     * UiBinder attributes. *
+     */
+    @UiField
+    Button home, client, supplier, demands, createDemand, suppliers;
+    @UiField
+    Button createSupplier, inbox, administration, menuOpenButton;
+    @UiField
+    HTMLPanel menuPanel;
+    private boolean isMenuPanelVisible = false;
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Initialization                                                         */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * Creates menu view's compontents.
      */
@@ -42,9 +62,13 @@ public class MenuView extends Composite implements IMenuView {
         initWidget(uiBinder.createAndBindUi(this));
     }
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Getters                                                                */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * @return the home button
      */
@@ -117,9 +141,72 @@ public class MenuView extends Composite implements IMenuView {
         return administration;
     }
 
-    /**************************************************************************/
+    /**
+     * @return menu panel
+     */
+    @Override
+    public Button getMenuOpenButton() {
+        return menuOpenButton;
+    }
+
+    /**
+     * @return menu panel
+     */
+    public HTMLPanel getMenuPanel() {
+        return menuPanel;
+    }
+
+    /**
+     * @return isMenuPanelVisible
+     */
+    public boolean getIsMenuPanelVisible() {
+        return isMenuPanelVisible;
+    }
+
+    /**
+     * ***********************************************************************
+     */
+    /* Setters                                                                */
+    /**
+     * ***********************************************************************
+     */
+    @Override
+    public void resetMenuVisbilityFlag() {
+        isMenuPanelVisible = false;
+    }
+
+    /**
+     * ***********************************************************************
+     */
     /* Style change methods.                                                  */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
+    /**
+     * Opens the hidden menu or hides the open menu.
+     *
+     */
+    @Override
+    public void setMenuPanelVisibility() {
+        if (getIsMenuPanelVisible()) {
+            hideMenu();
+        } else {
+            animation.getMenuPanel().animate("right: -" + SLIDE_PX, 0);
+            animation.getMenuPanel().animate("right: +=" + SLIDE_PX, SLIDE_DURATION);
+            isMenuPanelVisible = true;
+        }
+    }
+
+    /**
+     * Hides the open menu.
+     *
+     */
+    @Override
+    public void hideMenu() {
+        animation.getMenuPanel().animate("right: -=" + SLIDE_PX, SLIDE_DURATION);
+        isMenuPanelVisible = false;
+    }
+
     /**
      * Loads right styles to menu buttons.
      *
@@ -159,9 +246,13 @@ public class MenuView extends Composite implements IMenuView {
         }
     }
 
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /* Helper methods.                                                        */
-    /**************************************************************************/
+    /**
+     * ***********************************************************************
+     */
     /**
      * Sets <b>home</b> button active state style.
      */
@@ -299,6 +390,7 @@ public class MenuView extends Composite implements IMenuView {
 
     /**
      * Sets supplier button vertical line style.
+     *
      * @param noLine true if no line style is used, false otherwise
      */
     @Override

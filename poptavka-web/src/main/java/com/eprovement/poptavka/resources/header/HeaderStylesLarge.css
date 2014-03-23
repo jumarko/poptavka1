@@ -44,7 +44,7 @@
     background: url("images/menu_bg.png") no-repeat top right transparent;
     position: absolute;
     top: 18px;
-    left: 75px;
+    margin-left: 75px;
     height: 90px;
     width: 700px;
     z-index: 0;
@@ -61,9 +61,6 @@
     left: 180px;
     list-style-type: none;
 }
-/*.menu {*/
-/*    */
-/*}*/
 
 .menu .home-menu {
     /*padding: 0 45px;*/
@@ -170,6 +167,16 @@
     background: url(images/menu-icons-hover.png) no-repeat 0 -720px;
 }
 
+.menu .menu-open-button {    
+    background: url("images/menu-open-icon.png") no-repeat;
+    border: medium none;
+    height: 56px;
+    left: -60px;
+    padding: 0;
+    position: absolute;
+    width: 60px;
+    display: none;
+}
 
 /*
  *  Search Bar Styles
@@ -178,7 +185,7 @@
     display: none;
     position: absolute;
     color: #FFFFFF;
-    z-index: 10;
+    z-index: 15;
 }
 
 .search-panel {
@@ -187,7 +194,7 @@
     top: 44px;
     left: 795px;
     height: 89px;
-    z-index: 10;
+    z-index: 15;
 }
 
 .search-panel.user {

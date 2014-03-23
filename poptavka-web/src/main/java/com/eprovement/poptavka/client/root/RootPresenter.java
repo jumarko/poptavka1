@@ -176,10 +176,12 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      */
     public void onResize(int actualWidth) {
         //set shorter dates on small screens
-        Storage.get().initDateTimeFormat(actualWidth > 1200);
-        //reset animation style (menu related)
-        animation.getToolbarContainer().removeAttr("style");
-        animation.getBodyContainer().removeAttr("style");
+        if (actualWidth > 1200) {
+            Storage.get().initDateTimeFormat(true);
+            //reset animation style (menu related)
+            animation.getToolbarContainer().removeAttr("style");
+            animation.getMenuPanel().removeAttr("style");
+        }
         isMenuPanelVisible = false;
         //recalculate body height for scrollbar to behave correctly
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
