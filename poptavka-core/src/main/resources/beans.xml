@@ -148,6 +148,13 @@
         <constructor-arg value="${mail.noreply.address}" />
     </bean>
 
+    <bean id="externalUserNotificator" class="com.eprovement.poptavka.service.user.ExternalUserNotificator">
+        <constructor-arg ref="generalService"/>
+        <constructor-arg ref="registerService"/>
+        <constructor-arg ref="userVerificationService"/>
+        <constructor-arg ref="mailNotificationSender"/>
+    </bean>
+
     <!-- Jobs -->
 
     <!--Jobs for notifications-->

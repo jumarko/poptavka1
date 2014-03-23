@@ -18,7 +18,6 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.googlecode.genericdao.search.Search;
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -89,11 +88,7 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
      */
     @Override
     public String resetPassword(long userId) throws RPCException {
-        String randomPassword = RandomStringUtils.randomAlphabetic(8);
-        final User user = this.generalService.find(User.class, userId);
-        user.setPassword(randomPassword);
-        generalService.save(user);
-        return randomPassword;
+        return userVerificationService.resetPassword(this.generalService.find(User.class, userId));
     }
 
     /**************************************************************************/
@@ -101,8 +96,8 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
     /**************************************************************************/
     /**
      * Activates user.
-     * @param user
-     * @param activationCode of user
+     * @param user user to be activated
+     * @param activationCode code for user activation
      * @return the userActivationResult
      * @throws RPCException
      */
@@ -124,7 +119,7 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
 
     /**
      * Sends activation code again.
-     * @param user
+     * @param user user to which the new activation code will be sent
      * @return true if successfully sent, false otherwise
      * @throws RPCException
      */

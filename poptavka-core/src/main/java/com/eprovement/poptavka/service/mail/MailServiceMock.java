@@ -50,4 +50,9 @@ public class MailServiceMock implements MailService {
     public List<SimpleMailMessage> getSentSimpleMailMessages() {
         return unmodifiableList(sentSimpleMailMessages);
     }
+
+    public void cleanAll() {
+        sentMimeMessages.clear();
+        sentSimpleMailMessages.clear();
+    }
 }

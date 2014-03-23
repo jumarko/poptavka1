@@ -55,4 +55,18 @@ public interface UserVerificationService {
      */
     void activateUser(User user, String activationCode);
 
+    /**
+     * Resets password for user.
+     * New random password is saved into database.
+     *
+     * <p>
+     * Note: that this method returns plaintext form of new generated password.
+     * You can retrieve the hashed value via {@code user.getPassword()}.
+     * </p>
+     *
+     * @param user user whose password will be reset
+     * @return new random password in plaintext
+     */
+    String resetPassword(User user);
+
 }
