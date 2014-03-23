@@ -28,7 +28,7 @@ public class UserNotification extends DomainObject {
     @NotNull
     @Temporal(value = TemporalType.TIMESTAMP)
     @Past
-    private Date date = new Date();
+    private Date sent = new Date();
 
     /**
      * Associated notification.
@@ -48,12 +48,12 @@ public class UserNotification extends DomainObject {
         this.user = user;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getSent() {
+        return sent;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setSent(Date date) {
+        this.sent = date;
     }
 
     public Notification getNotification() {
@@ -68,7 +68,7 @@ public class UserNotification extends DomainObject {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("user", user)
-                .append("date", date)
+                .append("sent", sent)
                 .append("notification", notification)
                 .toString();
     }

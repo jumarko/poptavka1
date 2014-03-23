@@ -168,6 +168,9 @@
     <bean id="weeklyNotificationSender" class="com.eprovement.poptavka.service.jobs.notification.WeeklyNotificationSender">
         <constructor-arg ref="notificationsSenderHelper"/>
     </bean>
+    <bean id="externalUserChecker" class="com.eprovement.poptavka.service.jobs.notification.ExternalUserChecker">
+        <constructor-arg ref="generalService"/>
+    </bean>
 
 
     <bean id="potentialDemandsService" class="com.eprovement.poptavka.service.demand.MessageBasedPotentialDemandService">
