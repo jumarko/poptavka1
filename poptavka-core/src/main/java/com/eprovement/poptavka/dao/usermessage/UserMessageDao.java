@@ -74,7 +74,22 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
-    Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status);
+    /**
+     * Gets all admin's assigned demand messages count.
+     * @param adminId the admin to retrieve the demand messages for
+     * @param status of demand to be filtered
+     * @return count of <code>UserMesage</code> of the admin assigned demand mesages
+     */
+    long getAdminConversationsWithDemandStatusCount(long adminId, DemandStatus status);
+
+    /**
+     * Gets all admin's assigned demand messages.
+     * @param adminId the admin to retrieve the demand messages for
+     * @param status of demand to be filtered
+     * @return list of <code>UserMesage</code> of the admin assigned demand mesages
+     */
+    Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long adminId, DemandStatus status);
+
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given
      * supplier's conversations along with the counts of messages in each conversation

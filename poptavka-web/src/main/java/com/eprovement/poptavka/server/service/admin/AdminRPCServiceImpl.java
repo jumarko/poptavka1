@@ -617,8 +617,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     public Long getAdminAssignedDemandsByItsStatusCount(
             long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException {
-        final Search potentialDemandsCountSearch =
-                searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
         return userMessageService.getAdminConversationsWithDemandStatusCount(userId, demandStatus);
     }
 
@@ -626,7 +624,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<AdminDemandDetail> getAdminAssignedDemandsByItsStatus(
             long userId, DemandStatus demandStatus, SearchDefinition searchDefinition)
-                throws RPCException, ApplicationSecurityException {
+        throws RPCException, ApplicationSecurityException {
         final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
         final Map<UserMessage, Integer> latestUserMessagesWithCount
             = userMessageService.getAdminConversationsWithDemandStatus(userId, demandStatus, search);
@@ -636,6 +634,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         for (UserMessage um : latestUserMessagesWithCount.keySet()) {
             AdminDemandDetail detail = new AdminDemandDetail();
             // Client part
+            detail.setUserId(um.getMessage().getDemand().getClient().getId());
             //why not: um.getMessage().getSender().getId() ???
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
             // Supplier part
@@ -671,7 +670,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<AdminDemandDetail> getAdminDemandsByItsStatus(long userId,
+    public List<AdminDemandDetail> getAdminDemandsByItsStatus(
             DemandStatus demandStatus, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
 
@@ -681,7 +680,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         final List<AdminDemandDetail> demandDetails = new ArrayList<AdminDemandDetail>();
         for (Demand demand : demands) {
             AdminDemandDetail detail = new AdminDemandDetail();
-            detail.setSenderId(demand.getClient().getBusinessUser().getId());
+            detail.setUserId(demand.getClient().getId());
             detail.setCreated(demand.getCreatedDate());
             detail.setDemandId(demand.getId());
             detail.setLocalities(localityConverter.convertToTargetList(demand.getLocalities()));

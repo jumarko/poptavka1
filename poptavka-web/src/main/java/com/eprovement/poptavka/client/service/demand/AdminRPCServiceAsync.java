@@ -94,7 +94,7 @@ public interface AdminRPCServiceAsync {
     void getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus,
             AsyncCallback<Long> callback);
 
-    void getAdminDemandsByItsStatus(long userId, DemandStatus demandStatus, SearchDefinition searchDefinition,
+    void getAdminDemandsByItsStatus(DemandStatus demandStatus, SearchDefinition searchDefinition,
             AsyncCallback<List<AdminDemandDetail>> callback);
 
     void getConversation(long threadRootId, long loggedUserId, long counterPartyUserId,

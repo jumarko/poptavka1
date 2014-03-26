@@ -44,7 +44,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
         new ProvidesKey<ClientDemandConversationDetail>() {
             @Override
             public Object getKey(ClientDemandConversationDetail item) {
-                return item == null ? null : item.getSupplierId();
+                return item == null ? null : item.getUserId();
             }
         };
 
@@ -103,11 +103,11 @@ public class ClientDemandConversationDetail implements IsSerializable,
      * Supplier id pair.
      */
     @Override
-    public long getSupplierId() {
+    public long getUserId() {
         return supplierId;
     }
 
-    public void setSupplierId(long supplierId) {
+    public void setUserId(long supplierId) {
         this.supplierId = supplierId;
     }
 

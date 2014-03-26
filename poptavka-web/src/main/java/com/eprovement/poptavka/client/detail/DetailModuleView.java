@@ -17,6 +17,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -57,6 +58,7 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
     @UiField(provided = true) CellList messageList;
     @UiField OfferQuestionWindow replyHolder;
     @UiField FluidContainer conversationHolder;
+    @UiField HTML userHeaderLabel;
     /** Class attribute. **/
     private DetailLoadingDiv loadingDiv = new DetailLoadingDiv();
     private ListDataProvider messageProvider = new ListDataProvider(MessageDetail.KEY_PROVIDER);
@@ -109,6 +111,15 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
     public void setMessagePanelVisibility() {
         messageList.setVisible(!messageProvider.getList().isEmpty());
         conversationHolder.setVisible(replyHolder.getMessage() != null);
+    }
+
+    /**
+     * Sets user header label text.
+     * @param text to be set
+     */
+    @Override
+    public void setUserHeaderLabelText(String text) {
+        userHeaderLabel.setText(text);
     }
 
     /**************************************************************************/
@@ -174,7 +185,7 @@ public class DetailModuleView extends Composite implements IDetailModule.View {
      * @return the UserDetailView
      */
     @Override
-    public UserDetailView getSupplierDetail() {
+    public UserDetailView getUserDetail() {
         return userDetail;
     }
 

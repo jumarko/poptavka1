@@ -14,7 +14,7 @@ public interface TableDisplayDetailModule {
     long getDemandId();
 
     //User detail tab
-    long getSupplierId();
+    long getUserId();
 
     //Conversation detail tab
     long getThreadRootId();

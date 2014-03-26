@@ -46,7 +46,7 @@ public interface IDetailModule {
 
         DemandDetailView getDemandDetail();
 
-        UserDetailView getSupplierDetail();
+        UserDetailView getUserDetail();
 
         RatingDetailView getRatingDetail();
 
@@ -61,5 +61,7 @@ public interface IDetailModule {
         void loadingDivHide(Widget holderWidget);
 
         void setMessagePanelVisibility();
+
+        void setUserHeaderLabelText(String text);
     }
 }

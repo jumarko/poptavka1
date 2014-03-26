@@ -19,11 +19,11 @@
                 </g:SimplePanel>
             </g:tab>
             <g:tab>
-                <g:header>
-                    <ui:msg key="detailsWrapperTabSupplierDetail">Professional</ui:msg>
-                </g:header>
+                <g:customHeader>
+                    <g:HTML ui:field='userHeaderLabel'/>
+                </g:customHeader>
                 <g:SimplePanel ui:field="userDetailHolder">
-                    <w:UserDetailView ui:field="userDetail" advancedView="false" />
+                    <w:UserDetailView ui:field="userDetail"/>
                 </g:SimplePanel>
             </g:tab>
             <g:tab>

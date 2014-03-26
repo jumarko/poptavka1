@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -246,7 +247,8 @@ public class AdvanceSearchPresenter
                     eventBus.goToSupplierDemandsModule(filter, Storage.getCurrentlyLoadedView());
                 }
                 if (Constants.getAdminConstants().contains(Storage.getCurrentlyLoadedView())) {
-                    eventBus.goToAdminModule(filter, Storage.getCurrentlyLoadedView());
+                    eventBus.goToAdminModule(filter, IAdminModule.AdminWidget.DASHBOARD);
+//                    eventBus.goToAdminModule(filter, Storage.getCurrentlyLoadedView());
                 }
                 if (Constants.getMessagesConstants().contains(Storage.getCurrentlyLoadedView())) {
                     eventBus.goToMessagesModule(filter, Storage.getCurrentlyLoadedView());

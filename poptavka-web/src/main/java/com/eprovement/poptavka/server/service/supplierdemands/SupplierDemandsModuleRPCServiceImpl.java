@@ -117,8 +117,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public int getSupplierPotentialDemandsCount(long userId,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public int getSupplierPotentialDemandsCount(long userId, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search potentialDemandsCountSearch =
                 searchConverter.convertToSourceForCount(Demand.class, searchDefinition);
@@ -141,8 +142,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId, long supplierId,
+    public List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId,
             SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
@@ -155,10 +157,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         for (UserMessage um : latestUserMessagesWithCount.keySet()) {
             SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
             // Client part
+            detail.setUserId(um.getMessage().getDemand().getClient().getId());
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
             detail.setOveralRating(um.getMessage().getDemand().getClient().getOveralRating());
-            // Supplier part
-            detail.setSupplierId(supplierId);
             // Message part
             detail.setThreadRootId(um.getMessage().getThreadRoot().getId());
             // UserMessage part
@@ -198,7 +199,6 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      * When supplier sends an offer, it will be involved here.
      * As Supplier: "Offers I sent"
      *
-     * @param supplierID
      * @param start
      * @param maxResult
      * @param filter
@@ -207,8 +207,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public List<SupplierOffersDetail> getSupplierOffers(long userId, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
         final Map<UserMessage, Integer> latestUserMessagesWithCount =
                 userMessageService.getSupplierConversationsWithOffer(businessUser);
@@ -221,10 +222,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
             // TODO LATER ivlcek - refactor and create converter
-            // supplier part
-            sod.setSupplierId(supplierID);
-            sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // client part
+            sod.setUserId(offer.getDemand().getClient().getId());
+            sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // Client name can be displayed because it contrains only contact person name
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
@@ -259,8 +259,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public int getSupplierAssignedDemandsCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public int getSupplierAssignedDemandsCount(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
         //TODO RELEASE vojto- implement SearchDefinition
         return offerService.getAcceptedOffersCountForSupplier(supplierID).intValue();
     }
@@ -279,8 +279,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public List<SupplierOffersDetail> getSupplierAssignedDemands(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
         final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
         final Map<UserMessage, Integer> latestUserMessages =
@@ -293,10 +294,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
             SupplierOffersDetail sod = new SupplierOffersDetail();
 
             // TODO LATER ivlcek - refactor and create converter
-            // supplier part
-            sod.setSupplierId(supplierID);
-            sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // client part
+            sod.setUserId(offer.getDemand().getClient().getId());
+            sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
             // demand part
@@ -333,8 +333,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public int getSupplierClosedDemandsCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public int getSupplierClosedDemandsCount(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
         final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
         final Search supplierClosedDemandsSearch =
@@ -355,8 +356,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public List<SupplierOffersDetail> getSupplierClosedDemands(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
         final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
         final Map<UserMessage, Integer> latestUserMessages =
@@ -370,7 +372,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
             // TODO LATER ivlcek - refactor and create converter
             // supplier part
-            sod.setSupplierId(supplierID);
+            sod.setUserId(offer.getDemand().getClient().getId());
             sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // client part
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -408,8 +410,9 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public int getSupplierRatingsCount(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public int getSupplierRatingsCount(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
         final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());
         final OfferState offerCompleted = offerService.getOfferState(OfferStateType.COMPLETED.getValue());
@@ -430,8 +433,8 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
      */
     @Override
     @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
-    public List<RatingDetail> getSupplierRatings(long supplierID,
-            SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException {
+    public List<RatingDetail> getSupplierRatings(long supplierID, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
 
         final Supplier supplier = generalService.find(Supplier.class, supplierID);
         final OfferState offerClosed = offerService.getOfferState(OfferStateType.CLOSED.getValue());

@@ -1,20 +1,17 @@
 /*
  * Copyright (C), eProvement s.r.o. All rights reserved.
  */
-package com.eprovement.poptavka.client.user.admin.demand;
+package com.eprovement.poptavka.client.user.admin.demands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin.AdminWidget;
-import com.eprovement.poptavka.client.user.admin.tab.AbstractAdminPresenter;
-import com.eprovement.poptavka.client.user.admin.tab.AbstractAdminView;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -41,21 +38,20 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
-    
     /**
      * Inits AdminDemands in New Demands mode.
      */
     public void onInitNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_NEW_DEMANDS);
-        init(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
     }
 
     /**
      * Inits AdminDemands in Assigend Demands mode.
      */
     public void onInitAssignedDemands(SearchModuleDataHolder searchModuleDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
-        init(searchModuleDataHolder, AdminWidget.ASSIGNED_DEMANDS);
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_ASSIGEND_DEMANDS);
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.ASSIGNED_DEMANDS);
     }
 
     /**
@@ -63,21 +59,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      */
     public void onInitActiveDemands(SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
-        init(searchModuleDataHolder, AdminWidget.ACTIVE_DEMANDS);
-    }
-
-    private void init(SearchModuleDataHolder searchModuleDataHolder, AdminWidget mode) {
-        if (searchModuleDataHolder == null) {
-            eventBus.resetSearchBar(null);
-        }
-        this.mode = mode;
-        eventBus.setClientMenuActStyle(mode);
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-        searchDataHolder = searchModuleDataHolder;
-        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-//        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgeView());
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.ACTIVE_DEMANDS);
     }
 
     /**************************************************************************/
@@ -106,7 +88,9 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
+                if (mode == AdminWidget.NEW_DEMANDS && view.getSelectedObjects().size() == 1) {
+                    view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
+                }
                 view.getToolbar().getCreateConversationBtn().setVisible(false);
                 //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
                 eventBus.requestConversation(

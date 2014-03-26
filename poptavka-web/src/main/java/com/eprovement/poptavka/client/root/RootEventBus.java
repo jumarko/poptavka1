@@ -26,6 +26,7 @@ import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.root.toolbar.ToolbarPresenter;
 import com.eprovement.poptavka.client.serviceSelector.ServiceSelectorModule;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
@@ -214,7 +215,7 @@ public interface RootEventBus extends EventBusWithLookup {
     void goToSettingsModule();
 
     @Event(forwardToModules = AdminModule.class)
-    void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
+    void goToAdminModule(SearchModuleDataHolder filter, IAdminModule.AdminWidget loadWidget);
 
     /**************************************************************************/
     /* Info widgets module                                                    */

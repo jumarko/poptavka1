@@ -21,6 +21,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -96,15 +97,15 @@ public class DetailModulePresenter
                     //za akciu ma ten submit vykonat, teda ci poslat spravu alebo ponuku, podla skor zvolenej akcie.
                     switch (view.getReplyHolder().getSelectedResponse()) {
                         case OfferQuestionWindow.RESPONSE_QUESTION:
-                            MessageDetail questionMessageToSend =
-                                    view.getReplyHolder().updateSendingMessage(
+                            MessageDetail questionMessageToSend
+                                = view.getReplyHolder().updateSendingMessage(
                                     view.getReplyHolder().getCreatedMessage());
                             questionMessageToSend.setSenderId(Storage.getUser().getUserId());
                             eventBus.sendQuestionMessage(questionMessageToSend);
                             break;
                         case OfferQuestionWindow.RESPONSE_OFFER:
-                            OfferMessageDetail offerMessageToSend =
-                                    view.getReplyHolder().updateSendingOfferMessage(
+                            OfferMessageDetail offerMessageToSend
+                                = view.getReplyHolder().updateSendingOfferMessage(
                                     view.getReplyHolder().getCreatedOfferMessage());
                             offerMessageToSend.setSenderId(Storage.getUser().getUserId());
                             eventBus.sendOfferMessage(offerMessageToSend);
@@ -156,7 +157,14 @@ public class DetailModulePresenter
         setTabVisibility(DetailModuleBuilder.CONVERSATION_TAB, builder.isConversationTab());
         setTabVisibility(DetailModuleBuilder.RATING_TAB, builder.isRatingTab());
         setTabVisibility(DetailModuleBuilder.ADVERTISEMENT_TAB, builder.isAdvertisementTab());
+        view.getUserDetail().setAdvancedVisibility(builder.isUserTabAdnvacedView());
         view.getContainer().selectTab(builder.getSelectedTabIdx(), false);
+
+        if (builder.isClient()) {
+            view.setUserHeaderLabelText(LocalizableMessages.INSTANCE.detailsWrapperTabClientDetail());
+        } else {
+            view.setUserHeaderLabelText(LocalizableMessages.INSTANCE.detailsWrapperTabSupplierDetail());
+        }
         requestActualTabData();
     }
 
@@ -170,7 +178,11 @@ public class DetailModulePresenter
                 requestDemandDetail(this.builder.getDemandId());
                 break;
             case DetailModuleBuilder.USER_DETAIL_TAB:
-                requestSupplierDetail(this.builder.getUserId());
+                if (builder.isClient()) {
+                    requestClientDetail(this.builder.getUserId());
+                } else {
+                    requestSupplierDetail(this.builder.getUserId());
+                }
                 break;
             case DetailModuleBuilder.RATING_TAB:
                 requestRatingDetail(this.builder.getDemandId());
@@ -331,8 +343,8 @@ public class DetailModulePresenter
      * @param clientId
      */
     public void requestClientDetail(Long clientId) {
-        view.getSupplierDetail().setVisible(false);
-        view.loadingDivShow(view.getSupplierDetail().getParent());
+        view.getUserDetail().setVisible(false);
+        view.loadingDivShow(view.getUserDetail().getParent());
         eventBus.requestClientDetail(clientId);
     }
 
@@ -342,8 +354,8 @@ public class DetailModulePresenter
      * @param supplierId
      */
     public void requestSupplierDetail(Long supplierId) {
-        view.getSupplierDetail().setVisible(false);
-        view.loadingDivShow(view.getSupplierDetail().getParent());
+        view.getUserDetail().setVisible(false);
+        view.loadingDivShow(view.getUserDetail().getParent());
         eventBus.requestSupplierDetail(supplierId);
     }
 
@@ -396,10 +408,10 @@ public class DetailModulePresenter
      * @param clientDetail to be displayed
      */
     public void onResponseClientDetail(FullClientDetail clientDetail) {
-        view.getSupplierDetail().setClientDetail(clientDetail);
-        view.getSupplierDetail().setVisible(true);
+        view.getUserDetail().setClientDetail(clientDetail);
+        view.getUserDetail().setVisible(true);
         eventBus.resize(DetailModuleBuilder.USER_DETAIL_TAB);
-        view.loadingDivHide(view.getSupplierDetail().getParent());
+        view.loadingDivHide(view.getUserDetail().getParent());
     }
 
     /**
@@ -408,10 +420,10 @@ public class DetailModulePresenter
      * @param userDetail detail to be displayed
      */
     public void onResponseSupplierDetail(FullSupplierDetail supplierDetail) {
-        view.getSupplierDetail().setSupplierDetail(supplierDetail);
-        view.getSupplierDetail().setVisible(true);
+        view.getUserDetail().setSupplierDetail(supplierDetail);
+        view.getUserDetail().setVisible(true);
         eventBus.resize(DetailModuleBuilder.USER_DETAIL_TAB);
-        view.loadingDivHide(view.getSupplierDetail().getParent());
+        view.loadingDivHide(view.getUserDetail().getParent());
     }
 
     /**
@@ -472,7 +484,7 @@ public class DetailModulePresenter
      */
     private void clear() {
         view.getDemandDetail().clear();
-        view.getSupplierDetail().clear();
+        view.getUserDetail().clear();
         view.getMessageProvider().getList().clear();
         view.getReplyHolder().clear();
     }

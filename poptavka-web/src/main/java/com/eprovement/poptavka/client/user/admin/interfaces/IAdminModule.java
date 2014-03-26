@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.view.LazyView;
 
@@ -17,10 +18,11 @@ import com.mvp4g.client.view.LazyView;
  * @author Martin Slavkovsky
  *         Date: 14.01.2014
  */
-public interface IAdmin {
+public interface IAdminModule {
 
     public enum AdminWidget {
 
+        DASHBOARD,
         NEW_DEMANDS,
         ASSIGNED_DEMANDS,
         ACTIVE_DEMANDS;
@@ -28,9 +30,9 @@ public interface IAdmin {
 
     public interface Gateway {
 
-        String goToAdminModule(SearchModuleDataHolder searchDataHolder, AdminWidget loadWidget);
+        @Event(forwardToParent = true)
+        void goToAdminModule(SearchModuleDataHolder searchDataHolder, AdminWidget loadWidget);
 
-        void setClientMenuActStyle(AdminWidget widget);
     }
 
     public interface Presenter extends HandleResizeEvent, NavigationConfirmationInterface {

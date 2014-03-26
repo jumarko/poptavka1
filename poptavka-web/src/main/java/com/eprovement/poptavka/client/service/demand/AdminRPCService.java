@@ -108,13 +108,11 @@ public interface AdminRPCService extends RemoteService {
             long userId, DemandStatus demandStatus, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException;
 
-    Long getAdminDemandsByItsStatusCount(
-            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
-            RPCException, ApplicationSecurityException;
+    Long getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus)
+        throws RPCException, ApplicationSecurityException;
 
-    List<AdminDemandDetail> getAdminDemandsByItsStatus(
-            long userId, DemandStatus demandStatus, SearchDefinition searchDefinition) throws
-            RPCException, ApplicationSecurityException;
+    List<AdminDemandDetail> getAdminDemandsByItsStatus(DemandStatus demandStatus, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
 
     List<MessageDetail> getConversation(long threadRootId, long loggedUserId, long counterPartyUserId)
         throws RPCException;

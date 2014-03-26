@@ -244,22 +244,26 @@ import javax.persistence.NamedQuery;
                         + " and subUserMessage.message.offer is not null"
                         + "\n"
                         + "group by latestUserMessage.id, supplier.id"),
-            @NamedQuery(name = "getAdminDemandsByItsState",
-                query = "select userMessage, count(message.id), max(message.sent) \n"
-                        + "from (select um from UserMessage as um where um.user.id = :userId) as userMessage"
-                        + " right join Message as message \n"
-                        + "on userMessage.message.id = message.id \n"
-                        + "where message.demand.status = :demandStatus \n"
-                        + "group by message.threadRoot.id") }
-//            @NamedQuery(name = "getAdminDemandsByItsState",
-//                query = "select userMessage, count(message.id), max(message.sent) \n"
-//                        + "from (select um from UserMessage as um where um.user.id = :userId) as userMessage"
-//                        + " right join Message as message \n"
-//                        + "on userMessage.message.id = message.id \n"
-//                        + "where message.demand.status = :demandStatus \n"
-//                        + "group by message.threadRoot.id") }
+            @NamedQuery(name = "getAdminAssignedDemandsByItsStateCount",
+                query = "select count(userMessage.id) \n"
+                        + "from UserMessage as userMessage \n"
+                        + "where userMessage.user.id = :userId"
+                        + " and userMessage.message.demand.status = :demandStatus"
+                        + " and userMessage.message.parent is null"),
+            @NamedQuery(name = "getAdminAssignedDemandsByItsState",
+                query = "select userMessage, count(userMessage.message.id) \n"
+                        + "from UserMessage as userMessage \n"
+                        + "where userMessage.user.id = :userId"
+                        + " and userMessage.message.demand.status = :demandStatus "
+                        + " and userMessage.message.sent in " + UserMessage.MAX_SENT + " \n"
+                        + "group by userMessage.message.threadRoot.id") }
 )
 public class UserMessage extends DomainObject {
+
+    static final String MAX_SENT = "(select max(um.sent) "
+        + "from Message as um "
+        + "where um.threadRoot.id = userMessage.message.threadRoot.id)";
+
     @ManyToOne
     private Message message;
     @ManyToOne

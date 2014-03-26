@@ -36,7 +36,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
     private int messagesCount;
     private boolean isRead;
     private long demandId;
-    private long supplierId;
+    private long userId;
     private Date validTo;
     private String title;
     private BigDecimal price;
@@ -208,11 +208,11 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
      * Supplier id pair.
      */
     @Override
-    public long getSupplierId() {
-        return supplierId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
+    public void setUserId(long supplierId) {
+        this.userId = supplierId;
     }
 }

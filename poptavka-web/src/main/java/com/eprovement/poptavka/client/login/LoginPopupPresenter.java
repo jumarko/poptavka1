@@ -141,7 +141,6 @@ public class LoginPopupPresenter extends LazyPresenter<LoginPopupPresenter.Login
      */
     public void onLogin(int widgetToLoad) {
         this.widgetToLoad = widgetToLoad;
-
         view.getWidget().show();
     }
 

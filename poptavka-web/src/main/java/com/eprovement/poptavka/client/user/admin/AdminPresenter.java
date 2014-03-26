@@ -5,8 +5,8 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin.AdminWidget;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
@@ -25,7 +25,7 @@ import com.mvp4g.client.presenter.LazyPresenter;
  * @author Martin Slavkovsky
  */
 @Presenter(view = AdminView.class)
-public class AdminPresenter extends LazyPresenter<IAdmin.View, AdminEventBus> implements IAdmin.Presenter {
+public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventBus> implements IAdminModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */

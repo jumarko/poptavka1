@@ -39,13 +39,21 @@ public class AdminDemandDetail implements IsSerializable, TableDisplayCreatedDat
     private long threadRootId;
     private long senderId;
     private boolean starred;
-    private boolean read;
+    private boolean read = true;
 
     public static final ProvidesKey<AdminDemandDetail> KEY_PROVIDER
         = new ProvidesKey<AdminDemandDetail>() {
             @Override
             public Object getKey(AdminDemandDetail item) {
-                return item == null ? null : item.getUserMessageId();
+                if (item == null) {
+                    return null;
+                } else {
+                    if (item.getUserMessageId() <= 0) {
+                        return item.getDemandId();
+                    } else {
+                        return item.getUserMessageId();
+                    }
+                }
             }
         };
 
@@ -134,11 +142,11 @@ public class AdminDemandDetail implements IsSerializable, TableDisplayCreatedDat
         this.demandId = demandId;
     }
 
-    public long getSupplierId() {
+    public long getUserId() {
         return supplierId;
     }
 
-    public void setSupplierId(long supplierId) {
+    public void setUserId(long supplierId) {
         this.supplierId = supplierId;
     }
 

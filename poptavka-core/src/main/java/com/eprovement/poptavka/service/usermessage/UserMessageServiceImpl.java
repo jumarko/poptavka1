@@ -390,13 +390,24 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
                 user), search);
     }
 
+    /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
+    public long getAdminConversationsWithDemandStatusCount(long userId, DemandStatus status) {
+        return getDao().getAdminConversationsWithDemandStatusCount(userId, status);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(
         long userId, DemandStatus status, Search search) {
         return Searcher.searchMapByKeys(getAdminConversationsWithDemandStatus(userId, status), search);
     }
 
+    /** {@inheritDoc} */
     @Override
+    @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status) {
         return getDao().getAdminConversationsWithDemandStatus(userId, status);
     }

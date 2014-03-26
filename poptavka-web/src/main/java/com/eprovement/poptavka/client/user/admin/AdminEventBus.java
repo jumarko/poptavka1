@@ -14,8 +14,8 @@ import com.eprovement.poptavka.client.user.admin.tab.AdminDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminEmailActivationsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminInvoicesPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminMessagesPresenter;
-import com.eprovement.poptavka.client.user.admin.demand.AdminNewDemandsPresenter;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
+import com.eprovement.poptavka.client.user.admin.demands.AdminNewDemandsPresenter;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOffersPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminOurPaymentDetailsPresenter;
 import com.eprovement.poptavka.client.user.admin.tab.AdminPaymentMethodsPresenter;
@@ -96,10 +96,10 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
      * @param loadWidget - prosim doplnit ???
      */
     @Event(handlers = AdminPresenter.class, historyConverter = AdminHistoryConverter.class, navigationEvent = true)
-    String goToAdminModule(SearchModuleDataHolder searchDataHolder, IAdmin.AdminWidget loadWidget);
+    void goToAdminModule(SearchModuleDataHolder searchDataHolder, IAdminModule.AdminWidget loadWidget);
 
     @Event(handlers = AdminPresenter.class)
-    void setClientMenuActStyle(IAdmin.AdminWidget widget);
+    void setClientMenuActStyle(IAdminModule.AdminWidget widget);
 
     /**************************************************************************/
     /* Parent events                                                          */
