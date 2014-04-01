@@ -12,6 +12,8 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.offer.Offer;
 import com.eprovement.poptavka.domain.offer.OfferState;
+import com.eprovement.poptavka.domain.register.Registers;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
@@ -20,6 +22,7 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.offer.OfferService;
+import com.eprovement.poptavka.service.user.ExternalUserNotificator;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
@@ -51,6 +54,8 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
     private MessageService messageService;
     private OfferService offerService;
     private UserMessageService userMessageService;
+    private ExternalUserNotificator externalUserNotificator;
+
     //Converters
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Client, FullClientDetail> clientConverter;
@@ -80,6 +85,12 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
     public void setUserMessageService(UserMessageService userMessageService) {
         this.userMessageService = userMessageService;
     }
+
+    @Autowired
+    public void setExternalUserNotificator(ExternalUserNotificator externalUserNotificator) {
+        this.externalUserNotificator = externalUserNotificator;
+    }
+
 
     //Converters
     @Autowired
@@ -292,13 +303,18 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @return message representing reply which has been sent
      */
     private ReplyMessage sendReplyMessage(MessageDetail replyMessageToSend) {
-        final User sender = this.generalService.find(User.class, replyMessageToSend.getSenderId());
+        final BusinessUser sender = this.generalService.find(BusinessUser.class, replyMessageToSend.getSenderId());
         final Message originalMessage = this.messageService.getById(replyMessageToSend.getParentId());
         final UserMessage replyUserMessage = messageService.newReply(originalMessage, sender);
         final Message replyMessage = replyUserMessage.getMessage();
         replyMessage.setBody(replyMessageToSend.getBody());
         replyMessage.setSubject(replyMessageToSend.getSubject());
         messageService.send(replyMessage);
+
+        // notify external client if applicable - this time the original sender can only be in role CLIENT
+        // TODO: probably we will need to pass some variables for notification message
+        externalUserNotificator.send(sender, Registers.Notification.EXTERNAL_CLIENT);
+
         return new ReplyMessage(replyMessage, replyUserMessage);
     }
 
