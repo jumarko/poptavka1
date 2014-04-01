@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.service.user;
 
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -14,7 +15,9 @@ import com.eprovement.poptavka.service.register.RegisterService;
 import com.google.common.collect.ImmutableMap;
 import com.googlecode.genericdao.search.Search;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriTemplate;
 
 import java.util.List;
 
@@ -34,19 +37,25 @@ public class ExternalUserNotificator {
     private final RegisterService registerService;
     private final UserVerificationService userVerificationService;
 
+    private final UriTemplate unsubscribeUriTemplate;
+
 
     public ExternalUserNotificator(GeneralService generalService,
                                    RegisterService registerService,
                                    UserVerificationService userVerificationService,
-                                   MailNotificationSender mailNotificationSender) {
+                                   MailNotificationSender mailNotificationSender,
+                                   @Value("deployment.url") String deploymentUrl) {
         notNull(generalService, "generalService cannot be null!");
         notNull(registerService, "registerService cannot be null!");
         notNull(userVerificationService, "userVerificationService cannot be null!");
         notNull(mailNotificationSender, "mailNotificationSender cannot be null!");
+        notEmpty(deploymentUrl, "unsubscribeUriTemplate cannot be empty!");
+
         this.generalService = generalService;
         this.registerService = registerService;
         this.userVerificationService = userVerificationService;
         this.mailNotificationSender = mailNotificationSender;
+        this.unsubscribeUriTemplate = new UriTemplate(deploymentUrl + "/unsubscribe?id={userHash}");
     }
 
     /**
@@ -82,9 +91,8 @@ public class ExternalUserNotificator {
             mailNotificationSender.doSendNotification(user, userNotification, ImmutableMap.of(
                     // plain-text password
                     PASSWORD_PARAM, newPassword,
-                    // TODO: how to get proper url?
                     // unsubscribe link is based on user's hashed password stored in DB
-                    UNSUBSCRIBE_LINK_PARAM, "https://want-something.com/unsubscribe?id=" + user.getPassword()));
+                    UNSUBSCRIBE_LINK_PARAM, unsubscribeUriTemplate.expand(user.getPassword()).toString()));
         }
     }
 
