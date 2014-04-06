@@ -138,7 +138,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 eventBus.login(Constants.NONE);
             }
         });
-        view.getLogin().getLoginAnchor().addClickHandler(new ClickHandler() {
+        view.getLogin().getLoginButtonSmall().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.login(Constants.NONE);
@@ -183,7 +183,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
      * Bind search handlers.
      */
     private void bindSearchHandlers() {
-        view.getSearch().getSearchAnchor().addClickHandler(new ClickHandler() {
+        view.getSearch().getSearchButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.showAdvancedSearchPopup();

@@ -178,6 +178,11 @@
     display: none;
 }
 
+.user-responsive-menu {}
+.user-label {display: none;}
+.user-settings {display: none;}
+.user-logout {display: none;}
+
 /*
  *  Search Bar Styles
  */

@@ -1,5 +1,5 @@
 .logo {
-    display: none;
+    background: url(images/logo_small.png) no-repeat scroll 0 0 transparent;
 }
 .menu-icon {
     display: block;
@@ -7,12 +7,7 @@
     left: 20px;
 }
 .menu-panel {}
-.menu {
-    left: 0;
-    margin: 0 auto;
-    position: relative;
-    width: 95%;
-}
+.menu {}
 .menu ul {}
 /*
 .menu li {
@@ -93,16 +88,26 @@
 .menu .button9:hover, .button9.act {
     background: url(images/menu-icons-responsive.png) no-repeat 0 -450px;
 }
-
+*/
+.user-responsive-menu {}
+.user-label {}
+.user-settings {}
+.user-logout {}
 
 /*
 *	Search Bar Styles
 *
 */
 .search-icon {
+    background: url("images/search_small.png") no-repeat 8px 10px;
+    border: none;
+    border-right: 1px solid #ffffff;
     display: block;
-    top: 15px;
-    left: 70px;
+    height: 50px;
+    padding: 0;
+    right: 140px;
+    top: 22px;
+    width: 60px;
 }
 .search-panel {
     display: none;
@@ -116,9 +121,10 @@
 
 /*
  *  Settings Styles
+ *  TODO: REMOVE
  */
 .settings-icon {
-    display: block;
+    display: none;
     right: 50px;
     margin: 15px;
 }
@@ -126,10 +132,15 @@
 *	Login styles
 *
 */
-.login-icon {
+.login-icon {    
+    background: url("images/login_small.png") no-repeat scroll 16px 10px;
+    border: none;
     display: block;
-    top: 15px;
-    right: 20px;
+    height: 50px;
+    padding: 0;
+    right: 75px;
+    top: 22px;
+    width: 60px;
 }
 .login-panel {
     display: none;
@@ -141,7 +152,7 @@
 
 .login-bar {
     top: 6px;
-    right: 100px;
+    right: 105px;
 }
 
 .login-button {}

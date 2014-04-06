@@ -18,7 +18,7 @@
         <!--Search-->
         <h:SearchElement ui:field="search" />
 
-        <!--Header Toolbar-->        
+        <!--Header Toolbar-->
         <b:Tooltip text="{msgs.toolbarSettings}" placement="LEFT">
             <bb:IconAnchor ui:field='settingsAnchor' icon="WRENCH" iconSize="TWO_TIMES" styleName='{res.header.settingsIcon}'/>
         </b:Tooltip>
@@ -30,7 +30,7 @@
         <h:LoginElement ui:field='login'/>
 
         <!--Logout-->
-        <h:LogoutElement ui:field='logout'/>
+        <h:LogoutElement ui:field='logout' />
 
     </g:FlowPanel>
 </ui:UiBinder>

@@ -1,4 +1,7 @@
-.header-container {}
+.header-container {
+    background: url(images/header_small.png) repeat-x;
+    height: 94px;
+}
 .toolbar-container {}
 .body-container {}
 .full-size-panel {}

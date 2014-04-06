@@ -53,5 +53,14 @@
                 </g:Button>
             </li>
         </ul>
+        <g:HTMLPanel ui:field="userMenuPanel" styleName='{res.header.userResponsiveMenu}'>
+            <g:Label ui:field="userLabel" styleName='{res.header.userLabel}'>hello@gmail.com</g:Label>
+            <g:Button ui:field="userSettings" styleName='{res.header.userSettings}'>
+                <ui:msg key="userHeaderMyProfile">My Profile</ui:msg>
+            </g:Button>
+            <g:Button ui:field="userLogout" styleName='{res.header.userLogout}'>
+                <ui:msg key="userHeaderLogOut">Log Out</ui:msg>
+            </g:Button>
+        </g:HTMLPanel>
     </g:HTMLPanel>
 </ui:UiBinder>

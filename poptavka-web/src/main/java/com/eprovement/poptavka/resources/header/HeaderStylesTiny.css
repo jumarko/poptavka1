@@ -1,9 +1,7 @@
 .logo {}
 .menu-icon {    }
 .menu-panel {}
-.menu {
-    width:100%;
-}
+.menu {}
 .menu ul {}
 .menu li {
     width: 33.3%;
@@ -73,6 +71,11 @@
 .menu .button9:hover, .button9.act {
     background: url(images/menu-icons-responsive.png) no-repeat -10px -450px;
 }
+
+.user-responsive-menu {}
+.user-label {}
+.user-settings {}
+.user-logout {}
 
 .search-icon {}
 .search-panel {}

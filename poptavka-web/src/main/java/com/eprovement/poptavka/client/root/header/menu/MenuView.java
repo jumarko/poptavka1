@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -46,6 +47,14 @@ public class MenuView extends Composite implements IMenuView {
     Button createSupplier, inbox, administration, menuOpenButton;
     @UiField
     HTMLPanel menuPanel;
+    @UiField
+    Label userLabel;
+    @UiField
+    Button userSettings;
+    @UiField
+    Button userLogout;
+    @UiField
+    HTMLPanel userMenuPanel;
     private boolean isMenuPanelVisible = false;
 
     /**
@@ -157,10 +166,35 @@ public class MenuView extends Composite implements IMenuView {
     }
 
     /**
-     * @return isMenuPanelVisible
+     * @return user menu panel
      */
-    public boolean getIsMenuPanelVisible() {
-        return isMenuPanelVisible;
+    @Override
+    public HTMLPanel getUserMenuPanel() {
+        return userMenuPanel;
+    }
+
+    /**
+     * @return logged user label
+     */
+    @Override
+    public Label getUserLabel() {
+        return userLabel;
+    }
+
+    /**
+     * @return user settings button
+     */
+    @Override
+    public Button getUserSettings() {
+        return userSettings;
+    }
+
+    /**
+     * @return user logout button
+     */
+    @Override
+    public Button getUserLogout() {
+        return userLogout;
     }
 
     /**
@@ -188,7 +222,7 @@ public class MenuView extends Composite implements IMenuView {
      */
     @Override
     public void setMenuPanelVisibility() {
-        if (getIsMenuPanelVisible()) {
+        if (isMenuPanelVisible) {
             hideMenu();
         } else {
             animation.getMenuPanel().animate("right: -" + SLIDE_PX, 0);
@@ -203,8 +237,10 @@ public class MenuView extends Composite implements IMenuView {
      */
     @Override
     public void hideMenu() {
-        animation.getMenuPanel().animate("right: -=" + SLIDE_PX, SLIDE_DURATION);
-        isMenuPanelVisible = false;
+        if (isMenuPanelVisible) {
+            animation.getMenuPanel().animate("right: -=" + SLIDE_PX, SLIDE_DURATION);
+            isMenuPanelVisible = false;
+        }
     }
 
     /**

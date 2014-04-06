@@ -6,7 +6,7 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-
+    
     <g:HTMLPanel styleName='{res.header.login}'>
 
         <b:Tooltip text="Logout" placement="BOTTOM">

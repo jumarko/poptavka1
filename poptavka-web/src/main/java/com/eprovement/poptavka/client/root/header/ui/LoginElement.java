@@ -8,9 +8,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
-
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 
 /**
@@ -32,7 +31,7 @@ public class LoginElement extends Composite {
     /**************************************************************************/
     /** UiBinder Attributes. **/
     @UiField Anchor loginButton;
-    @UiField IconAnchor loginAnchor;
+    @UiField Button loginButtonSmall;
 
     /**************************************************************************/
     /* Constructors                                                           */
@@ -51,7 +50,7 @@ public class LoginElement extends Composite {
         return loginButton;
     }
 
-    public IconAnchor getLoginAnchor() {
-        return loginAnchor;
+    public Button getLoginButtonSmall() {
+        return loginButtonSmall;
     }
 }

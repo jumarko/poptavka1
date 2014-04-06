@@ -124,6 +124,24 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
                 view.setMenuPanelVisibility();
             }
         });
+
+        view.getUserSettings().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.menuStyleChange(Constants.USER_SETTINGS_MODULE);
+                eventBus.goToSettingsModule();
+                view.hideMenu();
+            }
+        });
+
+        view.getUserLogout().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
+                eventBus.logout(Constants.HOME_WELCOME_MODULE);
+                view.hideMenu();
+            }
+        });
     }
 
     /**
@@ -153,6 +171,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         view.getCreateSupplier().setVisible(true);
         view.getInbox().setVisible(false);
         view.getAdministration().setVisible(false);
+        view.getUserMenuPanel().setVisible(false);
     }
 
     /**
@@ -163,6 +182,8 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         GWT.log("User menu view loaded");
         view.getHome().setVisible(false);
         view.getInbox().setVisible(true);
+        view.getUserMenuPanel().setVisible(true);
+        view.getUserLabel().setText(Storage.getUser().getEmail());
         //Tab visibility must be defined here, because unlike constructor in UserMenuView
         //this method is called each time user is logging in
         /* ADMIN TAB */

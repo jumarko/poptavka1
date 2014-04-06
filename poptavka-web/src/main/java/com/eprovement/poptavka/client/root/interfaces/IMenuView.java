@@ -1,7 +1,9 @@
 package com.eprovement.poptavka.client.root.interfaces;
 
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 
 public interface IMenuView extends IsWidget {
 
@@ -27,6 +29,14 @@ public interface IMenuView extends IsWidget {
     Button getAdministration();
 
     Button getMenuOpenButton();
+
+    Label getUserLabel();
+
+    Button getUserSettings();
+
+    Button getUserLogout();
+
+    HTMLPanel getUserMenuPanel();
 
     void setMenuPanelVisibility();
 
