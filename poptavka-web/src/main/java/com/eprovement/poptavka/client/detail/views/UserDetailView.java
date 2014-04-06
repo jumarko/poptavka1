@@ -13,7 +13,6 @@ import com.github.gwtbootstrap.client.ui.Column;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
@@ -48,7 +47,7 @@ public class UserDetailView extends Composite {
     /** UiBinder attributes. **/
     @UiField(provided = true) CellList categories, localities;
     @UiField HTMLPanel categoryPanel, localityPanel;
-    @UiField FluidRow invoiceRow;
+    @UiField FluidRow invoiceRow, addressBlock;
     @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn;
     @UiField Label overalRating, description, email, companyName, taxId, identificationNumber,
     firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
@@ -60,19 +59,11 @@ public class UserDetailView extends Composite {
     /**************************************************************************/
     /**
      * Creates user detail view's components.
-     * @param advancedView true to show fields for admin, false to show fields for clients
      */
-    @UiConstructor
-    public UserDetailView(boolean advancedView) {
+    public UserDetailView() {
         categories = new CellList<ICatLocDetail>(new CatLogSimpleCell());
         localities = new CellList<ICatLocDetail>(new CatLogSimpleCell());
         initWidget(uiBinder.createAndBindUi(this));
-
-        businessTypeColumn.setVisible(advancedView);;
-        certifiedColumn.setVisible(advancedView);
-        phoneColumn.setVisible(advancedView);
-        emailColumn.setVisible(advancedView);
-        invoiceRow.setVisible(advancedView);
     }
 
     /**************************************************************************/
@@ -139,6 +130,22 @@ public class UserDetailView extends Composite {
         phone.setText(detail.getUserData().getPhone());
         website.setText(detail.getUserData().getWebsite());
         taxId.setText(detail.getUserData().getTaxId());
+    }
+
+    /**
+     * Sets advanced items visibility according to given boolean value.
+     * Advanced items: Address Info, Contact Info, Invoice Info, ...
+     * In general, adnvaced items are meant for admin.
+     *
+     * @param advancedView true to display advanced items, false otherwise.
+     */
+    public void setAdvancedVisibility(boolean advancedView) {
+        addressBlock.setVisible(advancedView);
+        businessTypeColumn.setVisible(advancedView);;
+        certifiedColumn.setVisible(advancedView);
+        phoneColumn.setVisible(advancedView);
+        emailColumn.setVisible(advancedView);
+        invoiceRow.setVisible(advancedView);
     }
 
     /**

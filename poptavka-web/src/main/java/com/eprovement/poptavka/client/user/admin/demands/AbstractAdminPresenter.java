@@ -1,21 +1,24 @@
 /*
  * Copyright (C), eProvement s.r.o. All rights reserved.
  */
-package com.eprovement.poptavka.client.user.admin.tab;
+package com.eprovement.poptavka.client.user.admin.demands;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAbstractAdmin;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.mvp4g.client.presenter.LazyPresenter;
 
 /**
@@ -26,6 +29,11 @@ import com.mvp4g.client.presenter.LazyPresenter;
 public abstract class AbstractAdminPresenter
     extends LazyPresenter<IAbstractAdmin.View, AdminEventBus>
     implements IAbstractAdmin.Presenter {
+
+    /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private IAdminModule.AdminWidget mode;
 
     /**************************************************************************/
     /* General Widget events                                                  */
@@ -56,28 +64,47 @@ public abstract class AbstractAdminPresenter
         view.getTable().resize(actualWidth);
     }
 
+    /**
+     * Constuctor for common initialization.
+     */
+    public void initAbstractPresenter(SearchModuleDataHolder filter, IAdminModule.AdminWidget mode) {
+        //Must be present here. Loading data rely on this atrtibute
+//        Storage.setCurrentlyLoadedView(widgetId);
+        if (filter == null) {
+            eventBus.resetSearchBar(null);
+        }
+        this.mode = mode;
+        eventBus.setClientMenuActStyle(mode);
+//        eventBus.createTokenForHistory();
+
+//        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
+        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.setFooter(view.getFooterContainer());
+        searchDataHolder = filter;
+
+        if (view.getTable().getSelectionModel() != null) {
+            ((SetSelectionModel) view.getTable().getSelectionModel()).clear();
+        }
+        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+
+        eventBus.displayView(view.asWidget());
+    }
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
     protected SearchModuleDataHolder searchDataHolder;
     protected TableDisplayDetailModule selectedObject;
-    protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayDetailModule, String>() {
+    protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayUserMessage, String>() {
         @Override
-        public void update(int index, TableDisplayDetailModule object, String value) {
+        public void update(int index, TableDisplayUserMessage object, String value) {
+            object.setRead(true);
+
             MultiSelectionModel selectionModel = (MultiSelectionModel) view.getTable().getSelectionModel();
             selectionModel.clear();
             selectionModel.setSelected(object, true);
         }
     };
-//    TODO Martin - why commented?
-//    protected FieldUpdater starFieldUpdater = new FieldUpdater<TableDisplayUserMessage, Boolean>() {
-//        @Override
-//        public void update(int index, TableDisplayUserMessage object, Boolean value) {
-//            object.setStarred(!value);
-//            view.getTable().redrawRow(index);
-//            eventBus.updateStar(object.getUserMessageId(), !value);
-//        }
-//    };
     protected ValueUpdater<Boolean> checkboxHeader = new ValueUpdater<Boolean>() {
         @Override
         public void update(Boolean value) {
@@ -87,14 +114,14 @@ public abstract class AbstractAdminPresenter
         }
     };
     protected RowStyles rowStyles = new RowStyles<TableDisplayUserMessage>() {
-            @Override
-            public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
-                if (!row.isRead()) {
-                    return Storage.GRSCS.dataGridStyle().unread();
-                }
-                return "";
+        @Override
+        public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
+            if (!row.isRead()) {
+                return Storage.GRSCS.dataGridStyle().unread();
             }
-        };
+            return "";
+        }
+    };
 
     /**************************************************************************/
     /* Protected methods                                                      */
@@ -108,6 +135,7 @@ public abstract class AbstractAdminPresenter
     protected void initDetailSectionDemand(TableDisplayDetailModule selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
+            .addClientTab(selectedDetail.getUserId(), true)
             .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
             .build());
     }
@@ -119,6 +147,7 @@ public abstract class AbstractAdminPresenter
     protected void initDetailSectionConversation(TableDisplayDetailModule selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
+            .addClientTab(selectedDetail.getUserId(), true)
             .addConversationTab(selectedDetail.getThreadRootId(), selectedDetail.getSenderId())
             .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
             .build());
@@ -141,8 +170,8 @@ public abstract class AbstractAdminPresenter
 
                 if (view.getSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
-                    selectedObject =
-                        (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
+                    selectedObject
+                        = (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
                     if (selectedObject != null) {
                         initDetailSectionDemand(selectedObject);
                         eventBus.openDetail();

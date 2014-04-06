@@ -96,7 +96,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * Requests supplier dashboard data.
      */
     public void onGetSupplierDashboardDetail() {
-        supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getSupplierId(),
+        supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getUser().getUserId(),
                 new SecuredAsyncCallback<SupplierDashboardDetail>(eventBus) {
 
                     @Override
@@ -131,8 +131,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierPotentialDemands(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierPotentialDemands(
-                Storage.getUser().getUserId(), Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierPotentialDemands(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierPotentialDemandDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierPotentialDemandDetail> result) {
@@ -148,7 +147,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      */
     private void getSupplierOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         supplierDemandsService.getSupplierOffersCount(
-                Storage.getSupplierId(), searchDefinition,
+                Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
@@ -162,8 +161,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierOffers(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierOffers(
-                Storage.getSupplierId(), Storage.getUser().getUserId(), searchDefinition,
+        supplierDemandsService.getSupplierOffers(Storage.getUser().getUserId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {
@@ -178,8 +176,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierAssignedDemandsCount(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierAssignedDemandsCount(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
@@ -193,8 +190,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierAssignedDemands(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierAssignedDemands(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierAssignedDemands(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {
@@ -209,8 +205,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierClosedDemandsCount(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierClosedDemandsCount(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
@@ -224,8 +219,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierClosedDemands(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierClosedDemands(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierClosedDemands(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<SupplierOffersDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<SupplierOffersDetail> result) {
@@ -240,8 +234,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierRatingsCount(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierRatingsCount(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<Integer>(eventBus) {
                     @Override
                     public void onSuccess(Integer result) {
@@ -255,8 +248,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierRatings(SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierRatings(
-                Storage.getSupplierId(), searchDefinition,
+        supplierDemandsService.getSupplierRatings(Storage.getSupplierId(), searchDefinition,
                 new SecuredAsyncCallback<List<RatingDetail>>(eventBus) {
                     @Override
                     public void onSuccess(List<RatingDetail> result) {

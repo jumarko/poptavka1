@@ -350,7 +350,7 @@ public class HomeSuppliersPresenter
                     //retrieve supplier detail info and display it
                     eventBus.buildDetailSectionTabs(
                         new DetailModuleBuilder.Builder()
-                            .addUserTab(selectedSupplierId)
+                            .addSupplierTab(selectedSupplierId, false)
                             .selectTab(DetailModuleBuilder.USER_DETAIL_TAB)
                             .build());
                     eventBus.openDetail();

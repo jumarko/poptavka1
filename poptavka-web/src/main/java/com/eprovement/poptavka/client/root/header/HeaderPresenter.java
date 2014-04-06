@@ -15,6 +15,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView.IHeaderPresenter;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.google.gwt.core.client.Scheduler;
@@ -236,9 +237,10 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getNotifications().getPushButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                //TODO Martin - ADMIN is not a business role isn't it?
                 if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.ADMIN)) {
-                    eventBus.goToAdminModule(null, Constants.NONE);
+                    eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
                 } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                     BusinessUserDetail.BusinessRole.SUPPLIER)) {
                     eventBus.goToSupplierDemandsModule(null, Constants.NONE);

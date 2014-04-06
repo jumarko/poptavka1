@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.search;
 import com.eprovement.poptavka.client.search.advanced.AdvanceSearchPresenter;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Debug;
@@ -22,7 +23,8 @@ import com.mvp4g.client.event.EventBus;
  */
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SearchModulePresenter.class, module = SearchModule.class)
-public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLocSelectorGateway {
+public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLocSelectorGateway,
+    IAdminModule.Gateway {
 
     /**************************************************************************/
     /* Parent events - navigation events                                      */
@@ -38,9 +40,6 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLo
 
     @Event(forwardToParent = true)
     void goToSupplierDemandsModule(SearchModuleDataHolder filter, int loadWidget);
-
-    @Event(forwardToParent = true)
-    void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
 
     @Event(forwardToParent = true)
     void goToMessagesModule(SearchModuleDataHolder filter, int loadWidget);

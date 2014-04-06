@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.login;
 import com.eprovement.poptavka.client.login.activation.ActivationCodePopupHandler;
 import com.eprovement.poptavka.client.login.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -24,7 +25,8 @@ import com.mvp4g.client.event.EventBusWithLookup;
  */
 @Events(startPresenter = LoginPopupPresenter.class, module = LoginModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway {
+public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
+    IAdminModule.Gateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -75,9 +77,6 @@ public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway {
 
     @Event(forwardToParent = true)
     void goToSettingsModule();
-
-    @Event(forwardToParent = true)
-    void goToAdminModule(SearchModuleDataHolder filter, int loadWidget);
 
     /**************************************************************************/
     /* Parent's other events                                                  */

@@ -79,6 +79,7 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
      * RunAsync object is passed to the event.
      */
     public void onErrorOnLoad(Throwable reason) {
+        //TODO 500 as constants
         eventBus.displayError(500, null); // HTTP 500 - internal server error.
     }
 
@@ -223,67 +224,4 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
             animation.getBodyContainer().animate("top: +=" + SLIDE_PX, SLIDE_DURATION);
         }
     }
-    // Inject widgets for user registration
-    //--------------------------------------------------------------------------
-    //Martin - for devel purposes
-//    private void showDevelUserInfoPopupThatShouldBedeletedAfter() {
-//        final DialogBox userInfoPanel = new DialogBox(false, false);
-//        userInfoPanel.setText("User Info Box");
-//        userInfoPanel.setWidth("200px");
-//        String br = "<br />";
-//        StringBuilder sb = new StringBuilder("<b>User Info:</b>" + br);
-//        UserDetail userDetail = Storage.getUser();
-//        BusinessUserDetail user = Storage.getBusinessUserDetail();
-//        sb.append("ID: " + user.getUserId() + br);
-//
-//        sb.append("<i>-- Business user roles --</i>" + br);
-//        if (user.getBusinessRoles().contains(BusinessRole.CLIENT)) {
-//            sb.append("<b><i>BusinessRole: CLIENT</i></b>" + br);
-//            sb.append("ClientID: " + user.getClientId() + br);
-//            sb.append("Demands Messages: " + "n/a" + " / " + "n/a" + br);
-//            sb.append("Demands Offers: " + "n/a" + " / " + "n/a" + br);
-//            sb.append("<i>-- -- -- --</i>" + br);
-//        }
-//        if (user.getBusinessRoles().contains(BusinessRole.SUPPLIER)) {
-//            sb.append("<b><i>BusinessRole: SUPPLIER</i></b>" + br);
-//            sb.append("SupplierID: " + user.getSupplierId() + br);
-//            sb.append("Potentional Demands: " + "n/a" + " / " + "n/a" + br);
-//            sb.append("<i>-- -- -- --</i>" + br);
-//        }
-//        if (user.getBusinessRoles().contains(BusinessRole.PARTNER)) {
-//            sb.append("<b><i>BusinessRole: PARTNER</i></b>" + br);
-//            sb.append("<i>-- -- -- --</i>" + br);
-//        }
-////        if (user.getBusinessRoles().contains(BusinessRole.OPERATOR)) {
-////            sb.append("<b><i>OPERATOR</i></b>" + br);
-////            sb.append("<i>-- -- -- --</i>" + br);
-////        }
-//        sb.append("<i>-- User access roles --</i>" + br);
-//        if (userDetail.getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-//            sb.append("<b><i>ADMIN</i></b>" + br);
-//        }
-//        if (userDetail.getAccessRoles().contains(CommonAccessRoles.CLIENT)) {
-//            sb.append("<b><i>CLIENT</i></b>" + br);
-//        }
-//        if (userDetail.getAccessRoles().contains(CommonAccessRoles.SUPPLIER)) {
-//            sb.append("<b><i>SUPPLIER</i></b>" + br);
-//        }
-//        sb.append("<i>-- -- -- --</i>" + br);
-//        sb.append("Messages: " + "n/a" + " / " + "n/a" + br);
-//
-//        HTML content = new HTML(sb.toString());
-//        Button closeButton = new Button("Close");
-//        closeButton.addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                userInfoPanel.hide();
-//            }
-//        });
-//        FlowPanel m = new FlowPanel();
-//        m.add(content);
-//        m.add(closeButton);
-//        userInfoPanel.add(m);
-//        userInfoPanel.setPopupPosition(Window.getClientWidth() - 200, 20);
-//        userInfoPanel.show();
-//    }
 }

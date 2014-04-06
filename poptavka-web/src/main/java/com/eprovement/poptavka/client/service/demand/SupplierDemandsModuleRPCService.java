@@ -64,8 +64,8 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long userId,
-            long supplierId, SearchDefinition searchDefinition) throws RPCException;
+    List<SupplierPotentialDemandDetail> getSupplierPotentialDemands(long supplierId,
+        SearchDefinition searchDefinition) throws RPCException;
 
     //************************ SUPPLIER - My Offers ***************************/
     /**
@@ -89,7 +89,7 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
      * @param searchDefinition
      * @return
      */
-    List<SupplierOffersDetail> getSupplierOffers(long supplierID, long userId,
+    List<SupplierOffersDetail> getSupplierOffers(long supplierID,
             SearchDefinition searchDefinition) throws RPCException;
 
     //******************* SUPPLIER - My Assigned Demands **********************/
@@ -144,7 +144,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**
      * Get ratings of my closed demands.
      *
-     * @param userId user's id
      * @param filter
      * @return
      */
@@ -154,7 +153,6 @@ public interface SupplierDemandsModuleRPCService extends RemoteService {
     /**
      * Get ratings of my all closed demands.
      *
-     * @param userId user's id
      * @param searchDefinition
      * @return
      */

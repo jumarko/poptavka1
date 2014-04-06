@@ -10,6 +10,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LoginRPCServiceAsync;
 import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCServiceAsync;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
 import com.eprovement.poptavka.shared.domain.message.ContactUsDetail;
@@ -334,12 +335,12 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                 eventBus.goToMessagesModule(null, Constants.MESSAGES_INBOX);
                 break;
             case Constants.USER_ADMININSTRATION_MODULE:
-                eventBus.goToAdminModule(null, Constants.NONE);
+                eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
                 break;
             default:
                 //otherwise forward user to welcome view of appropriate module according to his roles
                 if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
-                    eventBus.goToAdminModule(null, widgetToLoad);
+                    eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
                 } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
                         BusinessUserDetail.BusinessRole.SUPPLIER)) {
                     forwardToSupplierDemands(widgetToLoad);

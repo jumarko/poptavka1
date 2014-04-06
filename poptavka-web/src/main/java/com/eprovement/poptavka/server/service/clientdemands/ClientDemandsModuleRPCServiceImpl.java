@@ -271,7 +271,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Supplier attributes
             final Supplier supplier = findSupplier(
                     latestSupplierUserMessagesWithUnreadSub.get(userMessage).getSupplier().getId());
-            cdcd.setSupplierId(supplier.getId());
+            cdcd.setUserId(supplier.getId());
             cdcd.setSenderId(supplier.getBusinessUser().getId());
             cdcd.setDisplayName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             cdcd.setRating(supplier.getOveralRating().intValue());
@@ -395,7 +395,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             codod.setUserMessageId(userMessage.getId());
             // set Supplier attributes
-            codod.setSupplierId(offer.getSupplier().getId());
+            codod.setUserId(offer.getSupplier().getId());
             codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
             codod.setSenderId(offer.getSupplier().getBusinessUser().getId());
@@ -498,7 +498,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             // set Supplier attributes
             final Supplier supplier = findSupplier(
                     latestClientUserMessagesWithUnreadSub.get(userMessage).getSupplier().getId());
-            codod.setSupplierId(supplier.getId());
+            codod.setUserId(supplier.getId());
             codod.setSenderId(supplier.getBusinessUser().getId());
             codod.setDisplayName(supplier.getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(supplier.getOveralRating().intValue());
@@ -568,7 +568,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             codod.setMessagesCount(latestClientUserMessagesWithUnreadSub.get(userMessage).getMessageCount());
             codod.setThreadRootId(userMessage.getMessage().getThreadRoot().getId());
             // set Supplier attributes
-            codod.setSupplierId(offer.getSupplier().getId());
+            codod.setUserId(offer.getSupplier().getId());
             codod.setDisplayName(offer.getSupplier().getBusinessUser().getBusinessUserData().getDisplayName());
             codod.setRating(offer.getSupplier().getOveralRating());
             codod.setSenderId(offer.getSupplier().getBusinessUser().getId());

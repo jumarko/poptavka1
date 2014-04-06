@@ -1,17 +1,17 @@
 /*
  * Copyright (C), eProvement s.r.o. All rights reserved.
  */
-package com.eprovement.poptavka.client.user.admin.tab;
+package com.eprovement.poptavka.client.user.admin.demands;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -31,38 +31,35 @@ import java.util.List;
 public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
 
     /**************************************************************************/
+    /* Attributes                                                             */
+    /**************************************************************************/
+    private AdminWidget mode;
+
+    /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     /**
-     * Main Navigation method called either by default application startup or by searching mechanism.
-     * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
-     *                               - it's also used as pointer to differ root and child sections
-     */
-    public void onInitActiveDemands(SearchModuleDataHolder searchModuleDataHolder) {
-        Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
-        init(searchModuleDataHolder);
-    }
-
-    /**
-     * Main Navigation method called either by default application startup or by searching mechanism.
-     * @param searchModuleDataHolder - if searching is needed, this object holds conditions to do so.
-     *                               - it's also used as pointer to differ root and child sections
+     * Inits AdminDemands in New Demands mode.
      */
     public void onInitNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_NEW_DEMANDS);
-        init(searchModuleDataHolder);
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
     }
 
-    private void init(SearchModuleDataHolder searchModuleDataHolder) {
-        if (searchModuleDataHolder == null) {
-            eventBus.resetSearchBar(null);
-        }
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
-        eventBus.setFooter(view.getFooterContainer());
-        searchDataHolder = searchModuleDataHolder;
-        view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
-//        view.getWidgetView().setStyleName(Storage.RSCS.common().userContent());
-        eventBus.displayView(view.getWidgeView());
+    /**
+     * Inits AdminDemands in Assigend Demands mode.
+     */
+    public void onInitAssignedDemands(SearchModuleDataHolder searchModuleDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_ASSIGEND_DEMANDS);
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.ASSIGNED_DEMANDS);
+    }
+
+    /**
+     * Inits AdminDemands in Active Demands mode.
+     */
+    public void onInitActiveDemands(SearchModuleDataHolder searchModuleDataHolder) {
+        Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
+        initAbstractPresenter(searchModuleDataHolder, AdminWidget.ACTIVE_DEMANDS);
     }
 
     /**************************************************************************/
@@ -91,7 +88,9 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
+                if (mode == AdminWidget.NEW_DEMANDS && view.getSelectedObjects().size() == 1) {
+                    view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
+                }
                 view.getToolbar().getCreateConversationBtn().setVisible(false);
                 //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
                 eventBus.requestConversation(
@@ -126,7 +125,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * Display demands of selected category.
      * @param list
      */
-    public void onDisplayAdminNewDemands(List<NewDemandDetail> list) {
+    public void onDisplayAdminNewDemands(List<AdminDemandDetail> list) {
         view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), list);
     }
 
@@ -160,14 +159,15 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      */
     @Override
     protected UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<NewDemandDetail>()
+        return new UniversalGridFactory.Builder<AdminDemandDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnDemandCreated(textFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)
             .addColumnLocality(textFieldUpdater)
             .addColumnUrgency()
-            .addSelectionModel(new MultiSelectionModel(), NewDemandDetail.KEY_PROVIDER)
+            .addSelectionModel(new MultiSelectionModel(), AdminDemandDetail.KEY_PROVIDER)
             .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addRowStyles(rowStyles)
             .build();
     }
 }

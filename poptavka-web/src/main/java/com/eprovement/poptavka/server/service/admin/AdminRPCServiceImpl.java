@@ -48,6 +48,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
@@ -64,6 +65,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -612,6 +614,52 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public Long getAdminAssignedDemandsByItsStatusCount(
+            long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+            RPCException, ApplicationSecurityException {
+        return userMessageService.getAdminConversationsWithDemandStatusCount(userId, demandStatus);
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<AdminDemandDetail> getAdminAssignedDemandsByItsStatus(
+            long userId, DemandStatus demandStatus, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+        final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
+        final Map<UserMessage, Integer> latestUserMessagesWithCount
+            = userMessageService.getAdminConversationsWithDemandStatus(userId, demandStatus, search);
+
+        ArrayList<AdminDemandDetail> adminDemandDetails = new ArrayList<AdminDemandDetail>();
+
+        for (UserMessage um : latestUserMessagesWithCount.keySet()) {
+            AdminDemandDetail detail = new AdminDemandDetail();
+            // Client part
+            detail.setUserId(um.getMessage().getDemand().getClient().getId());
+            //why not: um.getMessage().getSender().getId() ???
+            detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
+            // Supplier part
+//            detail.setSupplierId(supplier);
+            // Message part
+            detail.setThreadRootId(um.getMessage().getThreadRoot().getId());
+            // UserMessage part
+            detail.setUserMessageId(um.getId());
+            detail.setStarred(um.isStarred());
+            detail.setMessagesCount(latestUserMessagesWithCount.get(um));
+            detail.setRead(um.isRead());
+            // Demand part
+            detail.setDemandId(um.getMessage().getDemand().getId());
+            detail.setDemandTitle(um.getMessage().getDemand().getTitle());
+            detail.setLocalities(localityConverter.convertToTargetList(um.getMessage().getDemand().getLocalities()));
+            detail.setCreated(um.getMessage().getDemand().getCreatedDate());
+            detail.setValidTo(um.getMessage().getDemand().getValidTo());
+
+            adminDemandDetails.add(detail);
+        }
+        return adminDemandDetails;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public Long getAdminDemandsByItsStatusCount(
             SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException {
@@ -622,16 +670,17 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<NewDemandDetail> getAdminDemandsByItsStatus(
-            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+    public List<AdminDemandDetail> getAdminDemandsByItsStatus(
+            DemandStatus demandStatus, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException {
+
         Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
         search.addFilterEqual("status", demandStatus);
         final List<Demand> demands = generalService.search(search);
-        final List<NewDemandDetail> demandDetails = new ArrayList<NewDemandDetail>();
+        final List<AdminDemandDetail> demandDetails = new ArrayList<AdminDemandDetail>();
         for (Demand demand : demands) {
-            NewDemandDetail detail = new NewDemandDetail();
-            detail.setSenderId(demand.getClient().getBusinessUser().getId());
+            AdminDemandDetail detail = new AdminDemandDetail();
+            detail.setUserId(demand.getClient().getId());
             detail.setCreated(demand.getCreatedDate());
             detail.setDemandId(demand.getId());
             detail.setLocalities(localityConverter.convertToTargetList(demand.getLocalities()));

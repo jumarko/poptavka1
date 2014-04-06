@@ -24,14 +24,14 @@ public interface SupplierDemandsModuleRPCServiceAsync {
     void getSupplierPotentialDemandsCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Integer> callback);
 
-    void getSupplierPotentialDemands(long userId, long supplierId, SearchDefinition searchDefinition,
+    void getSupplierPotentialDemands(long supplierId, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierPotentialDemandDetail>> callback);
 
     //SupplierOffers widget
     void getSupplierOffersCount(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<Integer> callback);
 
-    void getSupplierOffers(long supplierID, long userId, SearchDefinition searchDefinition,
+    void getSupplierOffers(long supplierID, SearchDefinition searchDefinition,
             AsyncCallback<List<SupplierOffersDetail>> callback);
 
     //SupplierAssignedDemands widget

@@ -30,6 +30,8 @@ public final class DetailModuleBuilder {
     private boolean conversationTab;
     private boolean advertisementTab;
     private boolean ratingTab;
+    private boolean client;
+    private boolean userTabAdvancedView;
     private long demandId;
     private long userId;
     private long threadRootId;
@@ -58,6 +60,14 @@ public final class DetailModuleBuilder {
 
     public boolean isRatingTab() {
         return ratingTab;
+    }
+
+    public boolean isClient() {
+        return client;
+    }
+
+    public boolean isUserTabAdnvacedView() {
+        return userTabAdvancedView;
     }
 
     public long getDemandId() {
@@ -94,6 +104,8 @@ public final class DetailModuleBuilder {
         private boolean conversationTab;
         private boolean advertisementTab;
         private boolean ratingTab;
+        private boolean client;
+        private boolean userTabAdvancedView;
         private long demandId;
         private long userId;
         private long threadRootId;
@@ -110,9 +122,19 @@ public final class DetailModuleBuilder {
             return this;
         }
 
-        public Builder addUserTab(long supplierId) {
+        public Builder addClientTab(long clientId, boolean advancedView) {
             this.userTab = true;
+            this.userTabAdvancedView = advancedView;
+            this.userId = clientId;
+            this.client = true;
+            return this;
+        }
+
+        public Builder addSupplierTab(long supplierId, boolean advancedView) {
+            this.userTab = true;
+            this.userTabAdvancedView = advancedView;
             this.userId = supplierId;
+            this.client = false;
             return this;
         }
 
@@ -152,6 +174,8 @@ public final class DetailModuleBuilder {
 
         this.demandTab = builder.demandTab;
         this.userTab = builder.userTab;
+        this.client = builder.client;
+        this.userTabAdvancedView = builder.userTabAdvancedView;
         this.conversationTab = builder.conversationTab;
         this.advertisementTab = builder.advertisementTab;
         this.ratingTab = builder.ratingTab;

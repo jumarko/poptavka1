@@ -184,7 +184,7 @@ public abstract class AbstractClientPresenter
     protected void initDetailSectionFull(TableDisplayDetailModule selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
-            .addUserTab(selectedDetail.getSupplierId())
+            .addSupplierTab(selectedDetail.getUserId(), false)
             .addConversationTab(selectedDetail.getThreadRootId(), selectedDetail.getSenderId())
             .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
             .build());

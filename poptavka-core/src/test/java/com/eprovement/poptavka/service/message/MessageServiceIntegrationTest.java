@@ -421,6 +421,10 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         }
     }
 
+    @Test
+    public void testGetAdminDemandsByStatus() {
+
+    }
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     /**

@@ -185,7 +185,7 @@ public class NewDemandDetail implements IsSerializable, TableDisplayDetailModule
     }
 
     @Override
-    public long getSupplierId() {
+    public long getUserId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

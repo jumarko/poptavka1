@@ -34,7 +34,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     private long demandId;
     private long offerId;
     private long threadRootId;
-    private long supplierId;
+    private long userId;
     private long supplierUserId;
     private long userMessageId;
     private boolean isStarred;
@@ -118,12 +118,12 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
      * Supplier id pair.
      */
     @Override
-    public long getSupplierId() {
-        return supplierId;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setSupplierId(long supplierId) {
-        this.supplierId = supplierId;
+    public void setUserId(long supplierId) {
+        this.userId = supplierId;
     }
 
     /**
@@ -264,7 +264,7 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     @Override
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-            + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", supplierUserId="
+            + ", threadRootId=" + threadRootId + ", supplierId=" + userId + ", supplierUserId="
             + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
             + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
             + ", deliveryDate=" + finishDate + ", messageCount=" + messagesCount + ", isRead="

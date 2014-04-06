@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -40,7 +41,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
      * @param loadWidget - Constant from class Constants. Tells which view to load.
      * @return token string like module/method?param, where param = adminAccessRole, ....
      */
-    public String onGoToAdminModule(SearchModuleDataHolder searchDataHolder, int loadWidget) {
+    public String onGoToAdminModule(SearchModuleDataHolder searchDataHolder, IAdminModule.AdminWidget loadWidget) {
         //Nemusi byt, ale lepsie to vyzera ako ked tam mam dat do url len hodnotu ciselnej konstanty
 //        switch (loadWidget) {
 //            case Constants.ADMIN_ACCESS_ROLE:
@@ -91,7 +92,7 @@ public class AdminHistoryConverter implements HistoryConverter<AdminEventBus> {
             eventBus.loginFromSession(Constants.ADMIN_NEW_DEMANDS);
             return;
         }
-        eventBus.goToAdminModule(null, Constants.ADMIN_NEW_DEMANDS);
+        eventBus.goToAdminModule(null, IAdminModule.AdminWidget.NEW_DEMANDS);
     }
 
     @Override

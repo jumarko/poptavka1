@@ -9,6 +9,7 @@ import com.googlecode.genericdao.search.Search;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.dao.usermessage.UserMessageDao;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
@@ -389,6 +390,27 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
                 user), search);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public long getAdminConversationsWithDemandStatusCount(long userId, DemandStatus status) {
+        return getDao().getAdminConversationsWithDemandStatusCount(userId, status);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(
+        long userId, DemandStatus status, Search search) {
+        return Searcher.searchMapByKeys(getAdminConversationsWithDemandStatus(userId, status), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    @Transactional(readOnly = true)
+    public Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long userId, DemandStatus status) {
+        return getDao().getAdminConversationsWithDemandStatus(userId, status);
+    }
 
     /** {@inheritDoc} */
     @Override

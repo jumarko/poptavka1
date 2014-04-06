@@ -12,6 +12,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -99,13 +100,19 @@ public interface AdminRPCService extends RemoteService {
     void updateMessage(MessageDetail detailObject) throws RPCException, ApplicationSecurityException;
 
     //---------------------- NEW DEMANDS --------------------------------------------
-    Long getAdminDemandsByItsStatusCount(
-            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+    Long getAdminAssignedDemandsByItsStatusCount(
+            long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException;
 
-    List<NewDemandDetail> getAdminDemandsByItsStatus(
-            SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+    List<AdminDemandDetail> getAdminAssignedDemandsByItsStatus(
+            long userId, DemandStatus demandStatus, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException;
+
+    Long getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus)
+        throws RPCException, ApplicationSecurityException;
+
+    List<AdminDemandDetail> getAdminDemandsByItsStatus(DemandStatus demandStatus, SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
 
     List<MessageDetail> getConversation(long threadRootId, long loggedUserId, long counterPartyUserId)
         throws RPCException;

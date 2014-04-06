@@ -52,7 +52,7 @@
             </b:Column>
         </b:FluidRow>
 
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+        <b:FluidRow ui:field='addressBlock' addStyleNames='{res.details.detailBlock}'>
             <!-- Address info -->
             <b:Column size='12'>
                 <b:Heading size='5' styleName='{res.details.detailHeader}'>

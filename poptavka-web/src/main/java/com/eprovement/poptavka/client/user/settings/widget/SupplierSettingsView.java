@@ -138,6 +138,14 @@ public class SupplierSettingsView extends Composite implements ISupplierSettings
         return editLocBtn;
     }
 
+    public CellList getCategoriesList() {
+        return categories;
+    }
+
+    public CellList getLocalitiesList() {
+        return localities;
+    }
+
     /** OTHERES. **/
     /**
      * @{inheritDoc}

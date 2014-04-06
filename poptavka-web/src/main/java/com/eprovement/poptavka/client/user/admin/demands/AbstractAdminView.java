@@ -1,7 +1,7 @@
 /*
  * Copyright (C), eProvement s.r.o. All rights reserved.
  */
-package com.eprovement.poptavka.client.user.admin.tab;
+package com.eprovement.poptavka.client.user.admin.demands;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAbstractAdmin;

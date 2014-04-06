@@ -7,6 +7,7 @@ package com.eprovement.poptavka.dao.usermessage;
 import com.eprovement.poptavka.dao.GenericDao;
 import com.eprovement.poptavka.dao.message.MessageFilter;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
@@ -72,6 +73,22 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      * @return list of <code>UserMesage</code> of the potential demand mesages
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
+
+    /**
+     * Gets all admin's assigned demand messages count.
+     * @param adminId the admin to retrieve the demand messages for
+     * @param status of demand to be filtered
+     * @return count of <code>UserMesage</code> of the admin assigned demand mesages
+     */
+    long getAdminConversationsWithDemandStatusCount(long adminId, DemandStatus status);
+
+    /**
+     * Gets all admin's assigned demand messages.
+     * @param adminId the admin to retrieve the demand messages for
+     * @param status of demand to be filtered
+     * @return list of <code>UserMesage</code> of the admin assigned demand mesages
+     */
+    Map<UserMessage, Integer> getAdminConversationsWithDemandStatus(long adminId, DemandStatus status);
 
     /**
      * Retrieves a map of the latest <code>UserMessage</code>s in each of the given

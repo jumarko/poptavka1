@@ -736,6 +736,7 @@ public interface LocalizableMessages extends Messages {
     /** AdminView.ui. **/
     String adminTableAccessRole();
     String adminTableActiveProjects();
+    String adminTableAssigendProjects();
     String adminTableDemand();
     String adminTableEmailActivation();
     String adminTableInvoice();

@@ -4,7 +4,9 @@
 package com.eprovement.poptavka.client.user.admin;
 
 import com.eprovement.poptavka.client.common.OverflowComposite;
-import com.eprovement.poptavka.client.user.admin.interfaces.IAdmin;
+import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 
 import com.google.gwt.core.client.GWT;
@@ -22,7 +24,7 @@ import com.google.inject.Inject;
  *
  * @author Martin Slavkovsky
  */
-public class AdminView extends OverflowComposite implements IAdmin.View {
+public class AdminView extends OverflowComposite implements IAdminModule.View {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -37,7 +39,7 @@ public class AdminView extends OverflowComposite implements IAdmin.View {
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel contentContainer;
-    @UiField Button newDemandsBtn, activeDemandsBtn;
+    @UiField Button newDemandsBtn, assigendDemandsBtn, activeDemandsBtn;
     //TODO LATER Martin - finnish admin interface for other tables
     //Temporary initialzie manually because in uiBinder are those buttons commented
     Button demandsButton = new Button();
@@ -74,6 +76,31 @@ public class AdminView extends OverflowComposite implements IAdmin.View {
     /* Setters                                                                */
     /**************************************************************************/
     /**
+     * Sets ACT style to client menu buttons.
+     * @param widget defines loaded clien't widget
+     */
+    @Override
+    public void setClientMenuActStyle(AdminWidget widget) {
+        newDemandsBtn.removeStyleName(Constants.ACT);
+        assigendDemandsBtn.removeStyleName(Constants.ACT);
+        activeDemandsBtn.removeStyleName(Constants.ACT);
+
+        switch(widget) {
+            case NEW_DEMANDS:
+                newDemandsBtn.addStyleName(Constants.ACT);
+                break;
+            case ASSIGNED_DEMANDS:
+                assigendDemandsBtn.addStyleName(Constants.ACT);
+                break;
+            case ACTIVE_DEMANDS:
+                activeDemandsBtn.addStyleName(Constants.ACT);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * Sets content/body widget.
      * @param contentWidget
      */
@@ -85,6 +112,22 @@ public class AdminView extends OverflowComposite implements IAdmin.View {
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
+    /**
+     * @return the new demands button
+     */
+    @Override
+    public Button getNewDemandsBtn() {
+        return newDemandsBtn;
+    }
+
+    /**
+     * @return the assigned demands button
+     */
+    @Override
+    public Button getAssignedDemandsBtn() {
+        return assigendDemandsBtn;
+    }
+
     /**
      * @return the activate demands button
      */
@@ -157,13 +200,6 @@ public class AdminView extends OverflowComposite implements IAdmin.View {
         return messagesButton;
     }
 
-    /**
-     * @return the new demands button
-     */
-    @Override
-    public Button getNewDemandsBtn() {
-        return newDemandsBtn;
-    }
 //TODO Martin - refactor
 //    @Override
 //    public Button getOurPaymentDetailsButton() {
