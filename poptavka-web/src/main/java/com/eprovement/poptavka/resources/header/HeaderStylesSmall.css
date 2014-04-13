@@ -1,5 +1,7 @@
 .logo {
     background: url(images/logo_small.png) no-repeat scroll 0 0 transparent;
+    width: 171px;
+    height: 91;
 }
 .menu-icon {
     display: block;
@@ -109,6 +111,9 @@
     top: 22px;
     width: 60px;
 }
+.search-icon.user {
+    right: 185px;
+}
 .search-panel {
     display: none;
     background: none;
@@ -151,8 +156,8 @@
 }
 
 .login-bar {
-    top: 6px;
-    right: 105px;
+    top: 20px;
+    right: 70px;
 }
 
 .login-button {}

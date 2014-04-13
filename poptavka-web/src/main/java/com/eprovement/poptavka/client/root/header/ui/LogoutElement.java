@@ -10,7 +10,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-import com.github.gwtbootstrap.client.ui.base.IconAnchor;
+//import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.CloseEvent;
@@ -41,7 +41,6 @@ public class LogoutElement extends Composite {
     @UiField MenuItem username, menuLogOut, menuMyProfile;
     @UiField MyMenuItem logoutMenuItemBtn;
     @UiField MenuBar logoutMenuBarBtn;
-    @UiField IconAnchor logoutAnchor;
 
     /**************************************************************************/
     /* Constructors                                                           */
@@ -97,9 +96,5 @@ public class LogoutElement extends Composite {
 
     public MenuBar getLogoutMenuBarBtn() {
         return logoutMenuBarBtn;
-    }
-
-    public IconAnchor getLogoutAnchor() {
-        return logoutAnchor;
     }
 }

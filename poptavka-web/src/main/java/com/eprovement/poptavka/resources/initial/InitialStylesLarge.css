@@ -47,6 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 .toolbar .left-icon {
     float: left;
     display: none;
+    z-index: 100;
 }
 .toolbar .left-icon:hover {
     cursor: pointer;

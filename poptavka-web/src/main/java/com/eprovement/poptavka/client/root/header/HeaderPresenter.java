@@ -56,8 +56,10 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getNotifications().setVisible(false);
         view.getMenu().removeStyleName(ADMIN);
         view.getSearch().getSearchPanel().removeStyleName(ADMIN);
+        view.getSearch().getSearchButton().removeStyleName(ADMIN);
         view.getMenu().removeStyleName(USER);
         view.getSearch().getSearchPanel().removeStyleName(USER);
+        view.getSearch().getSearchButton().removeStyleName(USER);
         view.getSettingsAnchor().setVisible(false);
     }
 
@@ -71,9 +73,11 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
             view.getMenu().addStyleName(ADMIN);
             view.getSearch().getSearchPanel().addStyleName(ADMIN);
+            view.getSearch().getSearchButton().addStyleName(ADMIN);
         } else {
             view.getMenu().addStyleName(USER);
             view.getSearch().getSearchPanel().addStyleName(USER);
+            view.getSearch().getSearchButton().addStyleName(USER);
         }
         view.getSettingsAnchor().setVisible(true);
         view.getLogout().getUsername().setText(Storage.getUser().getEmail());
@@ -151,7 +155,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
      * Register tree handlers:
      * <ul>
      *    <li>one for <b>button</b> on middle-large screens</li>
-     *    <li>one for <b>icon anchor</b> on tiny-small screens</li>
      *    <li>one for <b>menu - settings</b> on middle-large screens</li>
      * </ul>
      */
@@ -159,13 +162,6 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getLogout().getMenuLogOut().setScheduledCommand(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
-                eventBus.logout(Constants.HOME_WELCOME_MODULE);
-            }
-        });
-        view.getLogout().getLogoutAnchor().addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
                 eventBus.menuStyleChange(Constants.HOME_WELCOME_MODULE);
                 eventBus.logout(Constants.HOME_WELCOME_MODULE);
             }

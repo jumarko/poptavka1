@@ -1,4 +1,5 @@
 .logo {
+    height: 99px;
     top: 1px;
 }
 
@@ -121,11 +122,11 @@
 }
 .search-panel.user {
     left: auto;
-    right: 270px;
+    right: 195px;
 }
 .search-panel.admin {
     left: auto;
-    right: 270px;
+    right: 195px;
 }
 
 .search-panel .search-textbox[type="text"] {

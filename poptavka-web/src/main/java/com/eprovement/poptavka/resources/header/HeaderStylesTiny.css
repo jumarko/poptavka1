@@ -3,16 +3,7 @@
 .menu-panel {}
 .menu {}
 .menu ul {}
-.menu li {
-    width: 33.3%;
-    margin-right: 0;
-}
-.menu li button {
-    margin: 7px 0;
-    letter-spacing: -1px;
-    font-size: 12px;
-}
-
+/*
 .menu .button1 {
     background: url(images/menu-icons-responsive.png) no-repeat -10px 0;
 }
@@ -71,7 +62,7 @@
 .menu .button9:hover, .button9.act {
     background: url(images/menu-icons-responsive.png) no-repeat -10px -450px;
 }
-
+*/
 .user-responsive-menu {}
 .user-label {}
 .user-settings {}
