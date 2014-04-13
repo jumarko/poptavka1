@@ -14,6 +14,7 @@ import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView;
 import com.eprovement.poptavka.client.root.interfaces.IMenuView.IUserMenuPresenter;
+import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -86,7 +87,7 @@ public class MenuPresenter extends BasePresenter<IMenuView, RootEventBus>
         view.getAdministration().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.goToAdminModule(null, Constants.NONE);
+                eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
                 view.hideMenu();
             }
         });
