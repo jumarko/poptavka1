@@ -47,6 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 .toolbar .left-icon {
     float: left;
     display: none;
+    z-index: 100;
 }
 .toolbar .left-icon:hover {
     cursor: pointer;
@@ -385,10 +386,8 @@ h1, h2, h3, h4, h5, h6 {
  */
 .root-category-cell {
     float: left;
-    width: 100%;
-    max-width: 410px;
-    /*height: 37px;*/
-    margin: 2px 40px;
+    margin: 2px 2% 2px 3%;
+    width: 45%;
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;

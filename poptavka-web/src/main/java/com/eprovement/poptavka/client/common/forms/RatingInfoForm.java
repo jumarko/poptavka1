@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.common.forms;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -51,7 +52,11 @@ public class RatingInfoForm extends Composite {
      * @param rating value
      */
     public void setRating(Integer rating) {
-        ratingText.setText(rating.toString());
+        if (rating == 0) {
+            ratingText.setText(Storage.MSGS.commonNotRanked());
+        } else {
+            ratingText.setText(rating.toString());
+        }
         ratingIndicator.setWidth(rating.toString() + "%");
     }
 }

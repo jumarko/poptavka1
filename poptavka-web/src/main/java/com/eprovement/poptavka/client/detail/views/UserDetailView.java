@@ -74,8 +74,8 @@ public class UserDetailView extends Composite {
      * @param detail the FullClientDetail object
      */
     public void setClientDetail(FullClientDetail detail) {
-        if (detail.getOveralRating() == null) {
-            overalRating.setText("Not ranked");
+        if (detail.getOveralRating() == 0 || detail.getOveralRating() == null) {
+            overalRating.setText(Storage.MSGS.commonNotRanked());
         } else {
             overalRating.setText(detail.getOveralRating().toString());
         }
@@ -105,7 +105,7 @@ public class UserDetailView extends Composite {
      * @param detail the FullSupplierDetail object
      */
     public void setSupplierDetail(FullSupplierDetail detail) {
-        if (detail.getOveralRating() == null) {
+        if (detail.getOveralRating() == 0 || detail.getOveralRating() == null) {
             overalRating.setText(Storage.MSGS.commonNotRanked());
         } else {
             overalRating.setText(detail.getOveralRating().toString());

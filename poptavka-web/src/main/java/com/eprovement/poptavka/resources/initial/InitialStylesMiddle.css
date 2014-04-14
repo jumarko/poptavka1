@@ -16,8 +16,28 @@ body > div {
 }
 
 
-.homepage {}
+.homepage {
+    max-width: 980px;
+    width: 96%;    
+}
+
+.homepage .banner1 {
+    background: url("images/homepage/homebanners.png") no-repeat top center;
+    margin: -13px 0 0 2%;
+    width: 47%;
+}
+
+.homepage .banner2 {
+    background: url("images/homepage/homebanners.png") no-repeat center -315px;
+    margin: -13px 0 0 2%;
+    width: 47%;
+}
+
 .root-category-cell {}
+
+.root-category-cell .category-name {
+    font-size: 16px;
+}
 
 .scroll-container {}
 
@@ -31,7 +51,9 @@ body > div {
 }
 
 .toolbar .header {    
-    padding-left: 10px;
+    padding: 10px 0 0 10px;
+    line-height: 28px;
+    font-size: 18px;
 }
 
 /******************************************************************************/

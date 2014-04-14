@@ -8,7 +8,7 @@
 
     <g:HTMLPanel debugId='searchElement'>
         <b:Tooltip text="Search" placement="RIGHT">
-            <bb:IconAnchor ui:field='searchAnchor' icon="SEARCH" iconSize="TWO_TIMES" styleName='{res.header.searchIcon}'/>
+            <g:Button ui:field='searchButton' styleName='{res.header.searchIcon}'/>
         </b:Tooltip>
         <g:SimplePanel ui:field="searchPanel" addStyleNames='{res.header.searchPanel}'/>
     </g:HTMLPanel>

@@ -20,6 +20,14 @@ public interface HeaderStyles extends CssResource {
     String menuPanel();
     @ClassName("menu")
     String menu();
+    @ClassName("user-responsive-menu")
+    String userResponsiveMenu();
+    @ClassName("user-label")
+    String userLabel();
+    @ClassName("user-settings")
+    String userSettings();
+    @ClassName("user-logout")
+    String userLogout();
 
     //Logo
     @ClassName("logo")

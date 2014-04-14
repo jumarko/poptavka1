@@ -10,13 +10,13 @@ import com.google.gwt.uibinder.client.UiField;
 
 import com.eprovement.poptavka.client.root.header.ui.LoginElement;
 import com.eprovement.poptavka.client.root.header.ui.LogoutElement;
-import com.eprovement.poptavka.client.root.header.ui.MenuElement;
 import com.eprovement.poptavka.client.root.header.ui.NotificationsElement;
 import com.eprovement.poptavka.client.root.header.ui.SearchElement;
 import com.eprovement.poptavka.client.root.interfaces.IHeaderView;
 import com.github.gwtbootstrap.client.ui.base.IconAnchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -48,7 +48,7 @@ public class HeaderView extends Composite implements IHeaderView {
     /**************************************************************************/
     /** UiBinder Attributes. **/
     @UiField Button logo;
-    @UiField MenuElement menu;
+    @UiField SimplePanel menu;
     @UiField SearchElement search;
     @UiField NotificationsElement notifications;
     @UiField LoginElement login;
@@ -80,7 +80,7 @@ public class HeaderView extends Composite implements IHeaderView {
      * @return the menu element
      */
     @Override
-    public MenuElement getMenu() {
+    public SimplePanel getMenu() {
         return menu;
     }
 

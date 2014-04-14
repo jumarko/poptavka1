@@ -9,7 +9,7 @@
     <g:HTMLPanel styleName='{res.header.login}'>
         <!--Icon anchor-->
         <b:Tooltip text="Login" placement="LEFT">
-            <bb:IconAnchor ui:field='loginAnchor' icon="SIGNIN" iconSize="TWO_TIMES" styleName='{res.header.loginIcon}'/>
+            <g:Button ui:field='loginButtonSmall' styleName='{res.header.loginIcon}'/>
         </b:Tooltip>
 
         <!--Button-->

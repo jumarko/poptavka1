@@ -6,13 +6,8 @@
              xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-
+    
     <g:HTMLPanel styleName='{res.header.login}'>
-
-        <b:Tooltip text="Logout" placement="BOTTOM">
-            <bb:IconAnchor ui:field='logoutAnchor' icon="SIGNOUT" iconSize="TWO_TIMES" styleName='{res.header.loginIcon}'/>
-        </b:Tooltip>
-
         <g:MenuBar ui:field="logoutMenuBarBtn" vertical="false" styleName='{res.header.loginPanel}'>
             <h:MyMenuItem ui:field="logoutMenuItemBtn" styleName='{res.header.logoutButton}'>
                 <g:MenuBar vertical="true" styleName='{res.header.logoutMenuBar}'>
