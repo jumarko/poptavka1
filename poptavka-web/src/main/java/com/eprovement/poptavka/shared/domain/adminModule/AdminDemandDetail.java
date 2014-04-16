@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.CreatedDateColumn
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
 import com.eprovement.poptavka.client.user.widget.grid.columns.LocalityColumn.TableDisplayLocality;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
@@ -21,7 +21,7 @@ import java.util.Date;
  * @since 17.3.2014
  */
 public class AdminDemandDetail implements IsSerializable, TableDisplayCreatedDate,
-    TableDisplayDemandTitle, TableDisplayLocality, TableDisplayValidTo, TableDisplayDetailModule,
+    TableDisplayDemandTitle, TableDisplayLocality, TableDisplayValidTo, TableDisplayDetailModuleClient,
     TableDisplayUserMessage {
 
     /**************************************************************************/
@@ -35,7 +35,8 @@ public class AdminDemandDetail implements IsSerializable, TableDisplayCreatedDat
     private ArrayList<ICatLocDetail> localities;
     private Date validTo;
     private long demandId;
-    private long supplierId;
+    private long userId;
+    private long clientId;
     private long threadRootId;
     private long senderId;
     private boolean starred;
@@ -143,11 +144,19 @@ public class AdminDemandDetail implements IsSerializable, TableDisplayCreatedDat
     }
 
     public long getUserId() {
-        return supplierId;
+        return userId;
     }
 
     public void setUserId(long supplierId) {
-        this.supplierId = supplierId;
+        this.userId = supplierId;
+    }
+
+    public long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     public long getThreadRootId() {

@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -102,7 +101,7 @@ public interface AdminRPCServiceAsync {
 
     void createConversation(long demandId, long userAdminId, AsyncCallback<Long> callback);
 
-    void approveDemands(Set<NewDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
+    void approveDemands(Set<AdminDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
 
     //---------------------- OUR PAYMENT DETAIL -----------------------------------------
     void getAdminOurPaymentDetailsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);

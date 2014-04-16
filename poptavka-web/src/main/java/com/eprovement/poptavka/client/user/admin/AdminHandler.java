@@ -22,7 +22,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -493,11 +492,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             });
     }
 
-    public void onRequestApproveDemands(final UniversalAsyncGrid grid, Set<NewDemandDetail> demandsToApprove) {
+    public void onRequestApproveDemands(final UniversalAsyncGrid grid, Set<AdminDemandDetail> demandsToApprove) {
         adminService.approveDemands(demandsToApprove, new SecuredAsyncCallback<Void>(eventBus) {
             @Override
             public void onSuccess(Void result) {
-                grid.refresh();
+                eventBus.responseApproveDemands();
             }
         });
     }
@@ -688,8 +687,8 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      * @param demandId for which the conversation is created
      * @param userAdminId id of operator or admin user
      */
-    public void onRequestCreateConversation(long demandId) {
-        adminService.createConversation(demandId, Storage.getUser().getUserId(),
+    public void onRequestCreateConversation(long demandId, long userId) {
+        adminService.createConversation(demandId, userId,
                 new SecuredAsyncCallback<Long>(eventBus) {
                 @Override
                 public void onSuccess(Long result) {

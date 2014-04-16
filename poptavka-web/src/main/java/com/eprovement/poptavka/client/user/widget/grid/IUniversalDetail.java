@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid;
 
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleSupplier;
 
 /**
  * TODO Martin - refactor, TableDisplays are used now.
@@ -13,7 +13,7 @@ import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
  *
  * @author Martin Slavkovsky
  */
-public interface IUniversalDetail extends TableDisplayDetailModule {
+public interface IUniversalDetail extends TableDisplayDetailModuleSupplier {
 
     // Offer part
     //--------------------------------------------------------------------------

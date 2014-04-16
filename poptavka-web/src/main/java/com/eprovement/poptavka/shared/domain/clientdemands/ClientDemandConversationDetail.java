@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn
 import com.eprovement.poptavka.client.user.widget.grid.columns.MessageSentDateColumn.TableDisplayMessageSentDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.MessageTextColumn.TableDisplayMessageText;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleSupplier;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.util.Date;
@@ -19,7 +19,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  */
 public class ClientDemandConversationDetail implements IsSerializable,
-    TableDisplayDetailModule, TableDisplayDisplayName, TableDisplayMessageText,
+    TableDisplayDetailModuleSupplier, TableDisplayDisplayName, TableDisplayMessageText,
     TableDisplayMessageSentDate, TableDisplayUserMessage, TableDisplayRating {
 
     /**************************************************************************/
@@ -44,7 +44,7 @@ public class ClientDemandConversationDetail implements IsSerializable,
         new ProvidesKey<ClientDemandConversationDetail>() {
             @Override
             public Object getKey(ClientDemandConversationDetail item) {
-                return item == null ? null : item.getUserId();
+                return item == null ? null : item.getUserMessageId();
             }
         };
 
@@ -103,11 +103,11 @@ public class ClientDemandConversationDetail implements IsSerializable,
      * Supplier id pair.
      */
     @Override
-    public long getUserId() {
+    public long getSupplierId() {
         return supplierId;
     }
 
-    public void setUserId(long supplierId) {
+    public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
     }
 

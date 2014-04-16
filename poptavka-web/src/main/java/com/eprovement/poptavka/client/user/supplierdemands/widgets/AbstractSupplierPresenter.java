@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule
 import com.eprovement.poptavka.client.user.supplierdemands.interfaces.IAbstractSupplier;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -33,7 +33,7 @@ public abstract class AbstractSupplierPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     protected SearchModuleDataHolder searchDataHolder;
-    protected TableDisplayDetailModule selectedObject;
+    protected TableDisplayDetailModuleClient selectedObject;
     protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayUserMessage, String>() {
         @Override
         public void update(int index, TableDisplayUserMessage object, String value) {
@@ -134,10 +134,10 @@ public abstract class AbstractSupplierPresenter
      *
      * @param demandId
      */
-    protected void initDetailSectionFull(TableDisplayDetailModule selectedDetail) {
+    protected void initDetailSectionFull(TableDisplayDetailModuleClient selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
-            .addClientTab(selectedDetail.getUserId(), false)
+            .addClientTab(selectedDetail.getClientId(), false)
             .addConversationTab(selectedDetail.getThreadRootId(), selectedDetail.getSenderId())
             .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
             .build());
@@ -161,7 +161,7 @@ public abstract class AbstractSupplierPresenter
                 if (view.getSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
                     selectedObject =
-                        (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
+                        (TableDisplayDetailModuleClient) view.getSelectedObjects().iterator().next();
                     if (selectedObject != null) {
                         initDetailSectionFull(selectedObject);
                         eventBus.openDetail();

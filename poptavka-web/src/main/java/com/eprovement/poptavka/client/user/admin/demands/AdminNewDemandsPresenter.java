@@ -8,18 +8,14 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,8 +29,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private AdminWidget mode;
-
+//    private AdminWidget mode;
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
@@ -88,13 +83,17 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (mode == AdminWidget.NEW_DEMANDS && view.getSelectedObjects().size() == 1) {
-                    view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
-                }
-                view.getToolbar().getCreateConversationBtn().setVisible(false);
-                //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
-                eventBus.requestConversation(
-                    selectedObject.getThreadRootId(), selectedObject.getSenderId(), Storage.getUser().getUserId());
+                boolean isJustOneSelected = view.getSelectedObjects().size() == 1;
+                //Sets Approve Btn visibility
+                view.getToolbar().getApproveBtn().setVisible(
+                    (mode == AdminWidget.NEW_DEMANDS || mode == AdminWidget.ASSIGNED_DEMANDS) && isJustOneSelected);
+
+//                if (isJustOneSelected) {
+//                    //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
+//                    eventBus.requestConversation(
+////                        selectedObject.getThreadRootId(), selectedObject.getUserId(), Storage.getUser().getUserId());
+//                        selectedObject.getThreadRootId(), Storage.getUser().getUserId(), selectedObject.getUserId());
+//                }
             }
         });
     }
@@ -112,8 +111,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getToolbar().getCreateConversationBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestCreateConversation(
-                    ((TableDisplayDetailModule) view.getSelectedObjects().iterator().next()).getDemandId());
+                eventBus.requestCreateConversation(selectedObject.getDemandId(), Storage.getUser().getUserId());
             }
         });
     }
@@ -134,7 +132,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * @param threadRootId
      */
     public void onResponseCreateConversation(long threadRootId) {
-        initDetailSectionConversation((TableDisplayDetailModule) view.getSelectedObjects().iterator().next());
+//        selectedObject.setThreadRootId(threadRootId);
+//        selectedObject.setSenderId(Storage.getUser().getUserId());
+        initDetailSectionConversation(selectedObject, threadRootId, Storage.getUser().getUserId());
+//        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
     }
 
     /**
@@ -145,9 +146,19 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     public void onResponseConversation(List<MessageDetail> chatMessages) {
         if (chatMessages.isEmpty()) {
             view.getToolbar().getCreateConversationBtn().setVisible(chatMessages.isEmpty());
+            initDetailSectionDemand(selectedObject);
         } else {
-            initDetailSectionConversation((TableDisplayDetailModule) view.getSelectedObjects().iterator().next());
+            initDetailSectionConversation(selectedObject);
         }
+    }
+
+    /**
+     * Refresh table and disable approve and createConversation btns.
+     */
+    public void onResponseApproveDemands() {
+        view.getTable().refresh();
+        view.getToolbar().getApproveBtn().setVisible(false);
+        view.getToolbar().getCreateConversationBtn().setVisible(false);
     }
 
     /**************************************************************************/
@@ -166,7 +177,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             .addColumnLocality(textFieldUpdater)
             .addColumnUrgency()
             .addSelectionModel(new MultiSelectionModel(), AdminDemandDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            //            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
             .addRowStyles(rowStyles)
             .build();
     }

@@ -10,7 +10,7 @@ import com.eprovement.poptavka.client.user.clientdemands.interfaces.IAbstractCli
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleSupplier;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -34,8 +34,8 @@ public abstract class AbstractClientPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     protected SearchModuleDataHolder searchDataHolder;
-    protected TableDisplayDetailModule selectedParentObject;
-    protected TableDisplayDetailModule selectedChildObject;
+    protected TableDisplayDetailModuleSupplier selectedParentObject;
+    protected TableDisplayDetailModuleSupplier selectedChildObject;
     protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayUserMessage, String>() {
         @Override
         public void update(int index, TableDisplayUserMessage object, String value) {
@@ -165,7 +165,7 @@ public abstract class AbstractClientPresenter
      *
      * @param demandId
      */
-    protected void initDetailSectionDemand(TableDisplayDetailModule selectedDetail) {
+    protected void initDetailSectionDemand(TableDisplayDetailModuleSupplier selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
             .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
@@ -181,10 +181,10 @@ public abstract class AbstractClientPresenter
      *
      * @param demandId
      */
-    protected void initDetailSectionFull(TableDisplayDetailModule selectedDetail) {
+    protected void initDetailSectionFull(TableDisplayDetailModuleSupplier selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
-            .addSupplierTab(selectedDetail.getUserId(), false)
+            .addSupplierTab(selectedDetail.getSupplierId(), false)
             .addConversationTab(selectedDetail.getThreadRootId(), selectedDetail.getSenderId())
             .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
             .build());
@@ -203,7 +203,7 @@ public abstract class AbstractClientPresenter
             view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
                 @Override
                 public void onSelectionChange(SelectionChangeEvent event) {
-                    selectedParentObject = (TableDisplayDetailModule)
+                    selectedParentObject = (TableDisplayDetailModuleSupplier)
                         ((SingleSelectionModel) view.getParentTable().getSelectionModel()).getSelectedObject();
                     if (selectedParentObject != null) {
                         //  display detail section
@@ -235,7 +235,7 @@ public abstract class AbstractClientPresenter
                 if (view.getChildTableSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
                     selectedChildObject =
-                        (TableDisplayDetailModule) view.getChildTableSelectedObjects().iterator().next();
+                        (TableDisplayDetailModuleSupplier) view.getChildTableSelectedObjects().iterator().next();
                     if (selectedChildObject != null) {
                         initDetailSectionFull(selectedChildObject);
                         eventBus.openDetail();

@@ -12,7 +12,7 @@ import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.user.LoginService;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -75,9 +75,9 @@ public class AdminRPCServiceImplTest {
 
     @Test
     public void testApproveDemands() throws Exception {
-        final NewDemandDetail demandDetail = new NewDemandDetail();
+        final AdminDemandDetail demandDetail = new AdminDemandDetail();
         demandDetail.setDemandId(DEMAND_ID);
-        adminRPCService.approveDemands(new HashSet<NewDemandDetail>() { { add(demandDetail); } });
+        adminRPCService.approveDemands(new HashSet<AdminDemandDetail>() { { add(demandDetail); } });
         verify(potentialDemandService).sendDemandToPotentialSuppliers(DEMAND);
     }
 }

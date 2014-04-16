@@ -190,8 +190,8 @@ public class DetailModulePresenter
             case DetailModuleBuilder.CONVERSATION_TAB:
                 requestConversation(
                     this.builder.getThreadRootId(),
-                    this.builder.getSenderId(),
-                    Storage.getUser().getUserId());
+                    Storage.getUser().getUserId(),
+                    this.builder.getSenderId());
                 break;
             default:
                 break;

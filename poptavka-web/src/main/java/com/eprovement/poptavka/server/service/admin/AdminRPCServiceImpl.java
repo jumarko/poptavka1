@@ -51,7 +51,6 @@ import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -634,7 +633,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         for (UserMessage um : latestUserMessagesWithCount.keySet()) {
             AdminDemandDetail detail = new AdminDemandDetail();
             // Client part
-            detail.setUserId(um.getMessage().getDemand().getClient().getId());
+            detail.setUserId(um.getMessage().getDemand().getClient().getBusinessUser().getId());
+            detail.setClientId(um.getMessage().getDemand().getClient().getId());
             //why not: um.getMessage().getSender().getId() ???
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
             // Supplier part
@@ -676,11 +676,13 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
         Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
         search.addFilterEqual("status", demandStatus);
+
         final List<Demand> demands = generalService.search(search);
         final List<AdminDemandDetail> demandDetails = new ArrayList<AdminDemandDetail>();
         for (Demand demand : demands) {
             AdminDemandDetail detail = new AdminDemandDetail();
-            detail.setUserId(demand.getClient().getId());
+            detail.setUserId(demand.getClient().getBusinessUser().getId());
+            detail.setClientId(demand.getClient().getId());
             detail.setCreated(demand.getCreatedDate());
             detail.setDemandId(demand.getId());
             detail.setLocalities(localityConverter.convertToTargetList(demand.getLocalities()));
@@ -694,10 +696,10 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void approveDemands(Set<NewDemandDetail> demandsToApprove) throws
+    public void approveDemands(Set<AdminDemandDetail> demandsToApprove) throws
             RPCException, ApplicationSecurityException {
         LOGGER.info("action=approve_demands status=start");
-        for (NewDemandDetail demandDetail : demandsToApprove) {
+        for (AdminDemandDetail demandDetail : demandsToApprove) {
             try {
                 final Demand demand = demandService.getById(demandDetail.getDemandId());
                 demandService.activateDemand(demand);

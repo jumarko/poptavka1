@@ -10,7 +10,8 @@ import com.eprovement.poptavka.client.user.admin.interfaces.IAbstractAdmin;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -33,7 +34,7 @@ public abstract class AbstractAdminPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private IAdminModule.AdminWidget mode;
+    protected IAdminModule.AdminWidget mode;
 
     /**************************************************************************/
     /* General Widget events                                                  */
@@ -94,7 +95,7 @@ public abstract class AbstractAdminPresenter
     /* Attributes                                                             */
     /**************************************************************************/
     protected SearchModuleDataHolder searchDataHolder;
-    protected TableDisplayDetailModule selectedObject;
+    protected AdminDemandDetail selectedObject;
     protected FieldUpdater textFieldUpdater = new FieldUpdater<TableDisplayUserMessage, String>() {
         @Override
         public void update(int index, TableDisplayUserMessage object, String value) {
@@ -130,25 +131,40 @@ public abstract class AbstractAdminPresenter
     //--------------------------------------------------------------------------
     /**
      * Inits detail section - demand.
-     * @param selectedDetail the TableDisplayDetailModule
+     * @param selectedDetail the TableDisplayDetailModuleClient
      */
-    protected void initDetailSectionDemand(TableDisplayDetailModule selectedDetail) {
+    protected void initDetailSectionDemand(TableDisplayDetailModuleClient selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
-            .addClientTab(selectedDetail.getUserId(), true)
+            .addClientTab(selectedDetail.getClientId(), true)
             .selectTab(DetailModuleBuilder.DEMAND_DETAIL_TAB)
             .build());
     }
 
     /**
      * Inits detail section - conversation.
-     * @param selectedDetail the TableDisplayDetailModule
+     * @param selectedDetail the TableDisplayDetailModuleClient
      */
-    protected void initDetailSectionConversation(TableDisplayDetailModule selectedDetail) {
+    protected void initDetailSectionConversation(TableDisplayDetailModuleClient selectedDetail) {
         eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
             .addDemandTab(selectedDetail.getDemandId())
-            .addClientTab(selectedDetail.getUserId(), true)
+            .addClientTab(selectedDetail.getClientId(), true)
             .addConversationTab(selectedDetail.getThreadRootId(), selectedDetail.getSenderId())
+            .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
+            .build());
+    }
+
+    /**
+     * Inits detail section - conversation.
+     * @param selectedDetail the TableDisplayDetailModuleClient
+     */
+    protected void initDetailSectionConversation(TableDisplayDetailModuleClient selectedDetail,
+        long threadRootId, long senderId) {
+
+        eventBus.buildDetailSectionTabs(new DetailModuleBuilder.Builder()
+            .addDemandTab(selectedDetail.getDemandId())
+            .addClientTab(selectedDetail.getClientId(), true)
+            .addConversationTab(threadRootId, senderId)
             .selectTab(DetailModuleBuilder.CONVERSATION_TAB)
             .build());
     }
@@ -170,10 +186,14 @@ public abstract class AbstractAdminPresenter
 
                 if (view.getSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
-                    selectedObject
-                        = (TableDisplayDetailModule) view.getSelectedObjects().iterator().next();
+                    selectedObject = (AdminDemandDetail) view.getSelectedObjects().iterator().next();
                     if (selectedObject != null) {
-                        initDetailSectionDemand(selectedObject);
+                        //detail will handle child presenter
+                        //but on the other hand, there will be always the same scenario for admin demands
+                        //and that is requertReservations....
+                        eventBus.requestConversation(
+                            selectedObject.getThreadRootId(), Storage.getUser().getUserId(), selectedObject.getUserId());
+//                        initDetailSectionDemand(selectedObject);
                         eventBus.openDetail();
                     }
                 } else {

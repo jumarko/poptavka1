@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -23,7 +23,7 @@ import java.util.Date;
  */
 public class SupplierPotentialDemandDetail implements IsSerializable,
     TableDisplayRating, TableDisplayUserMessage, TableDisplayDemandTitle, TableDisplayPrice,
-    TableDisplayValidTo, TableDisplayDetailModule {
+    TableDisplayValidTo, TableDisplayDetailModuleClient {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -36,7 +36,7 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
     private int messagesCount;
     private boolean isRead;
     private long demandId;
-    private long userId;
+    private long clientId;
     private Date validTo;
     private String title;
     private BigDecimal price;
@@ -208,11 +208,11 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
      * Supplier id pair.
      */
     @Override
-    public long getUserId() {
-        return userId;
+    public long getClientId() {
+        return clientId;
     }
 
-    public void setUserId(long supplierId) {
-        this.userId = supplierId;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 }

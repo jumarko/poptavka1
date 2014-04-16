@@ -32,7 +32,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     private long demandId;
     private long offerId;
     private long threadRootId;
-    private long userId;
+    private long supplierId;
     private long senderId;
     private long userMessageId;
     private boolean isStarred;
@@ -103,12 +103,12 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
      * Supplier id pair.
      */
     @Override
-    public long getUserId() {
-        return userId;
+    public long getSupplierId() {
+        return supplierId;
     }
 
-    public void setUserId(long supplierId) {
-        this.userId = supplierId;
+    public void setSupplierId(long supplierId) {
+        this.supplierId = supplierId;
     }
 
     /**
@@ -261,7 +261,7 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     @Override
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-            + ", threadRootId=" + threadRootId + ", supplierId=" + userId + ", senderId="
+            + ", threadRootId=" + threadRootId + ", supplierId=" + supplierId + ", senderId="
             + senderId + ", isStarred=" + isStarred + ", supplierName="
             + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
             + ", deliveryDate=" + finishDate + ", messageCount=" + messagesCount + ", isRead="
