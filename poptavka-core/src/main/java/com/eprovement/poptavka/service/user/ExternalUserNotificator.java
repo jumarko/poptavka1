@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.service.user;
 
 import static org.apache.commons.collections.CollectionUtils.isEmpty;
+import static org.apache.commons.collections.MapUtils.isNotEmpty;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -19,7 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriTemplate;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Responsible for sending one-time notifications for users imported from external systems.
@@ -27,6 +31,7 @@ import java.util.List;
  */
 public class ExternalUserNotificator {
 
+    static final String DEPLOYMENT_URL_PARAM = "wantsomething.url";
     static final String UNSUBSCRIBE_LINK_PARAM = "unsubscribe.link";
     static final String PASSWORD_PARAM = "password";
 
@@ -38,6 +43,7 @@ public class ExternalUserNotificator {
     private final UserVerificationService userVerificationService;
 
     private final UriTemplate unsubscribeUriTemplate;
+    private final String deploymentUrl;
 
 
     public ExternalUserNotificator(GeneralService generalService,
@@ -55,8 +61,14 @@ public class ExternalUserNotificator {
         this.registerService = registerService;
         this.userVerificationService = userVerificationService;
         this.mailNotificationSender = mailNotificationSender;
-        this.unsubscribeUriTemplate = new UriTemplate(deploymentUrl + "/unsubscribe?id={userHash}");
+        this.deploymentUrl = deploymentUrl;
+        this.unsubscribeUriTemplate = new UriTemplate(deploymentUrl + "#unsubscribe?id={passwordHash}");
     }
+
+    public void send(BusinessUser user, Registers.Notification notification) {
+        send(user, notification, Collections.<String, String>emptyMap());
+    }
+
 
     /**
      * Sends {@code notification} to the given {@code user} if following conditions are satisfied:
@@ -71,9 +83,11 @@ public class ExternalUserNotificator {
      *
      * @param user user to be notified if conditions are satisfied
      * @param notification notification which determines the message being sent to the user
+     * @param notificationParams custom notification params that will be expanded in notification template
+     * @see com.eprovement.poptavka.service.notification.MailNotificationSender#doSendNotification
      */
     @Transactional
-    public void send(BusinessUser user, Registers.Notification notification) {
+    public void send(BusinessUser user, Registers.Notification notification, Map<String, String> notificationParams) {
         notNull(user, "user cannot be null!");
         notNull(notification, "notification cannot be null!");
 
@@ -87,12 +101,21 @@ public class ExternalUserNotificator {
             // we have to reset password and provide unsubscribe link
             final String newPassword = userVerificationService.resetPassword(user);
 
-            final Notification userNotification = registerService.getValue(notification.getCode(), Notification.class);
-            mailNotificationSender.doSendNotification(user, userNotification, ImmutableMap.of(
+            final HashMap<String, String> notificationParameters = new HashMap<>();
+            // custom parameters for external users' notifications
+            if (isNotEmpty(notificationParams)) {
+                notificationParameters.putAll(notificationParams);
+            }
+            // common parameters for external users' notifications
+            notificationParameters.putAll(ImmutableMap.of(
+                    // want-something web url,
+                    DEPLOYMENT_URL_PARAM, deploymentUrl,
                     // plain-text password
                     PASSWORD_PARAM, newPassword,
                     // unsubscribe link is based on user's hashed password stored in DB
                     UNSUBSCRIBE_LINK_PARAM, unsubscribeUriTemplate.expand(user.getPassword()).toString()));
+            final Notification userNotification = registerService.getValue(notification.getCode(), Notification.class);
+            mailNotificationSender.doSendNotification(user, userNotification, notificationParameters);
         }
     }
 

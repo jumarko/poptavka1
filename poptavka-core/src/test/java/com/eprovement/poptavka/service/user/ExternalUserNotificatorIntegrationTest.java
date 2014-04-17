@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.register.Registers;
-import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.mail.MailServiceMock;

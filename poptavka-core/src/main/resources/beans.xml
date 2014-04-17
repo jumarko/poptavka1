@@ -153,6 +153,7 @@
         <constructor-arg ref="registerService"/>
         <constructor-arg ref="userVerificationService"/>
         <constructor-arg ref="mailNotificationSender"/>
+        <constructor-arg value="${deployment.url}"/>
     </bean>
 
     <!-- Jobs -->
@@ -178,6 +179,7 @@
         <constructor-arg ref="userMessageService"/>
         <constructor-arg ref="supplierSelection"/>
         <constructor-arg ref="notificationService"/>
+        <constructor-arg ref="externalUserNotificator"/>
     </bean>
 
     <!-- Other -->

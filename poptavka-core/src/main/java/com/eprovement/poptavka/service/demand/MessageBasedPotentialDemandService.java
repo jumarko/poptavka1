@@ -21,7 +21,6 @@ import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.notification.NotificationService;
 import com.eprovement.poptavka.service.user.ExternalUserNotificator;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.server.service.detail;
 
+import static java.util.Collections.singletonMap;
+
 import com.eprovement.poptavka.client.service.demand.DetailRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
@@ -50,6 +52,7 @@ import org.springframework.security.access.annotation.Secured;
 @Configurable
 public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements DetailRPCService {
 
+    private static final String SUPPLIER_NOTIFICATION_PARAM = "supplier";
     private GeneralService generalService;
     private MessageService messageService;
     private OfferService offerService;
@@ -277,6 +280,13 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         replyMessage.message.setOffer(createOfferFromMessage(offerMessageToSend, replyMessage.message));
         messageService.update(replyMessage.message);
 
+        // notify external client if applicable - this time the original sender can only be in role CLIENT
+        final BusinessUser supplier = this.generalService.find(BusinessUser.class, offerMessageToSend.getSupplierId());
+        final BusinessUser client = this.generalService.find(BusinessUser.class, offerMessageToSend.getSenderId());
+        externalUserNotificator.send(client, Registers.Notification.EXTERNAL_CLIENT,
+                singletonMap(SUPPLIER_NOTIFICATION_PARAM, supplier.getDisplayName()));
+
+
         return getMessageDetail(replyMessage);
     }
 
@@ -311,9 +321,6 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         replyMessage.setSubject(replyMessageToSend.getSubject());
         messageService.send(replyMessage);
 
-        // notify external client if applicable - this time the original sender can only be in role CLIENT
-        // TODO: probably we will need to pass some variables for notification message
-        externalUserNotificator.send(sender, Registers.Notification.EXTERNAL_CLIENT);
 
         return new ReplyMessage(replyMessage, replyUserMessage);
     }
