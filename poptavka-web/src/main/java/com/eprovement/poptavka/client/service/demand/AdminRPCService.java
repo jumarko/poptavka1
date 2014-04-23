@@ -99,6 +99,12 @@ public interface AdminRPCService extends RemoteService {
     void updateMessage(MessageDetail detailObject) throws RPCException, ApplicationSecurityException;
 
     //---------------------- NEW DEMANDS --------------------------------------------
+    Long getAdminNewDemandsCount() throws RPCException, ApplicationSecurityException;
+
+    List<AdminDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
+
+    //---------------------- ASSIGNED DEMANDS --------------------------------------------
     Long getAdminAssignedDemandsByItsStatusCount(
             long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException;

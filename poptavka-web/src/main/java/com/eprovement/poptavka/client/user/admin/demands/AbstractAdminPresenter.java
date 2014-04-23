@@ -87,6 +87,7 @@ public abstract class AbstractAdminPresenter
             ((SetSelectionModel) view.getTable().getSelectionModel()).clear();
         }
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        view.getToolbar().bindPager(view.getTable());
 
         eventBus.displayView(view.asWidget());
     }

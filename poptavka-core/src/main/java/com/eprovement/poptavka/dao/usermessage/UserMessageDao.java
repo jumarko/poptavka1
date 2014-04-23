@@ -74,6 +74,8 @@ public interface UserMessageDao extends GenericDao<UserMessage> {
      */
     List<UserMessage> getPotentialDemands(BusinessUser supplier);
 
+    Long getAdminNewDemandsCount();
+    List<Demand> getAdminNewDemands(int start, int limit);
     /**
      * Gets all admin's assigned demand messages count.
      * @param adminId the admin to retrieve the demand messages for

@@ -84,6 +84,11 @@ public interface AdminRPCServiceAsync {
     void updateMessage(MessageDetail detailObject, AsyncCallback<MessageDetail> callback);
 
     //---------------------- NEW DEMANDS --------------------------------------------
+    void getAdminNewDemandsCount(AsyncCallback<Long> callback); 
+
+    void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<AdminDemandDetail>> callback);
+
+    //---------------------- ASSIGNED DEMANDS --------------------------------------------
     void getAdminAssignedDemandsByItsStatusCount(
         long userId, SearchDefinition searchDefinition, DemandStatus demandStatus, AsyncCallback<Long> callback);
 
