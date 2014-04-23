@@ -105,18 +105,19 @@ public interface AdminRPCService extends RemoteService {
         throws RPCException, ApplicationSecurityException;
 
     //---------------------- ASSIGNED DEMANDS --------------------------------------------
-    Long getAdminAssignedDemandsByItsStatusCount(
+    Long getAdminAssignedDemandsCount(
             long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException;
 
-    List<AdminDemandDetail> getAdminAssignedDemandsByItsStatus(
+    List<AdminDemandDetail> getAdminAssignedDemands(
             long userId, DemandStatus demandStatus, SearchDefinition searchDefinition) throws
             RPCException, ApplicationSecurityException;
 
-    Long getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus)
+    //---------------------- ACTIVE DEMANDS ---------------------------------------------
+    Long getAdminActiveDemandsCount(SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
-    List<AdminDemandDetail> getAdminDemandsByItsStatus(DemandStatus demandStatus, SearchDefinition searchDefinition)
+    List<AdminDemandDetail> getAdminActiveDemands(SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException;
 
     List<MessageDetail> getConversation(long threadRootId, long loggedUserId, long counterPartyUserId)

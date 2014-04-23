@@ -425,7 +425,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  Assigned Demands SECTION. *******************************************
      **********************************************************************************************/
     public void getAdminAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        adminService.getAdminAssignedDemandsByItsStatusCount(
+        adminService.getAdminAssignedDemandsCount(
             Storage.getUser().getUserId(), searchDefinition, DemandStatus.NEW,
             new SecuredAsyncCallback<Long>(eventBus) {
                 @Override
@@ -436,7 +436,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminAssignedDemands(SearchDefinition searchDefinition) {
-        adminService.getAdminAssignedDemandsByItsStatus(
+        adminService.getAdminAssignedDemands(
             Storage.getUser().getUserId(), DemandStatus.NEW, searchDefinition,
             new SecuredAsyncCallback<List<AdminDemandDetail>>(eventBus) {
                 @Override
@@ -450,7 +450,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
      ***********************  Active Demands SECTION. *********************************************
      **********************************************************************************************/
     public void getAdminActiveDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        adminService.getAdminDemandsByItsStatusCount(searchDefinition, DemandStatus.ACTIVE,
+        adminService.getAdminActiveDemandsCount(searchDefinition,
             new SecuredAsyncCallback<Long>(eventBus) {
                 @Override
                 public void onSuccess(Long result) {
@@ -460,7 +460,7 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     }
 
     public void getAdminActiveDemands(SearchDefinition searchDefinition) {
-        adminService.getAdminDemandsByItsStatus(DemandStatus.ACTIVE, searchDefinition,
+        adminService.getAdminActiveDemands(searchDefinition,
             new SecuredAsyncCallback<List<AdminDemandDetail>>(eventBus) {
                 @Override
                 public void onSuccess(List<AdminDemandDetail> result) {

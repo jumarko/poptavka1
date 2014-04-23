@@ -89,17 +89,16 @@ public interface AdminRPCServiceAsync {
     void getAdminNewDemands(SearchDefinition searchDefinition, AsyncCallback<List<AdminDemandDetail>> callback);
 
     //---------------------- ASSIGNED DEMANDS --------------------------------------------
-    void getAdminAssignedDemandsByItsStatusCount(
+    void getAdminAssignedDemandsCount(
         long userId, SearchDefinition searchDefinition, DemandStatus demandStatus, AsyncCallback<Long> callback);
 
-    void getAdminAssignedDemandsByItsStatus(long userId, DemandStatus demandStatus, SearchDefinition searchDefinition,
+    void getAdminAssignedDemands(long userId, DemandStatus demandStatus, SearchDefinition searchDefinition,
             AsyncCallback<List<AdminDemandDetail>> callback);
 
-    void getAdminDemandsByItsStatusCount(SearchDefinition searchDefinition, DemandStatus demandStatus,
-            AsyncCallback<Long> callback);
+    //---------------------- ACTIVE DEMANDS ----------------------------------------------
+    void getAdminActiveDemandsCount(SearchDefinition searchDefinition, AsyncCallback<Long> callback);
 
-    void getAdminDemandsByItsStatus(DemandStatus demandStatus, SearchDefinition searchDefinition,
-            AsyncCallback<List<AdminDemandDetail>> callback);
+    void getAdminActiveDemands(SearchDefinition searchDefinition, AsyncCallback<List<AdminDemandDetail>> callback);
 
     void getConversation(long threadRootId, long loggedUserId, long counterPartyUserId,
             AsyncCallback<List<MessageDetail>> callback);

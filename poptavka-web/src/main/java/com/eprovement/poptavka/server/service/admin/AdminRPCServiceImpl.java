@@ -63,6 +63,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -635,9 +636,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return adminDemandConverter.convertToTargetList(demands);
     }
 
+    /**************************************************************************/
+    /*  ASSIGNED DEMANDS SECTION.                                             */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminAssignedDemandsByItsStatusCount(
+    public Long getAdminAssignedDemandsCount(
             long userId, SearchDefinition searchDefinition, DemandStatus demandStatus) throws
             RPCException, ApplicationSecurityException {
         return userMessageService.getAdminConversationsWithDemandStatusCount(userId, demandStatus);
@@ -645,7 +649,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<AdminDemandDetail> getAdminAssignedDemandsByItsStatus(
+    public List<AdminDemandDetail> getAdminAssignedDemands(
         long userId, DemandStatus demandStatus, SearchDefinition searchDefinition)
         throws RPCException, ApplicationSecurityException {
         final Search search = searchConverter.convertToSource(UserMessage.class, searchDefinition);
@@ -682,24 +686,27 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return adminDemandDetails;
     }
 
+    /**************************************************************************/
+    /*  ACTIVE DEMANDS SECTION.                                               */
+    /**************************************************************************/
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public Long getAdminDemandsByItsStatusCount(
-        SearchDefinition searchDefinition, DemandStatus demandStatus) throws
+    public Long getAdminActiveDemandsCount(SearchDefinition searchDefinition) throws
         RPCException, ApplicationSecurityException {
         Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
-        search.addFilterEqual("status", demandStatus);
+        search.addFilterIn("status", Arrays.asList(
+            DemandStatus.ACTIVE, DemandStatus.OFFERED, DemandStatus.ASSIGNED, DemandStatus.PENDINGCOMPLETION));
         return (long) generalService.count(search);
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public List<AdminDemandDetail> getAdminDemandsByItsStatus(
-        DemandStatus demandStatus, SearchDefinition searchDefinition) throws
-        RPCException, ApplicationSecurityException {
+    public List<AdminDemandDetail> getAdminActiveDemands(SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
 
         Search search = searchConverter.convertToSource(Demand.class, searchDefinition);
-        search.addFilterEqual("status", demandStatus);
+        search.addFilterIn("status", Arrays.asList(
+            DemandStatus.ACTIVE, DemandStatus.OFFERED, DemandStatus.ASSIGNED, DemandStatus.PENDINGCOMPLETION));
 
         final List<Demand> demands = generalService.search(search);
         return adminDemandConverter.convertToTargetList(demands);
