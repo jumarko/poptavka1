@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
+import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -20,6 +21,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -94,6 +96,7 @@ public class SupplierCreationPresenter
      */
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
+        GATracker.trackPageview(Window.Location.getHref());
         Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Became Professional", null);
@@ -224,6 +227,7 @@ public class SupplierCreationPresenter
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                GATracker.trackEvent("SupplierCreation", "Registration");
                 if (canContinue(FOURTH_TAB_SERVICES)) {
                     LOGGER.fine("register him!");
                     view.getRegisterButton().setEnabled(false);
