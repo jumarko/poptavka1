@@ -192,8 +192,8 @@ public abstract class AbstractAdminPresenter
                         //detail will handle child presenter
                         //but on the other hand, there will be always the same scenario for admin demands
                         //and that is requertReservations....
-                        eventBus.requestConversation(
-                            selectedObject.getThreadRootId(), Storage.getUser().getUserId(), selectedObject.getUserId());
+                        eventBus.requestConversation(selectedObject.getThreadRootId(),
+                            Storage.getUser().getUserId(), selectedObject.getUserId());
 //                        initDetailSectionDemand(selectedObject);
                         eventBus.openDetail();
                     }

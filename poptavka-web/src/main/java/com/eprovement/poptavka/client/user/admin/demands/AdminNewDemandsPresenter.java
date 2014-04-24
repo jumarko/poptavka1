@@ -87,13 +87,6 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
                 //Sets Approve Btn visibility
                 view.getToolbar().getApproveBtn().setVisible(
                     (mode == AdminWidget.NEW_DEMANDS || mode == AdminWidget.ASSIGNED_DEMANDS) && isJustOneSelected);
-
-//                if (isJustOneSelected) {
-//                    //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
-//                    eventBus.requestConversation(
-////                        selectedObject.getThreadRootId(), selectedObject.getUserId(), Storage.getUser().getUserId());
-//                        selectedObject.getThreadRootId(), Storage.getUser().getUserId(), selectedObject.getUserId());
-//                }
             }
         });
     }
@@ -134,7 +127,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     public void onResponseCreateConversation(long threadRootId) {
 //        selectedObject.setThreadRootId(threadRootId);
 //        selectedObject.setSenderId(Storage.getUser().getUserId());
-        initDetailSectionConversation(selectedObject, threadRootId, Storage.getUser().getUserId());
+        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
 //        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
     }
 

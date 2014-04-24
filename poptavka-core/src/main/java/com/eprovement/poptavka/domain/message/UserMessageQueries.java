@@ -37,6 +37,7 @@ public interface UserMessageQueries {
         + "from UserMessage as userMessage \n"
         + "where userMessage.user.id = :userId"
         + " and userMessage.message.demand.status = :demandStatus"
+        //nemusim hladat max-send, staci root message
         + " and userMessage.message.parent is null";
 
     /**
@@ -48,7 +49,8 @@ public interface UserMessageQueries {
         + "from UserMessage as userMessage \n"
         + "where userMessage.user.id = :userId"
         + " and userMessage.message.demand.status = :demandStatus "
-        + " and userMessage.message.sent in " + UserMessageQueries.MAX_SENT + " \n"
+        + " and (userMessage.message.sent is null"
+        + "      OR userMessage.message.sent in " + UserMessageQueries.MAX_SENT + " )\n"
         + "group by userMessage.message.threadRoot.id";
 
     /**

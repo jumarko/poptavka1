@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.server.converter.admin;
 
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.server.converter.AbstractConverter;
 import com.eprovement.poptavka.server.converter.LocalityConverter;
 import com.eprovement.poptavka.service.message.MessageService;
@@ -30,7 +31,7 @@ public class AdminDemandConverter extends AbstractConverter<Demand, AdminDemandD
     public AdminDemandConverter(LocalityConverter localityConverter) {
         this.localityConverter = localityConverter;
     }
-    
+
     /**************************************************************************/
     /*  Convert To Target                                                     */
     /**************************************************************************/
@@ -45,7 +46,9 @@ public class AdminDemandConverter extends AbstractConverter<Demand, AdminDemandD
         detail.setCreated(source.getCreatedDate());
         detail.setDemandId(source.getId());
         detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
-        detail.setThreadRootId(messageService.getThreadRootMessage(source).getId());
+        Message threadRoot = messageService.getThreadRootMessage(source);
+        detail.setThreadRootId(threadRoot.getId());
+        detail.setSenderId(threadRoot.getSender().getId());
         detail.setDemandTitle(source.getTitle());
         detail.setValidTo(source.getValidTo());
         return detail;

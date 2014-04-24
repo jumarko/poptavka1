@@ -956,14 +956,16 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         unreadMessagesSearch.addField("id", Field.OP_COUNT);
         unreadMessagesSearch.setResultMode(Search.RESULT_SINGLE);
         UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
-        unreadMessagesDetail.setUnreadMessagesCount(((Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
+        unreadMessagesDetail.setUnreadMessagesCount(
+            ((Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
         Search unreadSystemMessagesSearch = new Search(UserMessage.class);
         unreadSystemMessagesSearch.addFilterNull("message.demand");
         unreadSystemMessagesSearch.addFilterEqual("isRead", false);
         unreadSystemMessagesSearch.addFilterEqual("user.id", userId.longValue());
         unreadSystemMessagesSearch.addField("id", Field.OP_COUNT);
         unreadSystemMessagesSearch.setResultMode(Search.RESULT_SINGLE);
-        unreadMessagesDetail.setUnreadSystemMessageCount(((Long) generalService.searchUnique(unreadSystemMessagesSearch)).intValue());
+        unreadMessagesDetail.setUnreadSystemMessageCount(
+            ((Long) generalService.searchUnique(unreadSystemMessagesSearch)).intValue());
         return unreadMessagesDetail;
     }
 
