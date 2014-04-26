@@ -33,7 +33,12 @@ body {
 }
 
 a {
+    color:#237E00;
     cursor: pointer;
+}
+
+a:hover {
+    color:#237E00;
 }
 
 /**

@@ -16,7 +16,7 @@
                 </b:Heading>
             </b:Column>
 
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="companyNameColumn">
                 <g:Label styleName='{res.details.detailBlockLabel}'>
                     <ui:msg key="formComapanyName">Company name: </ui:msg>
                 </g:Label>
@@ -44,11 +44,11 @@
                 <g:Label ui:field="certified" />
             </b:Column>
 
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="websiteColumn">
                 <g:Label styleName='{res.details.detailBlockLabel}'>
                     <ui:msg key="formWebsite">Website:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="website" />
+                </g:Label>                
+                <g:Anchor ui:field="website" />
             </b:Column>
         </b:FluidRow>
 
