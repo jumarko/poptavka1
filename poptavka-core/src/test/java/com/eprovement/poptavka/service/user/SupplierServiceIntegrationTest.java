@@ -259,7 +259,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         // check if new supplier has also all supplier notifications set to the sensible values
         assertNotNull(createdSupplier.getBusinessUser().getSettings());
         assertThat("Unexpected count of notifications",
-                createdSupplier.getBusinessUser().getSettings().getNotificationItems().size(), is(6));
+                createdSupplier.getBusinessUser().getSettings().getNotificationItems().size(), is(7));
         checkNotifications(createdSupplier, Registers.Notification.NEW_DEMAND, Registers.Notification.NEW_MESSAGE,
                 Registers.Notification.NEW_INFO, Registers.Notification.NEW_MESSAGE_OPERATOR,
                 Registers.Notification.OFFER_STATUS_CHANGED);

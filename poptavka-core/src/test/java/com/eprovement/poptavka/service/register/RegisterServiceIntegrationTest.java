@@ -3,6 +3,9 @@
  */
 package com.eprovement.poptavka.service.register;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
 import com.eprovement.poptavka.base.integration.DataSet;
 import com.eprovement.poptavka.domain.product.Service;
@@ -11,7 +14,6 @@ import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import java.util.List;
 import org.hamcrest.core.Is;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,8 +26,8 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllValuesForRegister() {
         final List<Notification> allNotifications = this.registerService.getAllValues(Notification.class);
-        Assert.assertNotNull(allNotifications);
-        Assert.assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(9));
+        assertNotNull(allNotifications);
+        assertThat("Unexpected count of notifications", allNotifications.size(), Is.is(11));
     }
 
     @Test
@@ -39,8 +41,8 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     private <T extends Register> void checkRegister(T register, long expectedId, String expectedCode) {
-        Assert.assertNotNull(register);
-        Assert.assertThat("Unexpected register found", register.getId(), Is.is(expectedId));
-        Assert.assertThat("Unexpected register's code found", register.getCode(), Is.is(expectedCode));
+        assertNotNull(register);
+        assertThat("Unexpected register found", register.getId(), Is.is(expectedId));
+        assertThat("Unexpected register's code found", register.getCode(), Is.is(expectedCode));
     }
 }

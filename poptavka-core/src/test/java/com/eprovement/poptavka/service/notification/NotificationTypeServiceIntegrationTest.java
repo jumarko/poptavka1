@@ -33,13 +33,15 @@ public class NotificationTypeServiceIntegrationTest extends DBUnitIntegrationTes
     @Test
     public void testGetNotificationsForClient() throws Exception {
         checkNotifications(notificationTypeService.getNotificationsForClient(),
-                "new.message.operator", "new.info", "new.message", "new.offer", "demand.status.changed");
+                "new.message.operator", "new.info", "new.message", "new.offer", "demand.status.changed",
+                "external.client");
     }
 
     @Test
     public void testGetNotificationsForSupplier() throws Exception {
         checkNotifications(notificationTypeService.getNotificationsForSupplier(),
-                "new.message.operator", "new.info", "new.message", "new.demand", "offer.status.changed");
+                "new.message.operator", "new.info", "new.message", "new.demand", "offer.status.changed",
+                "external.supplier");
     }
 
 
