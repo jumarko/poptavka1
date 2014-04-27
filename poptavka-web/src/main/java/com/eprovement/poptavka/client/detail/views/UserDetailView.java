@@ -50,7 +50,7 @@ public class UserDetailView extends Composite {
     @UiField HTMLPanel categoryPanel, localityPanel;
     @UiField FluidRow invoiceRow, addressBlock;
     @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn,
-            companyNameColumn, websiteColumn;
+    companyNameColumn, websiteColumn, firstNameColumn, lastNameColumn;
     @UiField Label overalRating, description, email, companyName, taxId, identificationNumber,
     firstName, lastName, phone, street, city, zipCode, certified, businessType;
     @UiField Anchor website;
@@ -133,8 +133,20 @@ public class UserDetailView extends Composite {
             companyNameColumn.setVisible(true);
         }
         identificationNumber.setText(detail.getUserData().getIdentificationNumber());
-        firstName.setText(detail.getUserData().getPersonFirstName());
-        lastName.setText(detail.getUserData().getPersonLastName());
+        if ("UNKNOWN".equals(detail.getUserData().getPersonFirstName())) {
+            firstNameColumn.setVisible(false);
+        } else {
+            firstName.setText(detail.getUserData().getPersonFirstName());
+            firstNameColumn.setVisible(true);
+        }
+
+        if ("UNKNOWN".equals(detail.getUserData().getPersonLastName())) {
+            lastNameColumn.setVisible(false);
+        } else {
+            lastName.setText(detail.getUserData().getPersonLastName());
+            lastNameColumn.setVisible(true);
+        }
+
         phone.setText(detail.getUserData().getPhone());
 
         if ("".equals(detail.getUserData().getWebsite())) {

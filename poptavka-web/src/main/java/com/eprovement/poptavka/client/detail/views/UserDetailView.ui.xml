@@ -117,13 +117,13 @@
                     <ui:msg key="formDetailInfo">Detail info: </ui:msg>
                 </b:Heading>
             </b:Column>
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="firstNameColumn">
                 <g:Label styleName='{res.details.detailBlockLabel}'>
                     <ui:msg key="formFirstName">First name:</ui:msg>
                 </g:Label>
                 <g:Label ui:field="firstName" />
             </b:Column>
-            <b:Column size='12'>
+            <b:Column size='12' ui:field="lastNameColumn">
                 <g:Label styleName='{res.details.detailBlockLabel}'>
                     <ui:msg key="formLastName">Last name: </ui:msg>
                 </g:Label>
