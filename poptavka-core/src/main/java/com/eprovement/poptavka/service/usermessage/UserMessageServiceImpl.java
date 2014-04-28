@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ivan.vlcek
  */
 public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, UserMessageDao>
-        implements UserMessageService {
+    implements UserMessageService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserMessageServiceImpl.class);
     private GeneralService generalService;
@@ -70,7 +70,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public List<UserMessage> getUserMessages(List<Message> messages,
-            User user, MessageFilter messageFilter) {
+        User user, MessageFilter messageFilter) {
         return getDao().getUserMessages(messages, user, messageFilter);
     }
 
@@ -91,17 +91,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public int getPotentialDemandsCount(BusinessUser supplier) {
         Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
-                supplier.getId());
+            supplier.getId());
 
 //        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
 //        final Search potentialDemandsSearch = new Search(UserMessage.class);
 //        potentialDemandsSearch.addFilterEqual("supplier", supplier);
 //        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
 //        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-
         final long potentialDemandsCount = getDao().getPotentialDemandsCount(supplier);
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
-                supplier, potentialDemandsCount);
+            supplier, potentialDemandsCount);
         return (int) potentialDemandsCount;
     }
 
@@ -116,17 +115,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public List<UserMessage> getPotentialDemands(BusinessUser supplier) {
         Preconditions.checkNotNull("Supplier must be specified for finding potential demands", supplier);
         Preconditions.checkNotNull("Supplier's user id must be specified for finding potential demands",
-                supplier.getId());
+            supplier.getId());
 
 //        LOGGER.debug("action=get_potential_demands_supplier status=start supplier{}", supplier);
 //        final Search potentialDemandsSearch = new Search(UserMessage.class);
 //        potentialDemandsSearch.addFilterEqual("supplier", supplier);
 //        potentialDemandsSearch.addFilterEqual("roleType", MessageUserRoleType.TO);
 //        potentialDemandsSearch.addFilterEqual("messageContext", MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
-
         final List<UserMessage> potentialDemands = getDao().getPotentialDemands(supplier);
         LOGGER.debug("action=get_potential_demands_supplier status=finish supplier{} potential_demands_size={}",
-                supplier, potentialDemands.size());
+            supplier, potentialDemands.size());
         return potentialDemands;
     }
 
@@ -148,7 +146,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{}", supplier);
             final List<UserMessage> potentialDemands = Searcher.searchCollection(getPotentialDemands(supplier), search);
             LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{} "
-                    + "potential_demands_size={}", supplier, potentialDemands.size());
+                + "potential_demands_size={}", supplier, potentialDemands.size());
             return potentialDemands.size();
 
         } catch (SearcherException ex) {
@@ -171,7 +169,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
             LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{}", supplier);
             final List<UserMessage> potentialDemands = Searcher.searchCollection(getPotentialDemands(supplier), search);
             LOGGER.debug("action=get_potential_demands_supplier_search status=start supplier{} "
-                    + "potential_demands_size={}", supplier, potentialDemands.size());
+                + "potential_demands_size={}", supplier, potentialDemands.size());
             return potentialDemands;
 
         } catch (SearcherException ex) {
@@ -185,7 +183,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     public List<UserMessage> getInbox(User user) {
         Preconditions.checkNotNull("User must be specified.", user);
         Preconditions.checkNotNull("User's user id must be specified.",
-                user.getId());
+            user.getId());
         return getDao().getInbox(user);
     }
 
@@ -204,13 +202,12 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         return Collections.EMPTY_LIST;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<UserMessage> getSentItems(User user) {
         Preconditions.checkNotNull("User must be specified.", user);
         Preconditions.checkNotNull("User's user id must be specified.",
-                user.getId());
+            user.getId());
         return getDao().getSentItems(user);
     }
 
@@ -257,9 +254,9 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getSupplierConversationsWithOffer(BusinessUser user,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithOffer(user),
-                search);
+            search);
     }
 
     /** {@inheritDoc} */
@@ -290,7 +287,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getSupplierConversationsWithAcceptedOffer(BusinessUser user,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithAcceptedOffer(user), search);
     }
 
@@ -306,7 +303,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, Integer> getSupplierConversationsWithClosedDemands(BusinessUser user,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getSupplierConversationsWithClosedDemands(user), search);
     }
 
@@ -314,7 +311,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            BusinessUser user, Demand demand) {
+        BusinessUser user, Demand demand) {
         return getDao().getClientConversationsWithoutOffer(user, demand);
     }
 
@@ -322,7 +319,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithoutOffer(
-            BusinessUser user, Demand demand, Search search) {
+        BusinessUser user, Demand demand, Search search) {
         return Searcher.searchMapByKeys(getClientConversationsWithoutOffer(user, demand), search);
     }
 
@@ -330,7 +327,7 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
-            BusinessUser user, Demand demand) {
+        BusinessUser user, Demand demand) {
         return getDao().getClientConversationsWithOffer(user, demand);
     }
 
@@ -338,16 +335,16 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
-            BusinessUser user, Demand demand, Search search) {
+        BusinessUser user, Demand demand, Search search) {
         return Searcher.searchMapByKeys(getDao().getClientConversationsWithOffer(
-                user, demand), search);
+            user, demand), search);
     }
 
     /** {@inheritDoc} */
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
-            BusinessUser user, Demand demand, OfferState offerState) {
+        BusinessUser user, Demand demand, OfferState offerState) {
         return getDao().getClientConversationsWithOffer(user, demand, offerState);
     }
 
@@ -355,9 +352,9 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     @Override
     @Transactional(readOnly = true)
     public Map<UserMessage, ClientConversation> getClientConversationsWithOffer(
-            BusinessUser user, Demand demand, OfferState offerState, Search search) {
+        BusinessUser user, Demand demand, OfferState offerState, Search search) {
         return Searcher.searchMapByKeys(getDao().getClientConversationsWithOffer(
-                user, demand, offerState), search);
+            user, demand, offerState), search);
     }
 
     /** {@inheritDoc} */
@@ -377,17 +374,29 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
     /** {@inheritDoc} */
     @Override
     public Map<UserMessage, ClientConversation> getClientConversationsWithAcceptedOffer(BusinessUser user,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getDao().getClientConversationsWithAcceptedOffer(
-                user), search);
+            user), search);
     }
 
     /** {@inheritDoc} */
     @Override
     public Map<UserMessage, ClientConversation> getClientConversationsWithClosedOffer(BusinessUser user,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getDao().getClientConversationsWithClosedOffer(
-                user), search);
+            user), search);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Long getAdminNewDemandsCount() {
+        return getDao().getAdminNewDemandsCount();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public List<Demand> getAdminNewDemands(int start, int limit) {
+        return getDao().getAdminNewDemands(start, limit);
     }
 
     /** {@inheritDoc} */
@@ -440,8 +449,8 @@ public class UserMessageServiceImpl extends GenericServiceImpl<UserMessage, User
         final HashMap<User, List<UserMessage>> userMessagesGroupedByUser = new HashMap<>();
         for (UserMessage userMessage : userMessagesToBeNotified) {
             final List<UserMessage> userMessages = userMessagesGroupedByUser.containsKey(userMessage.getUser())
-                    ? userMessagesGroupedByUser.get(userMessage.getUser())
-                    : new ArrayList<UserMessage>();
+                ? userMessagesGroupedByUser.get(userMessage.getUser())
+                : new ArrayList<UserMessage>();
             userMessages.add(userMessage);
             userMessagesGroupedByUser.put(userMessage.getUser(), userMessages);
         }

@@ -39,6 +39,7 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.Timer;
@@ -471,6 +472,9 @@ public interface RootEventBus extends EventBusWithLookup {
 
     @Event(forwardToModules = DetailModule.class)
     void allowSendingOffer();
+
+    @Event(forwardToModules = DetailModule.class)
+    void registerQuestionSubmitHandler(ClickHandler handler);
 
     /**
      * Create professional and create project user registration tab height

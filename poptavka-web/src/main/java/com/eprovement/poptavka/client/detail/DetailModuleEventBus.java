@@ -13,6 +13,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -58,6 +59,9 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
 
     @Event(handlers = DetailModulePresenter.class)
     void resize(int detailModuleTab);
+
+    @Event(handlers = DetailModulePresenter.class)
+    void registerQuestionSubmitHandler(ClickHandler handler);
 
     /**************************************************************************/
     /* Business events handled by DetailModulePresenter - init methods        */

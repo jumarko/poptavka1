@@ -12,7 +12,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.FinishDateColumn.
 import com.eprovement.poptavka.client.user.widget.grid.columns.OfferReceivedDateColumn.TableDisplayOfferReceivedDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ import java.util.Date;
  * @author ivlcek, Martin Slavkovsky
  */
 public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
-    TableDisplayDetailModule, TableDisplayOfferReceivedDate, TableDisplayFinishDate,
+    TableDisplayDetailModuleClient, TableDisplayOfferReceivedDate, TableDisplayFinishDate,
     TableDisplayDemandTitle, TableDisplayPrice, TableDisplayRating, TableDisplayDisplayName,
     TableDisplayUserMessage {
 
@@ -34,8 +34,8 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     private long demandId;
     private long offerId;
     private long threadRootId;
-    private long userId;
-    private long supplierUserId;
+    private long clientId;
+    private long supplierId;
     private long userMessageId;
     private boolean isStarred;
     private boolean isRead;
@@ -48,8 +48,8 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     private long senderId;
     private String title;
     //Keyprovider
-    public static final ProvidesKey<SupplierOffersDetail> KEY_PROVIDER =
-        new ProvidesKey<SupplierOffersDetail>() {
+    public static final ProvidesKey<SupplierOffersDetail> KEY_PROVIDER
+        = new ProvidesKey<SupplierOffersDetail>() {
             @Override
             public Object getKey(SupplierOffersDetail item) {
                 return item == null ? null : item.getOfferId();
@@ -115,15 +115,15 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     }
 
     /**
-     * Supplier id pair.
+     * Client id pair.
      */
     @Override
-    public long getUserId() {
-        return userId;
+    public long getClientId() {
+        return clientId;
     }
 
-    public void setUserId(long supplierId) {
-        this.userId = supplierId;
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
     }
 
     /**
@@ -258,14 +258,23 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
         this.isRead = isRead;
     }
 
+    @Override
+    public long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSenderId(long senderId) {
+        this.senderId = senderId;
+    }
+
     /**
      * To string method.
      */
     @Override
     public String toString() {
         return "ClientOfferedDemandOffersDetail{" + "demandId=" + demandId + ", offerId=" + offerId
-            + ", threadRootId=" + threadRootId + ", supplierId=" + userId + ", supplierUserId="
-            + supplierUserId + ", isStarred=" + isStarred + ", supplierName="
+            + ", threadRootId=" + threadRootId + ", supplierId=" + clientId + ", supplierUserId="
+            + supplierId + ", isStarred=" + isStarred + ", supplierName="
             + displayName + ", price=" + price + ", rating=" + rating + ", receivedDate=" + receivedDate
             + ", deliveryDate=" + finishDate + ", messageCount=" + messagesCount + ", isRead="
             + isRead + '}';

@@ -59,6 +59,8 @@ public class AdminToolbarView extends Composite implements IsWidget {
      */
     public void bindPager(UniversalAsyncGrid table) {
         pager.setDisplay(table);
+        pager.getPager().setPage(0);
+        pager.getPager().startLoading();
     }
 
     /**

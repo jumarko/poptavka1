@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.EndDateColumn.Tab
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
+import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleSupplier;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  */
 public class ClientDemandDetail implements IsSerializable,
-    TableDisplayDemandTitle, TableDisplayDetailModule,
+    TableDisplayDemandTitle, TableDisplayDetailModuleSupplier,
     TableDisplayDemandStatus, TableDisplayEndDate, TableDisplayValidTo,
     TableDisplayPrice {
 
@@ -156,7 +156,7 @@ public class ClientDemandDetail implements IsSerializable,
     }
 
     @Override
-    public long getUserId() {
+    public long getSupplierId() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

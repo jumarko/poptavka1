@@ -212,7 +212,8 @@
         <!--<module name="DesignForExtension"/>-->
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
-        <module name="InterfaceIsType"/>
+        <!--Martin 23.4.2014 commented - doesn't allow constants in interfaces-->
+        <!--<module name="InterfaceIsType"/>-->
         <module name="VisibilityModifier">
             <property name="packageAllowed" value="true"/>
             <property name="protectedAllowed" value="true"/>

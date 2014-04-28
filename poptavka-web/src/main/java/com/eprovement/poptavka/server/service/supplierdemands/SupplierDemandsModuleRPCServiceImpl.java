@@ -157,7 +157,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
         for (UserMessage um : latestUserMessagesWithCount.keySet()) {
             SupplierPotentialDemandDetail detail = new SupplierPotentialDemandDetail();
             // Client part
-            detail.setUserId(um.getMessage().getDemand().getClient().getId());
+            detail.setClientId(um.getMessage().getDemand().getClient().getId());
             detail.setSenderId(um.getMessage().getThreadRoot().getSender().getId());
             detail.setOveralRating(um.getMessage().getDemand().getClient().getOveralRating());
             // Message part
@@ -223,7 +223,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
             // TODO LATER ivlcek - refactor and create converter
             // client part
-            sod.setUserId(offer.getDemand().getClient().getId());
+            sod.setClientId(offer.getDemand().getClient().getId());
             sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // Client name can be displayed because it contrains only contact person name
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
@@ -295,7 +295,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
             // TODO LATER ivlcek - refactor and create converter
             // client part
-            sod.setUserId(offer.getDemand().getClient().getId());
+            sod.setClientId(offer.getDemand().getClient().getId());
             sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());
             sod.setSenderId(latestUserMessage.getMessage().getThreadRoot().getSender().getId());
@@ -372,7 +372,7 @@ public class SupplierDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServ
 
             // TODO LATER ivlcek - refactor and create converter
             // supplier part
-            sod.setUserId(offer.getDemand().getClient().getId());
+            sod.setClientId(offer.getDemand().getClient().getId());
             sod.setOveralRating(offer.getDemand().getClient().getOveralRating());
             // client part
             sod.setDisplayName(offer.getDemand().getClient().getBusinessUser().getBusinessUserData().getDisplayName());

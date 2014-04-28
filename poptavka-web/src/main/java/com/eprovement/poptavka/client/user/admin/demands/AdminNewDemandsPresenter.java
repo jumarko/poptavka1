@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
-import com.eprovement.poptavka.shared.domain.TableDisplayDetailModule;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -33,17 +32,24 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private AdminWidget mode;
-
+//    private AdminWidget mode;
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
     /**
      * Inits AdminDemands in New Demands mode.
      */
-    public void onInitNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
+    public void onInitNewDemands(final SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_NEW_DEMANDS);
         initAbstractPresenter(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+        eventBus.registerQuestionSubmitHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                //Need to load again, cause I need replied demand to dissapear from new demands
+                eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+            }
+        });
     }
 
     /**
@@ -88,13 +94,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (mode == AdminWidget.NEW_DEMANDS && view.getSelectedObjects().size() == 1) {
-                    view.getToolbar().getApproveBtn().setVisible(view.getSelectedObjects().size() == 1);
-                }
-                view.getToolbar().getCreateConversationBtn().setVisible(false);
-                //  Request for conversation, if doesn't exist yet, create conversation feature will be allowed.
-                eventBus.requestConversation(
-                    selectedObject.getThreadRootId(), selectedObject.getSenderId(), Storage.getUser().getUserId());
+                boolean isJustOneSelected = view.getSelectedObjects().size() == 1;
+                //Sets Approve Btn visibility
+                view.getToolbar().getApproveBtn().setVisible(
+                    (mode == AdminWidget.NEW_DEMANDS || mode == AdminWidget.ASSIGNED_DEMANDS) && isJustOneSelected);
             }
         });
     }
@@ -112,8 +115,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         view.getToolbar().getCreateConversationBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.requestCreateConversation(
-                    ((TableDisplayDetailModule) view.getSelectedObjects().iterator().next()).getDemandId());
+                eventBus.requestCreateConversation(selectedObject.getDemandId(), Storage.getUser().getUserId());
             }
         });
     }
@@ -134,7 +136,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * @param threadRootId
      */
     public void onResponseCreateConversation(long threadRootId) {
-        initDetailSectionConversation((TableDisplayDetailModule) view.getSelectedObjects().iterator().next());
+//        selectedObject.setThreadRootId(threadRootId);
+//        selectedObject.setSenderId(Storage.getUser().getUserId());
+        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
+//        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
     }
 
     /**
@@ -145,9 +150,19 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     public void onResponseConversation(List<MessageDetail> chatMessages) {
         if (chatMessages.isEmpty()) {
             view.getToolbar().getCreateConversationBtn().setVisible(chatMessages.isEmpty());
+            initDetailSectionDemand(selectedObject);
         } else {
-            initDetailSectionConversation((TableDisplayDetailModule) view.getSelectedObjects().iterator().next());
+            initDetailSectionConversation(selectedObject);
         }
+    }
+
+    /**
+     * Refresh table and disable approve and createConversation btns.
+     */
+    public void onResponseApproveDemands() {
+        view.getTable().refresh();
+        view.getToolbar().getApproveBtn().setVisible(false);
+        view.getToolbar().getCreateConversationBtn().setVisible(false);
     }
 
     /**************************************************************************/

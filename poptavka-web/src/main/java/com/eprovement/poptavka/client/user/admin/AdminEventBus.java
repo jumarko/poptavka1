@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.user.admin;
 
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.client.user.admin.interfaces.HandleAdminResizeEvent;
@@ -38,7 +38,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
 import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.NewDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -66,7 +65,7 @@ import java.util.Set;
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway,
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway,
         InfoWidgetsGateway {
 
     /**
@@ -319,7 +318,10 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     void responseUpdateDemands(Boolean result);
 
     @Event(handlers = AdminHandler.class)
-    void requestApproveDemands(UniversalAsyncGrid grid, Set<NewDemandDetail> demandsToApprove);
+    void requestApproveDemands(UniversalAsyncGrid grid, Set<AdminDemandDetail> demandsToApprove);
+
+    @Event(handlers = AdminNewDemandsPresenter.class)
+    void responseApproveDemands();
 
     /**************************************************************************/
     /* Business events handled by New Admin presenter                         */
@@ -331,7 +333,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
      * @param supplierDetail
      */
     @Event(handlers = AdminHandler.class)
-    void requestCreateConversation(long demandId);
+    void requestCreateConversation(long demandId, long userId);
 
     @Event(handlers = AdminNewDemandsPresenter.class)
     void responseCreateConversation(long threadRootId);

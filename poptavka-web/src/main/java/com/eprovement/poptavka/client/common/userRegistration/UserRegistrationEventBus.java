@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.common.userRegistration;
 
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.AddressSelectorGateway;
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
@@ -22,7 +22,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Events(startPresenter = UserRegistrationPresenter.class, module = UserRegistrationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface UserRegistrationEventBus extends EventBusWithLookup,
-        DetailModuleGateway, AddressSelectorGateway {
+        IDetailModule.Gateway, AddressSelectorGateway {
 
     /**
      * Start event is called only when module is instantiated first time.

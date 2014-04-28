@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.enums.OfferStateType;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.message.UserMessageQueries;
 import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
@@ -94,11 +95,30 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
      * {@inheritDoc}
      */
     @Override
+    public Long getAdminNewDemandsCount() {
+        return (Long) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT_NAME).getSingleResult();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Demand> getAdminNewDemands(int start, int limit) {
+        return (List<Demand>) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS_NAME)
+            .setFirstResult(start)
+            .setMaxResults(limit)
+            .getResultList();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public long getAdminConversationsWithDemandStatusCount(long adminId, DemandStatus status) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("userId", adminId);
         queryParams.put("demandStatus", status);
-        return (Long) runNamedQueryForSingleResult("getAdminAssignedDemandsByItsStateCount", queryParams);
+        return (Long) runNamedQueryForSingleResult(UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT_NAME, queryParams);
     }
 
     /**
@@ -110,7 +130,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         queryParams.put("userId", adminId);
         queryParams.put("demandStatus", status);
         List<Object[]> unread = runNamedQuery(
-                "getAdminAssignedDemandsByItsState",
+                UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_NAME,
                 queryParams);
         Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {

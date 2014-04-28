@@ -406,6 +406,8 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
      */
     int getClientConversationsWithOfferCount(BusinessUser user, Demand demand);
 
+    Long getAdminNewDemandsCount();
+    List<Demand> getAdminNewDemands(int start, int limit);
     /**
      * @see com.eprovement.poptavka.dao.usermessage.UserMessageDao#getAdminConversationsWithDemandStatusCount
      */

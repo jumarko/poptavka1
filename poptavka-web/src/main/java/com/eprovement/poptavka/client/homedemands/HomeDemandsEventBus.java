@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -31,7 +31,7 @@ import java.util.List;
 @Events(startPresenter = HomeDemandsPresenter.class, module = HomeDemandsModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway {
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway {
 
     /**************************************************************************/
     /* General Module events                                                  */
