@@ -214,7 +214,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      * @return list of addresses
      */
     private List<Address> getAddressesFromSupplierCityName(BusinessUserDetail supplier) {
-        final List<Address> addresses = new ArrayList<>();
+        final List<Address> addresses = new ArrayList<Address>();
         for (AddressDetail detail : supplier.getAddresses()) {
             //Ziskaj mesto typu Locality (String -> Locality)
             final Locality cityLoc = generalService.find(Locality.class, detail.getCityId());

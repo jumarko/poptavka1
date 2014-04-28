@@ -3,7 +3,15 @@ package com.eprovement.poptavka.client.root.interfaces;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public interface IRoot {
+public interface IRootModule {
+
+    String CUSTOM_TOKEN = "view";
+    String UNSUBSCRIBE_TOKEN = "unsubscribe";
+
+    public interface Handler {
+
+        void onUnsubscribeUser(String password);
+    }
 
     public interface Presenter extends HandleResizeEvent {
     }

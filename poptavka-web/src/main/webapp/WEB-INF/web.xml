@@ -114,6 +114,15 @@
     Mapping an RPC service defined in handler-servlet.xml
     -->
     <servlet>
+        <servlet-name>RootRPCService</servlet-name>
+        <servlet-class>com.eprovement.poptavka.server.service.root.RootRPCServiceImpl</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RootRPCService</servlet-name>
+        <url-pattern>/poptavka/service/root</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>SimpleRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.simpleservice.SimpleRPCServiceImpl</servlet-class>
     </servlet>

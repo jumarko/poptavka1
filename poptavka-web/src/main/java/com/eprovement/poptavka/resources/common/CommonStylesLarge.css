@@ -869,6 +869,15 @@ button.button-green {
     color: #ff0b0b !important;
 }
 
+/******************************************************************************/
+/*  Unsubscribe styles                                                        */
+/******************************************************************************/
+.unsubscribe-container {
+    max-width: 1000px;
+    margin: 50px auto 20px;
+    text-align: center;
+}
+
 /* IE fixes for validation container */
 @if user.agent ie8 ie9 ie10 { 
     .validation-container .well input[type="text"],

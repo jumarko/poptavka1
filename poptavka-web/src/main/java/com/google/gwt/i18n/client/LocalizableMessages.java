@@ -49,6 +49,13 @@ public interface LocalizableMessages extends Messages {
     String commonBtnSignUp();
     String commonBtnSubmit();
     String commonBtnQuestion();
+    String commonBtnUnsubscribe();
+
+    /** Unsubscribe. **/
+    String unsubscribeToolbar();
+    String unsubscribeTitle();
+    String unsubscribeDesc();
+    String unsubscribeSuccessfull();
 
     /** Tooltips. **/
     String tooltipAccept();
