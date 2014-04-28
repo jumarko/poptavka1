@@ -169,6 +169,14 @@ public class DetailModulePresenter
     }
 
     /**
+     * Register additional submit click handler to question offer window.
+     * @param handler
+     */
+    public void onRegisterQuestionSubmitHandler(ClickHandler handler) {
+        view.getReplyHolder().getSubmitBtn().addClickHandler(handler);
+    }
+
+    /**
      * Request for detail for particular tab.
      * If tab is selected, request for tab detail object.
      */

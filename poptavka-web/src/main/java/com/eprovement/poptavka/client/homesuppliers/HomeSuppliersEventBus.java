@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
@@ -31,7 +31,7 @@ import java.util.List;
 @Events(startPresenter = HomeSuppliersPresenter.class, module = HomeSuppliersModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway {
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway {
 
     /**
      * Start event is called only when module is instantiated first time.

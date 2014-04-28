@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.clientdemands.interfaces.HandleClientResizeEvent;
@@ -41,7 +41,7 @@ import java.util.List;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
 public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway, ActionBoxGateway {
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway, ActionBoxGateway {
 
     /**************************************************************************/
     /* General Module events                                                  */

@@ -9,13 +9,16 @@ import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWi
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,9 +39,17 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /**
      * Inits AdminDemands in New Demands mode.
      */
-    public void onInitNewDemands(SearchModuleDataHolder searchModuleDataHolder) {
+    public void onInitNewDemands(final SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_NEW_DEMANDS);
         initAbstractPresenter(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+        eventBus.registerQuestionSubmitHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                //Need to load again, cause I need replied demand to dissapear from new demands
+                eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+            }
+        });
     }
 
     /**
@@ -170,7 +181,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             .addColumnLocality(textFieldUpdater)
             .addColumnUrgency()
             .addSelectionModel(new MultiSelectionModel(), AdminDemandDetail.KEY_PROVIDER)
-            //            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
             .addRowStyles(rowStyles)
             .build();
     }

@@ -3,8 +3,8 @@
  */
 package com.eprovement.poptavka.client.user.admin;
 
-import com.eprovement.poptavka.client.root.gateways.DetailModuleGateway;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.client.user.admin.interfaces.HandleAdminResizeEvent;
@@ -65,7 +65,7 @@ import java.util.Set;
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, DetailModuleGateway, CatLocSelectorGateway,
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway,
         InfoWidgetsGateway {
 
     /**
