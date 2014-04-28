@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.root;
 
 import com.eprovement.poptavka.client.root.footer.texts.FooterInfo.FooterInfoViews;
+import com.eprovement.poptavka.client.root.interfaces.IRootModule;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
@@ -31,6 +32,10 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
         return param;
     }
 
+    public String onCreateUnsubscribeToken() {
+        return "";
+    }
+
     /**
      * Converts URL tokens thant belongs to root module and fires appripriate action.
      * <b><i>Note:</i></b>
@@ -44,17 +49,26 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
      */
     @Override
     public void convertFromToken(String historyName, String param, RootEventBus eventBus) {
+        //Neviem preco sa vola na zaciatku
         eventBus.setHistoryStoredForNextOne(false);
-        if (FooterInfoViews.ABOUT_US.getValue().equals(param)) {
-            eventBus.displayAboutUs();
-        } else if (FooterInfoViews.FAQ.getValue().equals(param)) {
-            eventBus.displayFaq();
-        } else if (FooterInfoViews.PRIVACY_POLICY.getValue().equals(param)) {
-            eventBus.displayPrivacyPolicy();
-        } else if (FooterInfoViews.TERMS_AND_CONDITIONS.getValue().equals(param)) {
-            eventBus.displayTermsAndConditions();
+        if (historyName.equals(IRootModule.UNSUBSCRIBE_TOKEN)) {
+            if (param != null) {
+                eventBus.initUnsubscribe(param.split("=")[1]);
+            } else {
+                eventBus.goToHomeWelcomeModule();
+            }
         } else {
-            eventBus.goToHomeWelcomeModule();
+            if (FooterInfoViews.ABOUT_US.getValue().equals(param)) {
+                eventBus.displayAboutUs();
+            } else if (FooterInfoViews.FAQ.getValue().equals(param)) {
+                eventBus.displayFaq();
+            } else if (FooterInfoViews.PRIVACY_POLICY.getValue().equals(param)) {
+                eventBus.displayPrivacyPolicy();
+            } else if (FooterInfoViews.TERMS_AND_CONDITIONS.getValue().equals(param)) {
+                eventBus.displayTermsAndConditions();
+            } else {
+                eventBus.goToHomeWelcomeModule();
+            }
         }
     }
 

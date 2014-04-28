@@ -136,4 +136,7 @@ public interface CommonStyles extends CssResource {
 
     @ClassName("condition-panel")
     String conditionPanel();
+
+    @ClassName("unsubscribe-container")
+    String unsubscribeContainer();
 }

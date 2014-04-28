@@ -12,7 +12,7 @@ import com.mvp4g.client.presenter.BasePresenter;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
-import com.eprovement.poptavka.client.root.interfaces.IRoot;
+import com.eprovement.poptavka.client.root.interfaces.IRootModule;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -28,8 +28,8 @@ import com.google.gwt.user.client.Window;
  * @author Mato
  */
 @Presenter(view = RootView.class)
-public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
-    implements IRoot.Presenter {
+public class RootPresenter extends BasePresenter<IRootModule.View, RootEventBus>
+    implements IRootModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -58,6 +58,7 @@ public class RootPresenter extends BasePresenter<IRoot.View, RootEventBus>
         if (History.getToken().isEmpty()) {
             GWT.log("++++++++++++++++++++++++++++NORMAL START OF APP");
             // normal start of app
+            eventBus.createUnsubscribeToken();
             eventBus.goToHomeWelcomeModule();
             Storage.setAppCalledByURL(false);
         } else {

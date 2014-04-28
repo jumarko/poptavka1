@@ -23,7 +23,9 @@ import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.header.menu.MenuPresenter;
 import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
+import com.eprovement.poptavka.client.root.interfaces.IRootModule;
 import com.eprovement.poptavka.client.root.toolbar.ToolbarPresenter;
+import com.eprovement.poptavka.client.root.unsubscribe.UnsubscribePresenter;
 import com.eprovement.poptavka.client.serviceSelector.ServiceSelectorModule;
 import com.eprovement.poptavka.client.user.admin.AdminModule;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
@@ -173,8 +175,23 @@ public interface RootEventBus extends EventBusWithLookup {
     /**************************************************************************/
     /* History events.                                                        */
     /**************************************************************************/
-    @Event(historyConverter = RootHistoryConverter.class, name = "view")
+    @Event(historyConverter = RootHistoryConverter.class, name = IRootModule.CUSTOM_TOKEN)
     void createCustomToken(String param);
+
+    @Event(historyConverter = RootHistoryConverter.class, name = IRootModule.UNSUBSCRIBE_TOKEN)
+    void createUnsubscribeToken();
+
+    /**************************************************************************/
+    /* Unsubscribe                                                            */
+    /**************************************************************************/
+    @Event(handlers = UnsubscribePresenter.class)
+    void initUnsubscribe(String password);
+
+    @Event(handlers = RootHandler.class)
+    void unsubscribeUser(String password);
+
+    @Event(handlers = UnsubscribePresenter.class)
+    void responseUnsubscribe(Boolean result);
 
     /**************************************************************************/
     /* Navigation events - Home menu control section                          */
