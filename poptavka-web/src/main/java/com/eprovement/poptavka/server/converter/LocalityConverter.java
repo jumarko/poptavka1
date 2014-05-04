@@ -67,6 +67,10 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(locality));
         detail.setLevel(locality.getLevel());
         detail.setLeaf(locality.isLeaf());
+        Locality localityParent = locality.getParent();
+        if (localityParent != null) {
+            detail.setParentName(localityParent.getName());
+        }
         return detail;
 
     }

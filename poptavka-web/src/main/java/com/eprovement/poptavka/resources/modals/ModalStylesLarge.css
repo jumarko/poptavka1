@@ -48,6 +48,16 @@
     border-right: 5px solid #555555;
 }
 
+.tooltip .arrow-right {
+    margin-top: 8px;
+    margin-right: 0px;
+    width: 0; 
+    height: 0; 
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent; 
+    border-left: 5px solid #555555;
+}
+
 /******************************************************************************/
 /*  Login Modal Styles                                                        */
 /******************************************************************************/
