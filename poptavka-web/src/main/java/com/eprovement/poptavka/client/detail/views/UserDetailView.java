@@ -15,6 +15,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -48,9 +49,11 @@ public class UserDetailView extends Composite {
     @UiField(provided = true) CellList categories, localities;
     @UiField HTMLPanel categoryPanel, localityPanel;
     @UiField FluidRow invoiceRow, addressBlock;
-    @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn;
+    @UiField Column businessTypeColumn, certifiedColumn, phoneColumn, emailColumn,
+    companyNameColumn, websiteColumn, firstNameColumn, lastNameColumn;
     @UiField Label overalRating, description, email, companyName, taxId, identificationNumber,
-    firstName, lastName, phone, website, street, city, zipCode, certified, businessType;
+    firstName, lastName, phone, street, city, zipCode, certified, businessType;
+    @UiField Anchor website;
     /** Constants. **/
     private static final String EMPTY = "";
 
@@ -123,12 +126,41 @@ public class UserDetailView extends Composite {
         city.setText(detail.getUserData().getAddresses().get(0).getCity());
         zipCode.setText(detail.getUserData().getAddresses().get(0).getZipCode());
         //BusinessUserData
-        companyName.setText(detail.getUserData().getCompanyName());
+        if ("".equals(detail.getUserData().getCompanyName())) {
+            companyNameColumn.setVisible(false);
+        } else {
+            companyName.setText(detail.getUserData().getCompanyName());
+            companyNameColumn.setVisible(true);
+        }
         identificationNumber.setText(detail.getUserData().getIdentificationNumber());
-        firstName.setText(detail.getUserData().getPersonFirstName());
-        lastName.setText(detail.getUserData().getPersonLastName());
+        if ("UNKNOWN".equals(detail.getUserData().getPersonFirstName())) {
+            firstNameColumn.setVisible(false);
+        } else {
+            firstName.setText(detail.getUserData().getPersonFirstName());
+            firstNameColumn.setVisible(true);
+        }
+
+        if ("UNKNOWN".equals(detail.getUserData().getPersonLastName())) {
+            lastNameColumn.setVisible(false);
+        } else {
+            lastName.setText(detail.getUserData().getPersonLastName());
+            lastNameColumn.setVisible(true);
+        }
+
         phone.setText(detail.getUserData().getPhone());
-        website.setText(detail.getUserData().getWebsite());
+
+        if ("".equals(detail.getUserData().getWebsite())) {
+            websiteColumn.setVisible(false);
+        } else {
+            if (detail.getUserData().getWebsite().startsWith("http")) {
+                website.setHref(detail.getUserData().getWebsite());
+            } else {
+                website.setHref("http://" + detail.getUserData().getWebsite());
+            }
+            website.setText(detail.getUserData().getWebsite());
+            website.setTarget("_blank");
+            websiteColumn.setVisible(true);
+        }
         taxId.setText(detail.getUserData().getTaxId());
     }
 
