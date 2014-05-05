@@ -62,6 +62,10 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(category));
         detail.setLevel(category.getLevel());
         detail.setLeaf(category.isLeaf());
+        Category categoryParent = category.getParent();
+        if (categoryParent != null) {
+            detail.setParentName(categoryParent.getName());
+        }
         return detail;
 
     }
