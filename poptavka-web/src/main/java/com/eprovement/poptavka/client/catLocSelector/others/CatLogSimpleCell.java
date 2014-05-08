@@ -14,9 +14,9 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * The cell used to render categories and localities.
@@ -66,7 +66,7 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
             Element parent, ICatLocDetail value, NativeEvent event,
             ValueUpdater<ICatLocDetail> valueUpdater) {
         if (BrowserEvents.MOUSEOVER.equals(event.getType())) {
-            displayPopup(event);
+            displayPopup(event, parent);
         }
         if (BrowserEvents.MOUSEOUT.equals(event.getType())) {
             hidePopup();
@@ -79,16 +79,16 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
     /**
      * Displays tooltip popup only when ICatLocDetail has a parent.
      */
-    private void displayPopup(NativeEvent event) {
+    private void displayPopup(NativeEvent event, Element parent) {
         if (displayed) {
             return;
         }
         if (tooltip != null) {
             displayed = true;
 
-            HorizontalPanel holder = new HorizontalPanel();
+            VerticalPanel holder = new VerticalPanel();
             SimplePanel arrow = new SimplePanel();
-            arrow.addStyleName("arrow-right");
+            arrow.addStyleName("arrow-bottom");
 
             HTMLPanel panel = new HTMLPanel(tooltip);
             panel.addStyleName("panel");
@@ -99,8 +99,9 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
             popup.clear();
             popup.add(holder);
             popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
-            popup.setPopupPosition(event.getClientX() - 230, event.getClientY());
             popup.show();
+            popup.setPopupPosition(parent.getAbsoluteLeft() + (parent.getOffsetWidth() - popup.getOffsetWidth()) / 2,
+                    parent.getAbsoluteTop() - 35);
         }
     }
 
