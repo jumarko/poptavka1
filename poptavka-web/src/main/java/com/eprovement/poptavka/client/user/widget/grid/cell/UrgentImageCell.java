@@ -78,7 +78,7 @@ public class UrgentImageCell extends AbstractCell<Date> {
             Element parent, Date value, NativeEvent event,
             ValueUpdater<Date> valueUpdater) {
         if (BrowserEvents.MOUSEOVER.equals(event.getType())) {
-            displayPopup(event);
+            displayPopup(event, parent);
         }
         if (BrowserEvents.MOUSEOUT.equals(event.getType())) {
             hidePopup();
@@ -91,7 +91,7 @@ public class UrgentImageCell extends AbstractCell<Date> {
     /**
      * Displays tooltip popup.
      */
-    private void displayPopup(NativeEvent event) {
+    private void displayPopup(NativeEvent event, Element parent) {
         if (displayed) {
             return;
         }
@@ -110,8 +110,8 @@ public class UrgentImageCell extends AbstractCell<Date> {
         popup.clear();
         popup.add(holder);
         popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
-        popup.setPopupPosition(event.getClientX() + 32, event.getClientY());
         popup.show();
+        popup.setPopupPosition(parent.getAbsoluteLeft() + 33, parent.getAbsoluteTop() + 2);
     }
 
     /**
