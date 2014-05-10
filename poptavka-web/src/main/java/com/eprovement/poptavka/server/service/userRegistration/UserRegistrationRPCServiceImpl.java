@@ -34,7 +34,7 @@ public class UserRegistrationRPCServiceImpl extends AutoinjectingRemoteService
     /**
      * Checks email availability.
      * @param email to be checked
-     * @return true if availabale, false otherwise
+     * @return true if available, false otherwise
      * @throws RPCException
      */
     @Override

@@ -137,6 +137,21 @@ public class LoginUnsecRPCServiceImpl extends AutoinjectingRemoteService impleme
         return true;
     }
 
+    /**
+     * Checks if the given businessUser has an activation email and sends
+     * an activation email if not.
+     * @param businessUser
+     * @return void
+     * @throws RPCException
+     */
+    @Override
+    public void hasActivationEmail(BusinessUserDetail businessUser) throws RPCException {
+        User user = generalService.find(User.class, businessUser.getUserId());
+        if (user.getActivationEmail() == null) {
+            sendActivationCodeAgain(businessUser);
+        }
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/

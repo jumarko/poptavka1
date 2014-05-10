@@ -38,4 +38,12 @@ public class ActivationCodePopupHandler extends BaseEventHandler<LoginEventBus> 
             }
         });
     }
+
+    public void onCheckActivationEmail(BusinessUserDetail user) {
+        loginService.hasActivationEmail(user, new SecuredAsyncCallback<Void>(eventBus) {
+            @Override
+            public void onSuccess(Void emailSend) {
+            }
+        });
+    }
 }

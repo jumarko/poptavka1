@@ -25,4 +25,6 @@ public interface LoginUnsecRPCServiceAsync {
     void activateUser(BusinessUserDetail user, String activationCode, AsyncCallback<UserActivationResult> callback);
 
     void sendActivationCodeAgain(BusinessUserDetail client, AsyncCallback<Boolean> callback);
+
+    void hasActivationEmail(BusinessUserDetail user, AsyncCallback<Void> callback);
 }
