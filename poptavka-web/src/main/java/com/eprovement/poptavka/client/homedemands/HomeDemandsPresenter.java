@@ -15,7 +15,10 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -57,6 +60,8 @@ public class HomeDemandsPresenter
 
         //Filter
         Label getFilterLabel();
+
+        Button getFilterClearBtn();
 
         //Other
         SimplePanel getCategoryTreePanel();
@@ -230,10 +235,12 @@ public class HomeDemandsPresenter
             Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_DEFAULT);
             view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
+            view.getFilterClearBtn().setVisible(false);
         } else {
             Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_SEARCH);
             view.getFilterLabel().setTitle(filterHolder.toString());
             view.getFilterLabel().setVisible(true);
+            view.getFilterClearBtn().setVisible(true);
         }
         searchDataHolder = filterHolder;
     }
@@ -257,6 +264,13 @@ public class HomeDemandsPresenter
     public void bindView() {
         dataGridRangeChangeHandler();
         dataGridSelectioChangeHandler();
+        view.getFilterClearBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeDemandsModule(null);
+            }
+        });
     }
 
     /**************************************************************************/

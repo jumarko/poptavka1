@@ -47,7 +47,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             @Override
             public void onClick(ClickEvent event) {
                 //Need to load again, cause I need replied demand to dissapear from new demands
-                eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+                //But reload only when in new demands
+                if (mode == AdminWidget.NEW_DEMANDS) {
+                    eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+                }
             }
         });
     }

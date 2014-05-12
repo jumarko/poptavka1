@@ -17,9 +17,14 @@
                         <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                             <g:HTMLPanel addStyleNames='content-margin'>
                                 <!--Table-->
-                                <g:Label ui:field="filterLabel" styleName="{res.layout.filterLabel}">
-                                    <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>
-                                </g:Label>
+                                <g:HorizontalPanel>
+                                    <g:Label ui:field="filterLabel" styleName="{res.layout.filterLabel}">
+                                        <ui:msg key="searchResultInfoLabel">Search filter is on!</ui:msg>
+                                    </g:Label>
+                                    <g:Button ui:field="filterClearBtn" styleName='{res.common.buttonGrey}'>
+                                        <ui:msg key="commonBtnClear">Clear</ui:msg>
+                                    </g:Button>
+                                </g:HorizontalPanel>
                                 <c:DataGrid ui:field="dataGrid" addStyleNames='{res.layout.dataGridContainer}'/>
                                 <!--Footer-->
                                 <g:SimplePanel ui:field="footerPanel"/>
