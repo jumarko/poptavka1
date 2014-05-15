@@ -410,8 +410,7 @@ public class HomeDemandsPresenter
      * Display demands of selected category.
      * @param list
      */
-    public void onDisplayDemands(List<FullDemandDetail> list) {
-        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
+    public void onResponseGetData() {
         //If demand must be selected, get its detail and select in selectionModel
         if (selectedDemandId != -1) {
             eventBus.getDemand(selectedDemandId);

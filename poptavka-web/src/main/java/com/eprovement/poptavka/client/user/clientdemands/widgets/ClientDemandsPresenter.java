@@ -102,18 +102,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /* Display data                                                           */
     /**************************************************************************/
     /**
-     * Display client's "My demands" and select item if requested.
-     * @param data
-     */
-    public void onDisplayClientDemands(List<ClientDemandDetail> data) {
-        GWT.log("++ onResponseClientsDemands");
-
-//        view.getToolbar().bindPager(view.getParentTable());
-        view.getParentTable().getDataProvider().updateRowData(
-            view.getParentTable().getStart(), data);
-    }
-
-    /**
      * Display conversations for selected demand and select item if requested.
      * If no conversations available:
      * 1) don't display empty conversation table, leave visible demand table

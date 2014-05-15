@@ -14,11 +14,8 @@ import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierOffer
 import com.eprovement.poptavka.client.user.supplierdemands.widgets.SupplierRatingsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
-import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDetail;
-import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -28,7 +25,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.List;
 
 /**
  * Supplier section for managing projects and offers.
@@ -134,30 +130,10 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void loadSupplierDashboardDetail(SupplierDashboardDetail result);
 
     /**************************************************************************/
-    /* Business events handled by SupplierDemandsPresenter.                   */
-    /**************************************************************************/
-    @Event(handlers = SupplierDemandsPresenter.class)
-    void displaySupplierDemands(List<SupplierPotentialDemandDetail> result);
-
-    /**************************************************************************/
-    /* Business events handled by SupplierOffersPresenter.                      */
-    /**************************************************************************/
-    @Event(handlers = SupplierOffersPresenter.class)
-    void displaySupplierOffers(List<SupplierOffersDetail> result);
-
-    /**************************************************************************/
     /* Business events handled by SupplierAssignedDemandsPresenter.           */
     /**************************************************************************/
     @Event(handlers = SupplierAssignedDemandsPresenter.class)
-    void displaySupplierAssignedDemands(List<SupplierOffersDetail> result);
-
-    @Event(handlers = SupplierAssignedDemandsPresenter.class)
     void responseFeedback();
-    /**************************************************************************/
-    /* Business events handled by SupplierRatingsPresenter.                   */
-    /**************************************************************************/
-    @Event(handlers = SupplierRatingsPresenter.class)
-    void displaySupplierRatings(List<RatingDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -187,7 +163,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Override
     @Event(handlers = SupplierDemandsModuleHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     /**************************************************************************/
     /* Client Demands MENU                                                    */

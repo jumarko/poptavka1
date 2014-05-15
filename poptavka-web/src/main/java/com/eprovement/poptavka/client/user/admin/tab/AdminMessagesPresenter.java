@@ -302,7 +302,7 @@ public class AdminMessagesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateMessage(dataToUpdate.get(idx));
+//                        eventBus.updateMessage(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

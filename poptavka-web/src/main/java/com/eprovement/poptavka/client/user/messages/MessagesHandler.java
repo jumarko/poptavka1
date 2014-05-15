@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.user.messages;
 
+import com.eprovement.poptavka.client.common.security.GetDataCallback;
+import com.eprovement.poptavka.client.common.security.GetDataCountCallback;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -41,7 +43,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    public void onGetDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.MESSAGES_INBOX:
                 getInboxMessagesCount(grid, searchDefinition);
@@ -55,10 +57,10 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * Request table data.
      * @param searchDefinition - search criteria
      */
-    public void onGetData(SearchDefinition searchDefinition) {
+    public void onGetData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.MESSAGES_INBOX:
-                getInboxMessages(searchDefinition);
+                getInboxMessages(grid, searchDefinition, requestId);
                 break;
             default:
                 break;
@@ -73,28 +75,18 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    public void getInboxMessagesCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    public void getInboxMessagesCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         messagesService.getInboxMessagesCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                @Override
-                public void onSuccess(Integer result) {
-                    grid.getDataProvider().updateRowCount(result, true);
-                }
-            });
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request inbox table data.
      * @param searchDefinition - search criteria
      */
-    public void getInboxMessages(SearchDefinition searchDefinition) {
+    public void getInboxMessages(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         messagesService.getInboxMessages(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
-                @Override
-                public void onSuccess(ArrayList<MessageDetail> result) {
-                    eventBus.displayInboxMessages(result);
-                }
-            });
+            new GetDataCallback<MessageDetail>(eventBus, grid, requestId));
     }
 
     /**
@@ -131,7 +123,7 @@ public class MessagesHandler extends BaseEventHandler<MessagesEventBus> {
      */
     public void onRequestConversation(Long threadRootId, Long subRootId) {
         messagesService.getConversationMessages(threadRootId, subRootId,
-                new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
+            new SecuredAsyncCallback<ArrayList<MessageDetail>>(eventBus) {
                 @Override
                 public void onSuccess(ArrayList<MessageDetail> result) {
 //                        eventBus.responseConversation(result, ViewType.EDITABLE);

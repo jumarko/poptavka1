@@ -4,19 +4,16 @@
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Part of SupplierDemands module widgets.
@@ -46,16 +43,6 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
         super.initAbstractPresenter(filter, Constants.SUPPLIER_OFFERS);
 
         eventBus.resetSearchBar(new Label("Supplier's offers attibure's selector will be here."));
-    }
-
-    /**
-     * Displays supplier's offers data.
-     * @param data to be displayed
-     */
-    public void onDisplaySupplierOffers(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseSupplierOffers");
-
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), data);
     }
 
     /**************************************************************************/

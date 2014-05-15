@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -23,7 +22,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Part of SupplierDemands widgets.
@@ -89,16 +87,6 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
             }
         };
         eventBus.showThankYouPopup(Storage.MSGS.thankYouFinishDemand(), additionalAction);
-    }
-
-    /**
-     * Displays supplier's assigned demands data.
-     * @param data to be displayed
-     */
-    public void onDisplaySupplierAssignedDemands(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseSuppliersAssignedDemands");
-
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), data);
     }
 
     /**************************************************************************/

@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands;
 
+import com.eprovement.poptavka.client.common.security.GetDataCallback;
+import com.eprovement.poptavka.client.common.security.GetDataCountCallback;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
@@ -44,7 +46,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    public void onGetDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_DEMANDS:
                 getClientDemandsCount(grid, searchDefinition);
@@ -76,28 +78,28 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * Request table data.
      * @param searchDefinition - search criteria
      */
-    public void onGetData(SearchDefinition searchDefinition) {
+    public void onGetData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         switch (Storage.getCurrentlyLoadedView()) {
             case Constants.CLIENT_DEMANDS:
-                getClientDemands(searchDefinition);
+                getClientDemands(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_DEMAND_DISCUSSIONS:
-                getClientDemandConversations(searchDefinition);
+                getClientDemandConversations(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_OFFERED_DEMANDS:
-                getClientOfferedDemands(searchDefinition);
+                getClientOfferedDemands(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_OFFERED_DEMAND_OFFERS:
-                getClientOfferedDemandOffers(searchDefinition);
+                getClientOfferedDemandOffers(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_ASSIGNED_DEMANDS:
-                getClientAssignedDemands(searchDefinition);
+                getClientAssignedDemands(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_CLOSED_DEMANDS:
-                getClientClosedDemands(searchDefinition);
+                getClientClosedDemands(grid, searchDefinition, requestId);
                 break;
             case Constants.CLIENT_RATINGS:
-                getClientRatings(searchDefinition);
+                getClientRatings(grid, searchDefinition, requestId);
                 break;
             default:
                 break;
@@ -112,12 +114,12 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      */
     public void onGetClientDashboardDetail() {
         clientDemandsService.getClientDashboardDetail(Storage.getUser().getUserId(),
-                new SecuredAsyncCallback<ClientDashboardDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(ClientDashboardDetail result) {
-                        eventBus.loadClientDashboardDetail(result);
-                    }
-                });
+            new SecuredAsyncCallback<ClientDashboardDetail>(eventBus) {
+                @Override
+                public void onSuccess(ClientDashboardDetail result) {
+                    eventBus.loadClientDashboardDetail(result);
+                }
+            });
     }
 
     //*************************************************************************/
@@ -128,30 +130,22 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        clientDemandsService.getClientDemandsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientDemandsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+    private void getClientDemandsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        clientDemandsService.getClientDemandsCount(
+            Storage.getUser().getUserId(),
+            searchDefinition,
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client demands data.
      * @param searchDefinition - search criteria
      */
-    private void getClientDemands(SearchDefinition searchDefinition) {
+    private void getClientDemands(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientDemands(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientDemandDetail> result) {
-                        eventBus.displayClientDemands(result);
-                    }
-                });
+            Storage.getUser().getUserId(),
+            searchDefinition,
+            new GetDataCallback<ClientDemandDetail>(eventBus, grid, requestId));
     }
 
     //*************************************************************************/
@@ -162,34 +156,35 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientDemandConversationsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientDemandConversationsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientDemandConversationsCount(
-                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientDemandConversationsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                        if (result == 0) {
-                            eventBus.responseConversationNoData();
-                        }
+            Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
+            new GetDataCountCallback(eventBus, grid) {
+                @Override
+                public void onSuccess(Integer result) {
+                    super.onSuccess(result);
+                    if (result == 0) {
+                        eventBus.responseConversationNoData();
                     }
-                });
+                }
+            });
     }
 
     /**
      * Request client demands conversation table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientDemandConversations(SearchDefinition searchDefinition) {
+    private void getClientDemandConversations(
+        UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientDemandConversations(
-                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientDemandConversationDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientDemandConversationDetail> result) {
-                        eventBus.displayClientDemandConversations(result);
-                    }
-                });
+            Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
+            new GetDataCallback<ClientDemandConversationDetail>(eventBus, grid, requestId) {
+                @Override
+                public void onSuccess(List<ClientDemandConversationDetail> result) {
+                    super.onSuccess(result);
+                    eventBus.displayClientDemandConversations(result);
+                }
+            });
     }
 
     //*************************************************************************/
@@ -200,30 +195,19 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientOfferedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientOfferedDemandsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandsCount(Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientOfferedDemandsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client offered demands table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientOfferedDemands(SearchDefinition searchDefinition) {
+    private void getClientOfferedDemands(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientOfferedDemands(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientDemandDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientDemandDetail> result) {
-                        eventBus.displayClientOfferedDemands(result);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCallback<ClientDemandDetail>(eventBus, grid, requestId));
     }
 
     //*************************************************************************/
@@ -234,31 +218,27 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientOfferedDemandOffersCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientOfferedDemandOffersCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientOfferedDemandOffersCount(
-                Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientOfferedDemandOffersCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+            Storage.getUser().getUserId(), Storage.getDemandId(), searchDefinition,
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client demands offers table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientOfferedDemandOffers(SearchDefinition searchDefinition) {
+    private void getClientOfferedDemandOffers(
+        UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientOfferedDemandOffers(
-                Storage.getUser().getUserId(), Storage.getDemandId(), Storage.getThreadRootId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
-                        eventBus.displayClientOfferedDemandOffers(result);
-                    }
-                });
+            Storage.getUser().getUserId(), Storage.getDemandId(), Storage.getThreadRootId(), searchDefinition,
+            new GetDataCallback<ClientOfferedDemandOffersDetail>(eventBus, grid, requestId) {
+                @Override
+                public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
+                    super.onSuccess(result);
+                    eventBus.displayClientOfferedDemandOffers(result);
+                }
+            });
     }
 
     /**************************************************************************/
@@ -269,31 +249,20 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientAssignedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientAssignedDemandsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientAssignedDemandsCount(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientAssignedDemandsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client assigned demands table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientAssignedDemands(SearchDefinition searchDefinition) {
+    private void getClientAssignedDemands(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientAssignedDemands(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
-                        eventBus.displayClientAssignedDemands(result);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCallback<ClientOfferedDemandOffersDetail>(eventBus, grid, requestId));
     }
 
     /**************************************************************************/
@@ -304,31 +273,20 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - search criteria
      */
-    private void getClientClosedDemandsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientClosedDemandsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientClosedDemandsCount(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientAssignedDemandsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client closed demands table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientClosedDemands(SearchDefinition searchDefinition) {
+    private void getClientClosedDemands(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientClosedDemands(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<ClientOfferedDemandOffersDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
-                        eventBus.displayClientAssignedDemands(result);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCallback<ClientOfferedDemandOffersDetail>(eventBus, grid, requestId));
     }
 
     /**************************************************************************/
@@ -339,31 +297,20 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param grid - table
      * @param searchDefinition - ssearch criteria
      */
-    private void getClientRatingsCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+    private void getClientRatingsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
         clientDemandsService.getClientRatingsCount(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<Integer>(eventBus) {
-                    @Override
-                    public void onSuccess(Integer result) {
-                        GWT.log("getClientRatingsCount: " + result);
-                        grid.getDataProvider().updateRowCount(result, true);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request client ratings table data.
      * @param searchDefinition - search criteria
      */
-    private void getClientRatings(SearchDefinition searchDefinition) {
+    private void getClientRatings(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         clientDemandsService.getClientRatings(
-                Storage.getUser().getUserId(), searchDefinition,
-                new SecuredAsyncCallback<List<RatingDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<RatingDetail> result) {
-                        eventBus.displayClientRatings(result);
-                    }
-                });
+            Storage.getUser().getUserId(), searchDefinition,
+            new GetDataCallback<RatingDetail>(eventBus, grid, requestId));
     }
 
     /**************************************************************************/
@@ -377,15 +324,15 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      * @param supplierMessage - rating's message
      */
     public void onRequestCloseAndRateSupplier(final long demandID, final long offerID, final Integer supplierRating,
-            final String supplierMessage) {
+        final String supplierMessage) {
         clientDemandsService.closeDemandAndEnterFeedbackForSupplier(demandID, offerID, supplierRating, supplierMessage,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        eventBus.sendStatusMessage(Storage.MSGS.closeDemandMessage());
-                        eventBus.responseFeedback();
-                    }
-                });
+            new SecuredAsyncCallback<Void>(eventBus) {
+                @Override
+                public void onSuccess(Void result) {
+                    eventBus.sendStatusMessage(Storage.MSGS.closeDemandMessage());
+                    eventBus.responseFeedback();
+                }
+            });
     }
 
     /**
@@ -395,13 +342,13 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
     public void onRequestAcceptOffer(long offerId) {
         GWT.log("onRequestAcceptOffer, params: offerId=" + offerId);
         clientDemandsService.acceptOffer(offerId, new SecuredAsyncCallback<Void>(eventBus) {
-                @Override
-                public void onSuccess(Void result) {
-                    GWT.log("onRequestAcceptOffer finished");
-                    eventBus.sendStatusMessage(Storage.MSGS.acceptedOfferMessage());
-                    eventBus.responseAcceptOffer();
-                }
-            });
+            @Override
+            public void onSuccess(Void result) {
+                GWT.log("onRequestAcceptOffer finished");
+                eventBus.sendStatusMessage(Storage.MSGS.acceptedOfferMessage());
+                eventBus.responseAcceptOffer();
+            }
+        });
     }
 
     /**************************************************************************/
@@ -442,7 +389,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
      */
     public void onRequestUpdateDemand(long demandId, FullDemandDetail updatedDemand) {
         clientDemandsService.updateDemand(demandId, updatedDemand,
-                new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+            new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
                 @Override
                 public void onSuccess(FullDemandDetail result) {
                     eventBus.responseUpdateDemand(result);

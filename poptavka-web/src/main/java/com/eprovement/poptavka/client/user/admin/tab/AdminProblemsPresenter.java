@@ -177,7 +177,7 @@ public class AdminProblemsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateProblem(dataToUpdate.get(idx));
+//                        eventBus.updateProblem(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

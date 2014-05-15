@@ -35,7 +35,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.PaymentMethodDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PermissionDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.PreferenceDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.ProblemDetail;
-import com.eprovement.poptavka.shared.domain.ChangeDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -51,8 +50,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -176,44 +173,44 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
      *********************** SUBWIDGETS SECTION *******************************************************
      **********************************************************************************************/
     /*********************** UPDATE **************************************************************/
-    @Event(handlers = AdminHandler.class)
-    void updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes);
-
-    @Event(handlers = AdminHandler.class)
-    void updateSupplier(FullSupplierDetail supplier);
-
-    @Event(handlers = AdminHandler.class)
-    void updateOffer(OfferDetail demand);
-
-    @Event(handlers = AdminHandler.class)
-    void updateClient(ClientDetail supplier);
-
-    @Event(handlers = AdminHandler.class)
-    void updateAccessRole(AccessRoleDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updateEmailActivation(ActivationEmailDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updateInvoice(InvoiceDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updateMessage(MessageDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updateOurPaymentDetail(PaymentDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePaymentMethod(PaymentMethodDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePermission(PermissionDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updatePreference(PreferenceDetail accessRole);
-
-    @Event(handlers = AdminHandler.class)
-    void updateProblem(ProblemDetail accessRole);
+//    @Event(handlers = AdminHandler.class)
+//    void updateDemands(HashMap<Long, ArrayList<ChangeDetail>> changes);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateSupplier(FullSupplierDetail supplier);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateOffer(OfferDetail demand);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateClient(ClientDetail supplier);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateAccessRole(AccessRoleDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateEmailActivation(ActivationEmailDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateInvoice(InvoiceDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateMessage(MessageDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateOurPaymentDetail(PaymentDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updatePaymentMethod(PaymentMethodDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updatePermission(PermissionDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updatePreference(PreferenceDetail accessRole);
+//
+//    @Event(handlers = AdminHandler.class)
+//    void updateProblem(ProblemDetail accessRole);
 
     /*********************** DISPLAY DATA ********************************************************/
     @Event(handlers = AdminDemandsPresenter.class)
@@ -239,9 +236,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
 
     @Event(handlers = AdminMessagesPresenter.class)
     void displayAdminTabMessages(List<MessageDetail> messages);
-
-    @Event(handlers = AdminNewDemandsPresenter.class)
-    void displayAdminNewDemands(List<AdminDemandDetail> demands);
 
     @Event(handlers = AdminPaymentMethodsPresenter.class)
     void displayAdminTabPaymentMethods(List<PaymentMethodDetail> clients);
@@ -309,7 +303,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
 
     @Override
     @Event(handlers = AdminHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     @Event(handlers = AdminHandler.class)
     void updateUnreadMessagesCount();

@@ -92,17 +92,6 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     }
 
     /**
-     * Displays parent table data.
-     * @param data to be displayed
-     */
-    public void onDisplayClientOfferedDemands(List<ClientDemandDetail> data) {
-        GWT.log("++ onResponseClientsOfferedDemands");
-
-        view.getParentTable().getDataProvider().updateRowData(
-            view.getParentTable().getStart(), data);
-    }
-
-    /**
      * Displays child table data.
      * @param data to be displayed
      */
@@ -113,9 +102,6 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             setParentTableVisible(false);
             setChildTableVisible(true);
             view.getToolbar().getPager().getPager().startLoading();
-
-            view.getChildTable().getDataProvider().updateRowData(
-                view.getChildTable().getStart(), data);
         }
     }
 

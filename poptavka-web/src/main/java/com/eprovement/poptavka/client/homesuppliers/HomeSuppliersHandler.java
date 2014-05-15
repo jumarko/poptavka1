@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.homesuppliers;
 
+import com.eprovement.poptavka.client.common.security.GetDataCallback;
+import com.eprovement.poptavka.client.common.security.GetDataCountCallback;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -55,24 +57,20 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * @param searchDefinition - search filters
      */
     public void onGetDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        homeSuppliersService.getSuppliersCount(searchDefinition, new SecuredAsyncCallback<Integer>(eventBus) {
-            @Override
-            public void onSuccess(Integer result) {
-                grid.getDataProvider().updateRowCount(result, true);
-            }
-        });
+        homeSuppliersService.getSuppliersCount(searchDefinition, new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request table data.
      * @param searchDefinition - search filters
      */
-    public void onGetData(SearchDefinition searchDefinition) {
+    public void onGetData(final UniversalAsyncGrid grid, SearchDefinition searchDefinition, final int requestId) {
         homeSuppliersService.getSuppliers(searchDefinition,
-            new SecuredAsyncCallback<List<FullSupplierDetail>>(eventBus) {
+            new GetDataCallback<FullSupplierDetail>(eventBus, grid, requestId) {
                 @Override
                 public void onSuccess(List<FullSupplierDetail> result) {
-                    eventBus.displaySuppliers(result);
+                    super.onSuccess(result);
+                    eventBus.responseGetData();
                 }
             });
     }

@@ -15,7 +15,6 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -24,7 +23,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Displays client's demands with accpeted offer.
@@ -90,17 +88,6 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
             }
         };
         eventBus.showThankYouPopup(Storage.MSGS.thankYouClosedDemand(), additionalAction);
-    }
-
-    /**
-     * Response method for onInitSupplierList()
-     * @param data
-     */
-    public void onDisplayClientAssignedDemands(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseClientsAssignedDemands");
-
-        view.getChildTable().getDataProvider().updateRowData(
-            view.getChildTable().getStart(), data);
     }
 
     /**************************************************************************/

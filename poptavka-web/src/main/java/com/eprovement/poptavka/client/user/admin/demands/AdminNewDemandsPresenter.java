@@ -127,14 +127,6 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /* Business eventsods                                                     */
     /**************************************************************************/
     /**
-     * Display demands of selected category.
-     * @param list
-     */
-    public void onDisplayAdminNewDemands(List<AdminDemandDetail> list) {
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), list);
-    }
-
-    /**
      * Display newly created conversation to detail section.
      * @param threadRootId
      */

@@ -102,7 +102,7 @@ public class UniversalPagerWidget extends Composite {
         CssInjector.INSTANCE.ensurePagerStylesInjected(pagerResources);
 
         pager = new SimplePager(SimplePager.TextLocation.CENTER, pagerResources, false, 0, true);
-        pager.setRangeLimited(false);
+        pager.setRangeLimited(true);
     }
 
     /**************************************************************************/

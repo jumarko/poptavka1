@@ -292,7 +292,7 @@ public class AdminInvoicesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateInvoice(dataToUpdate.get(idx));
+//                        eventBus.updateInvoice(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

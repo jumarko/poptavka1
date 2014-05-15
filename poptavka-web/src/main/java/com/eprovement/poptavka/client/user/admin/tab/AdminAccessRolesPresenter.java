@@ -247,7 +247,7 @@ public class AdminAccessRolesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.progressCommiting());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateAccessRole(dataToUpdate.get(idx));
+//                        eventBus.updateAccessRole(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

@@ -203,7 +203,7 @@ public class AdminPreferencesPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updatePreference(dataToUpdate.get(idx));
+//                        eventBus.updatePreference(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

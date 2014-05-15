@@ -202,7 +202,7 @@ public class AdminEmailActivationsPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateEmailActivation(dataToUpdate.get(idx));
+//                        eventBus.updateEmailActivation(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

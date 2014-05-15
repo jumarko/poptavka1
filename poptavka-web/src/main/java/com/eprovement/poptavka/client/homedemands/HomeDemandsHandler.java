@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.common.security.GetDataCallback;
+import com.eprovement.poptavka.client.common.security.GetDataCountCallback;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
@@ -54,27 +56,23 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
      * @param grid to be updated
      * @param searchDefinition - search filters
      */
-    public void onGetDataCount(final UniversalAsyncGrid grid, final SearchDefinition searchDefinition) {
-        homeDemandsService.getDemandsCount(searchDefinition, new SecuredAsyncCallback<Integer>(eventBus) {
-            @Override
-            public void onSuccess(Integer result) {
-                grid.getDataProvider().updateRowCount(result, true);
-            }
-        });
+    public void onGetDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        homeDemandsService.getDemandsCount(searchDefinition, new GetDataCountCallback(eventBus, grid));
     }
 
     /**
      * Request table data.
      * @param searchDefinition - search filters
      */
-    public void onGetData(SearchDefinition searchDefinition) {
+    public void onGetData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         homeDemandsService.getDemands(searchDefinition,
-                new SecuredAsyncCallback<List<FullDemandDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<FullDemandDetail> result) {
-                        eventBus.displayDemands(result);
-                    }
-                });
+            new GetDataCallback<FullDemandDetail>(eventBus, grid, requestId) {
+                @Override
+                public void onSuccess(List<FullDemandDetail> result) {
+                    super.onSuccess(result);
+                    eventBus.responseGetData();
+                }
+            });
     }
 
     /**************************************************************************/
@@ -89,7 +87,7 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
      * @param supplierIdStr - selected supplier id
      */
     public void onSetModuleByHistory(final SearchModuleDataHolder searchDataHolder,
-            String categoryIdStr, String pageStr, String supplierIdStr) {
+        String categoryIdStr, String pageStr, String supplierIdStr) {
         final int categoryId = categoryIdStr.equals("null") ? -1 : Integer.parseInt(categoryIdStr);
         final int page = pageStr.equals("null") ? -1 : Integer.parseInt(pageStr);
         final long supplierId = supplierIdStr.equals("null") ? -1 : Long.parseLong(supplierIdStr);

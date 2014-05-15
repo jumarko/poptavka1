@@ -13,13 +13,11 @@ import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDeta
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Displays all ratings of client's demands.
@@ -68,19 +66,6 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
 
         //init wrapper widget
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(filter));
-    }
-
-    /**************************************************************************/
-    /* Business events handled by presenter */
-    /**************************************************************************/
-    /**
-     * Response method for onInitSupplierList()
-     * @param data
-     */
-    public void onDisplayClientRatings(List<RatingDetail> data) {
-        GWT.log("++ onResponseClientsRatings");
-
-        view.getParentTable().getDataProvider().updateRowData(view.getParentTable().getStart(), data);
     }
 
     /**************************************************************************/

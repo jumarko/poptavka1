@@ -326,7 +326,7 @@ public class AdminSuppliersPresenter
                     view.getDataGrid().setFocus(true);
                     eventBus.loadingShow(Storage.MSGS.adminCommonBtnCommit());
                     for (Long idx : dataToUpdate.keySet()) {
-                        eventBus.updateSupplier(dataToUpdate.get(idx));
+//                        eventBus.updateSupplier(dataToUpdate.get(idx));
                     }
                     eventBus.loadingHide();
                     dataToUpdate.clear();

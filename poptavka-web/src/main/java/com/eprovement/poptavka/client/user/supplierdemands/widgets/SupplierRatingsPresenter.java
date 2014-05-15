@@ -11,13 +11,11 @@ import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Part of SupplierDemands module widget.
@@ -59,19 +57,6 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
         super.initAbstractPresenter(filter, Constants.SUPPLIER_RATINGS);
 
         eventBus.resetSearchBar(new Label("Supplier's ratings attibure's selector will be here."));
-    }
-
-    /**************************************************************************/
-    /* Business events handled by presenter */
-    /**************************************************************************/
-    /**
-     * Displays supplier's ratings data.
-     * @param data to be dispalyed
-     */
-    public void onDisplaySupplierRatings(List<String> data) {
-        GWT.log("++ onResponseSupplierRatings");
-
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), data);
     }
 
     /**************************************************************************/

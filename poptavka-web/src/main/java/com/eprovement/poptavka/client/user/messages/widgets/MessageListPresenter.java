@@ -28,7 +28,6 @@ import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -142,10 +141,6 @@ public class MessageListPresenter
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
-    public void onDisplayInboxMessages(ArrayList<MessageDetail> inboxMessages) {
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), inboxMessages);
-    }
-
     /**
      * Recalculate table height if resize event occurs.
      * Usually paddings or margins changes on smaller resolutions.

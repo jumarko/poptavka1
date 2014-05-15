@@ -10,13 +10,11 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Part of SupplierDemands module widgets.
@@ -50,16 +48,6 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
         super.initAbstractPresenter(filter, Constants.SUPPLIER_POTENTIAL_DEMANDS);
 
         eventBus.resetSearchBar(new Label("Supplier's projects attibure's selector will be here."));
-    }
-
-    /**
-     * Displays supplier's potential demands data.
-     * @param data to be displyed
-     */
-    public void onDisplaySupplierDemands(List<SupplierPotentialDemandDetail> data) {
-        GWT.log("++ onResponseSupplierPotentialDemands");
-
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), data);
     }
 
     /**************************************************************************/
