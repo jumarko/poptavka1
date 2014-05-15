@@ -8,8 +8,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.MailRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.LoginRPCServiceAsync;
-import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCServiceAsync;
+import com.eprovement.poptavka.client.service.login.LoginRPCServiceAsync;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -38,9 +37,8 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
     @Inject
     private LoginRPCServiceAsync loginService;
     @Inject
-    private LoginUnsecRPCServiceAsync loginUnsecService;
-    @Inject
     private MailRPCServiceAsync mailService;
+
     private static final Logger LOGGER = Logger.getLogger(LoginHandler.class.getName());
     private static final String DEFAULT_SPRING_LOGIN_URL = "j_spring_security_check";
     private static final String DEFAULT_SPRING_LOGOUT_URL = "j_spring_security_logout";
@@ -82,7 +80,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      */
     public void onVerifyUser(final String userEmail, final String userPassword, final int widgetToLoad) {
         eventBus.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
-        loginUnsecService.getBusinessUserByEmail(
+        loginService.getBusinessUserByEmail(
                 userEmail.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
                     @Override
                     public void onSuccess(BusinessUserDetail user) {
@@ -253,7 +251,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
      */
     public void onResetPassword(final String email) {
         eventBus.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
-        loginUnsecService.getBusinessUserByEmail(email.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+        loginService.getBusinessUserByEmail(email.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
             @Override
             public void onSuccess(final BusinessUserDetail user) {
                 if (user == null) {
@@ -262,7 +260,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                 }
                 if (user.isVerified()) {
                     eventBus.setLoadingProgress(30, null);
-                    loginUnsecService.resetPassword(user.getUserId(), new SecuredAsyncCallback<String>(eventBus) {
+                    loginService.resetPassword(user.getUserId(), new SecuredAsyncCallback<String>(eventBus) {
                         @Override
                         public void onSuccess(String newPassword) {
                             sendEmailWithNewPassword(user, newPassword);
