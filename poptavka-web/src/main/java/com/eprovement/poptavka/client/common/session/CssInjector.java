@@ -153,7 +153,7 @@ public final class CssInjector {
             isDetailLoaded = true;
             StyleResource.INSTANCE.details().ensureInjected();
             injectResponsiveStyles(
-                null,
+                StyleResource.INSTANCE.detailsMiddle().getText(),
                 StyleResource.INSTANCE.detailsSmall().getText(),
                 null);
         }

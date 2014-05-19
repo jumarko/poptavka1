@@ -132,6 +132,7 @@ public class ActivationCodePopupPresenter
     public void onInitActivationCodePopup(BusinessUserDetail user, int widgetToLoad) {
         this.user = user;
         this.widgetToLoad = widgetToLoad;
+        eventBus.checkActivationEmail(user);
         view.getStatusLabel().setText(MSGS.activationCodeSent() + " " + user.getEmail());
     }
 

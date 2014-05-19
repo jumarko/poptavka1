@@ -5,6 +5,7 @@
 /******************************************************************************/
 .detailTabPanel {
     margin-top: 20px;
+    margin-right: 20px;
 }
 .detailTabPanel .gwt-TabLayoutPanelTab {
     background: none;
@@ -19,9 +20,16 @@
     cursor: pointer;
 }
 
+.detailTabPanel .gwt-TabLayoutPanelTab .gwt-HTML {
+    border-radius: 6px 6px 0 0;
+    border-right: 1px solid #dedcd3;
+    border-left: 1px solid #dedcd3;
+    border-top: 1px solid #FBFAF6;
+}
+
 .detailTabPanel .gwt-TabLayoutPanelTab:hover .gwt-HTML,
 .detailTabPanel .gwt-TabLayoutPanelTab-selected .gwt-TabLayoutPanelTabInner .gwt-HTML {
-    background: url(images/header.gif) repeat-x top right;
+    background: url(images/header.gif) repeat-x -1px;
     cursor: pointer;
     color: #6f6b59;
     border-radius: 6px 6px 0 0;

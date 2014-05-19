@@ -5,16 +5,7 @@
              xmlns:s="urn:import:com.eprovement.poptavka.client.user.widget.grid">
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
-    <ui:style>
-        .filterLabel {
-        color: #6F6B59;
-        font-size: 18px;
-        font-weight: lighter;
-        line-height: 30px;
-        padding: 0px 10px 10px;
-        }
-    </ui:style>
-
+    
     <b:FluidContainer>
         <b:FluidRow>
             <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
@@ -23,7 +14,7 @@
                         <!--Parent Table-->
                         <s:UniversalAsyncGrid ui:field="parentTable" addStyleNames='{res.layout.dataGridContainer}' visible="false"/>
                         <!--Child Table-->
-                        <g:Label ui:field="childTableLabel" styleName="{style.filterLabel}" visible="false"/>
+                        <g:Label ui:field="childTableLabel" styleName="{res.layout.filterLabel}" visible="false"/>
                         <s:UniversalAsyncGrid ui:field="childTable" addStyleNames='{res.layout.dataGridContainer}' visible='false'/>
                         <!--Footer-->
                         <g:SimplePanel ui:field="footerContainer"/>

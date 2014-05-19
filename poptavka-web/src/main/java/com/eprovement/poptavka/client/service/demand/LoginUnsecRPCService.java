@@ -21,4 +21,6 @@ public interface LoginUnsecRPCService extends RemoteService {
     UserActivationResult activateUser(BusinessUserDetail user, String activationCode) throws RPCException;
 
     boolean sendActivationCodeAgain(BusinessUserDetail client) throws RPCException;
+
+    void hasActivationEmail(BusinessUserDetail user) throws RPCException;
 }

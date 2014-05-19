@@ -19,6 +19,8 @@ public interface ICatLocDetail extends IsSerializable {
 
     String getName();
 
+    String getParentName();
+
     long getDemandsCount();
 
     long getSuppliersCount();
@@ -33,6 +35,8 @@ public interface ICatLocDetail extends IsSerializable {
     void setId(long id);
 
     void setName(String name);
+
+    void setParentName(String name);
 
     void setDemandsCount(long demandsCount);
 

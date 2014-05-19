@@ -11,6 +11,7 @@ import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -44,7 +45,7 @@ public class UrgentImageCell extends AbstractCell<Date> {
     }
 
     public UrgentImageCell() {
-        super("mouseover", "mouseout");
+        super(BrowserEvents.MOUSEOVER, BrowserEvents.MOUSEOUT);
         CssInjector.INSTANCE.ensureModalStylesInjected();
     }
 
@@ -76,10 +77,10 @@ public class UrgentImageCell extends AbstractCell<Date> {
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, Date value, NativeEvent event,
             ValueUpdater<Date> valueUpdater) {
-        if ("mouseover".equals(event.getType())) {
-            displayPopup(event);
+        if (BrowserEvents.MOUSEOVER.equals(event.getType())) {
+            displayPopup(event, parent);
         }
-        if ("mouseout".equals(event.getType())) {
+        if (BrowserEvents.MOUSEOUT.equals(event.getType())) {
             hidePopup();
         }
     }
@@ -90,7 +91,7 @@ public class UrgentImageCell extends AbstractCell<Date> {
     /**
      * Displays tooltip popup.
      */
-    private void displayPopup(NativeEvent event) {
+    private void displayPopup(NativeEvent event, Element parent) {
         if (displayed) {
             return;
         }
@@ -109,8 +110,8 @@ public class UrgentImageCell extends AbstractCell<Date> {
         popup.clear();
         popup.add(holder);
         popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
-        popup.setPopupPosition(event.getClientX() + 32, event.getClientY());
         popup.show();
+        popup.setPopupPosition(parent.getAbsoluteLeft() + 33, parent.getAbsoluteTop() + 2);
     }
 
     /**

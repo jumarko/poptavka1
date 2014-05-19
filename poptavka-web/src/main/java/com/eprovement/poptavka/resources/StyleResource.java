@@ -123,6 +123,9 @@ public interface StyleResource extends ClientBundle {
     @Source("details/DetailModuleStylesLarge.css")
     DetailModuleStyles details();
     @NotStrict
+    @Source("details/DetailModuleStylesMiddle.css")
+    DetailModuleStyles detailsMiddle();
+    @NotStrict
     @Source("details/DetailModuleStylesSmall.css")
     DetailModuleStyles detailsSmall();
 

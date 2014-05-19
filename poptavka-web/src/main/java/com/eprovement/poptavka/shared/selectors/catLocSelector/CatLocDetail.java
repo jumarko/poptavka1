@@ -9,6 +9,7 @@ public class CatLocDetail implements ICatLocDetail {
     /**************************************************************************/
     private long id;
     private String name;
+    private String parentName;
     private long demandsCount;
     private long suppliersCount;
     //category level
@@ -60,6 +61,11 @@ public class CatLocDetail implements ICatLocDetail {
     }
 
     @Override
+    public String getParentName() {
+        return parentName;
+    }
+
+    @Override
     public long getDemandsCount() {
         return demandsCount;
     }
@@ -90,6 +96,11 @@ public class CatLocDetail implements ICatLocDetail {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     @Override

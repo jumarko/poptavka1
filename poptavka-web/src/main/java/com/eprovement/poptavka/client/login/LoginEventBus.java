@@ -132,7 +132,7 @@ public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
     @Event(handlers = LoginHandler.class)
     void showThankYouPopupAfterLogin(boolean displayThankYouPopup);
     /**************************************************************************/
-    /* User Activatoin                                                        */
+    /* User Activation                                                        */
     /**************************************************************************/
     @Event(generate = ActivationCodePopupPresenter.class)
     void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad);
@@ -142,6 +142,9 @@ public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
 
     @Event(handlers = ActivationCodePopupHandler.class)
     void sendActivationCodeAgain(BusinessUserDetail client);
+
+    @Event(handlers = ActivationCodePopupHandler.class)
+    void checkActivationEmail(BusinessUserDetail user);
 
     @Event(handlers = ActivationCodePopupPresenter.class)
     void responseActivateUser(UserActivationResult activationResult);
