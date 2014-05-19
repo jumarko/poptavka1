@@ -3,6 +3,9 @@
  */
 package com.eprovement.poptavka.service.demand;
 
+import static org.apache.commons.lang.Validate.isTrue;
+import static org.apache.commons.lang.Validate.notNull;
+
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.MessageContext;
@@ -12,11 +15,12 @@ import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.MessageUserRole;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.exception.MessageException;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.notification.NotificationService;
+import com.eprovement.poptavka.service.user.ExternalUserNotificator;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
-import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of {@link PotentialDemandService} which uses {@link com.eprovement.poptavka.domain.message.Message}-s
@@ -40,19 +45,24 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     private final UserMessageService userMessageService;
     private final SuppliersSelection suppliersSelection;
     private final NotificationService notificationService;
+    private final ExternalUserNotificator externalUserNotificator;
 
 
     public MessageBasedPotentialDemandService(MessageService messageService, SuppliersSelection suppliersSelection,
                                               UserMessageService userMessageService,
-                                              NotificationService notificationService) {
-        Validate.notNull(messageService, "messageService cannot be null");
-        Validate.notNull(suppliersSelection, "suppliersSelection algorithm cannot be null!");
-        Validate.notNull(userMessageService, "userMessageService cannot be null!");
-        Validate.notNull(notificationService, "notificationService cannot be null!");
+                                              NotificationService notificationService,
+                                              ExternalUserNotificator externalUserNotificator) {
+        notNull(messageService, "messageService cannot be null");
+        notNull(suppliersSelection, "suppliersSelection algorithm cannot be null!");
+        notNull(userMessageService, "userMessageService cannot be null!");
+        notNull(notificationService, "notificationService cannot be null!");
+        notNull(externalUserNotificator, "externalUserNotificator cannot be null!");
+
         this.messageService = messageService;
         this.suppliersSelection = suppliersSelection;
         this.userMessageService = userMessageService;
         this.notificationService = notificationService;
+        this.externalUserNotificator = externalUserNotificator;
     }
 
 
@@ -60,11 +70,12 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     @Transactional
     public void sendDemandToPotentialSuppliers(Demand demand) throws MessageException {
         LOGGER.info("Action=demand_send_to_suppliers status=start demand=" + demand);
-        Validate.notNull(demand, "demand cannot be null!");
+        notNull(demand, "demand cannot be null!");
 
         // update thread root message before sending to potential suppliers
-        final Message threadRootMessage = updateDemandThreadRootMessage(demand,
-                this.suppliersSelection.getPotentialSuppliers(demand));
+        final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
+        notifyExternalSuppliers(potentialSuppliers);
+        final Message threadRootMessage = updateDemandThreadRootMessage(demand, potentialSuppliers);
         messageService.send(threadRootMessage);
 
         LOGGER.info("Action=demand_send_to_suppliers status=finish demand=" + demand);
@@ -76,8 +87,8 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     public void sendDemandToPotentialSupplier(Demand demand, PotentialSupplier potentialSupplier)
         throws MessageException {
         LOGGER.debug("Action=demand_send_to_supplier status=start demand=" + demand);
-        Validate.notNull(demand, "demand cannot be null");
-        Validate.notNull(potentialSupplier, "potential supplier cannot be null");
+        notNull(demand, "demand cannot be null");
+        notNull(potentialSupplier, "potential supplier cannot be null");
 
         final Message threadRootMessage = updateDemandThreadRootMessage(demand, Arrays.asList(potentialSupplier));
         final UserMessage potentialDemandUserMessage = userMessageService.createUserMessage(
@@ -91,6 +102,20 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
 
     /**
+     * Sends notification to all external suppliers from given set of potential suppliers if applicable.
+     *
+     * @param potentialSuppliers potential suppliers, some of them can still be the external ones
+     * @see com.eprovement.poptavka.service.user.ExternalUserNotificator
+     */
+    private void notifyExternalSuppliers(Set<PotentialSupplier> potentialSuppliers) {
+        for (PotentialSupplier potentialSupplier : potentialSuppliers) {
+            // TODO: probably we will need to pass some variables for notification message
+            externalUserNotificator.send(potentialSupplier.getSupplier().getBusinessUser(),
+                    Registers.Notification.EXTERNAL_SUPPLIER);
+        }
+    }
+
+    /**
      * Updates thread root message of given {@code demand} adding all {@code potentialSuppliers}.
      * @param demand demand for which the thread root message will be updated
      * @param potentialSuppliers all potential suppliers that should be added to the roles of {@code demand}'s
@@ -98,12 +123,12 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
      * @return updated thread root message containing all potential suppliers
      */
     private Message updateDemandThreadRootMessage(Demand demand, Collection<PotentialSupplier> potentialSuppliers) {
-        Validate.notNull(demand, "demand cannot be null");
+        notNull(demand, "demand cannot be null");
 
         fillDefaultValues(demand);
         Message threadRootMessage = messageService.getThreadRootMessage(demand);
-        Validate.isTrue(threadRootMessage != null, "threadRootMessage cannot be null");
-        Validate.isTrue(threadRootMessage.getRoles() != null, "threadRootMessage.roles cannot be null");
+        isTrue(threadRootMessage != null, "threadRootMessage cannot be null");
+        isTrue(threadRootMessage.getRoles() != null, "threadRootMessage.roles cannot be null");
 
         final List<MessageUserRole> messageUserRoles = new ArrayList<>();
         for (PotentialSupplier potentialSupplier : potentialSuppliers) {

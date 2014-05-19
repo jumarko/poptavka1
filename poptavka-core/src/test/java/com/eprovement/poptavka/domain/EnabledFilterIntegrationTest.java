@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.domain;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import com.eprovement.poptavka.base.integration.DBUnitIntegrationTest;
@@ -13,7 +15,6 @@ import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import org.hamcrest.core.Is;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,8 +40,8 @@ public class EnabledFilterIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllEnabledNotifications() {
         final List<Notification> enabledNotifications = this.registerService.getAllValues(Notification.class);
-        Assert.assertNotNull(enabledNotifications);
-        Assert.assertThat("Unexpected count of notifications", enabledNotifications.size(), Is.is(9));
+        assertNotNull(enabledNotifications);
+        assertThat("Unexpected count of notifications", enabledNotifications.size(), Is.is(11));
         for (Notification notification : enabledNotifications) {
             assertTrue("notification is expected to be enabled but it is not: " + notification,
                     notification.isEnabled());
@@ -50,8 +51,8 @@ public class EnabledFilterIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetEnabledLocalities() throws Exception {
         final List<Locality> enabledLocalities = localityService.getLocalities(LocalityType.COUNTRY);
-        Assert.assertNotNull("enabled localities should not be null", enabledLocalities);
-        Assert.assertThat("Unexpected count of localities", enabledLocalities.size(), Is.is(1));
+        assertNotNull("enabled localities should not be null", enabledLocalities);
+        assertThat("Unexpected count of localities", enabledLocalities.size(), Is.is(1));
         for (Locality locality : enabledLocalities) {
             assertTrue("locality is expected to be enabled but it is not: " + locality,
                     locality.isEnabled());

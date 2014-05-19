@@ -1,5 +1,8 @@
 package com.eprovement.poptavka.service.user;
 
+import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang.Validate.notNull;
+
 import com.eprovement.poptavka.domain.activation.ActivationEmail;
 import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.user.User;
@@ -33,8 +36,8 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
     public UserVerificationServiceImpl(GeneralService generalService, MailService mailService,
                                        String activationEmailFromAddress) {
-        Validate.notNull(generalService);
-        Validate.notNull(mailService);
+        notNull(generalService);
+        notNull(mailService);
         Validate.isTrue(EmailValidator.getInstance().isValid(activationEmailFromAddress),
                 "activationEmailFromAddress is not a valid email address!");
 
@@ -55,7 +58,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     }
 
     private String sendNewActivationCode(User user, boolean async) {
-        Validate.notNull(user, "user cannot be null!");
+        notNull(user, "user cannot be null!");
         // User#activationEmail is set within scope of "generateActivationCode" method
         final String activationCode = generateActivationCode(user);
         LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
@@ -72,7 +75,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
     @Override
     public String generateActivationCode(User user) {
-        Validate.notNull(user, "User to be activated must be specified!");
+        notNull(user, "User to be activated must be specified!");
 
         LOGGER.info("action=generate_activation_code status=start email={} businuessUser={}",
                 user.getEmail(), user);
@@ -92,7 +95,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     @Override
     @Transactional
     public void activateUser(User user, String activationCode) {
-        Validate.notNull(user, "user to be actiavted cannot be null!");
+        notNull(user, "user to be actiavted cannot be null!");
         LOGGER.debug("action=verify_user status=start user={}", user);
 
         verifyActivationCode(user, activationCode);
@@ -117,7 +120,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
     @Transactional(readOnly = true)
     public void verifyActivationCode(User user, String activationCode) throws ExpiredActivationCodeException,
             IncorrectActivationCodeException {
-        Validate.notNull(user, "user to be activated cannot be null");
+        notNull(user, "user to be activated cannot be null");
         Validate.notEmpty(activationCode, "Activation code to be verified must not be null!");
 
         LOGGER.debug("action=verify_activation_code status=start");
@@ -138,6 +141,22 @@ public class UserVerificationServiceImpl implements UserVerificationService {
                     + " or another (newer one) activation link for given user has been generated.");
         }
         LOGGER.debug("action=verify_activation_code status=finish user=" + user);
+    }
+
+    @Override
+    @Transactional
+    public String resetPassword(User user) {
+        notNull(user, "user cannot be null");
+
+        LOGGER.info("action=reset_password status=start user={}", user);
+
+        final String newPassword = randomAlphabetic(8);
+        user.setPassword(newPassword);
+        generalService.save(user);
+
+        LOGGER.info("action=reset_password status=finish user={} password={}", user);
+
+        return newPassword;
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------

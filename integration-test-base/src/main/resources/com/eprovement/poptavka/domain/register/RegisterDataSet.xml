@@ -47,6 +47,32 @@
     <NOTIFICATION  ID="12" DESCRIPTION="Notification is sent when new supplier is activated." MESSAGETEMPLATE="Welcome New Supplier!"
                    NAME="Welcome new supplier" NOTIFICATIONTYPE="WELCOME" CODE="welcome.supplier" ENABLED="1"/>
 
+    <NOTIFICATION  ID="13" DESCRIPTION="Notification is sent when external supplier gets potential demand."
+                   MESSAGETEMPLATE="We just want to let you know there are some interesting projects for you on ${wantsomething.url}.\n\n
+
+                    Go ahead and check them out!\n
+                    You can login via your email address and generated password: ${password}\n\n
+
+                    If you are not interested in this useful service you can unsubscribe yourself via ${unsubscribe.link}\n
+                    If you unsubscribe by mistake or change your mind you have to ask want-something.com support for restoring your user account."
+                   NAME="External supplier notification"
+                   NOTIFICATIONTYPE="SUPPLIER"
+                   CODE="external.supplier"
+                   ENABLED="1"/>
+
+    <NOTIFICATION  ID="14" DESCRIPTION="Notification is sent when external client gets an offer from supplier."
+                   MESSAGETEMPLATE="We just want to let you got an offer from professional ${supplier} registered at ${wantsomething.url}.\n\n
+
+                    Go ahead and check it out!\n
+                    You can login via your email address and generated password: ${password}\n\n
+
+                    If you are not interested in this useful service you can unsubscribe yourself via ${unsubscribe.link}\n
+                    If you unsubscribe by mistake or change your mind you have to ask want-something.com support for restoring your user account."
+                   NAME="External client notification"
+                   NOTIFICATIONTYPE="CLIENT"
+                   CODE="external.client"
+                   ENABLED="1"/>
+
 
     <!--see real DB for more information on SERVICEs-->
     <SERVICE ID="1" CODE="validity.1month" VALID="1" />

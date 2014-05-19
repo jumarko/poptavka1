@@ -7,6 +7,10 @@
     <SETTINGST ID="3" />
     <SETTINGST ID="4" />
     <SETTINGST ID="5" />
+    <SETTINGST ID="6" />
+    <SETTINGST ID="7" />
+    <SETTINGST ID="8" />
+    <SETTINGST ID="9" />
 
     <!-- Encrypted password corresponds to the "ahoj1" -->
     <USERT ID="111111111" EMAIL="elvira@email.com" PASSWORD="7xuGUhtNhAUbPEbU9YwZDoEceO1E45E/RWiELMGVCOm6QIDDVthJK/DJLqxKPfae"
@@ -75,5 +79,45 @@
     <BUSINESSUSERROLE ID="11111111115" BUSINESSUSER_ID="1111111115" ENABLED="1"/>
     <CLIENT ID="1111111115" />
     <SUPPLIER ID="11111111115" OVERALRATING="0" />
+
+
+    <!--External (imported) users-->
+
+    <!-- Encrypted password corresponds to the "4ahoj" -->
+    <USERT ID="111111116" EMAIL="imported1@email.com" PASSWORD="ktWVVhGwWiMsAVgfbIZmX96r5WXBwIzMcGzwUBVAXcFvtiJutGRbKOk58TfQ4Wr2"
+           SETTINGS_ID="6" ENABLED="1" VERIFICATION="UNVERIFIED" />
+    <BUSINESSUSERDATA ID="111111116" COMPANYNAME="My Fourth Company" PERSONFIRSTNAME="Imported" PERSONLASTNAME="User1"
+                      TAXID="123" IDENTIFICATIONNUMBER="456" ENABLED="1" />
+    <!--origin with id = 1 is an external - see RegistersDataSet.xml -->
+    <BUSINESSUSER  ID="111111116" BUSINESSUSERDATA_ID="111111116" ORIGIN_ID="1" />
+
+    <!-- external user that has already some notification -->
+    <USERT ID="111111117" EMAIL="imported2@email.com" PASSWORD="ktWVVhGwWiMsAVgfbIZmX96r5WXBwIzMcGzwUBVAXcFvtiJutGRbKOk58TfQ4Wr2"
+           SETTINGS_ID="7" ENABLED="1" VERIFICATION="UNVERIFIED" />
+    <BUSINESSUSERDATA ID="111111117" COMPANYNAME="My Fourth Company" PERSONFIRSTNAME="Imported" PERSONLASTNAME="User2"
+                      TAXID="123" IDENTIFICATIONNUMBER="456" ENABLED="1" />
+    <!--origin with id = 1 is an external - see RegistersDataSet.xml -->
+    <BUSINESSUSER  ID="111111117" BUSINESSUSERDATA_ID="111111117" ORIGIN_ID="1" />
+
+    <USERNOTIFICATION ID="111111117" SENT="2014-03-01 13:33:33" NOTIFICATION_ID="13" USER_ID="111111117" ENABLED="1"/>
+
+    <!-- External user that is already verified -->
+    <USERT ID="111111118" EMAIL="imported3@email.com" PASSWORD="ktWVVhGwWiMsAVgfbIZmX96r5WXBwIzMcGzwUBVAXcFvtiJutGRbKOk58TfQ4Wr2"
+           SETTINGS_ID="8" ENABLED="1" VERIFICATION="VERIFIED" />
+    <BUSINESSUSERDATA ID="111111118" COMPANYNAME="My Fourth Company" PERSONFIRSTNAME="Imported" PERSONLASTNAME="User3"
+                      TAXID="123" IDENTIFICATIONNUMBER="456" ENABLED="1" />
+    <!--origin with id = 1 is an external - see RegistersDataSet.xml -->
+    <BUSINESSUSER  ID="111111118" BUSINESSUSERDATA_ID="111111118" ORIGIN_ID="1" />
+
+
+    <!-- external user that has pending notification (older than 30 days) -->
+    <USERT ID="111111119" EMAIL="imported4@email.com" PASSWORD="ktWVVhGwWiMsAVgfbIZmX96r5WXBwIzMcGzwUBVAXcFvtiJutGRbKOk58TfQ4Wr2"
+           SETTINGS_ID="9" ENABLED="1" VERIFICATION="UNVERIFIED" />
+    <BUSINESSUSERDATA ID="111111119" COMPANYNAME="My Fourth Company" PERSONFIRSTNAME="Imported" PERSONLASTNAME="User2"
+                      TAXID="123" IDENTIFICATIONNUMBER="456" ENABLED="1" />
+    <!--origin with id = 1 is an external - see RegistersDataSet.xml -->
+    <BUSINESSUSER  ID="111111119" BUSINESSUSERDATA_ID="111111119" ORIGIN_ID="1" />
+
+    <USERNOTIFICATION ID="111111119" SENT="2014-02-01 13:33:33" NOTIFICATION_ID="13" USER_ID="111111119" ENABLED="1"/>
 
 </dataset>

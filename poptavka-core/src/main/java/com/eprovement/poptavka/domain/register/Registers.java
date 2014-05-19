@@ -16,7 +16,12 @@ public final class Registers {
         DEMAND_STATUS_CHANGED("demand.status.changed"),
 
         WELCOME_CLIENT("welcome.client"),
-        WELCOME_SUPPLIER("welcome.supplier");
+        WELCOME_SUPPLIER("welcome.supplier"),
+
+        /** Notification send to (unverified) external client when he gets new offer from supplier */
+        EXTERNAL_CLIENT("external.client"),
+        /** Notification send to (unverified) external supplier when he gets new potential demand. */
+        EXTERNAL_SUPPLIER("external.supplier");
 
         private final String code;
 
@@ -41,7 +46,7 @@ public final class Registers {
 
     /**
      * This method exists only for satisfaction of DomainObjectTest. No real meaning.
-     * @return
+     * @return empty string
      */
     public String toString() {
         return "";

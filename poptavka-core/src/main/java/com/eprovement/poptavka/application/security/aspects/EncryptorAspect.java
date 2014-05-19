@@ -30,13 +30,12 @@ public class EncryptorAspect {
     @Around("encryptedProperties()")
     public void encryptProperty(ProceedingJoinPoint joinPoint) throws Throwable {
         if (encryptor == null) {
-            throw new IllegalStateException("Encryptor must be defined, cannot encrypt any property wihout it.");
+            throw new IllegalStateException("Encryptor must be defined, cannot encrypt any property wihtout it.");
         }
 
         Object[] args = joinPoint.getArgs();
         final Signature signature = joinPoint.getSignature();
         if (signature instanceof MethodSignature) {
-            boolean encryptParameters = false;
             // check if method has @Encrypted annotation
             final Encrypted encryptedAnnotation =
                     ((MethodSignature) signature).getMethod().getAnnotation(Encrypted.class);

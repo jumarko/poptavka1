@@ -173,7 +173,7 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
         // check if new client has also all client notifications set to the sensible values
         Assert.assertNotNull(createdClient.getBusinessUser().getSettings());
         assertThat("Unexpected count of notifications",
-                createdClient.getBusinessUser().getSettings().getNotificationItems().size(), is(6));
+                createdClient.getBusinessUser().getSettings().getNotificationItems().size(), is(7));
         checkNotifications(createdClient, Registers.Notification.NEW_OFFER, Registers.Notification.NEW_MESSAGE,
                 Registers.Notification.NEW_INFO, Registers.Notification.NEW_MESSAGE_OPERATOR,
                 Registers.Notification.DEMAND_STATUS_CHANGED);

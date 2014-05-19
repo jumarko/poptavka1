@@ -7,6 +7,7 @@ import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.Validate;
@@ -14,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class NotificationServiceImpl implements NotificationService {
@@ -52,12 +52,9 @@ public class NotificationServiceImpl implements NotificationService {
             }
             LOGGER.debug("action=notification_new_message status=notification_message_composed user={}",
                     userToBeNotified);
-            notificationSender.sendNotification(userToBeNotified, notificationEntity, new HashMap<String, String>() {
-                {
-                    put("header", "You have " + newMessages.length + " new message(s)");
-                    put("body", composedMessageBody);
-                }
-            });
+            notificationSender.sendNotification(userToBeNotified, notificationEntity, ImmutableMap.of(
+                        "header", "You have " + newMessages.length + " new message(s)",
+                        "body", composedMessageBody));
             LOGGER.debug("action=notification_new_message status=notification_sent user={}", userToBeNotified);
         }
     }
