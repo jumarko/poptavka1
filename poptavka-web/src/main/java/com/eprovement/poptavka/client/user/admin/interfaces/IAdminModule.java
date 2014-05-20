@@ -54,32 +54,6 @@ public interface IAdminModule {
 
         Button getActiveDemandsBtn();
 
-        Button getDemandsButton();
-
-        Button getClientsButton();
-
-        Button getOffersButton();
-
-        Button getSuppliersButton();
-
-        Button getAccessRoleButton();
-
-        Button getEmailActivationButton();
-
-        Button getInvoiceButton();
-
-        Button getMessageButton();
-
-        Button getPaymentMethodButton();
-
-        Button getPermissionButton();
-
-        Button getPreferenceButton();
-
-        Button getProblemButton();
-
         SimplePanel getContentContainer();
-
-        Widget getWidgetView();
     }
 }
