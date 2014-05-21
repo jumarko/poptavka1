@@ -9,7 +9,6 @@ import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.view.LazyView;
@@ -25,7 +24,8 @@ public interface IAdminModule {
         DASHBOARD,
         NEW_DEMANDS,
         ASSIGNED_DEMANDS,
-        ACTIVE_DEMANDS;
+        ACTIVE_DEMANDS,
+        CLIENTS;
     }
 
     public interface Gateway {
@@ -46,13 +46,15 @@ public interface IAdminModule {
 
         void setClientMenuActStyle(AdminWidget widget);
 
-        void setContent(Widget contentWidget);
+        void setContent(IsWidget contentWidget);
 
         Button getNewDemandsBtn();
 
         Button getAssignedDemandsBtn();
 
         Button getActiveDemandsBtn();
+
+        Button getClientsBtn();
 
         SimplePanel getContentContainer();
     }

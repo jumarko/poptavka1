@@ -11,7 +11,9 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.admin.AdminRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -54,6 +56,9 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             case Constants.ADMIN_ACTIVE_DEMANDS:
                 getAdminActiveDemandsCount(grid, searchDefinition);
                 break;
+            case Constants.ADMIN_CLIENTS:
+                getAdminClientsCount(grid, searchDefinition);
+                break;
             default:
                 break;
         }
@@ -74,6 +79,9 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                 break;
             case Constants.ADMIN_ACTIVE_DEMANDS:
                 getAdminActiveDemands(grid, searchDefinition, requestId);
+                break;
+            case Constants.ADMIN_CLIENTS:
+                getAdminClients(grid, searchDefinition, requestId);
                 break;
             default:
                 break;
@@ -148,9 +156,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
         });
     }
 
-    /**************************************************************************/
-    /* DevelDetailWrapper widget methods                                      */
-    /**************************************************************************/
     /**
      * Creates conversation between <code>Client</code> and Admin/Operator user. Conversation is created in such a
      * way that new <code>UserMessage</code> is created for every <code>User</code> who invokes this method. Thus
@@ -168,5 +173,71 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                     eventBus.responseCreateConversation(result);
                 }
             });
+    }
+
+    /**************************************************************************/
+    /*  Admin Clients                                                         */
+    /**************************************************************************/
+    /**
+     * Requests for admin client's data count.
+     * @param grid provides table data provider to be updated with returned count value
+     * @param searchDefinition defines search criteria
+     */
+    private void getAdminClientsCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
+        adminService.getClientsCount(searchDefinition, new GetDataCountCallback(eventBus, grid));
+    }
+
+    /**
+     * Requests for admin client's data.
+     * @param grid provides table data provider to be updated with returned data
+     * @param searchDefinition defines search criteria
+     */
+    private void getAdminClients(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
+        adminService.getClients(searchDefinition, new GetDataCallback<AdminClientDetail>(eventBus, grid, requestId));
+    }
+
+    /**
+     * Requests for origins data.
+     */
+    public void onRequestOrigins() {
+        adminService.getOrigins(new SecuredAsyncCallback<List<OriginDetail>>(eventBus) {
+
+            @Override
+            public void onSuccess(List<OriginDetail> result) {
+                eventBus.responseOrigins(result);
+            }
+        });
+    }
+
+    /**
+     * Changes given email of given user.
+     * @param table to be refreshed after change
+     * @param userId
+     * @param email
+     */
+    public void onRequestChangeEmail(final UniversalAsyncGrid table, long userId, String email) {
+        adminService.changeEmail(userId, email, new SecuredAsyncCallback<Void>(eventBus) {
+
+            @Override
+            public void onSuccess(Void result) {
+                table.refresh();
+            }
+        });
+    }
+
+    /**
+     * Sets given origin to given user
+     * @param table to be refreshed after change
+     * @param userId
+     * @param originId
+     */
+    public void onRequestChangeOrigin(final UniversalAsyncGrid table, long userId, long originId) {
+        adminService.setUserOrigin(userId, originId, new SecuredAsyncCallback<Void>(eventBus) {
+
+            @Override
+            public void onSuccess(Void result) {
+                table.refresh();
+            }
+        });
     }
 }

@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.eprovement.poptavka.resources.StyleResource;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.inject.Inject;
 
 /**
@@ -39,7 +40,7 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel contentContainer;
-    @UiField Button newDemandsBtn, assigendDemandsBtn, activeDemandsBtn;
+    @UiField Button newDemandsBtn, assigendDemandsBtn, activeDemandsBtn, clientsBtn;
     /** Class attributes. **/
     @Inject
     private AdminToolbarView toolbar;
@@ -80,6 +81,9 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
             case ACTIVE_DEMANDS:
                 activeDemandsBtn.addStyleName(Constants.ACT);
                 break;
+            case CLIENTS:
+                clientsBtn.addStyleName(Constants.ACT);
+                break;
             default:
                 break;
         }
@@ -90,7 +94,7 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
      * @param contentWidget
      */
     @Override
-    public void setContent(Widget contentWidget) {
+    public void setContent(IsWidget contentWidget) {
         contentContainer.setWidget(contentWidget);
     }
 
@@ -119,6 +123,14 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
     @Override
     public Button getActiveDemandsBtn() {
         return activeDemandsBtn;
+    }
+
+    /**
+     * @return the clients button
+     */
+    @Override
+    public Button getClientsBtn() {
+        return clientsBtn;
     }
 
     /**

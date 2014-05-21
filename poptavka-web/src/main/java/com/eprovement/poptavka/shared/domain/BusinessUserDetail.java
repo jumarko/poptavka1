@@ -26,6 +26,8 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     /** Enums. **/
     public enum UserField {
 
+        ID("id"),
+        CREATED("created"),
         COMPANY_NAME("companyName"),
         FIRST_NAME("personFirstName"),
         LAST_NAME("personLastName"),

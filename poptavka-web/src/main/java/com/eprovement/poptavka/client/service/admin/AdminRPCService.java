@@ -2,6 +2,8 @@ package com.eprovement.poptavka.client.service.admin;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
+import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -49,4 +51,50 @@ public interface AdminRPCService extends RemoteService {
 
     //---------------------- OTHERS -------------------------------------------------------
     UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
+
+    /**************************************************************************/
+    /*                        Admin Clients                                   */
+    /**************************************************************************/
+    /**
+     * Requests for admin client's data count.
+     * @param searchDefinition defines search criteria
+     * @return client's data count value
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    Integer getClientsCount(SearchDefinition searchDefinition) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Requests for admin client's data.
+     * @param searchDefinition defines search criteria
+     * @return client's data
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    List<AdminClientDetail> getClients(SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Gets data from Origin table.
+     * @return data
+     */
+    List<OriginDetail> getOrigins() throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Changes given email of given user.
+     * @param userId
+     * @param newEmail
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+     */
+    void changeEmail(long userId, String newEmail) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Sets given origin to given user
+     * @param userId
+     * @param originId
+     * @throws RPCException
+     * @throws ApplicationSecurityException 
+     */
+    void setUserOrigin(long userId, long originId) throws RPCException, ApplicationSecurityException;
 }

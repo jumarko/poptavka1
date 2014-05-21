@@ -23,7 +23,9 @@ public class FullClientDetail implements IsSerializable, TableDisplayRating {
     /** Enums. **/
     public enum ClientField {
 
+        ID("id"),
         OVERALL_RATING("overalRating");
+
         public static final String SEARCH_CLASS = "client";
         private String value;
 

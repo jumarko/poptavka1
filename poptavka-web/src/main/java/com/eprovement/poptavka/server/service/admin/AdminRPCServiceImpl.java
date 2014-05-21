@@ -5,11 +5,14 @@ package com.eprovement.poptavka.server.service.admin;
 
 import com.eprovement.poptavka.client.service.admin.AdminRPCService;
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.converter.SearchConverter;
@@ -19,9 +22,12 @@ import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.message.MessageService;
+import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
+import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -60,6 +66,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Autowired
     private GeneralService generalService;
     @Autowired
+    private ClientService clientService;
+    @Autowired
     private MessageService messageService;
     @Autowired
     private UserMessageService userMessageService;
@@ -81,6 +89,10 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Demand, AdminDemandDetail> adminDemandConverter;
     @Autowired
     private Converter<UserMessage, MessageDetail> userMessageConverter;
+    @Autowired
+    private Converter<Client, AdminClientDetail> adminClientConverter;
+    @Autowired
+    private Converter<Origin, OriginDetail> originConverter;
     @Autowired
     private SearchConverter searchConverter;
 
@@ -281,4 +293,64 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return threadRootMessage.getId();
     }
 
+    /**************************************************************************/
+    /*  Admin Clients                                                         */
+    /**************************************************************************/
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public Integer getClientsCount(SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
+        return generalService.count(searchConverter.convertToSource(Client.class, searchDefinition));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<AdminClientDetail> getClients(SearchDefinition searchDefinition)
+        throws RPCException, ApplicationSecurityException {
+
+        Search search = searchConverter.convertToSource(Client.class, searchDefinition);
+        return adminClientConverter.convertToTargetList(generalService.search(search));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void changeEmail(long userId, String newEmail) throws RPCException, ApplicationSecurityException {
+        User user = generalService.find(User.class, userId);
+        user.setEmail(newEmail);
+        generalService.merge(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void setUserOrigin(long userId, long originId) throws RPCException, ApplicationSecurityException {
+        BusinessUser user = generalService.find(BusinessUser.class, userId);
+        if (originId == 0) { //no origin
+            user.setOrigin(null);
+        } else {
+            user.setOrigin(generalService.find(Origin.class, originId));
+        }
+        generalService.merge(user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<OriginDetail> getOrigins() throws RPCException, ApplicationSecurityException {
+        return originConverter.convertToTargetList(generalService.findAll(Origin.class));
+    }
 }

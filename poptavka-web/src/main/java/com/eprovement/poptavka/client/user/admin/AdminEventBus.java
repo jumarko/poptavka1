@@ -7,17 +7,19 @@ import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.user.admin.clients.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.interfaces.HandleAdminResizeEvent;
 import com.eprovement.poptavka.client.user.admin.demands.AdminNewDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Debug.LogLevel;
 import com.mvp4g.client.annotation.Event;
@@ -37,8 +39,8 @@ import java.util.Set;
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = AdminPresenter.class, module = AdminModule.class)
 public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway,
-        InfoWidgetsGateway {
+    BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway,
+    InfoWidgetsGateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -93,7 +95,7 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     /** Module Initializatin section. **/
     //display widget in content area
     @Event(handlers = AdminPresenter.class)
-    void displayView(Widget content);
+    void displayView(IsWidget content);
 
     /** Submodule Initializatin section. **/
     @Event(handlers = AdminNewDemandsPresenter.class)
@@ -104,6 +106,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
 
     @Event(handlers = AdminNewDemandsPresenter.class)
     void initActiveDemands(SearchModuleDataHolder filter);
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void initClients(SearchModuleDataHolder filter);
 
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface.                          */
@@ -151,4 +156,15 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     @Event(handlers = AdminNewDemandsPresenter.class)
     void responseConversation(List<MessageDetail> chatMessages);
 
+    @Event(handlers = AdminHandler.class)
+    void requestOrigins();
+
+    @Event(handlers = AdminClientsPresenter.class)
+    void responseOrigins(List<OriginDetail> result);
+
+    @Event(handlers = AdminHandler.class)
+    void requestChangeEmail(UniversalAsyncGrid table, long userId, String email);
+
+    @Event(handlers = AdminHandler.class)
+    void requestChangeOrigin(UniversalAsyncGrid table, long userId, long originId);
 }

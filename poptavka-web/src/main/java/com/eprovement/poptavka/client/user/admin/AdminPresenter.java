@@ -14,7 +14,7 @@ import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -59,6 +59,14 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
             public void onClick(ClickEvent event) {
                 eventBus.closeSubMenu();
                 commonSubMenuHandler(AdminWidget.ACTIVE_DEMANDS);
+            }
+        });
+        view.getClientsBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
+                commonSubMenuHandler(AdminWidget.CLIENTS);
             }
         });
     }
@@ -129,6 +137,10 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
                 Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
                 eventBus.initActiveDemands(filter);
                 break;
+            case CLIENTS:
+                Storage.setCurrentlyLoadedView(Constants.ADMIN_CLIENTS);
+                eventBus.initClients(filter);
+                break;
             default: //welcome
                 Storage.setCurrentlyLoadedView(Constants.NONE);
                 ((AdminToolbarView) view.getToolbarContent()).resetFull();
@@ -166,7 +178,7 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
      * Displays body.
      * @param content widget
      */
-    public void onDisplayView(Widget content) {
+    public void onDisplayView(IsWidget content) {
         view.setContent(content);
     }
 }

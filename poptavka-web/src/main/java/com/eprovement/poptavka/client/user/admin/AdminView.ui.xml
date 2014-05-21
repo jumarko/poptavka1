@@ -23,6 +23,11 @@
                         <ui:msg key="adminTableActiveProjects">Active Projects</ui:msg>
                     </g:Button>
                 </li>
+                <li>
+                    <g:Button ui:field="clientsBtn">
+                        <ui:msg key="adminTableClients">Clients</ui:msg>
+                    </g:Button>
+                </li>
             </ul>
         </g:HTMLPanel>
         <!--Main Content-->

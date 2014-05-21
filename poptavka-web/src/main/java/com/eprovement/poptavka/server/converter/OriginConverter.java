@@ -26,14 +26,16 @@ public final class OriginConverter extends AbstractConverter<Origin, OriginDetai
      * @{inheritDoc}
      */
     @Override
-    public OriginDetail convertToTarget(Origin origin) {
-        final OriginDetail detail = new OriginDetail();
+    public OriginDetail convertToTarget(Origin source) {
+        if (source == null) {
+            return null;
+        }
 
-        detail.setId(origin.getId());
-        detail.setName(origin.getName());
-        detail.setDescription(origin.getDescription());
-        detail.setUrl(origin.getUrl());
-
+        OriginDetail detail = new OriginDetail();
+        detail.setId(source.getId());
+        detail.setName(source.getName());
+        detail.setDescription(source.getDescription());
+        detail.setUrl(source.getUrl());
         return detail;
     }
 
