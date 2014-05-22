@@ -7,9 +7,9 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -216,7 +216,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             .addColumnPrice(null)
             .addColumnEndDate(null)
             .addColumnUrgency()
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.VALID_TO)))
+            .addDefaultSort(Arrays.asList(SortPair.asc(DemandField.VALID_TO)))
             .addSelectionModel(new SingleSelectionModel(), ClientDemandDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();
@@ -235,7 +235,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             .addColumnPrice(textFieldUpdater)
             .addColumnOfferReceivedDate(textFieldUpdater)
             .addColumnFinishDate(textFieldUpdater)
-            .addDefaultSort(Arrays.asList(new SortPair(OfferDetail.OfferField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.asc(OfferField.CREATED)))
             .addSelectionModel(new MultiSelectionModel(), ClientOfferedDemandOffersDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();

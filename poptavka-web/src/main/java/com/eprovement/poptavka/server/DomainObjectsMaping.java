@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
@@ -61,7 +62,8 @@ public final class DomainObjectsMaping {
         mapingPairs.add(new MapingPair(DemandLocality.class, DemandField.SEARCH_CLASS, "demand."));
         //Client
         mapingPairs.add(new MapingPair(Client.class, ClientField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(Client.class, UserField.SEARCH_CLASS, "businessUser.businessUserData."));
+        mapingPairs.add(new MapingPair(Client.class, UserField.SEARCH_CLASS, "businessUser."));
+        mapingPairs.add(new MapingPair(Client.class, UserDataField.SEARCH_CLASS, "businessUser.businessUserData."));
         //Supplier
         mapingPairs.add(new MapingPair(Supplier.class, SupplierField.SEARCH_CLASS, ""));
         mapingPairs.add(new MapingPair(SupplierCategory.class, SupplierField.SEARCH_CLASS, "supplier."));
@@ -75,7 +77,8 @@ public final class DomainObjectsMaping {
         mapingPairs.add(new MapingPair(UserMessage.class, OfferField.SEARCH_CLASS, "message.offer."));
         mapingPairs.add(new MapingPair(UserMessage.class, MessageField.SEARCH_CLASS, "message."));
         mapingPairs.add(new MapingPair(UserMessage.class, UserMessageField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(UserMessage.class, UserField.SEARCH_CLASS, "businessUser.businessUserData."));
+        mapingPairs.add(new MapingPair(UserMessage.class,
+            UserDataField.SEARCH_CLASS, "businessUser.businessUserData."));
     }
 
     /**
@@ -99,13 +102,16 @@ public final class DomainObjectsMaping {
  */
 class MapingPair {
 
+    /**
+     * searchClass and searchClassAttributes builds unique identifications.
+     */
     private Class<?> searchClass;
-    private String searchClassAttributes;
+    private String fieldEnum;
     private String path;
 
     public MapingPair(Class<?> searchClass, String searchClassAttributes, String path) {
         this.searchClass = searchClass;
-        this.searchClassAttributes = searchClassAttributes;
+        this.fieldEnum = searchClassAttributes;
         this.path = path;
     }
 
@@ -117,7 +123,7 @@ class MapingPair {
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.searchClass);
-        hash = 97 * hash + Objects.hashCode(this.searchClassAttributes);
+        hash = 97 * hash + Objects.hashCode(this.fieldEnum);
         return hash;
     }
 
@@ -133,7 +139,7 @@ class MapingPair {
         if (!Objects.equals(this.searchClass, other.searchClass)) {
             return false;
         }
-        if (!Objects.equals(this.searchClassAttributes, other.searchClassAttributes)) {
+        if (!Objects.equals(this.fieldEnum, other.fieldEnum)) {
             return false;
         }
         return true;

@@ -94,7 +94,7 @@ public interface AdminRPCService extends RemoteService {
      * @param userId
      * @param originId
      * @throws RPCException
-     * @throws ApplicationSecurityException 
+     * @throws ApplicationSecurityException
      */
     void setUserOrigin(long userId, long originId) throws RPCException, ApplicationSecurityException;
 }

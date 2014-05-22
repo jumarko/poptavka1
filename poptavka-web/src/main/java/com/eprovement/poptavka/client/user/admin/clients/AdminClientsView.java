@@ -11,10 +11,11 @@ import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.GetValue;
 import com.eprovement.poptavka.client.user.widget.grid.cell.CreatedDateCell;
-import com.eprovement.poptavka.domain.enums.OrderType;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.FullClientDetail;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
@@ -101,8 +102,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
      * Initialize validation monitors for each field we want to validate.
      */
     private void initValidationMonitors() {
-        emailMonitor = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class,
-            BusinessUserDetail.UserField.EMAIL.getValue());
+        emailMonitor = new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, UserField.EMAIL.getValue());
     }
 
     /**
@@ -133,7 +133,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private void initTableColumns() {
 
         // ID
-        sortColumns.add(new SortPair(FullClientDetail.ClientField.ID));
+        sortColumns.add(SortPair.asc(ClientField.ID));
         table.addColumn(new TextCell(),
             Storage.MSGS.columnID(), true, ID_COL_WIDTH,
             new GetValue<String>() {
@@ -145,7 +145,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
             });
         // User ID
         //TOOD
-        sortColumns.add(new SortPair(BusinessUserDetail.UserField.ID));
+        sortColumns.add(SortPair.asc(UserField.ID));
         table.addColumn(new TextCell(),
             "User Id", true, ID_COL_WIDTH,
             new GetValue<String>() {
@@ -157,7 +157,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
             });
 
         // created
-        sortColumns.add(new SortPair(BusinessUserDetail.UserField.CREATED));
+        sortColumns.add(SortPair.asc(UserField.CREATED));
         table.addColumn(new CreatedDateCell(), Storage.MSGS.columnCompany(), true, ID_COL_WIDTH,
             new GetValue<Date>() {
 
@@ -167,7 +167,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 }
             });
         // email
-        sortColumns.add(new SortPair(BusinessUserDetail.UserField.EMAIL));
+        sortColumns.add(SortPair.asc(UserField.EMAIL));
         table.addColumn(new TextCell(),
             Storage.MSGS.columnFirstName(), true, EMAIL_COL_WIDTH,
             new GetValue<String>() {
@@ -178,7 +178,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
                 }
             });
         // fistName
-        sortColumns.add(new SortPair(BusinessUserDetail.UserField.FIRST_NAME));
+        sortColumns.add(SortPair.asc(UserDataField.FIRST_NAME));
         table.addColumn(new TextCell(),
             Storage.MSGS.columnFirstName(), true, FIRST_NAME_COL_WIDTH,
             new GetValue<String>() {
@@ -190,7 +190,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
             });
 
         // lastName
-        sortColumns.add(new SortPair(BusinessUserDetail.UserField.LAST_NAME));
+        sortColumns.add(SortPair.asc(UserDataField.LAST_NAME));
         table.addColumn(new TextCell(),
             Storage.MSGS.columnLastName(), true, LAST_NAME_COL_WIDTH,
             new GetValue<String>() {
@@ -206,10 +206,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
      * Inits sort settings for table like default sort and sortable column names.
      */
     private void initTableSort() {
-        List<SortPair> defaultSort = Arrays.asList(new SortPair(
-            BusinessUserDetail.UserField.CREATED.getValue(),
-            OrderType.DESC,
-            BusinessUserDetail.UserField.SEARCH_CLASS));
+        List<SortPair> defaultSort = Arrays.asList(SortPair.desc(UserField.CREATED));
         table.setGridColumns(new SortDataHolder(defaultSort, sortColumns));
     }
 

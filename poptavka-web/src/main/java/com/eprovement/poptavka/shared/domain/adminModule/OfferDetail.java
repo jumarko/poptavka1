@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.shared.domain.adminModule;
 
 import com.eprovement.poptavka.domain.enums.OfferStateType;
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 public class OfferDetail implements IsSerializable {
 
     /** Enums. **/
-    public enum OfferField {
+    public enum OfferField implements ISortField {
 
         CREATED("created"),
         FINISH_DATE("finishDate");
@@ -26,6 +27,12 @@ public class OfferDetail implements IsSerializable {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }

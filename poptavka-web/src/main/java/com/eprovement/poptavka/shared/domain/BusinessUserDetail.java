@@ -4,6 +4,7 @@ import com.eprovement.poptavka.client.common.validation.Extended;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.domain.enums.BusinessType;
 import com.eprovement.poptavka.domain.enums.Verification;
+import com.eprovement.poptavka.shared.search.ISortField;
 import javax.validation.constraints.Pattern;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -24,15 +25,36 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     /* Attributes                                                             */
     /**************************************************************************/
     /** Enums. **/
-    public enum UserField {
+    public enum UserField implements ISortField {
 
         ID("id"),
         CREATED("created"),
+        EMAIL("email"),
+        PASSWORD("password");
+
+        public static final String SEARCH_CLASS = "businessUser";
+        private String value;
+
+        private UserField(String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
+        public String getValue() {
+            return value;
+        }
+    }
+
+    public enum UserDataField implements ISortField {
+
         COMPANY_NAME("companyName"),
         FIRST_NAME("personFirstName"),
         LAST_NAME("personLastName"),
-        EMAIL("email"),
-        PASSWORD("password"),
         PHONE("phone"),
         DESCRIPTION("description"),
         OVERALL_RATING("overalRating"),
@@ -43,10 +65,16 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         public static final String SEARCH_CLASS = "businessUserData";
         private String value;
 
-        private UserField(String value) {
+        private UserDataField(String value) {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }
@@ -117,7 +145,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     private String taxId;
 
     @Pattern(regexp = "^(|((https?|ftp)://|(www|ftp)\\.)[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?)$",
-            message = "{patternWebsite}")
+        message = "{patternWebsite}")
     private String website;
 
     /** Class lists. **/

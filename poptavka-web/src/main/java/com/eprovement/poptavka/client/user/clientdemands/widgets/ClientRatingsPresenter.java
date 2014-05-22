@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.RatingDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -92,7 +92,7 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
             .addColumnDemandTitle(null)
             .addColumnPrice(null)
             .addSelectionModel(new SingleSelectionModel(), RatingDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .build();
     }
 

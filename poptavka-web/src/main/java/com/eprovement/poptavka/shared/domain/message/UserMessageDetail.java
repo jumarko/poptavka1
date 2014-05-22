@@ -4,6 +4,7 @@
  */
 package com.eprovement.poptavka.shared.domain.message;
 
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -13,9 +14,10 @@ import com.google.gwt.view.client.ProvidesKey;
  */
 public class UserMessageDetail implements IsSerializable {
 
-    public enum UserMessageField {
+    public enum UserMessageField implements ISortField {
 
         STARRED("starred");
+
         public static final String SEARCH_CLASS = "userMessage";
         private String value;
 
@@ -23,6 +25,12 @@ public class UserMessageDetail implements IsSerializable {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }

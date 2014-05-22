@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -79,7 +79,7 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
             .addColumnPrice(textFieldUpdater)
             .addColumnUrgency()
             .addColumnClientRating(textFieldUpdater)
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.VALID_TO)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.VALID_TO)))
             .addSelectionModel(new MultiSelectionModel(), SupplierPotentialDemandDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();

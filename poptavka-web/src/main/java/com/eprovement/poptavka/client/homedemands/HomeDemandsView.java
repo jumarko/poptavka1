@@ -81,7 +81,7 @@ public class HomeDemandsView extends OverflowComposite
             .addColumnLocality(null)
             .addColumnUrgency()
             .addSelectionModel(new SingleSelectionModel(), FullDemandDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .build();
     }
 

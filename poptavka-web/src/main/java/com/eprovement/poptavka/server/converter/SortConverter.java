@@ -36,7 +36,7 @@ public final class SortConverter {
      * @return the Sort object
      */
     public Sort convertToSource(Class<?> searchClass, SortPair sortPair) {
-        String path = DomainObjectsMaping.getInstance().getPath(searchClass, sortPair.getSearchClass());
+        String path = DomainObjectsMaping.getInstance().getPath(searchClass, sortPair.getFieldClass());
         return new Sort(
                 path.concat(sortPair.getColumnName()),
                 sortPair.getColumnOrderType() == OrderType.DESC,

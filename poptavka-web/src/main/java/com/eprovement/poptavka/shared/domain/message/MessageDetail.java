@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.shared.domain.message;
 
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
 
-    public enum MessageField {
+    public enum MessageField implements ISortField {
 
         CREATED("created"),
         SENT("sent"),
@@ -32,6 +33,12 @@ public class MessageDetail implements IsSerializable, TableDisplayUserMessage {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }
