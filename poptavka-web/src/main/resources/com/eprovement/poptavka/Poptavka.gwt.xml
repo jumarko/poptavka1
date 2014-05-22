@@ -103,4 +103,10 @@
     <extend-configuration-property
         name="compiler.splitpoint.initial.sequence"
         value="com.eprovement.poptavka.client.root.footer.texts.FooterInfo"/>
+
+    <!--Super dev mode-->
+    <add-linker name="xsiframe"/>
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+    <!-- enable source maps -->
+    <set-property name="compiler.useSourceMaps" value="true" />
 </module>

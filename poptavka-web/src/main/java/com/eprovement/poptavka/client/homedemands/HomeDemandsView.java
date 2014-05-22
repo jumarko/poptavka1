@@ -16,6 +16,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,6 +54,7 @@ public class HomeDemandsView extends OverflowComposite
     @UiField(provided = true) UniversalAsyncGrid<FullDemandDetail> dataGrid;
     @UiField SimplePanel detailPanel, footerPanel, categoryTreePanel;
     @UiField Label filterLabel;
+    @UiField Button filterClearBtn;
     /** Class attributes. **/
     private UniversalPagerWidget pager;
 
@@ -79,7 +81,7 @@ public class HomeDemandsView extends OverflowComposite
             .addColumnLocality(null)
             .addColumnUrgency()
             .addSelectionModel(new SingleSelectionModel(), FullDemandDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .build();
     }
 
@@ -119,6 +121,14 @@ public class HomeDemandsView extends OverflowComposite
     @Override
     public Label getFilterLabel() {
         return filterLabel;
+    }
+
+    /**
+     * @return the filter clear button
+     */
+    @Override
+    public Button getFilterClearBtn() {
+        return filterClearBtn;
     }
 
     /** Other. **/

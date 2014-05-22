@@ -18,7 +18,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.List;
 
 /**
  * HomeDemandsEventBus servers all events for module HomeDemandsModule.
@@ -82,7 +81,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = HomeDemandsPresenter.class)
-    void displayDemands(List<FullDemandDetail> result);
+    void responseGetData();
 
     @Event(handlers = HomeDemandsPresenter.class)
     void displayDemandDetail(FullDemandDetail supplierDetail);
@@ -99,7 +98,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
 
     @Override
     @Event(handlers = HomeDemandsHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     @Event(handlers = HomeDemandsHandler.class)
     void getDemand(long demandId);

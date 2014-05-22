@@ -18,7 +18,6 @@ import com.mvp4g.client.annotation.Events;
 import com.mvp4g.client.annotation.Forward;
 import com.mvp4g.client.annotation.Start;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.List;
 
 /**
  * HomeSuppliersEventBus servers all events for module HomeSuppliersModule.
@@ -76,7 +75,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = HomeSuppliersPresenter.class)
-    void displaySuppliers(List<FullSupplierDetail> list);
+    void responseGetData();
 
     @Event(handlers = HomeSuppliersPresenter.class)
     void displaySupplierDetail(FullSupplierDetail supplierDetail);
@@ -89,11 +88,11 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /**************************************************************************/
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
-    void getDataCount(final UniversalAsyncGrid grid, SearchDefinition searchDefinition);
+    void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
     @Override
     @Event(handlers = HomeSuppliersHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     @Event(handlers = HomeSuppliersHandler.class)
     void getSupplier(long supplierID);

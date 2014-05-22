@@ -162,28 +162,28 @@ public class UniversalGridFactory {
         }
 
         public Builder addColumnDemandTitle(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(DemandField.TITLE));
+            sortColumns.add(SortPair.asc(DemandField.TITLE));
             table.addColumn(MSGS.columnTitle(), GRSCS.dataGridStyle().colWidthTitle(),
                 new DemandTitleColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnMessageText(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(MessageField.BODY));
+            sortColumns.add(SortPair.asc(MessageField.BODY));
             table.addColumn(MSGS.columnText(), GRSCS.dataGridStyle().colWidthMessageText(),
                 new MessageTextColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnSender(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(MessageField.SENDER));
+            sortColumns.add(SortPair.asc(MessageField.SENDER));
             table.addColumn(MSGS.columnFrom(), GRSCS.dataGridStyle().colWidthSender(),
                 new SenderColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnSubject(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(MessageField.SUBJECT));
+            sortColumns.add(SortPair.asc(MessageField.SUBJECT));
             table.addColumn(MSGS.columnSubject(), GRSCS.dataGridStyle().colWidthTitle(),
                 new SubjectColumn(fieldUpdater));
             return this;
@@ -198,21 +198,21 @@ public class UniversalGridFactory {
 
         /** Number columns. **/
         public Builder addColumnClientRating(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(ClientField.OVERALL_RATING));
+            sortColumns.add(SortPair.asc(ClientField.OVERALL_RATING));
             table.addColumn(MSGS.columnRating(), GRSCS.dataGridStyle().colWidthRatting(),
                 new RatingColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnSupplierRating(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(SupplierField.OVERALL_RATING));
+            sortColumns.add(SortPair.asc(SupplierField.OVERALL_RATING));
             table.addColumn(MSGS.columnRating(), GRSCS.dataGridStyle().colWidthRatting(),
                 new RatingColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnPrice(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(DemandField.PRICE));
+            sortColumns.add(SortPair.asc(DemandField.PRICE));
             table.addColumn(MSGS.columnPrice(), GRSCS.dataGridStyle().colWidthPrice(),
                 new PriceColumn(fieldUpdater));
             return this;
@@ -220,42 +220,42 @@ public class UniversalGridFactory {
 
         /** Date columns. **/
         public Builder addColumnOfferReceivedDate(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(OfferField.CREATED));
+            sortColumns.add(SortPair.asc(OfferField.CREATED));
             table.addColumn(MSGS.columnReceived(), GRSCS.dataGridStyle().colWidthReceivedDate(),
                 new OfferReceivedDateColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnFinishDate(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(OfferField.FINISH_DATE));
+            sortColumns.add(SortPair.asc(OfferField.FINISH_DATE));
             table.addColumn(MSGS.columnDeliveryDate(), GRSCS.dataGridStyle().colWidthDate(),
                 new FinishDateColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnEndDate(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(DemandField.END_DATE));
+            sortColumns.add(SortPair.asc(DemandField.END_DATE));
             table.addColumn(MSGS.columnEndDate(), GRSCS.dataGridStyle().colWidthDate(),
                 new EndDateColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnMessageSent(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(MessageField.SENT));
+            sortColumns.add(SortPair.asc(MessageField.SENT));
             table.addColumn(MSGS.columnDate(), GRSCS.dataGridStyle().colWidthDate(),
                 new MessageSentDateColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnMessageCreated(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(MessageField.CREATED));
+            sortColumns.add(SortPair.asc(MessageField.CREATED));
             table.addColumn(MSGS.columnReceived(), GRSCS.dataGridStyle().colWidthDate(),
                 new CreatedDateColumn(fieldUpdater));
             return this;
         }
 
         public Builder addColumnDemandCreated(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(DemandField.CREATED));
+            sortColumns.add(SortPair.asc(DemandField.CREATED));
             table.addColumn(MSGS.columnCreatedDate(), GRSCS.dataGridStyle().colWidthCreatedDate(),
                 new CreatedDateColumn(fieldUpdater));
             return this;
@@ -302,7 +302,7 @@ public class UniversalGridFactory {
          * @return star column
          */
         public Builder addColumnStar(FieldUpdater fieldUpdater) {
-            sortColumns.add(new SortPair(UserMessageField.STARRED));
+            sortColumns.add(SortPair.asc(UserMessageField.STARRED));
             //create star header represented by star image
             Header starHeader = new Header<Boolean>(new StarImageCell()) {
                 @Override
@@ -326,7 +326,7 @@ public class UniversalGridFactory {
          * @return created demands status image column
          */
         public Builder addColumnDemandStatus() {
-            sortColumns.add(new SortPair(DemandField.DEMAND_STATUS));
+            sortColumns.add(SortPair.asc(DemandField.DEMAND_STATUS));
             table.addColumn(MSGS.columnStatus(), GRSCS.dataGridStyle().colWidthIcon(),
                 new DemandStatusColumn());
             return this;
@@ -339,7 +339,7 @@ public class UniversalGridFactory {
          * @return urgencyColumn
          */
         public Builder addColumnUrgency() {
-            sortColumns.add(new SortPair(DemandField.VALID_TO));
+            sortColumns.add(SortPair.asc(DemandField.VALID_TO));
             //create urgency's header represented by urgency's image
             Header urgencyHeader = new Header<Date>(new UrgentImageCell()) {
                 @Override

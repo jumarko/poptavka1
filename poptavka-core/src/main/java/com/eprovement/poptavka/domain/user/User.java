@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 import com.eprovement.poptavka.util.orm.OrmConstants;
+import java.util.Date;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -25,6 +26,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -42,6 +45,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends DomainObject {
 
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
     @Column(length = 64)
     @NotBlank
     private String password;
@@ -76,13 +82,18 @@ public class User extends DomainObject {
     @NotNull
     private Settings settings = new Settings();
 
-
     @OneToOne
     @NotAudited
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private ActivationEmail activationEmail;
 
+    @NotAudited
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date();
 
+    /**************************************************************************/
+    /*  Initialization                                                        */
+    /**************************************************************************/
     public User() {
     }
 
@@ -91,7 +102,9 @@ public class User extends DomainObject {
         this.password = password;
     }
 
-
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
     public String getPassword() {
         return password;
     }
@@ -100,7 +113,6 @@ public class User extends DomainObject {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public String getEmail() {
         return email;
@@ -146,6 +158,14 @@ public class User extends DomainObject {
         this.activationEmail = activationEmail;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
     /**
      * Compose appropriate display name for user.
      *
@@ -161,6 +181,9 @@ public class User extends DomainObject {
         return email;
     }
 
+    /**************************************************************************/
+    /*  Override methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
         return "User" + ", email='" + email + '\'' + '}';

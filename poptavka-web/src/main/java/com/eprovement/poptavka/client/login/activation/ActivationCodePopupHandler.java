@@ -5,7 +5,7 @@ package com.eprovement.poptavka.client.login.activation;
 
 import com.eprovement.poptavka.client.login.LoginEventBus;
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
-import com.eprovement.poptavka.client.service.demand.LoginUnsecRPCServiceAsync;
+import com.eprovement.poptavka.client.service.login.LoginRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.root.UserActivationResult;
 import com.google.inject.Inject;
@@ -16,7 +16,7 @@ import com.mvp4g.client.event.BaseEventHandler;
 public class ActivationCodePopupHandler extends BaseEventHandler<LoginEventBus> {
 
     @Inject
-    private LoginUnsecRPCServiceAsync loginService;
+    private LoginRPCServiceAsync loginService;
 
     /**************************************************************************/
     /* Activation methods                                                     */

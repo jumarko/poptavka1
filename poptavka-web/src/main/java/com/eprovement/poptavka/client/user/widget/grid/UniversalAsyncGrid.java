@@ -66,7 +66,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
          * @param searchDataHolder - define filtering criteria
          * @param orderColumns - define ordering
          */
-        void getData(SearchDefinition searchDefinition);
+        void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
     }
 
     /**
@@ -116,6 +116,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * Holds filtering criteria. See class (@link SearchModuleDataHolder).
      */
     private SearchModuleDataHolder searchDataHolder = null;
+    private int requestId = 0;
 
     /**************************************************************************/
     /* Constructors of UniversalAsyncGrid                                     */
@@ -180,7 +181,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
         }
-        eventBus.getDataCount(this, searchDefinition);
+        eventBus.getDataCount(getGrid(), searchDefinition);
     }
 
     /**************************************************************************/
@@ -210,8 +211,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                 if (!cancelRangeChangedEvent) {
                     //Aks for new data
                     if (display.getRowCount() > 0) {
-                        eventBus.getData(new SearchDefinition(
-                            start, start + length, searchDataHolder, sort.getSortOrder()));
+                        eventBus.getData(
+                            getGrid(),
+                            new SearchDefinition(start, start + length, searchDataHolder, sort.getSortOrder()),
+                            ++requestId);
                     }
                 }
                 cancelRangeChangedEvent = false;
@@ -225,8 +228,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             public void updateRowCount(int size, boolean exact) {
                 if (size > 0) {
                     super.updateRowCount(size, exact);
-                    eventBus.getData(new SearchDefinition(
-                        start, start + length, searchDataHolder, sort.getSortOrder()));
+                    eventBus.getData(
+                        getGrid(),
+                        new SearchDefinition(start, start + length, searchDataHolder, sort.getSortOrder()),
+                        ++requestId);
                 } else {
                     super.updateRowCount(size, true);
                 }
@@ -235,15 +240,25 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
             /**
              * Sets requested data to table starting form <b>start</b>.
              */
-            @Override
-            public void updateRowData(int start, List<T> values) {
-                super.updateRowData(start, values);
-                resize(Document.get().getClientWidth());
-            }
+//            @Override
+//            public void updateRowData(int start, List<T> values) {
+//                super.updateRowData(start, values);
+//                resize(Document.get().getClientWidth());
+//            }
         };
         this.dataProvider.addDataDisplay(this);
         this.createAsyncSortHandler();
 
+    }
+
+    /**
+     * Sets requested data to table starting form <b>start</b>.
+     */
+    public void updateRowData(List<T> values, int requestId) {
+        if (this.requestId == requestId) {
+            dataProvider.updateRowData(getStart(), values);
+            resize(Document.get().getClientWidth());
+        }
     }
 
     /**
@@ -269,8 +284,10 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                     event.isSortAscending() ? OrderType.ASC : OrderType.DESC);
                 sort.useCustomSortOrder();
 
-                eventBus.getData(new SearchDefinition(
-                    start, getPageSize(), searchDataHolder, sort.getSortOrder()));
+                eventBus.getData(
+                    getGrid(),
+                    new SearchDefinition(start, getPageSize(), searchDataHolder, sort.getSortOrder()),
+                    ++requestId);
             }
         };
         addColumnSortHandler(sortHandler);
@@ -403,6 +420,12 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return sort;
     }
 
+    /**
+     * @return grid instance
+     */
+    public UniversalAsyncGrid getGrid() {
+        return this;
+    }
     /**
      * Gets start index of pagination.
      *

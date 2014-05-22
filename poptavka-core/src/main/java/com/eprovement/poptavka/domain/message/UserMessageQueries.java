@@ -26,7 +26,8 @@ public interface UserMessageQueries {
     String ADMIN_NEW_DEMANDS
         = "SELECT m.demand FROM Message as m \n"
         + " WHERE m.demand.status = 'NEW' "
-        + " AND m.id NOT IN (" + UserMessageQueries.OPERATORS_USER_MESSAGES + ")";
+        + " AND m.id NOT IN (" + UserMessageQueries.OPERATORS_USER_MESSAGES + ")"
+        + " ORDER BY m.demand.createdDate DESC";
 
     /**
      * Gets user messages count for given user and demand status.

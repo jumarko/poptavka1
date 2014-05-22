@@ -21,6 +21,7 @@ import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.ValueUpdater;
@@ -28,7 +29,6 @@ import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -142,10 +142,6 @@ public class MessageListPresenter
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
-    public void onDisplayInboxMessages(ArrayList<MessageDetail> inboxMessages) {
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), inboxMessages);
-    }
-
     /**
      * Recalculate table height if resize event occurs.
      * Usually paddings or margins changes on smaller resolutions.
@@ -196,7 +192,7 @@ public class MessageListPresenter
             .addColumnSubject(textFieldUpdater)
             .addColumnMessageCreated(textFieldUpdater)
             .addSelectionModel(new MultiSelectionModel(), MessageDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(MessageDetail.MessageField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.asc(MessageField.CREATED)))
             .addRowStyles(rowStyles)
             .build();
     }

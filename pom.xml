@@ -17,7 +17,7 @@
 
     <properties>
         <build.final.name>ROOT</build.final.name>
-        <gwt.version>2.5.0</gwt.version>
+        <gwt.version>2.6.0</gwt.version>
         <spring.version>3.2.4.RELEASE</spring.version>
         <spring-security.version>3.1.4.RELEASE</spring-security.version>
         <maven.compiler.source>1.7</maven.compiler.source>
@@ -907,9 +907,6 @@
                 </gwt.args>
                 <gwt.user.agent>gecko1_8</gwt.user.agent>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
         <!--Use 'devel-chrome' if you don't like firefox-->
         <profile>
@@ -921,6 +918,9 @@
                 </gwt.args>
                 <gwt.user.agent>safari</gwt.user.agent>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
         <profile>
             <id>jenkins-devel</id>
@@ -939,7 +939,7 @@
                 <gwt.args>
                     -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=512m
                 </gwt.args>
-                <gwt.user.agent>ie6,ie8,ie9,gecko1_8,safari,opera</gwt.user.agent>
+                <gwt.user.agent>ie8,ie9,gecko1_8,safari</gwt.user.agent>
             </properties>
         </profile>
         <profile>

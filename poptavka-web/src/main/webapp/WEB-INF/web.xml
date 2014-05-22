@@ -286,15 +286,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>LoginUnsecRPCService</servlet-name>
-        <servlet-class>com.eprovement.poptavka.server.service.login.LoginUnsecRPCServiceImpl</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginUnsecRPCService</servlet-name>
-        <url-pattern>/poptavka/service/loginUnsec</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>SettingsRPCService</servlet-name>
         <servlet-class>com.eprovement.poptavka.server.service.settings.SettingsRPCServiceImpl</servlet-class>
     </servlet>

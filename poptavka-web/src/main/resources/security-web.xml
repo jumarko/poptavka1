@@ -15,7 +15,6 @@
         <!-- URL patterns that require Authentication by particular roles -->
         <!-- TODO RELEASE ivlcek: test that all secured RPC working correctly. -->
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-        <security:intercept-url pattern="/poptavka/service/login" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/settings" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/messagesmodule" access="ROLE_CLIENT" />

@@ -10,12 +10,11 @@ import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
-import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Timer;
@@ -24,7 +23,6 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Displays client's demands with accpeted offer.
@@ -90,17 +88,6 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
             }
         };
         eventBus.showThankYouPopup(Storage.MSGS.thankYouClosedDemand(), additionalAction);
-    }
-
-    /**
-     * Response method for onInitSupplierList()
-     * @param data
-     */
-    public void onDisplayClientAssignedDemands(List<IUniversalDetail> data) {
-        GWT.log("++ onResponseClientsAssignedDemands");
-
-        view.getChildTable().getDataProvider().updateRowData(
-            view.getChildTable().getStart(), data);
     }
 
     /**************************************************************************/
@@ -210,7 +197,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
             .addColumnSupplierRating(textFieldUpdater)
             .addColumnOfferReceivedDate(textFieldUpdater)
             .addColumnFinishDate(textFieldUpdater)
-            .addDefaultSort(Arrays.asList(new SortPair(OfferDetail.OfferField.FINISH_DATE)))
+            .addDefaultSort(Arrays.asList(SortPair.asc(OfferField.FINISH_DATE)))
             .addSelectionModel(new MultiSelectionModel(), ClientOfferedDemandOffersDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();

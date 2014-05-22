@@ -15,10 +15,8 @@ import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientOffersPre
 import com.eprovement.poptavka.client.user.clientdemands.widgets.ClientRatingsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
-import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDashboardDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
-import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -153,9 +151,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ClientDemandsPresenter.                     */
     /**************************************************************************/
     @Event(handlers = ClientDemandsPresenter.class)
-    void displayClientDemands(List<ClientDemandDetail> result);
-
-    @Event(handlers = ClientDemandsPresenter.class)
     void displayClientDemandConversations(List<ClientDemandConversationDetail> result);
 
     @Event(handlers = ClientDemandsPresenter.class)
@@ -165,25 +160,13 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     /* Business events handled by ClientOffersPresenter.                      */
     /**************************************************************************/
     @Event(handlers = ClientOffersPresenter.class)
-    void displayClientOfferedDemands(List<ClientDemandDetail> result);
-
-    @Event(handlers = ClientOffersPresenter.class)
     void displayClientOfferedDemandOffers(List<ClientOfferedDemandOffersDetail> result);
 
     /**************************************************************************/
     /* Business events handled by ClientAssignedDemandsPresenter.             */
     /**************************************************************************/
     @Event(handlers = ClientAssignedDemandsPresenter.class)
-    void displayClientAssignedDemands(List<ClientOfferedDemandOffersDetail> result);
-
-    @Event(handlers = ClientAssignedDemandsPresenter.class)
     void responseFeedback();
-
-    /**************************************************************************/
-    /* Business events handled by ClientAssignedDemandsPresenter.             */
-    /**************************************************************************/
-    @Event(handlers = ClientRatingsPresenter.class)
-    void displayClientRatings(List<RatingDetail> result);
 
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
@@ -232,7 +215,7 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Override
     @Event(handlers = ClientDemandsModuleHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     /**************************************************************************/
     /* Client Demands MENU                                                    */

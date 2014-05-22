@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.common.forms;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -64,9 +64,9 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
      * Initialize validation monitors for each field we want to validate.
      */
     private void initValidationMonitors() {
-        companyName = createValidationMonitor(UserField.COMPANY_NAME);
-        taxNumber = createValidationMonitor(UserField.TAX_NUMBER);
-        vatNumber = createValidationMonitor(UserField.VAT_NUMBER);
+        companyName = createValidationMonitor(UserDataField.COMPANY_NAME);
+        taxNumber = createValidationMonitor(UserDataField.TAX_NUMBER);
+        vatNumber = createValidationMonitor(UserDataField.VAT_NUMBER);
     }
 
     /**
@@ -74,7 +74,7 @@ public class CompanyInfoForm extends Composite implements ProvidesValidate {
      * @param field - validation field
      * @return validation monitor
      */
-    private ValidationMonitor createValidationMonitor(UserField field) {
+    private ValidationMonitor createValidationMonitor(UserDataField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
 

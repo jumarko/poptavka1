@@ -25,6 +25,11 @@
         <constructor-arg ref="businessUserConverter"/>
     </bean>
     <bean id="clientDemandConverter" class="com.eprovement.poptavka.server.converter.ClientDemandConverter" />
+
+    <!--ADMIN-->
+    <bean id="adminClientConverter" class="com.eprovement.poptavka.server.converter.admin.AdminClientConverter">
+        <constructor-arg ref="originConverter"/>
+    </bean>
     <bean id="adminDemandConverter" class="com.eprovement.poptavka.server.converter.admin.AdminDemandConverter">
         <constructor-arg ref="localityConverter"/>
     </bean>

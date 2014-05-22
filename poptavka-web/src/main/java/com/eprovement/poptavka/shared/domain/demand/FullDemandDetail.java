@@ -13,6 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.Tab
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -43,7 +44,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
     /* Enums                                                                  */
     /**************************************************************************/
     //Only fields that can be updated
-    public enum DemandField {
+    public enum DemandField implements ISortField {
 
         TITLE("title"),
         DESCRIPTION("description"),
@@ -58,13 +59,21 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         DEMAND_STATUS("status"),
         CREATED("createdDate"),
         EXCLUDE_SUPPLIER("excludedSuppliers");
+
         public static final String SEARCH_CLASS = "demand";
+
         private String value;
 
         private DemandField(String value) {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }

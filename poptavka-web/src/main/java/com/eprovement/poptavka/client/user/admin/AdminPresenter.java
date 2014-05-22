@@ -7,14 +7,14 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
+import com.eprovement.poptavka.client.user.admin.toolbar.AdminModuleWelcomeView;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
-import com.eprovement.poptavka.client.user.admin.tab.AdminModuleWelcomeView;
 import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 import com.eprovement.poptavka.client.user.widget.LoadingDiv;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -61,78 +61,14 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
                 commonSubMenuHandler(AdminWidget.ACTIVE_DEMANDS);
             }
         });
-//        view.getDemandsButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_DEMANDS);
-//            }
-//        });
-//        view.getClientsButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_CLIENTS);
-//            }
-//        });
-//        view.getSuppliersButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_SUPPLIERS);
-//            }
-//        });
-//        view.getOffersButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_OFFERS);
-//            }
-//        });
-//        view.getAccessRoleButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_ACCESS_ROLE);
-//            }
-//        });
-//        view.getEmailActivationButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_EMAILS_ACTIVATION);
-//            }
-//        });
-//        view.getInvoiceButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_INVOICES);
-//            }
-//        });
-//        view.getMessageButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_MESSAGES);
-//            }
-//        });
-//        view.getPaymentMethodButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_PAYMENT_METHODS);
-//            }
-//        });
-//        view.getPermissionButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_PERMISSIONS);
-//            }
-//        });
-//        view.getPreferenceButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_PREFERENCES);
-//            }
-//        });
-//        view.getProblemButton().addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent event) {
-//                commonSubMenuHandler(Constants.ADMIN_PROBLEMS);
-//            }
-//        });
+        view.getClientsBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
+                commonSubMenuHandler(AdminWidget.CLIENTS);
+            }
+        });
     }
 
     /**
@@ -162,7 +98,7 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
         if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
             eventBus.updateUnreadMessagesCount();
         }
-        eventBus.setBody(view.getWidgetView());
+        eventBus.setBody(view);
         //TODO Martin - add i18n string
         eventBus.setToolbarContent("Admin Menu", view.getToolbarContent());
         eventBus.menuStyleChange(Constants.USER_ADMININSTRATION_MODULE);
@@ -184,7 +120,7 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
     public void onGoToAdminModule(SearchModuleDataHolder filter, AdminWidget loadWidget) {
         GWT.log("onGoToAdminModule - som tu");
 
-        view.getWidgetView().setStyleName(Storage.RSCS.common().user());
+        view.asWidget().setStyleName(Storage.RSCS.common().user());
         view.setClientMenuActStyle(loadWidget);
 
         ((AdminToolbarView) view.getToolbarContent()).resetBasic();
@@ -200,6 +136,10 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
             case ACTIVE_DEMANDS:
                 Storage.setCurrentlyLoadedView(Constants.ADMIN_ACTIVE_DEMANDS);
                 eventBus.initActiveDemands(filter);
+                break;
+            case CLIENTS:
+                Storage.setCurrentlyLoadedView(Constants.ADMIN_CLIENTS);
+                eventBus.initClients(filter);
                 break;
             default: //welcome
                 Storage.setCurrentlyLoadedView(Constants.NONE);
@@ -238,26 +178,7 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
      * Displays body.
      * @param content widget
      */
-    public void onDisplayView(Widget content) {
+    public void onDisplayView(IsWidget content) {
         view.setContent(content);
-    }
-
-    /**************************************************************************/
-    /* Helper methods                                                         */
-    /**************************************************************************/
-    /**
-     * Inits active demands widget.
-     * @param filter - search criteria
-     */
-    private void initActiveDemands(SearchModuleDataHolder filter) {
-        eventBus.initActiveDemands(filter);
-    }
-
-    /**
-     * Inits new demands widget.
-     * @param filter - search criteria
-     */
-    private void initNewDemands(SearchModuleDataHolder filter) {
-        eventBus.initNewDemands(filter);
     }
 }

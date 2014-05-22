@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.common.forms;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -49,8 +49,8 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
      * Initialize validation monitors for each field we want to validate.
      */
     private void initValidationMonitors() {
-        website = createValidationMonitor(UserField.WEBSITE);
-        description = createValidationMonitor(UserField.DESCRIPTION);
+        website = createValidationMonitor(UserDataField.WEBSITE);
+        description = createValidationMonitor(UserDataField.DESCRIPTION);
     }
 
     /**
@@ -58,7 +58,7 @@ public class AdditionalInfoForm extends Composite implements ProvidesValidate {
      * @param field - validation field
      * @return validation monitor
      */
-    private ValidationMonitor createValidationMonitor(UserField field) {
+    private ValidationMonitor createValidationMonitor(UserDataField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
 

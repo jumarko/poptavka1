@@ -13,7 +13,7 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.SupplierCell;
 import com.eprovement.poptavka.client.user.widget.grid.columns.AddressColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.LogoColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
@@ -143,11 +143,11 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     private SortDataHolder initSort() {
         List<SortPair> sortColumns = Arrays.asList(
                 null, //Logo
-                new SortPair(UserField.COMPANY_NAME),
-                new SortPair(SupplierField.OVERALL_RATING),
+                SortPair.asc(UserDataField.COMPANY_NAME),
+                SortPair.asc(SupplierField.OVERALL_RATING),
                 null); //Address
         List<SortPair> defaultSort = Arrays.asList(
-                new SortPair(SupplierField.OVERALL_RATING));
+                SortPair.asc(SupplierField.OVERALL_RATING));
         return new SortDataHolder(defaultSort, sortColumns);
     }
 

@@ -3,6 +3,7 @@ package com.eprovement.poptavka.shared.domain;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.adminModule.InvoiceDetail;
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import java.util.ArrayList;
@@ -21,9 +22,11 @@ import javax.validation.constraints.Min;
 public class FullClientDetail implements IsSerializable, TableDisplayRating {
 
     /** Enums. **/
-    public enum ClientField {
+    public enum ClientField implements ISortField {
 
+        ID("id"),
         OVERALL_RATING("overalRating");
+
         public static final String SEARCH_CLASS = "client";
         private String value;
 
@@ -31,6 +34,12 @@ public class FullClientDetail implements IsSerializable, TableDisplayRating {
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }

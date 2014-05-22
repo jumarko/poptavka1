@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWi
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -47,7 +47,10 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             @Override
             public void onClick(ClickEvent event) {
                 //Need to load again, cause I need replied demand to dissapear from new demands
-                eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+                //But reload only when in new demands
+                if (mode == AdminWidget.NEW_DEMANDS) {
+                    eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+                }
             }
         });
     }
@@ -124,14 +127,6 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     /* Business eventsods                                                     */
     /**************************************************************************/
     /**
-     * Display demands of selected category.
-     * @param list
-     */
-    public void onDisplayAdminNewDemands(List<AdminDemandDetail> list) {
-        view.getTable().getDataProvider().updateRowData(view.getTable().getStart(), list);
-    }
-
-    /**
      * Display newly created conversation to detail section.
      * @param threadRootId
      */
@@ -181,7 +176,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             .addColumnLocality(textFieldUpdater)
             .addColumnUrgency()
             .addSelectionModel(new MultiSelectionModel(), AdminDemandDetail.KEY_PROVIDER)
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .addRowStyles(rowStyles)
             .build();
     }

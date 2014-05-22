@@ -31,6 +31,7 @@ public interface LocalizableMessages extends Messages {
     String formatCurrencySign();
 
     /** Common button names. **/
+    String commonBtnAdd();
     String commonBtnBack();
     String commonBtnCancel();
     String commonBtnChange();
@@ -744,6 +745,7 @@ public interface LocalizableMessages extends Messages {
     String adminTableAccessRole();
     String adminTableActiveProjects();
     String adminTableAssigendProjects();
+    String adminTableClients();
     String adminTableDemand();
     String adminTableEmailActivation();
     String adminTableInvoice();

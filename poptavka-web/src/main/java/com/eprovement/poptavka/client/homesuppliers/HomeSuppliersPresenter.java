@@ -377,10 +377,8 @@ public class HomeSuppliersPresenter
 
     /**
      * Display suppliers of selected category.
-     * @param list
      */
-    public void onDisplaySuppliers(List<FullSupplierDetail> list) {
-        view.getDataGrid().getDataProvider().updateRowData(view.getDataGrid().getStart(), list);
+    public void onResponseGetData() {
         //If supplier must be selected, get its detail and select in selectionModel
         if (selectedSupplierId != -1) {
             eventBus.getSupplier(selectedSupplierId);

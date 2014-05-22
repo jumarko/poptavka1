@@ -8,6 +8,7 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -26,7 +27,7 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
     /* Attributes                                                             */
     /**************************************************************************/
     /** Enums. **/
-    public enum SupplierField {
+    public enum SupplierField implements ISortField {
 
         OVERALL_RATING("overalRating");
 
@@ -37,6 +38,12 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
             this.value = value;
         }
 
+        @Override
+        public String getFieldClass() {
+            return SEARCH_CLASS;
+        }
+
+        @Override
         public String getValue() {
             return value;
         }

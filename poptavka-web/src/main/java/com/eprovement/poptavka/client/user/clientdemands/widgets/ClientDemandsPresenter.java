@@ -14,6 +14,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -101,18 +102,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /* Display data                                                           */
     /**************************************************************************/
-    /**
-     * Display client's "My demands" and select item if requested.
-     * @param data
-     */
-    public void onDisplayClientDemands(List<ClientDemandDetail> data) {
-        GWT.log("++ onResponseClientsDemands");
-
-//        view.getToolbar().bindPager(view.getParentTable());
-        view.getParentTable().getDataProvider().updateRowData(
-            view.getParentTable().getStart(), data);
-    }
-
     /**
      * Display conversations for selected demand and select item if requested.
      * If no conversations available:
@@ -318,7 +307,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             .addColumnPrice(null)
             .addColumnEndDate(null)
             .addColumnUrgency()
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .addSelectionModel(new SingleSelectionModel(), ClientDemandDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();
@@ -337,7 +326,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             .addColumnMessageText(textFieldUpdater)
             .addColumnClientRating(textFieldUpdater) //TODO rename to rating
             .addColumnMessageSent(textFieldUpdater)
-            .addDefaultSort(Arrays.asList(new SortPair(FullDemandDetail.DemandField.CREATED)))
+            .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .addSelectionModel(new MultiSelectionModel(), ClientDemandConversationDetail.KEY_PROVIDER)
             .addRowStyles(rowStyles)
             .build();

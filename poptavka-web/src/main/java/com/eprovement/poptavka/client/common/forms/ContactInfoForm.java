@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.common.forms;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -66,9 +66,9 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
      * Initialize validation monitors for each field we want to validate.
      */
     private void initValidationMonitors() {
-        firstName = createValidationMonitor(UserField.FIRST_NAME);
-        lastName = createValidationMonitor(UserField.LAST_NAME);
-        phone = createValidationMonitor(UserField.PHONE);
+        firstName = createValidationMonitor(UserDataField.FIRST_NAME);
+        lastName = createValidationMonitor(UserDataField.LAST_NAME);
+        phone = createValidationMonitor(UserDataField.PHONE);
     }
 
     /**
@@ -76,7 +76,7 @@ public class ContactInfoForm extends Composite implements ProvidesValidate {
      * @param field - validation field
      * @return validation monitor
      */
-    private ValidationMonitor createValidationMonitor(UserField field) {
+    private ValidationMonitor createValidationMonitor(UserDataField field) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, field.getValue());
     }
 

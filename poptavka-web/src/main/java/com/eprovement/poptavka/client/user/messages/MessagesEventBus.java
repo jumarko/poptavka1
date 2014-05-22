@@ -21,7 +21,6 @@ import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.mvp4g.client.event.EventBusWithLookup;
-import java.util.ArrayList;
 
 /**
  * Message module - provides internal mailbox to user.
@@ -89,7 +88,7 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
 
     @Override
     @Event(handlers = MessagesHandler.class)
-    void getData(SearchDefinition searchDefinition);
+    void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
 
     /**************************************************************************/
     /* Business Initialization events                                         */
@@ -105,9 +104,6 @@ public interface MessagesEventBus extends EventBusWithLookup, IEventBusData, Bas
 
     @Event(handlers = MessagesPresenter.class)
     void messagesMenuStyleChange(int loadedWidget);
-
-    @Event(handlers = MessageListPresenter.class)
-    void displayInboxMessages(ArrayList<MessageDetail> inboxMessages);
 
     /**************************************************************************/
     /* Business events handled by MessagesModuleMessageHandler                */
