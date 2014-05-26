@@ -484,13 +484,17 @@ public interface LocalizableMessages extends Messages {
     /*** 1 - Home Welcome module view *********************************** 1 ***/
     String iamProfessional();
     String iamProfessionalNext();
-    String iamProfessionalDesc();
+    String iamProfessionalDesc1();
+    String iamProfessionalDesc2();
+    String iamProfessionalDesc3();
     String allProfessionals();
     String howItWorks();
     String signUpAsPro();
     String placeProject();
     String placeProjectNext();
-    String placeProjectDesc();
+    String placeProjectDesc1();
+    String placeProjectDesc2();
+    String placeProjectDesc3();
     String allProjects();
     String placeProjects();
     /** 1.1 - How it works for clients */
