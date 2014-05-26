@@ -29,6 +29,7 @@
     <extend-property name="locale" values="en" />
     <!-- if no locale is specified for some page then following fallback will be used
     see: http://stackoverflow.com/questions/9307697/multiple-locale-gwt-not-working -->
+    <set-property name="locale" value="en" />
     <set-property-fallback name="locale" value="en" />
 
     <inherits name="com.google.gwt.uibinder.UiBinder" />
