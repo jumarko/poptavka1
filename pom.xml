@@ -949,7 +949,7 @@
                 <gwt.args>
                     -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx768m -XX:MaxPermSize=256m
                 </gwt.args>
-                <gwt.user.agent>ie6,ie8,ie9,gecko1_8,safari,opera</gwt.user.agent>
+                <gwt.user.agent>ie8,ie9,gecko1_8,safari</gwt.user.agent>
             </properties>
         </profile>
     </profiles>
