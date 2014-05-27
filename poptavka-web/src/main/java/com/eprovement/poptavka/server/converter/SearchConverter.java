@@ -3,9 +3,7 @@
  */
 package com.eprovement.poptavka.server.converter;
 
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.Validate;
@@ -19,7 +17,7 @@ public final class SearchConverter {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private final Converter<Filter, FilterItem> filterConverter;
+    private final FilterConverter filterConverter;
     private final SortConverter sortConverter;
 
     /**************************************************************************/
@@ -28,9 +26,7 @@ public final class SearchConverter {
     /**
      * Creates SearchConverter.
      */
-    private SearchConverter(
-            Converter<Filter, FilterItem> filterConverter,
-            SortConverter sortConverter) {
+    private SearchConverter(FilterConverter filterConverter, SortConverter sortConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(filterConverter);
         Validate.notNull(sortConverter);
@@ -141,7 +137,8 @@ public final class SearchConverter {
     private void convertFilters(SearchDefinition definition, Search search) {
         if (definition != null && definition.getFilter() != null) {
             if (CollectionUtils.isNotEmpty(definition.getFilter().getAttributes())) {
-                search.setFilters(filterConverter.convertToSourceList(definition.getFilter().getAttributes()));
+                search.setFilters(filterConverter.convertToSourceList(
+                    search.getSearchClass(), definition.getFilter().getAttributes()));
             }
             if (CollectionUtils.isNotEmpty(definition.getFilter().getCategories())) {
                 search.addFilterIn("categories.id", definition.getFilter().getCategories());

@@ -51,7 +51,7 @@ public class FilterItem implements IsSerializable {
     /**************************************************************************/
     /** Class attributes. **/
     private int group = 0;
-    private String item;
+    private ISortField item;
     private Operation operation;
     private String string;
     private Number number;
@@ -66,7 +66,7 @@ public class FilterItem implements IsSerializable {
     public FilterItem() {
     }
 
-    public FilterItem(String item, Operation operation, Object value, int group) {
+    public FilterItem(ISortField item, Operation operation, Object value, int group) {
         this.item = item;
         this.operation = operation;
         if (value != null) {
@@ -90,7 +90,11 @@ public class FilterItem implements IsSerializable {
     /* Getters                                                                */
     /**************************************************************************/
     public String getItem() {
-        return item;
+        return item.getValue();
+    }
+
+    public String getFieldClass() {
+        return item.getFieldClass();
     }
 
     public Operation getOperation() {
@@ -121,7 +125,7 @@ public class FilterItem implements IsSerializable {
     @Override
     public String toString() {
         StringBuilder infoStr = new StringBuilder();
-        infoStr.append(toStringItem(item));
+        infoStr.append(toStringItem(item.getValue()));
         switch (operation) {
             case OPERATION_EQUALS:
                 infoStr.append(Operation.OPERATION_EQUALS.getValue());
@@ -152,20 +156,21 @@ public class FilterItem implements IsSerializable {
         return item;
     }
 
-    public static FilterItem parseFilterItem(String filterItemString) {
-        int idx = -1;
-        int groupIdx = -1;
-        for (Operation operation : Operation.values()) {
-            idx = filterItemString.indexOf(operation.getValue());
-            groupIdx = filterItemString.indexOf(GROUP_INDICATOR);
-            return new FilterItem(
-                    filterItemString.substring(0, idx - 1),
-                    parseOperation(filterItemString.substring(idx, idx + 1)),
-                    parseValue(filterItemString.substring(idx + 2, groupIdx)),
-                    Integer.parseInt(filterItemString.substring(groupIdx + 1, filterItemString.length())));
-        }
-        return null;
-    }
+    //TODO LATER Martin - history support for searching
+//    public static FilterItem parseFilterItem(String filterItemString) {
+//        int idx = -1;
+//        int groupIdx = -1;
+//        for (Operation operation : Operation.values()) {
+//            idx = filterItemString.indexOf(operation.getValue());
+//            groupIdx = filterItemString.indexOf(GROUP_INDICATOR);
+//            return new FilterItem(
+//                    filterItemString.substring(0, idx - 1),
+//                    parseOperation(filterItemString.substring(idx, idx + 1)),
+//                    parseValue(filterItemString.substring(idx + 2, groupIdx)),
+//                    Integer.parseInt(filterItemString.substring(groupIdx + 1, filterItemString.length())));
+//        }
+//        return null;
+//    }
 
     private static Operation parseOperation(String operationString) {
         return Operation.valueOf(operationString);

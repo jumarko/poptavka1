@@ -48,8 +48,6 @@ public class HomeDemandsSearchView extends Composite implements
     @UiField(provided = true) WSListBox creationDate, demandTypes;
     @UiField(provided = true) ValidationMonitor titleMonitor, priceMonitorFrom, priceMonitorTo;
     @UiField WSDateBox endDateFrom, endDateTo;
-    /** Additional Search Fields. **/
-    private static final String DEMAND_TYPE_DESCRIPTION_FIELD = ".description";
 
     /**************************************************************************/
     /*  Initialization                                                        */
@@ -105,37 +103,37 @@ public class HomeDemandsSearchView extends Composite implements
         int group = 0;
         if (!((String) titleMonitor.getValue()).isEmpty()) {
             filters.add(new FilterItem(
-                DemandField.TITLE.getValue(),
+                DemandField.TITLE,
                 Operation.OPERATION_LIKE, ((String) titleMonitor.getValue()), group++));
         }
         if (priceMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
-                DemandField.PRICE.getValue(),
+                DemandField.PRICE,
                 Operation.OPERATION_FROM, priceMonitorFrom.getValue(), group++));
         }
         if (priceMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
-                DemandField.PRICE.getValue(),
+                DemandField.PRICE,
                 Operation.OPERATION_TO, priceMonitorTo.getValue(), group++));
         }
         if (demandTypes.isSelected()) {
             filters.add(new FilterItem(
-                DemandField.DEMAND_TYPE.getValue().concat(DEMAND_TYPE_DESCRIPTION_FIELD),
+                DemandField.DEMAND_TYPE,
                 Operation.OPERATION_EQUALS, demandTypes.getSelected(), group++));
         }
         if (creationDate.isSelected()) {
             filters.add(new FilterItem(
-                DemandField.CREATED.getValue(),
+                DemandField.CREATED,
                 Operation.OPERATION_FROM, getCreatedDate(), group++));
         }
         if (endDateFrom.getValue() != null) {
             filters.add(new FilterItem(
-                DemandField.END_DATE.getValue(),
+                DemandField.END_DATE,
                 Operation.OPERATION_FROM, endDateFrom.getValue(), group++));
         }
         if (endDateTo.getValue() != null) {
             filters.add(new FilterItem(
-                DemandField.END_DATE.getValue(),
+                DemandField.END_DATE,
                 Operation.OPERATION_TO, endDateTo.getValue(), group++));
         }
         return filters;

@@ -63,6 +63,8 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
 }
 
+.toolbar .gwt-ToggleButton-up,
+.toolbar .gwt-ToggleButton-up-hovering,
 .toolbar .button-grey {
     background: url(images/messages-close-button.png) repeat-x #929292;
     border: 1px solid #818181;
@@ -108,6 +110,8 @@ h1, h2, h3, h4, h5, h6 {
     background: none;
 }
 
+.toolbar .gwt-ToggleButton-down,
+.toolbar .gwt-ToggleButton-down-hovering,
 .toolbar .button-green {
     background: url(images/messages-button.png) repeat-x scroll 0 0 #199204;
     border: 1px solid #199204;

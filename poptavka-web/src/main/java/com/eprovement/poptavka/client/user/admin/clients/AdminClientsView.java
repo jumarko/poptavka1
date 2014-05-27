@@ -57,6 +57,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     private static final DataGridResources GRSCS = GWT.create(DataGridResources.class);
     //Table constants
     private static final String ID_COL_WIDTH = "60px";
+    private static final String DATE_COL_WIDTH = "80px";
     private static final String EMAIL_COL_WIDTH = "50%";
     private static final String FIRST_NAME_COL_WIDTH = "25%";
     private static final String LAST_NAME_COL_WIDTH = "25%";
@@ -121,6 +122,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         // PAGER
         this.toolbar.getPager().setVisible(true);
         this.toolbar.bindPager(this.table);
+        this.toolbar.getClientsFilterBtn().setVisible(true);
 
         // COLUMNS
         initTableColumns();
@@ -158,7 +160,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
 
         // created
         sortColumns.add(SortPair.asc(UserField.CREATED));
-        table.addColumn(new CreatedDateCell(), Storage.MSGS.columnCompany(), true, ID_COL_WIDTH,
+        table.addColumn(new CreatedDateCell(), Storage.MSGS.columnCreatedDate(), true, DATE_COL_WIDTH,
             new GetValue<Date>() {
 
                 @Override
@@ -299,5 +301,13 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
     @Override
     public Long getSelectedOriginId() {
         return Long.parseLong(originListBox.getValue(originListBox.getSelectedIndex()));
+    }
+
+    /**
+     * @return the AdminToolbar view
+     */
+    @Override
+    public AdminToolbarView getToolbar() {
+        return toolbar;
     }
 }

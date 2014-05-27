@@ -10,7 +10,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.search.SearchModulePresenter;
-import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
@@ -76,28 +75,28 @@ public class HomeSuppliersSearchView extends Composite implements
         int group = 0;
         if (!((TextBox) companyMonitor.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
-                    Constants.PATH_TO_BUSINESS_DATA.concat(UserDataField.COMPANY_NAME.getValue()),
+                    UserDataField.COMPANY_NAME,
                     Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
             filters.add(new FilterItem(
-                    Constants.PATH_TO_BUSINESS_DATA.concat(UserDataField.FIRST_NAME.getValue()),
+                    UserDataField.FIRST_NAME,
                     Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
             filters.add(new FilterItem(
-                    Constants.PATH_TO_BUSINESS_DATA.concat(UserDataField.LAST_NAME.getValue()),
+                    UserDataField.LAST_NAME,
                     Operation.OPERATION_LIKE, companyMonitor.getValue(), group++));
         }
         if (!((TextBox) descriptionMonitor.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
-                    Constants.PATH_TO_BUSINESS_DATA.concat(UserDataField.DESCRIPTION.getValue()),
+                    UserDataField.DESCRIPTION,
                     Operation.OPERATION_LIKE, descriptionMonitor.getValue(), group++));
         }
         if (ratingMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
-                    UserDataField.OVERALL_RATING.getValue(),
+                    UserDataField.OVERALL_RATING,
                     Operation.OPERATION_FROM, ratingMonitorFrom.getValue(), group++));
         }
         if (ratingMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
-                    UserDataField.OVERALL_RATING.getValue(),
+                    UserDataField.OVERALL_RATING,
                     Operation.OPERATION_TO, ratingMonitorTo.getValue(), group++));
         }
         return filters;

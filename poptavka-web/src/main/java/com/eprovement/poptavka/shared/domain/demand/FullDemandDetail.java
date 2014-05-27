@@ -53,7 +53,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         VALID_TO("validTo"),
         MAX_OFFERS("maxSuppliers"),
         MIN_RATING("minRating"),
-        DEMAND_TYPE("type"),
+        DEMAND_TYPE("type.description"),
         CATEGORIES("categories"),
         LOCALITIES("localities"),
         DEMAND_STATUS("status"),

@@ -14,13 +14,18 @@
         Because if that widget that goes to container has defined style, it will be overrided
         by this one. -->
         
-        <!--Buttons-->
+        <!--Demand related Buttons-->
         <g:Button ui:field="approveBtn" styleName='button-green item' visible="false">
             <ui:msg key="adminCommonBtnApprove">Approve</ui:msg>
         </g:Button>
         <g:Button ui:field="createConversationBtn" styleName='button-grey item' visible="false">
             <ui:msg key="adminCommonBtnCreateConversation">Create conversation</ui:msg>
         </g:Button>
+
+        <!--Client related Buttons-->
+        <g:ToggleButton ui:field="clientsFilterBtn" addStyleNames='item' visible="false">
+            Filter mailinator clients
+        </g:ToggleButton>
 
         <!--Pager-->
         <s:UniversalPagerWidget ui:field='pager' addStyleNames='item' visible='false'/>

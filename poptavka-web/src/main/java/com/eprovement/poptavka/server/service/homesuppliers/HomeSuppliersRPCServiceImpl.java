@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.SupplierCategory;
 import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.FilterConverter;
 import com.eprovement.poptavka.server.converter.SortConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
@@ -23,7 +24,6 @@ import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.googlecode.genericdao.search.Filter;
@@ -54,7 +54,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private FulltextSearchService fulltextSearchService;
     private Converter<Supplier, FullSupplierDetail> supplierConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
-    private Converter<Filter, FilterItem> filterConverter;
+    private FilterConverter filterConverter;
     private SortConverter sortConverter;
 
     /**************************************************************************/
@@ -103,8 +103,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     @Autowired
-    public void setFilterConverter(
-            @Qualifier("filterConverter") Converter<Filter, FilterItem> filterConverter) {
+    public void setFilterConverter(@Qualifier("filterConverter") FilterConverter filterConverter) {
         this.filterConverter = filterConverter;
     }
 
@@ -448,7 +447,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private Search getSupplierFilter(SearchDefinition definition) {
         Search search = new Search(Supplier.class);
 
-        ArrayList<Filter> filtersOr = filterConverter.convertToSourceList(definition.getFilter().getAttributes());
+        ArrayList<Filter> filtersOr = filterConverter.convertToSourceList(
+            search.getSearchClass(),
+            definition.getFilter().getAttributes());
         //filters
         search.addFilterAnd(filtersOr.toArray(new Filter[filtersOr.size()]));
         //sorts

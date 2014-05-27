@@ -214,7 +214,6 @@ public final class Constants {
     public static final int SUGGESTBOX_DELAY = 600;
     public static final int REGISTER_MAX_CATEGORIES = 5;
     public static final int REGISTER_MAX_LOCALITIES = 5;
-    public static final String PATH_TO_BUSINESS_DATA = "businessUser.businessUserData.";
     public static final String PATH_TO_TOKEN_FOR_VIEWS = "homeWelcome/view?";
 
     public static final int SHORT_PASSWORD = 5;
@@ -230,4 +229,6 @@ public final class Constants {
     public static final int TABLE_MARGINS_LARGE = 60; //20top_margin+20top_padding+20bottom_padding
     public static final int TABLE_MARGINS_SMALL = 30; //10top_margin+10top_padding+10bottom_padding
     public static final int TABLE_MARGINS_TINY = 10; //0top_margin+0top_padding+10bottom_margin
+
+    public static final String ADMIN_CLIENTS_FILTER_EMAIL = "mailinator.com";
 }

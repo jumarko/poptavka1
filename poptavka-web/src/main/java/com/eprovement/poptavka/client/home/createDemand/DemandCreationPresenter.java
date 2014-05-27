@@ -326,6 +326,7 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(FIFTH_TAB_DEMAND_ADVANCE_FORM)) {
+                    GATracker.trackEvent("DemandCreation", "CreateDemand");
                     view.getNextButtonTab5().setEnabled(false);
                     createNewDemand(Storage.getBusinessUserDetail());
                 }
