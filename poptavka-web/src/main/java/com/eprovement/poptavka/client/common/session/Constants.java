@@ -21,6 +21,8 @@ public final class Constants {
         return INSTANCE;
     }
 
+    public static final String GA_ACCOUNT = "UA-40497408-1";
+
     /**************************************************************************/
     /* Action box Contants                                                    */
     /**************************************************************************/

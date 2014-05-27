@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
+import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
@@ -22,6 +23,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -114,6 +116,7 @@ public class DemandCreationPresenter
      */
     public void onForward() {
         LOGGER.info("DemandCreationPresenter loaded");
+        GATracker.trackPageview(Window.Location.getHref());
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         eventBus.setBody(view.getWidgetView());
         eventBus.setToolbarContent("Post a Project", null);
@@ -279,6 +282,7 @@ public class DemandCreationPresenter
         view.getLoginBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                GATracker.trackEvent("DemandCreation", "Login");
                 eventBus.login(Constants.CREATE_DEMAND);
             }
         });
@@ -291,6 +295,7 @@ public class DemandCreationPresenter
         view.getRegisterBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                GATracker.trackEvent("DemandCreation", "Registration");
                 view.setRegisterLayout();
                 setHeightRegistration();
                 eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM));
