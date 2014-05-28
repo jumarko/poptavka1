@@ -19,6 +19,8 @@ import com.eprovement.poptavka.client.homedemands.HomeDemandsModule;
 import com.eprovement.poptavka.client.homesuppliers.HomeSuppliersModule;
 import com.eprovement.poptavka.client.detail.DetailModule;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.client.root.footer.FooterPresenter;
 import com.eprovement.poptavka.client.root.header.HeaderPresenter;
 import com.eprovement.poptavka.client.root.header.menu.MenuPresenter;
@@ -97,7 +99,9 @@ import java.util.List;
     @ChildModule(moduleClass = AddressSelectorModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = ActionBoxModule.class, async = true, autoDisplay = false),
     @ChildModule(moduleClass = DetailModule.class, async = true, autoDisplay = false) })
-public interface RootEventBus extends EventBusWithLookup {
+public interface RootEventBus extends EventBusWithLookup,
+    ISupplierCreationModule.Gateway,
+    IDemandCreationModule.Gateway {
 
     /**
      * When your application starts, you may want to automatically fire an event
@@ -208,9 +212,11 @@ public interface RootEventBus extends EventBusWithLookup {
     @Event(forwardToModules = HomeSuppliersModule.class)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
 
+    @Override
     @Event(forwardToModules = SupplierCreationModule.class)
     void goToCreateSupplierModule();
 
+    @Override
     @Event(forwardToModules = DemandCreationModule.class)
     void goToCreateDemandModule();
 

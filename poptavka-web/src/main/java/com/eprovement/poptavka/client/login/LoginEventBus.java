@@ -3,6 +3,8 @@
  */
 package com.eprovement.poptavka.client.login;
 
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.client.login.activation.ActivationCodePopupHandler;
 import com.eprovement.poptavka.client.login.activation.ActivationCodePopupPresenter;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
@@ -26,7 +28,9 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Events(startPresenter = LoginPopupPresenter.class, module = LoginModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
-    IAdminModule.Gateway {
+    IAdminModule.Gateway,
+    ISupplierCreationModule.Gateway,
+    IDemandCreationModule.Gateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -56,12 +60,6 @@ public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
-
-    @Event(forwardToParent = true)
-    void goToCreateSupplierModule();
-
-    @Event(forwardToParent = true)
-    void goToCreateDemandModule();
 
     @Event(forwardToParent = true)
     void goToSearchModule();

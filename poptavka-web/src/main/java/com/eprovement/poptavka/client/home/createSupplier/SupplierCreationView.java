@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.github.gwtbootstrap.client.ui.Icon;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 
@@ -32,7 +33,7 @@ import java.util.List;
  * @author Beho, Martin Slavkovsky
  */
 public class SupplierCreationView extends OverflowComposite
-        implements SupplierCreationPresenter.CreationViewInterface {
+    implements ISupplierCreationModule.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -78,7 +79,6 @@ public class SupplierCreationView extends OverflowComposite
             selectPreviousTab();
         }
     };
-
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -194,14 +194,6 @@ public class SupplierCreationView extends OverflowComposite
         return footerPanel;
     }
 
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
-
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
@@ -218,6 +210,7 @@ public class SupplierCreationView extends OverflowComposite
         }
         return conditionCheck.getValue();
     }
+
     /**
      * Binds back & next buttons handlers.
      */

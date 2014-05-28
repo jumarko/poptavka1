@@ -6,12 +6,11 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,18 +21,9 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.logging.Logger;
 
 /**
@@ -43,33 +33,8 @@ import java.util.logging.Logger;
  */
 @Presenter(view = SupplierCreationView.class, multiple = true)
 public class SupplierCreationPresenter
-        extends LazyPresenter<SupplierCreationPresenter.CreationViewInterface, SupplierCreationEventBus>
-        implements NavigationConfirmationInterface {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface CreationViewInterface extends LazyView, IsWidget, ProvidesValidate {
-
-        /** Panels. **/
-        TabLayoutPanel getMainPanel();
-
-        SimplePanel getHolderPanel(int order);
-
-        SimplePanel getFooterPanel();
-
-        /** Buttons. **/
-        Button getRegisterButton();
-
-        Anchor getTermsAndConditionsButton();
-
-        /** Other. **/
-        Tooltip getNextBtnTooltip(int order);
-
-        CheckBox getAgreedCheck();
-
-        Widget getWidgetView();
-    }
+        extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
+        implements ISupplierCreationModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -97,8 +62,8 @@ public class SupplierCreationPresenter
     public void onForward() {
         LOGGER.info("SupplierCreationPresenter loaded");
         GATracker.trackPageview(Window.Location.getHref());
-        Storage.setCurrentlyLoadedView(Constants.CREATE_SUPPLIER);
-        eventBus.setBody(view.getWidgetView());
+        GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_USER);
+        eventBus.setBody(view.asWidget());
         eventBus.setToolbarContent("Became Professional", null);
         eventBus.setFooter(view.getFooterPanel());
         eventBus.resetSearchBar(null);
@@ -180,6 +145,7 @@ public class SupplierCreationPresenter
                 break;
             case SECOND_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
+                GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_CATEGORY);
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initCategorySelector()
@@ -195,6 +161,7 @@ public class SupplierCreationPresenter
                 break;
             case THIRD_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
+                GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_LOCALITY);
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initLocalitySelector()
@@ -210,6 +177,7 @@ public class SupplierCreationPresenter
                 break;
             case FOURTH_TAB_SERVICES:
                 LOGGER.info(" -> init Service Form supplierService");
+                GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_SERVICES);
                 if (view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget() == null) {
                     eventBus.initServicesWidget(ServiceType.SUPPLIER, view.getHolderPanel(FOURTH_TAB_SERVICES));
                 }
@@ -227,7 +195,7 @@ public class SupplierCreationPresenter
         view.getRegisterButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                GATracker.trackEvent("SupplierCreation", "Registration");
+                GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_NEW_SUPPLIER);
                 if (canContinue(FOURTH_TAB_SERVICES)) {
                     LOGGER.fine("register him!");
                     view.getRegisterButton().setEnabled(false);
@@ -253,8 +221,9 @@ public class SupplierCreationPresenter
     /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Initializes SupplierCreation module.
+     * {@inheritDoc}
      */
+    @Override
     public void onGoToCreateSupplierModule() {
         view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
         eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));

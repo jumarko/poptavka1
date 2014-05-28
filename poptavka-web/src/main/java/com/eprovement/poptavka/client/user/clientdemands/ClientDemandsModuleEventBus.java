@@ -5,6 +5,8 @@ package com.eprovement.poptavka.client.user.clientdemands;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.client.root.gateways.ActionBoxGateway;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.clientdemands.interfaces.HandleClientResizeEvent;
@@ -39,7 +41,9 @@ import java.util.List;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 @Events(startPresenter = ClientDemandsModulePresenter.class, module = ClientDemandsModule.class)
 public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventBusData,
-        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway, ActionBoxGateway {
+        BaseChildEventBus, IDetailModule.Gateway, CatLocSelectorGateway, ActionBoxGateway,
+        ISupplierCreationModule.Gateway,
+        IDemandCreationModule.Gateway {
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -118,12 +122,6 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
-
-    @Event(forwardToParent = true)
-    void goToCreateDemandModule();
-
-    @Event(forwardToParent = true)
-    void goToCreateSupplierModule();
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);

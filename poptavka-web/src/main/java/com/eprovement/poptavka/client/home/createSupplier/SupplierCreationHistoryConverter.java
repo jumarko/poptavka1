@@ -8,13 +8,14 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 
 /**
  * Manages history for supplier creation module.
  *
  * @author Martin Slavkovsky
  */
-@History(type = HistoryConverterType.DEFAULT, name = "supplierCreation")
+@History(type = HistoryConverterType.DEFAULT, name = ISupplierCreationModule.NAME)
 public class SupplierCreationHistoryConverter implements HistoryConverter<SupplierCreationEventBus> {
 
     /**************************************************************************/
