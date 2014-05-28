@@ -235,7 +235,8 @@ public final class SearchModuleDataHolder implements IsSerializable {
         String[] attrs = items[3].split(VALUE_SEPARATOR);
         if (attrs.length > 1) {
             for (String attr : attrs[1].split(LIST_ITEM_SEPARATOR)) {
-                attributes.add(FilterItem.parseFilterItem(attr));
+                //TODO LATER Martin - history support for searching
+//                attributes.add(FilterItem.parseFilterItem(attr));
             }
         }
         searchModuleDataHolder.setAttributes(attributes);

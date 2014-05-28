@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.demand.DemandCategory;
 import com.eprovement.poptavka.domain.demand.DemandLocality;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.FilterConverter;
 import com.eprovement.poptavka.server.converter.SortConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
@@ -22,7 +23,6 @@ import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
-import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.googlecode.genericdao.search.Filter;
@@ -66,8 +66,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private TreeItemService treeItemService;
     private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
-    private Converter<Filter, FilterItem> filterConverter;
     private FulltextSearchService fulltextSearchService;
+    private FilterConverter filterConverter; //TODO MARTIN LATER - why not searchConverter used
     private SortConverter sortConverter;
 
     /**************************************************************************/
@@ -116,8 +116,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     }
 
     @Autowired
-    public void setFilterConverter(
-            @Qualifier("filterConverter") Converter<Filter, FilterItem> filterConverter) {
+    public void setFilterConverter(@Qualifier("filterConverter") FilterConverter filterConverter) {
         this.filterConverter = filterConverter;
     }
 
@@ -487,6 +486,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             if (definition.getFilter() != null
                     && !definition.getFilter().getAttributes().isEmpty()) {
                 final ArrayList<Filter> filtersOr = filterConverter.convertToSourceList(
+                        search.getSearchClass(),
                         definition.getFilter().getAttributes());
                 search.addFilterAnd(filtersOr.toArray(new Filter[filtersOr.size()]));
             }

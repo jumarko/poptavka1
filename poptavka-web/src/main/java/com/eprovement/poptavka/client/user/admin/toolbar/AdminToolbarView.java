@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Singleton;
 
@@ -36,6 +37,7 @@ public class AdminToolbarView extends Composite implements IsWidget {
     /**************************************************************************/
     /** UiBinder attribute. **/
     @UiField Button approveBtn, createConversationBtn;
+    @UiField ToggleButton clientsFilterBtn;
     @UiField SimplePanel actionBox;
     @UiField(provided = true) UniversalPagerWidget pager;
 
@@ -96,6 +98,13 @@ public class AdminToolbarView extends Composite implements IsWidget {
      */
     public Button getCreateConversationBtn() {
         return createConversationBtn;
+    }
+
+    /**
+     * @return the clients filter button
+     */
+    public ToggleButton getClientsFilterBtn() {
+        return clientsFilterBtn;
     }
 
     /**

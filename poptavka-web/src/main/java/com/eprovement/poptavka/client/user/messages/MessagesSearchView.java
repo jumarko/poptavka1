@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.eprovement.poptavka.client.search.SearchModulePresenter;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
+import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import java.util.ArrayList;
@@ -56,13 +58,13 @@ public class MessagesSearchView extends Composite implements
     public ArrayList<FilterItem> getFilter() {
         ArrayList<FilterItem> filters = new ArrayList<FilterItem>();
         if (!sender.getText().equals("")) {
-            filters.add(new FilterItem("companyName", Operation.OPERATION_LIKE, sender.getText(), 0));
+            filters.add(new FilterItem(UserDataField.COMPANY_NAME, Operation.OPERATION_LIKE, sender.getText(), 0));
         }
         if (!subject.getText().equals("")) {
-            filters.add(new FilterItem("subject", Operation.OPERATION_LIKE, subject.getText(), 1));
+            filters.add(new FilterItem(MessageField.SUBJECT, Operation.OPERATION_LIKE, subject.getText(), 1));
         }
         if (!body.getText().equals("")) {
-            filters.add(new FilterItem("body", Operation.OPERATION_LIKE, body.getText(), 2));
+            filters.add(new FilterItem(MessageField.BODY, Operation.OPERATION_LIKE, body.getText(), 2));
         }
         return filters;
     }

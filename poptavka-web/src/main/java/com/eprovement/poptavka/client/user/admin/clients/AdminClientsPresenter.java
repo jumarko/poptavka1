@@ -13,9 +13,12 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
+import com.eprovement.poptavka.client.user.admin.toolbar.AdminToolbarView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
+import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -76,6 +79,8 @@ public class AdminClientsPresenter
          * @return the save origin button
          */
         Button getSaveOriginBtn();
+
+        AdminToolbarView getToolbar();
     }
 
     /**************************************************************************/
@@ -124,6 +129,26 @@ public class AdminClientsPresenter
             public void onClick(ClickEvent event) {
                 eventBus.requestChangeOrigin(view.getTable(),
                     view.getSelectionModel().getSelectedObject().getUserId(), view.getSelectedOriginId());
+            }
+        });
+        view.getToolbar().getClientsFilterBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                if (view.getToolbar().getClientsFilterBtn().isDown()) {
+                    if (searchDataHolder == null) {
+                        searchDataHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
+                    }
+                    searchDataHolder.getAttributes().add(new FilterItem(
+                        UserField.EMAIL,
+                        FilterItem.Operation.OPERATION_LIKE,
+                        Constants.ADMIN_CLIENTS_FILTER_EMAIL,
+                        0));
+                    view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+                } else {
+                    searchDataHolder.getAttributes().clear();
+                    view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+                }
             }
         });
     }
