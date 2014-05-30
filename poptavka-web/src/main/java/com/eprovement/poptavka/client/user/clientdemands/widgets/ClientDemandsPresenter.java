@@ -44,7 +44,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /* Attributes                                                             */
     /**************************************************************************/
     private EditableDemandDetailPresenter editDemandPresenter;
-    private boolean isInitializing;
+//    private boolean isInitializing;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -65,7 +65,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         addBackBtnClickHandler();
         addToolbarButtonsClickHandlers();
         // Selection Handlers
-        addParentTableSelectionHandler();
         addChildTableSelectionModelHandler();
         // Detail section
         addDetailSelectionHandler();
@@ -116,7 +115,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         if (!data.isEmpty()) {
             setParentTableVisible(false);
             setChildTableVisible(true);
-//            view.getToolbar().getPager().getPager().startLoading();
 
             view.getChildTable().getDataProvider().updateRowData(
                 view.getChildTable().getStart(), data);
@@ -166,7 +164,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         eventBus.setCustomWidget(DetailModuleBuilder.DEMAND_DETAIL_TAB, null);
         //refresh grid
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
-//        view.getToolbar().getPager().getPager().startLoading();
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
             view.getParentTable().getStart(),
             view.getToolbar().getPager().getPageSize(),
@@ -181,23 +178,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /** SelectionHandlers. **/
     //--------------------------------------------------------------------------
-    /**
-     * Show child table and fire event for getting its data.
-     * Hides detail section if no row is selected.
-     */
-    private void addParentTableSelectionHandler() {
-        view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (!isInitializing) {
-                    Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
-                    view.getToolbar().setEditDemandBtnsVisibility(true);
-                }
-                isInitializing = false;
-            }
-        });
-    }
-
     /**
      * Show or Hide details section and action box.
      * Show if and only of one table row is selected.
@@ -237,7 +217,9 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         view.getToolbar().getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                backBtnClickHandlerInner();
+                if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_DEMAND_DISCUSSIONS) {
+                    backBtnClickHandlerInner();
+                }
             }
         });
     }

@@ -122,7 +122,6 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         // PAGER
         this.toolbar.getPager().setVisible(true);
         this.toolbar.bindPager(this.table);
-        this.toolbar.getClientsFilterBtn().setVisible(true);
 
         // COLUMNS
         initTableColumns();
@@ -171,7 +170,7 @@ public class AdminClientsView extends Composite implements AdminClientsPresenter
         // email
         sortColumns.add(SortPair.asc(UserField.EMAIL));
         table.addColumn(new TextCell(),
-            Storage.MSGS.columnFirstName(), true, EMAIL_COL_WIDTH,
+            Storage.MSGS.columnEmail(), true, EMAIL_COL_WIDTH,
             new GetValue<String>() {
 
                 @Override

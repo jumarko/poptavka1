@@ -181,7 +181,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             new GetDataCallback<ClientDemandConversationDetail>(eventBus, grid, requestId) {
                 @Override
                 public void onSuccess(List<ClientDemandConversationDetail> result) {
-                    super.onSuccess(result);
                     eventBus.displayClientDemandConversations(result);
                 }
             });
@@ -235,7 +234,6 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             new GetDataCallback<ClientOfferedDemandOffersDetail>(eventBus, grid, requestId) {
                 @Override
                 public void onSuccess(List<ClientOfferedDemandOffersDetail> result) {
-                    super.onSuccess(result);
                     eventBus.displayClientOfferedDemandOffers(result);
                 }
             });

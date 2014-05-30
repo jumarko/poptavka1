@@ -38,7 +38,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     /* Attributes                                                             */
     /**************************************************************************/
     private ClientOfferedDemandOffersDetail selectedOfferedDemandOfferObject;
-    private boolean isInitializing;
+//    private boolean isInitializing;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -59,7 +59,6 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         addBackButtonHandler();
         addAcceptOfferButtonHandler();
         // Selection Handlers
-        addDemandTableSelectionHandler();
         addOfferGridSelectionModelHandler();
     }
 
@@ -101,7 +100,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         if (!data.isEmpty()) {
             setParentTableVisible(false);
             setChildTableVisible(true);
-            view.getToolbar().getPager().getPager().startLoading();
+
+            view.getChildTable().getDataProvider().updateRowData(
+                view.getChildTable().getStart(), data);
         }
     }
 
@@ -123,21 +124,6 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /** SelectionHandlers. **/
     //--------------------------------------------------------------------------
-    /**
-     * Show child table and fire event for getting its data.
-     * Hides detail section if no row is selected.
-     */
-    private void addDemandTableSelectionHandler() {
-        view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent event) {
-                if (!isInitializing) {
-                    Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
-                }
-                isInitializing = false;
-            }
-        });
-    }
 
     /**
      * Show or Hide details section and action box.
@@ -167,7 +153,9 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         view.getToolbar().getBackBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                backBtnClickHandlerInner();
+                if (Storage.getCurrentlyLoadedView() == Constants.CLIENT_OFFERED_DEMAND_OFFERS) {
+                    backBtnClickHandlerInner();
+                }
             }
         });
     }

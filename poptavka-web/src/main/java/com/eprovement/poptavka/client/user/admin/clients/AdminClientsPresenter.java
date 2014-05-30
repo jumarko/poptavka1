@@ -95,6 +95,7 @@ public class AdminClientsPresenter
         searchDataHolder = filter;
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         view.getSelectionModel().clear();
+        view.getToolbar().getClientsFilterBtn().setVisible(true);
         view.asWidget().setStyleName(Storage.RSCS.common().userContent());
         eventBus.requestOrigins();
         eventBus.displayView(view);

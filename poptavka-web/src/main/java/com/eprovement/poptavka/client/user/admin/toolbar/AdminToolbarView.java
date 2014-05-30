@@ -71,6 +71,7 @@ public class AdminToolbarView extends Composite implements IsWidget {
     public void resetBasic() {
         approveBtn.setVisible(false);
         createConversationBtn.setVisible(false);
+        clientsFilterBtn.setVisible(false);
         actionBox.setVisible(false);
         pager.setVisible(true);
     }

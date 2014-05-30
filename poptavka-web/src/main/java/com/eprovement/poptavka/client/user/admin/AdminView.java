@@ -70,6 +70,7 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
         newDemandsBtn.removeStyleName(Constants.ACT);
         assigendDemandsBtn.removeStyleName(Constants.ACT);
         activeDemandsBtn.removeStyleName(Constants.ACT);
+        clientsBtn.removeStyleName(Constants.ACT);
 
         switch (widget) {
             case NEW_DEMANDS:
