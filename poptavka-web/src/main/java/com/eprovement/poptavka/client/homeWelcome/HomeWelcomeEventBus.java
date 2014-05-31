@@ -4,6 +4,8 @@
 package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.Debug;
@@ -24,7 +26,9 @@ import java.util.ArrayList;
  */
 @Events(startPresenter = HomeWelcomePresenter.class, module = HomeWelcomeModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventBus {
+public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventBus,
+    ISupplierCreationModule.Gateway,
+    IDemandCreationModule.Gateway {
 
     /**
      * First event to be handled.
@@ -70,12 +74,6 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
 
     @Event(forwardToParent = true)
     void goToHomeSuppliersModule(SearchModuleDataHolder filter);
-
-    @Event(forwardToParent = true)
-    void goToCreateDemandModule();
-
-    @Event(forwardToParent = true)
-    void goToCreateSupplierModule();
 
     /**************************************************************************/
     /* Business events handled by Presenters.                                 */

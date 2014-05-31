@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.home.createDemand;
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
 import com.github.gwtbootstrap.client.ui.Tooltip;
 
@@ -29,7 +30,7 @@ import java.util.List;
  *
  * @author Beho, Martin Slavkovsky
  */
-public class DemandCreationView extends OverflowComposite implements DemandCreationPresenter.CreationViewInterface {
+public class DemandCreationView extends OverflowComposite implements IDemandCreationModule.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -206,14 +207,6 @@ public class DemandCreationView extends OverflowComposite implements DemandCreat
     @Override
     public SimplePanel getFooterPanel() {
         return footerPanel;
-    }
-
-    /**
-     * @return the wirdget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /**

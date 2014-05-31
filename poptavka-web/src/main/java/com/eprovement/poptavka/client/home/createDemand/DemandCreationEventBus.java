@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.home.createDemand;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
@@ -29,6 +30,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Events(startPresenter = DemandCreationPresenter.class, module = DemandCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEventBus,
+    IDemandCreationModule.Gateway,
     CatLocSelectorGateway, UserRegistrationGateway, LoginGateway {
 
     /**
@@ -54,9 +56,10 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**
      * The only entry point to this module due to code-spliting feature.
      */
+    @Override
     @Event(handlers = DemandCreationPresenter.class, navigationEvent = true,
-    historyConverter = DemandCreationHistoryConverter.class, name = "createDemand")
-    String goToCreateDemandModule();
+    historyConverter = DemandCreationHistoryConverter.class, name = IDemandCreationModule.NAME)
+    void goToCreateDemandModule();
 
     /**************************************************************************/
     /* Business events handled by FormDemandBasicPresenter.                   */

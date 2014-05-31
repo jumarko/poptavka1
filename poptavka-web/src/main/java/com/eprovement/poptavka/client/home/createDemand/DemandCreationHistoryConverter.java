@@ -8,13 +8,14 @@ import com.mvp4g.client.annotation.History.HistoryConverterType;
 import com.mvp4g.client.history.HistoryConverter;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 
 /**
  * Manages history for DemandCreation module.
  *
  * @author Martin Slavkovsky
  */
-@History(type = HistoryConverterType.DEFAULT, name = "demandCreation")
+@History(type = HistoryConverterType.DEFAULT, name = IDemandCreationModule.NAME)
 public class DemandCreationHistoryConverter implements HistoryConverter<DemandCreationEventBus> {
 
     /**************************************************************************/

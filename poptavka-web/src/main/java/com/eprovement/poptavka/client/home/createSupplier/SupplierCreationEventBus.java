@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.home.createSupplier;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
+import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.ServiceSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;
@@ -24,6 +25,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Events(startPresenter = SupplierCreationPresenter.class, module = SupplierCreationModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildEventBus,
+    ISupplierCreationModule.Gateway,
     CatLocSelectorGateway, UserRegistrationGateway, ServiceSelectorGateway {
 
     /**
@@ -49,8 +51,9 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /**
      * The only entry point to this module due to code-spliting feature.
      */
+    @Override
     @Event(handlers = SupplierCreationPresenter.class, navigationEvent = true,
-    historyConverter = SupplierCreationHistoryConverter.class, name = "createSupplier")
+    historyConverter = SupplierCreationHistoryConverter.class, name = ISupplierCreationModule.NAME)
     void goToCreateSupplierModule();
 
     /**************************************************************************/

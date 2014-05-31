@@ -8,12 +8,12 @@ import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandAdvPresenter.FormDemandAdvViewInterface;
 import com.eprovement.poptavka.client.home.createDemand.widget.FormDemandBasicPresenter.FormDemandBasicInterface;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.github.gwtbootstrap.client.ui.Tooltip;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,18 +23,9 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
-import com.mvp4g.client.history.NavigationConfirmationInterface;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.logging.Logger;
 
 /**
@@ -44,50 +35,8 @@ import java.util.logging.Logger;
  */
 @Presenter(view = DemandCreationView.class, multiple = true)
 public class DemandCreationPresenter
-    extends LazyPresenter<DemandCreationPresenter.CreationViewInterface, DemandCreationEventBus>
-    implements NavigationConfirmationInterface {
-
-    /**************************************************************************/
-    /* DemandCreation view interface                                          */
-    /**************************************************************************/
-    public interface CreationViewInterface extends LazyView, IsWidget {
-
-        void setFirstTabVisibility(boolean visible);
-
-        void setLoginLayout();
-
-        void setRegisterLayout();
-
-        /** Panels. **/
-        TabLayoutPanel getMainPanel();
-
-        SimplePanel getHolderPanel(int order);
-
-        /** Buttons. **/
-        //Comment - what's the difference in compile report if using return values: HasClickHandlers vs Button
-        Button getLoginBtn();
-
-        Button getRegisterBtn();
-
-        //register client button
-        Button getNextButtonTab1();
-
-        //create demand button
-        Button getNextButtonTab5();
-
-        //restore first tab defaults
-        Button getBackButtonTab1();
-
-        /** Headers. **/
-        HTML getHeaderLabelTab1();
-
-        /** Other. **/
-        Tooltip getNextBtnTooltip(int order);
-
-        SimplePanel getFooterPanel();
-
-        Widget getWidgetView();
-    }
+    extends LazyPresenter<IDemandCreationModule.View, DemandCreationEventBus>
+    implements IDemandCreationModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -103,6 +52,7 @@ public class DemandCreationPresenter
     private int maxSelectedTab = 1;
     private int instaceIdCategories;
     private int instaceIdLocalities;
+    private String gaEventPostDemandPrefix;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -116,9 +66,9 @@ public class DemandCreationPresenter
      */
     public void onForward() {
         LOGGER.info("DemandCreationPresenter loaded");
-        GATracker.trackPageview(Window.Location.getHref());
+        GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_LOAD);
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
-        eventBus.setBody(view.getWidgetView());
+        eventBus.setBody(view.asWidget());
         eventBus.setToolbarContent("Post a Project", null);
         eventBus.setFooter(view.getFooterPanel());
         eventBus.resetSearchBar(null);
@@ -131,7 +81,8 @@ public class DemandCreationPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        // nothing by default
+        //reset in case user of multiple login and logout events
+        gaEventPostDemandPrefix = IDemandCreationModule.GA_EVENT_LOGIN;
     }
 
     /**************************************************************************/
@@ -215,6 +166,7 @@ public class DemandCreationPresenter
                 break;
             case SECONT_TAB_DEMAND_BASIC_FORM:
                 LOGGER.info(" -> Demand Basic Info Form");
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_PROJECT);
                 if (view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget() == null) {
                     eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
                 }
@@ -222,14 +174,15 @@ public class DemandCreationPresenter
                 break;
             case THIRD_TAB_CATEGORY:
                 LOGGER.info(" -> Category Widget");
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_CATEGORY);
                 if (view.getHolderPanel(THIRD_TAB_CATEGORY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
-                            .initCategorySelector()
-                            .initSelectorManager()
-                            .withCheckboxes()
-                            .displayCountOfDemands()
-                            .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                            .build();
+                        .initCategorySelector()
+                        .initSelectorManager()
+                        .withCheckboxes()
+                        .displayCountOfDemands()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                        .build();
                     instaceIdCategories = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_CATEGORY), builder);
                 }
@@ -237,14 +190,15 @@ public class DemandCreationPresenter
                 break;
             case FOURTH_TAB_LOCALITY:
                 LOGGER.info(" -> Locality Widget");
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_LOCALITY);
                 if (view.getHolderPanel(FOURTH_TAB_LOCALITY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
-                            .initLocalitySelector()
-                            .initSelectorManager()
-                            .withCheckboxes()
-                            .displayCountOfDemands()
-                            .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                            .build();
+                        .initLocalitySelector()
+                        .initSelectorManager()
+                        .withCheckboxes()
+                        .displayCountOfDemands()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                        .build();
                     instaceIdLocalities = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(FOURTH_TAB_LOCALITY), builder);
                 }
@@ -252,6 +206,7 @@ public class DemandCreationPresenter
                 break;
             case FIFTH_TAB_DEMAND_ADVANCE_FORM:
                 LOGGER.info(" -> init Demand Form supplierService");
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_PROJECT2);
                 if (view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget() == null) {
                     eventBus.initDemandAdvForm(view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM));
                 }
@@ -282,7 +237,8 @@ public class DemandCreationPresenter
         view.getLoginBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                GATracker.trackEvent("DemandCreation", "Login");
+                gaEventPostDemandPrefix = IDemandCreationModule.GA_EVENT_LOGIN;
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_LOGIN);
                 eventBus.login(Constants.CREATE_DEMAND);
             }
         });
@@ -295,7 +251,8 @@ public class DemandCreationPresenter
         view.getRegisterBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                GATracker.trackEvent("DemandCreation", "Registration");
+                gaEventPostDemandPrefix = IDemandCreationModule.GA_EVENT_SIGNUP;
+                GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_SIGNUP);
                 view.setRegisterLayout();
                 setHeightRegistration();
                 eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM));
@@ -311,6 +268,9 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (((ProvidesValidate) view.getHolderPanel(FIRST_TAB_LOGIN_REGISTER_FORM).getWidget()).isValid()) {
+                    GATracker.trackEvent(
+                        IDemandCreationModule.NAME,
+                        IDemandCreationModule.NAME.concat(IDemandCreationModule.GA_EVENT_NEW_CLIENT));
                     view.getNextButtonTab1().setEnabled(false);
                     registerNewClient();
                 }
@@ -326,7 +286,10 @@ public class DemandCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 if (canContinue(FIFTH_TAB_DEMAND_ADVANCE_FORM)) {
-                    GATracker.trackEvent("DemandCreation", "CreateDemand");
+                    GATracker.trackEvent(
+                        IDemandCreationModule.NAME,
+                        IDemandCreationModule.GA_EVENT_NEW_DEMAND.concat(
+                            gaEventPostDemandPrefix.replace(IDemandCreationModule.NAME, "")));
                     view.getNextButtonTab5().setEnabled(false);
                     createNewDemand(Storage.getBusinessUserDetail());
                 }
@@ -338,8 +301,9 @@ public class DemandCreationPresenter
     /* Business events                                                        */
     /**************************************************************************/
     /**
-     * Initialize DemandCreation module.
+     * {@inheritDoc}
      */
+    @Override
     public void onGoToCreateDemandModule() {
         //must be set to null to force beforeSelectionHandler to handle selection
         //and create new instance of widgets
@@ -409,10 +373,10 @@ public class DemandCreationPresenter
     private void createNewDemand(BusinessUserDetail client) {
         eventBus.loadingShow(MSGS.progressCreatingDemand());
 
-        FormDemandBasicInterface basicValues =
-            (FormDemandBasicInterface) view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget();
-        FormDemandAdvViewInterface advValues =
-            (FormDemandAdvViewInterface) view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget();
+        FormDemandBasicInterface basicValues
+            = (FormDemandBasicInterface) view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget();
+        FormDemandAdvViewInterface advValues
+            = (FormDemandAdvViewInterface) view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).getWidget();
 
         // Fill in the FullDemandDetail obejct from former holder panels.
         FullDemandDetail demand = new FullDemandDetail();
