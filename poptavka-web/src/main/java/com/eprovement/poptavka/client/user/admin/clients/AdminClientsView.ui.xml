@@ -10,7 +10,7 @@
 
     <b:FluidContainer>
         <b:FluidRow>
-            <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+            <b:Column size="7" addStyleNames='{res.initial.expandOnSmall}'>
                 <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
                     <g:HTMLPanel addStyleNames='content-margin'>
                         <!--Table-->
@@ -20,7 +20,7 @@
                     </g:HTMLPanel>
                 </g:ScrollPanel>
             </b:Column>
-            <b:Column size="4" addStyleNames='span-detail'>
+            <b:Column size="5" addStyleNames='span-detail'>
                 <g:FlowPanel styleName='{res.details.detailTabPanel}' debugId='rightSlidingPanel'>
                     <g:SimplePanel ui:field="advertisementContainer" styleName='{res.details.emptyView}'/>
                     <!--Change email-->

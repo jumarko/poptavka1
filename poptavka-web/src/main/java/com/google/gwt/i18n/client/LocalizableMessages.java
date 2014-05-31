@@ -335,6 +335,7 @@ public interface LocalizableMessages extends Messages {
     String columnDuration();
     String columnEndDate();
     String columnExpiration();
+    String columnEmail();
     String columnFinnishDate();
     String columnFirstName();
     String columnFrom();

@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModuleEventBus;
@@ -63,20 +64,21 @@ public abstract class AbstractClientPresenter
         }
     };
     protected RowStyles rowStyles = new RowStyles() {
-            @Override
-            public String getStyleNames(Object row, int rowIndex) {
-                boolean unread = false;
-                if (row instanceof TableDisplayUserMessage) {
-                    unread = !((TableDisplayUserMessage) row).isRead();
-                } else if (row instanceof TableDisplayDemandTitle) {
-                    unread = ((TableDisplayDemandTitle) row).getUnreadMessagesCount() > 0;
-                }
-                if (unread) {
-                    return Storage.GRSCS.dataGridStyle().unread();
-                }
-                return "";
+        @Override
+        public String getStyleNames(Object row, int rowIndex) {
+            boolean unread = false;
+            if (row instanceof TableDisplayUserMessage) {
+                unread = !((TableDisplayUserMessage) row).isRead();
+            } else if (row instanceof TableDisplayDemandTitle) {
+                unread = ((TableDisplayDemandTitle) row).getUnreadMessagesCount() > 0;
             }
-        };
+            if (unread) {
+                return Storage.GRSCS.dataGridStyle().unread();
+            }
+            return "";
+        }
+    };
+    protected boolean isInitializing;
 
     /**************************************************************************/
     /* General Widget events                                                  */
@@ -203,6 +205,19 @@ public abstract class AbstractClientPresenter
             view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
                 @Override
                 public void onSelectionChange(SelectionChangeEvent event) {
+                    if (!isInitializing) {
+                        switch(Storage.getCurrentlyLoadedView()) {
+                            case Constants.CLIENT_OFFERED_DEMANDS:
+                                Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
+                                break;
+                            case Constants.CLIENT_DEMANDS:
+                                Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMAND_DISCUSSIONS);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    isInitializing = false;
                     selectedParentObject = (TableDisplayDetailModuleSupplier)
                         ((SingleSelectionModel) view.getParentTable().getSelectionModel()).getSelectedObject();
                     if (selectedParentObject != null) {
@@ -234,8 +249,8 @@ public abstract class AbstractClientPresenter
 
                 if (view.getChildTableSelectedObjects().size() == 1) {
                     //  display detail section if only one item selected
-                    selectedChildObject =
-                        (TableDisplayDetailModuleSupplier) view.getChildTableSelectedObjects().iterator().next();
+                    selectedChildObject
+                        = (TableDisplayDetailModuleSupplier) view.getChildTableSelectedObjects().iterator().next();
                     if (selectedChildObject != null) {
                         initDetailSectionFull(selectedChildObject);
                         eventBus.openDetail();
@@ -253,5 +268,6 @@ public abstract class AbstractClientPresenter
     /* Abstract methods                                                       */
     /**************************************************************************/
     abstract UniversalAsyncGrid initParentTable();
+
     abstract UniversalAsyncGrid initChildTable();
 }
