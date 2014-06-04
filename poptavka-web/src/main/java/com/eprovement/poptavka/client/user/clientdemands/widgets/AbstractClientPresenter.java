@@ -125,6 +125,10 @@ public abstract class AbstractClientPresenter
 
         eventBus.loadingDivHide();
         eventBus.displayView(view.getWidgetView());
+
+        if (view.getChildTable().getSelectionModel() != null) {
+            ((SetSelectionModel) view.getChildTable().getSelectionModel()).clear();
+        }
     }
 
     /**************************************************************************/

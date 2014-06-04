@@ -136,8 +136,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * @param searchDefinition - search criteria
      */
     private void getSupplierOffersCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition) {
-        supplierDemandsService.getSupplierOffersCount(
-            Storage.getUser().getUserId(), searchDefinition,
+        supplierDemandsService.getSupplierOffersCount(Storage.getSupplierId(), searchDefinition,
             new GetDataCountCallback(eventBus, grid));
     }
 

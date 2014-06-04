@@ -13,8 +13,8 @@ public interface UserMessageQueries {
     /**
      * Gets demands count in given <b>status</b> that has no conversation bind to given <b>user</b>.
      */
-    String ADMIN_NEW_DEMANDS_COUNT_NAME = "Admin.getNewDemandsCount";
-    String ADMIN_NEW_DEMANDS_COUNT
+    String ADMIN_NEW_DEMANDS_COUNT = "Admin.getNewDemandsCount";
+    String ADMIN_NEW_DEMANDS_COUNT_QUERY
         = "SELECT COUNT(m.demand.id) FROM Message as m \n"
         + " WHERE m.demand.status = 'NEW' "
         + " AND m.id NOT IN (" + UserMessageQueries.OPERATORS_USER_MESSAGES + ")";
@@ -22,8 +22,8 @@ public interface UserMessageQueries {
     /**
      * Gets all demands in given <b>status</b> that has no conversation bind to given <b>user</b>.
      */
-    String ADMIN_NEW_DEMANDS_NAME = "Admin.getNewDemands";
-    String ADMIN_NEW_DEMANDS
+    String ADMIN_NEW_DEMANDS = "Admin.getNewDemands";
+    String ADMIN_NEW_DEMANDS_QUERY
         = "SELECT m.demand FROM Message as m \n"
         + " WHERE m.demand.status = 'NEW' "
         + " AND m.id NOT IN (" + UserMessageQueries.OPERATORS_USER_MESSAGES + ")"
@@ -32,8 +32,8 @@ public interface UserMessageQueries {
     /**
      * Gets user messages count for given user and demand status.
      */
-    String ADMIN_ASSIGNED_DEMANDS_COUNT_NAME = "Admin.getAssignedDemandsCount";
-    String ADMIN_ASSIGNED_DEMANDS_COUNT
+    String ADMIN_ASSIGNED_DEMANDS_COUNT = "Admin.getAssignedDemandsCount";
+    String ADMIN_ASSIGNED_DEMANDS_COUNT_QUERY
         = "select count(userMessage.id) \n"
         + "from UserMessage as userMessage \n"
         + "where userMessage.user.id = :userId"
@@ -44,14 +44,13 @@ public interface UserMessageQueries {
     /**
      * Gets all user messages and their counts for given user and demand status.
      */
-    String ADMIN_ASSIGNED_DEMANDS_NAME = "Admin.getAssignedDemands";
-    String ADMIN_ASSIGNED_DEMANDS
+    String ADMIN_ASSIGNED_DEMANDS = "Admin.getAssignedDemands";
+    String ADMIN_ASSIGNED_DEMANDS_QUERY
         = "select userMessage, count(userMessage.message.id) \n"
         + "from UserMessage as userMessage \n"
         + "where userMessage.user.id = :userId"
         + " and userMessage.message.demand.status = :demandStatus "
-        + " and (userMessage.message.sent is null"
-        + "      OR userMessage.message.sent in " + UserMessageQueries.MAX_SENT + " )\n"
+        + " and userMessage.message.sent = " + UserMessageQueries.MAX_SENT + "\n"
         + "group by userMessage.message.threadRoot.id";
 
     /**

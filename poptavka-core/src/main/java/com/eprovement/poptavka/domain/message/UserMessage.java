@@ -244,14 +244,14 @@ import javax.persistence.NamedQuery;
                         + " and subUserMessage.message.offer is not null"
                         + "\n"
                         + "group by latestUserMessage.id, supplier.id"),
-            @NamedQuery(name = UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT_NAME,
-                query = UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT),
-            @NamedQuery(name = UserMessageQueries.ADMIN_NEW_DEMANDS_NAME,
-                query = UserMessageQueries.ADMIN_NEW_DEMANDS),
-            @NamedQuery(name = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT_NAME,
-                query = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT),
-            @NamedQuery(name = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_NAME,
-                query = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS) }
+            @NamedQuery(name = UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT,
+                query = UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT_QUERY),
+            @NamedQuery(name = UserMessageQueries.ADMIN_NEW_DEMANDS,
+                query = UserMessageQueries.ADMIN_NEW_DEMANDS_QUERY),
+            @NamedQuery(name = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT,
+                query = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT_QUERY),
+            @NamedQuery(name = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS,
+                query = UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_QUERY) }
 )
 public class UserMessage extends DomainObject {
 

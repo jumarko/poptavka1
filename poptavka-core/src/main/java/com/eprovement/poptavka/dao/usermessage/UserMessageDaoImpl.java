@@ -96,7 +96,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
      */
     @Override
     public Long getAdminNewDemandsCount() {
-        return (Long) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT_NAME).getSingleResult();
+        return (Long) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS_COUNT).getSingleResult();
     }
 
     /**
@@ -104,7 +104,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
      */
     @Override
     public List<Demand> getAdminNewDemands(int start, int limit) {
-        return (List<Demand>) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS_NAME)
+        return (List<Demand>) em().createNamedQuery(UserMessageQueries.ADMIN_NEW_DEMANDS)
             .setFirstResult(start)
             .setMaxResults(limit)
             .getResultList();
@@ -118,7 +118,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("userId", adminId);
         queryParams.put("demandStatus", status);
-        return (Long) runNamedQueryForSingleResult(UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT_NAME, queryParams);
+        return (Long) runNamedQueryForSingleResult(UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_COUNT, queryParams);
     }
 
     /**
@@ -130,7 +130,7 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         queryParams.put("userId", adminId);
         queryParams.put("demandStatus", status);
         List<Object[]> unread = runNamedQuery(
-                UserMessageQueries.ADMIN_ASSIGNED_DEMANDS_NAME,
+                UserMessageQueries.ADMIN_ASSIGNED_DEMANDS,
                 queryParams);
         Map<UserMessage, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
