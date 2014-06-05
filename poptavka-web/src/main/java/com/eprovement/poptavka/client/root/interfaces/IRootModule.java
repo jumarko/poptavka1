@@ -7,6 +7,7 @@ public interface IRootModule {
 
     String CUSTOM_TOKEN = "view";
     String UNSUBSCRIBE_TOKEN = "unsubscribe";
+    String PAYMENT_TOKEN = "payment";
 
     public interface Handler {
 
