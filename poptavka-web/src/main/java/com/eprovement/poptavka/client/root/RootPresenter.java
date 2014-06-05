@@ -59,6 +59,7 @@ public class RootPresenter extends BasePresenter<IRootModule.View, RootEventBus>
             GWT.log("++++++++++++++++++++++++++++NORMAL START OF APP");
             // normal start of app
             eventBus.createUnsubscribeToken();
+            eventBus.createPaymentToken();
             eventBus.goToHomeWelcomeModule();
             Storage.setAppCalledByURL(false);
         } else {
