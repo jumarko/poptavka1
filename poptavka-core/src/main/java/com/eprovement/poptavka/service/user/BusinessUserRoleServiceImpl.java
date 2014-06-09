@@ -51,8 +51,8 @@ import java.util.Set;
  * @see SupplierServiceImpl
  */
 public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, BURDao extends BusinessUserRoleDao<BUR>>
-        extends GenericServiceImpl<BUR, BURDao>
-        implements BusinessUserRoleService<BUR, BURDao> {
+    extends GenericServiceImpl<BUR, BURDao>
+    implements BusinessUserRoleService<BUR, BURDao> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessUserRoleServiceImpl.class);
 
@@ -64,10 +64,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private UserVerificationService userVerificationService;
 
-
     public BusinessUserRoleServiceImpl(Class<? extends BusinessUserRole> businessUserRoleClass,
-                                       GeneralService generalService, RegisterService registerService,
-            UserVerificationService userVerificationService, NotificationTypeService notificationTypeService) {
+        GeneralService generalService, RegisterService registerService,
+        UserVerificationService userVerificationService, NotificationTypeService notificationTypeService) {
         notNull(businessUserRoleClass, "businessUserRoleClass cannot be null");
         notNull(generalService, "generalService cannot be null");
         notNull(registerService, "registerService cannot be null");
@@ -106,22 +105,20 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         Preconditions.checkNotNull(businessUserRole, "Null client cannot be created.");
 
         LOGGER.info("action=create_new_business_user_role status=start businuessUser={}",
-                businessUserRole.getBusinessUser());
+            businessUserRole.getBusinessUser());
 
         createDefaultNotifications(businessUserRole);
         createDefaultAccessRole(businessUserRole);
 
-        // set common stuff when creating new business user
-        final UserService classicClient = new UserService();
-        classicClient.setUser(businessUserRole.getBusinessUser());
-        classicClient.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
-        classicClient.setStatus(Status.INACTIVE);
-        if (businessUserRole.getBusinessUser().getUserServices() == null) {
+        // set default service if no service provided from frontend when creating new business user
+        if (businessUserRole.getBusinessUser().getUserServices() == null
+            || businessUserRole.getBusinessUser().getUserServices().isEmpty()) {
+            final UserService classicClient = new UserService();
+            classicClient.setUser(businessUserRole.getBusinessUser());
+            classicClient.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
+            classicClient.setStatus(Status.INACTIVE);
             // no services have been assigned to the business user, it is safe to set completely new list
             businessUserRole.getBusinessUser().setUserServices(Arrays.asList(classicClient));
-        } else {
-            // some services can be assigned to the user, instead of set new list of services, only add classic client
-            businessUserRole.getBusinessUser().getUserServices().add(classicClient);
         }
 
         businessUserRole.getBusinessUser().getBusinessUserRoles().add(businessUserRole);
@@ -130,10 +127,9 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         final BUR createdBusinessUserRole = super.create(businessUserRole);
 
         LOGGER.info("action=create_new_business_user_role status=finish businuessUser={}",
-                businessUserRole.getBusinessUser());
+            businessUserRole.getBusinessUser());
         return createdBusinessUserRole;
     }
-
 
     /**
      * Checks if client with {@code email} already exists.
@@ -173,7 +169,6 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return users.get(0);
     }
 
-
     protected GeneralService getGeneralService() {
         return generalService;
     }
@@ -201,12 +196,11 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
      * @return notification from DB corresponding to the {@code expectedWelcomeNotification} (they have the same code).
      */
     protected final Notification getWelcomeNotification(Registers.Notification expectedWelcomeNotification) {
-        final Notification notification =
-                getRegisterService().getValue(expectedWelcomeNotification.getCode(), Notification.class);
+        final Notification notification
+            = getRegisterService().getValue(expectedWelcomeNotification.getCode(), Notification.class);
         notNull(notification, "no notification corresponding to the " + expectedWelcomeNotification + " exists!");
         return notification;
     }
-
 
     //---------------------------------------------- HELPER METHODS ---------------------------------------------------
     private void createBusinessUserIfNotExist(BUR businessUserRole) {
@@ -226,28 +220,27 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return businessUserRole.getBusinessUser().getId() == null;
     }
 
-
     private void createDefaultNotifications(BusinessUserRole businessUserRole) {
         final Set<NotificationItem> notificationItems = new HashSet<>();
         if (businessUserRole.getBusinessUser().isUserFromExternalSystem()) {
             // external users have only one type of notification since we do not want to send them other emails
             // until they get an offer and register themselves at our system as regular users
             notificationItems.add(notificationUtils.createNotificationItemWithDefaultPeriod(
-                    Registers.Notification.NEW_MESSAGE.getCode(), true));
+                Registers.Notification.NEW_MESSAGE.getCode(), true));
         } else {
             for (Notification notification : getNotificationsWithDefaultPeriod()) {
                 notificationItems.add(
-                        notificationUtils.createNotificationItemWithDefaultPeriod(notification.getCode(), true));
+                    notificationUtils.createNotificationItemWithDefaultPeriod(notification.getCode(), true));
             }
             for (Map.Entry<Notification, Period> customNotification : getNotificationsWithCustomPeriod().entrySet()) {
                 notNull(customNotification, "notification should not be null");
                 notificationItems.add(notificationUtils.createNotificationItem(customNotification.getKey().getCode(),
-                        customNotification.getValue(), true));
+                    customNotification.getValue(), true));
             }
         }
 
         LOGGER.info("action=businessUserRole_create_default_notifications businessUserRole={} notifications={}",
-                businessUserRole, notificationItems);
+            businessUserRole, notificationItems);
         if (businessUserRole.getBusinessUser().getSettings().getNotificationItems() != null) {
             // add existing notification items
             notificationItems.addAll(businessUserRole.getBusinessUser().getSettings().getNotificationItems());
@@ -256,15 +249,13 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         businessUserRole.getBusinessUser().getSettings().setNotificationItems(new ArrayList<>(notificationItems));
     }
 
-
-
     private void createDefaultAccessRole(BusinessUserRole businessUserRole) {
         notNull(businessUserRole);
         notNull(businessUserRole.getBusinessUser(), "Supplier.businessUser must not be null!");
         if (CollectionUtils.isEmpty(businessUserRole.getBusinessUser().getAccessRoles())) {
             final List<AccessRole> defaultAccessRoles = getDefaultAccessRoles();
             LOGGER.info("action=create_default_access_roles business_user_role={} roles={}",
-                    businessUserRole, defaultAccessRoles);
+                businessUserRole, defaultAccessRoles);
             businessUserRole.getBusinessUser().setAccessRoles(defaultAccessRoles);
         }
     }
