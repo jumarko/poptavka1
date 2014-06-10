@@ -58,7 +58,6 @@ public class ActivationCodePopupView extends Modal
         addStyleName(StyleResource.INSTANCE.modal().activationCodePopupStyle());
         setBackdrop(BackdropType.STATIC);
         setKeyboard(false);
-        setAnimation(true);
         setDynamicSafe(true);
         show();
     }

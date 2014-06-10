@@ -68,7 +68,6 @@ public final class TermsAndConditionsPopup extends Modal {
         addStyleName(StyleResource.INSTANCE.modal().termsAndConditions());
         setBackdrop(BackdropType.STATIC);
 
-        setAnimation(true);
         setDynamicSafe(true);
     }
 }
