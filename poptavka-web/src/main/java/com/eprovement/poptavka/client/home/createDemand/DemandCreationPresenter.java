@@ -67,6 +67,8 @@ public class DemandCreationPresenter
     public void onForward() {
         LOGGER.info("DemandCreationPresenter loaded");
         GATracker.trackEvent(IDemandCreationModule.NAME, IDemandCreationModule.GA_EVENT_LOAD);
+        //reset in case user of multiple login and logout events
+        gaEventPostDemandPrefix = IDemandCreationModule.GA_EVENT_LOGIN;
         Storage.setCurrentlyLoadedView(Constants.CREATE_DEMAND);
         eventBus.setBody(view.asWidget());
         eventBus.setToolbarContent("Post a Project", null);
@@ -81,8 +83,7 @@ public class DemandCreationPresenter
 
     @Override
     public void confirm(NavigationEventCommand event) {
-        //reset in case user of multiple login and logout events
-        gaEventPostDemandPrefix = IDemandCreationModule.GA_EVENT_LOGIN;
+        //nothing by default
     }
 
     /**************************************************************************/

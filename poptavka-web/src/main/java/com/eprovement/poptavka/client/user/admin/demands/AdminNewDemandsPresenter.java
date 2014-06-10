@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
+import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -131,10 +132,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * @param threadRootId
      */
     public void onResponseCreateConversation(long threadRootId) {
-//        selectedObject.setThreadRootId(threadRootId);
-//        selectedObject.setSenderId(Storage.getUser().getUserId());
         initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
-//        initDetailSectionConversation(selectedObject, threadRootId, selectedObject.getUserId());
     }
 
     /**
@@ -155,7 +153,11 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * Refresh table and disable approve and createConversation btns.
      */
     public void onResponseApproveDemands() {
-        view.getTable().refresh();
+        if (view.getTable().getDataProvider().getRanges().length <= 1) {
+            view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
+        } else {
+            view.getTable().refresh();
+        }
         view.getToolbar().getApproveBtn().setVisible(false);
         view.getToolbar().getCreateConversationBtn().setVisible(false);
     }

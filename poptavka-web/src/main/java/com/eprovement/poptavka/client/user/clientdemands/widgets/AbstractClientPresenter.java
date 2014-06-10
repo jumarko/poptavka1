@@ -125,10 +125,6 @@ public abstract class AbstractClientPresenter
 
         eventBus.loadingDivHide();
         eventBus.displayView(view.getWidgetView());
-
-        if (view.getChildTable().getSelectionModel() != null) {
-            ((SetSelectionModel) view.getChildTable().getSelectionModel()).clear();
-        }
     }
 
     /**************************************************************************/
@@ -156,6 +152,10 @@ public abstract class AbstractClientPresenter
         if (visible) {
             view.getToolbar().bindPager(view.getChildTable());
             view.getToolbar().getPager().getPager().startLoading();
+        } else {
+            if (view.getChildTable().getSelectionModel() != null) {
+                ((SetSelectionModel) view.getChildTable().getSelectionModel()).clear();
+            }
         }
         view.setChildTableVisible(visible);
         view.getToolbar().getBackBtn().setVisible(visible);
@@ -210,7 +210,7 @@ public abstract class AbstractClientPresenter
                 @Override
                 public void onSelectionChange(SelectionChangeEvent event) {
                     if (!isInitializing) {
-                        switch(Storage.getCurrentlyLoadedView()) {
+                        switch (Storage.getCurrentlyLoadedView()) {
                             case Constants.CLIENT_OFFERED_DEMANDS:
                                 Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMAND_OFFERS);
                                 break;
