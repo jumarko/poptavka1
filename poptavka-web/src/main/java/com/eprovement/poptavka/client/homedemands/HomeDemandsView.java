@@ -3,11 +3,11 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
@@ -75,7 +75,7 @@ public class HomeDemandsView extends OverflowComposite
      * Initialize UniversalAsyncGrid through UniversalGridFactory.
      */
     private void initTable() {
-        dataGrid = new UniversalGridFactory.Builder<FullDemandDetail>()
+        dataGrid = new UniversalAsyncGridBuilder<FullDemandDetail>()
             .addColumnDemandCreated(null)
             .addColumnDemandTitle(null)
             .addColumnLocality(null)

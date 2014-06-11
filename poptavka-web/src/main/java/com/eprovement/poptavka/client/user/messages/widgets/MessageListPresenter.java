@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.client.user.messages.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.google.gwt.cell.client.FieldUpdater;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import com.eprovement.poptavka.client.user.messages.toolbar.MessagesToolbarView;
 import com.eprovement.poptavka.client.user.widget.detail.MessageDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -185,7 +185,7 @@ public class MessageListPresenter
     }
 
     private UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<MessageDetail>()
+        return new UniversalAsyncGridBuilder<MessageDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnSender(textFieldUpdater)

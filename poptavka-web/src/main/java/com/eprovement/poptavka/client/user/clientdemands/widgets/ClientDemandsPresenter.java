@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
@@ -10,7 +11,6 @@ import com.eprovement.poptavka.client.detail.DetailModuleView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -82,7 +82,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         isInitializing = true;
 
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
-        eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
 
         //Set visibility
         setChildTableVisible(false);
@@ -283,7 +283,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      */
     @Override
     public UniversalAsyncGrid initParentTable() {
-        return new UniversalGridFactory.Builder<ClientDemandDetail>()
+        return new UniversalAsyncGridBuilder<ClientDemandDetail>()
             .addColumnDemandStatus()
             .addColumnDemandTitle(null)
             .addColumnPrice(null)
@@ -301,7 +301,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
      */
     @Override
     public UniversalAsyncGrid initChildTable() {
-        return new UniversalGridFactory.Builder<ClientDemandConversationDetail>()
+        return new UniversalAsyncGridBuilder<ClientDemandConversationDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnDisplayName(textFieldUpdater)

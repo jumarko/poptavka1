@@ -3,12 +3,12 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -104,7 +104,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         super.initAbstractPresenter(filter, widgetId);
 
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getChildTable());
-        eventBus.initDetailSection(view.getChildTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
 
         //Set visibility
         setParentTableVisible(false);
@@ -180,7 +180,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
     @Override
     UniversalAsyncGrid initParentTable() {
         //return empty table
-        return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>().build();
+        return new UniversalAsyncGridBuilder<ClientOfferedDemandOffersDetail>().build();
     }
 
     /**
@@ -189,7 +189,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      */
     @Override
     UniversalAsyncGrid initChildTable() {
-        return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>()
+        return new UniversalAsyncGridBuilder<ClientOfferedDemandOffersDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)

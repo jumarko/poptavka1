@@ -3,10 +3,10 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -79,7 +79,7 @@ public class SupplierRatingsPresenter extends AbstractSupplierPresenter {
      */
     @Override
     UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<RatingDetail>()
+        return new UniversalAsyncGridBuilder<RatingDetail>()
             .addColumnDemandTitle(null)
             .addColumnPrice(null)
             .addSelectionModel(new SingleSelectionModel(), RatingDetail.KEY_PROVIDER)

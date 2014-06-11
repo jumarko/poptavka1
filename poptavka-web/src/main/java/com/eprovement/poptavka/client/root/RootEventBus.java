@@ -482,7 +482,7 @@ public interface RootEventBus extends EventBusWithLookup,
     /* Detail module business events.                                         */
     /**************************************************************************/
     @Event(forwardToModules = DetailModule.class)
-    void initDetailSection(UniversalAsyncGrid grid, SimplePanel detailSection);
+    void initDetailSection(SimplePanel detailSection);
 
     @Event(forwardToModules = DetailModule.class)
     void buildDetailSectionTabs(DetailModuleBuilder builder);
