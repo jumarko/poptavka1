@@ -70,16 +70,13 @@ public abstract class AbstractAdminPresenter
      */
     public void initAbstractPresenter(SearchModuleDataHolder filter, IAdminModule.AdminWidget mode) {
         //Must be present here. Loading data rely on this atrtibute
-//        Storage.setCurrentlyLoadedView(widgetId);
         if (filter == null) {
             eventBus.resetSearchBar(null);
         }
         this.mode = mode;
         eventBus.setClientMenuActStyle(mode);
-//        eventBus.createTokenForHistory();
 
-//        eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
         eventBus.setFooter(view.getFooterContainer());
         searchDataHolder = filter;
 
