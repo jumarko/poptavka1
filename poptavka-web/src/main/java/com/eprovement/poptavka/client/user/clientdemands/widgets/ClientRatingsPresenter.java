@@ -3,10 +3,10 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.detail.DetailModuleBuilder;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.RatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.offer.ClientOfferedDemandOffersDetail;
@@ -56,7 +56,7 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
     public void onInitClientRatings(SearchModuleDataHolder filter) {
         super.initAbstractPresenter(filter, Constants.CLIENT_RATINGS);
 
-        eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
 
         //Set visibility
         setParentTableVisible(true);
@@ -88,7 +88,7 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
      */
     @Override
     protected UniversalAsyncGrid initParentTable() {
-        return new UniversalGridFactory.Builder<RatingDetail>()
+        return new UniversalAsyncGridBuilder<RatingDetail>()
             .addColumnDemandTitle(null)
             .addColumnPrice(null)
             .addSelectionModel(new SingleSelectionModel(), RatingDetail.KEY_PROVIDER)
@@ -106,6 +106,6 @@ public class ClientRatingsPresenter extends AbstractClientPresenter {
     @Override
     protected UniversalAsyncGrid initChildTable() {
         //return empty table
-        return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>().build();
+        return new UniversalAsyncGridBuilder<ClientOfferedDemandOffersDetail>().build();
     }
 }

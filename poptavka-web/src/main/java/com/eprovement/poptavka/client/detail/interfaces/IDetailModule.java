@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.RatingDetailView;
 import com.eprovement.poptavka.client.detail.views.UserDetailView;
 import com.eprovement.poptavka.client.root.interfaces.HandleResizeEvent;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.github.gwtbootstrap.client.ui.FluidContainer;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -31,7 +30,7 @@ public interface IDetailModule {
     public interface Gateway {
 
         @Event(forwardToParent = true)
-        void initDetailSection(UniversalAsyncGrid grid, SimplePanel detailSection);
+        void initDetailSection(SimplePanel detailSection);
 
         @Event(forwardToParent = true)
         void buildDetailSectionTabs(DetailModuleBuilder builder);

@@ -3,9 +3,9 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -72,7 +72,7 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
      */
     @Override
     protected UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<SupplierPotentialDemandDetail>()
+        return new UniversalAsyncGridBuilder<SupplierPotentialDemandDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)

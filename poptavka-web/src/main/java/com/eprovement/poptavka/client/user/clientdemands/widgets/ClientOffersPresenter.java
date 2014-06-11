@@ -3,10 +3,10 @@
  */
 package com.eprovement.poptavka.client.user.clientdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
@@ -74,7 +74,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
         isInitializing = true;
 
         eventBus.initActionBox(this.view.getToolbar().getActionBox(), view.getParentTable());
-        eventBus.initDetailSection(view.getParentTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
 
         //Set visibility
         setChildTableVisible(false);
@@ -199,7 +199,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      */
     @Override
     public UniversalAsyncGrid initParentTable() {
-        return new UniversalGridFactory.Builder<ClientDemandDetail>()
+        return new UniversalAsyncGridBuilder<ClientDemandDetail>()
             .addColumnDemandTitle(null)
             .addColumnPrice(null)
             .addColumnEndDate(null)
@@ -216,7 +216,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      */
     @Override
     public UniversalAsyncGrid initChildTable() {
-        return new UniversalGridFactory.Builder<ClientOfferedDemandOffersDetail>()
+        return new UniversalAsyncGridBuilder<ClientOfferedDemandOffersDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnDisplayName(textFieldUpdater)

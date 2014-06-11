@@ -5,7 +5,6 @@ package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -67,7 +66,7 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
     /* Business events handled by DetailModulePresenter - init methods        */
     /**************************************************************************/
     @Event(handlers = DetailModulePresenter.class)
-    void initDetailSection(UniversalAsyncGrid grid, SimplePanel detailSection);
+    void initDetailSection(SimplePanel detailSection);
 
     @Event(handlers = DetailModulePresenter.class)
     void buildDetailSectionTabs(DetailModuleBuilder builder);

@@ -3,11 +3,11 @@
  */
 package com.eprovement.poptavka.client.user.admin.demands;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule.AdminWidget;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -171,7 +171,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      */
     @Override
     protected UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<AdminDemandDetail>()
+        return new UniversalAsyncGridBuilder<AdminDemandDetail>()
             .addColumnCheckbox(checkboxHeader)
             .addColumnDemandCreated(textFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)

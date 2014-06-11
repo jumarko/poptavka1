@@ -3,12 +3,12 @@
  */
 package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 
+import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.detail.FeedbackPopupView;
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalGridFactory;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.offer.SupplierOffersDetail;
@@ -152,7 +152,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
      */
     @Override
     public UniversalAsyncGrid initTable() {
-        return new UniversalGridFactory.Builder<SupplierOffersDetail>(view.getToolbar().getPager().getPageSize())
+        return new UniversalAsyncGridBuilder<SupplierOffersDetail>(view.getToolbar().getPager().getPageSize())
             .addColumnCheckbox(checkboxHeader)
             .addColumnStar(starFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)

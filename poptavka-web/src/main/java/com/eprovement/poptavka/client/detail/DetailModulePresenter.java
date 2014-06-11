@@ -8,8 +8,6 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
-import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
-import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -25,7 +23,6 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.LinkedList;
@@ -45,7 +42,6 @@ public class DetailModulePresenter
     /**************************************************************************/
     /** Class Attributes. **/
     private DetailModuleBuilder builder;
-    private UniversalAsyncGrid table;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -130,14 +126,10 @@ public class DetailModulePresenter
     /**
      * Initialize widget and sets his type.
      *
-     * @param detailSection
-     *            holder for widget
-     * @param type
-     *            type of view, where is this widget loaded
+     * @param detailSection holder for widget
      */
-    public void onInitDetailSection(UniversalAsyncGrid grid, SimplePanel detailSection) {
+    public void onInitDetailSection(SimplePanel detailSection) {
         detailSection.setWidget(view.getWidgetView());
-        this.table = grid;
         onDisplayAdvertisement();
     }
 
@@ -217,15 +209,6 @@ public class DetailModulePresenter
     public void onAddConversationMessage(MessageDetail sentMessage) {
         addMessage(sentMessage);
         view.getReplyHolder().setDefaultStyle();
-        //Always will be only one item.
-        MultiSelectionModel<TableDisplayUserMessage> selectionModel = (MultiSelectionModel) table.getSelectionModel();
-        for (TableDisplayUserMessage detail : selectionModel.getSelectedSet()) {
-            detail.setUserMessageId(sentMessage.getUserMessageId());
-            detail.setMessagesCount(detail.getMessagesCount() + 1);
-            detail.setRead(sentMessage.isRead());
-            detail.setStarred(sentMessage.isStarred());
-        }
-        table.redraw();
     }
 
     /**

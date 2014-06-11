@@ -135,7 +135,7 @@ public class HomeSuppliersPresenter
         eventBus.setToolbarContent("Categories", view.getToolbarContent());
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
-        eventBus.initDetailSection(view.getDataGrid(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
     }
 
     @Override

@@ -108,7 +108,7 @@ public abstract class AbstractSupplierPresenter
         eventBus.createTokenForHistory();
 
         eventBus.initActionBox(view.getToolbar().getActionBox(), view.getTable());
-        eventBus.initDetailSection(view.getTable(), view.getDetailPanel());
+        eventBus.initDetailSection(view.getDetailPanel());
         eventBus.setFooter(view.getFooterContainer());
 
         searchDataHolder = filter;

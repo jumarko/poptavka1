@@ -23,7 +23,6 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.converter.SearchConverter;
 import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
-import com.eprovement.poptavka.server.util.SearchUtils;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.offer.OfferService;
@@ -43,7 +42,6 @@ import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.googlecode.genericdao.search.Field;
-import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.List;
@@ -411,35 +409,6 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
             listCodod.add(codod);
         }
         return listCodod;
-    }
-
-    /**
-     * Get search forget client offered demand offers.
-     * TODO refactor - unused.
-     * @param searchDefinition
-     * @param userId
-     * @param demandId
-     * @return Search
-     */
-    private Search getSearchForgetClientOfferedDemandOffers(SearchDefinition searchDefinition,
-            long userId, long demandId) {
-        List<String> searchAttributes = new ArrayList<String>();
-        searchAttributes.add("message.demand.title");
-        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.companyName");
-        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.personFirstName");
-        searchAttributes.add("message.offer.supplier.businessUser.businessUserData.personLastName");
-        Search backendSearch = SearchUtils.toBackendSearch(UserMessage.class,
-                searchDefinition, searchAttributes, "message.offer.suppplier.");
-        backendSearch.addFilter(new Filter("user.id",
-                userId));
-        backendSearch.addFilter(new Filter("message.threadRoot.sender.id",
-                userId));
-        backendSearch.addFilter(new Filter("message.parent.parent", null, Filter.OP_NULL));
-        backendSearch.addFilter(new Filter("message.parent", null, Filter.OP_NOT_NULL));
-        backendSearch.addFilter(new Filter("message.offer", null, Filter.OP_NOT_NULL));
-
-        backendSearch.addFilter(new Filter("message.demand.id", demandId));
-        return backendSearch;
     }
 
     /**************************************************************************/
