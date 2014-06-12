@@ -64,7 +64,6 @@ public final class AlertBoxPopup extends Modal {
         add(uiBinder.createAndBindUi(this));
 
         addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
-        setAnimation(true);
         setDynamicSafe(true);
     }
 

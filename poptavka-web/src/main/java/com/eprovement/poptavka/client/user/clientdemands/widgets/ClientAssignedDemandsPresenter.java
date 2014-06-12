@@ -130,7 +130,8 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
                 //  display Close button in toolbar if needed
                 if (view.getChildTableSelectedObjects().size() == 1) {
                     if (assignedDemandsMode) {
-                        view.getToolbar().getCloseBtn().setVisible(true);
+                        view.getToolbar().getCloseBtn().setVisible(
+                            Storage.getCurrentlyLoadedView() == Constants.CLIENT_ASSIGNED_DEMANDS);
                     }
                 } else {
                     view.getToolbar().getCloseBtn().setVisible(false);

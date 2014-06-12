@@ -18,6 +18,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SetSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import java.util.Arrays;
 import java.util.List;
@@ -153,6 +154,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * Refresh table and disable approve and createConversation btns.
      */
     public void onResponseApproveDemands() {
+        ((SetSelectionModel) view.getTable().getSelectionModel()).clear();
         if (view.getTable().getDataProvider().getRanges().length <= 1) {
             view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
         } else {

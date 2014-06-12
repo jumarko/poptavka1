@@ -166,5 +166,5 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     void requestChangeEmail(UniversalAsyncGrid table, long userId, String email);
 
     @Event(handlers = AdminHandler.class)
-    void requestChangeOrigin(UniversalAsyncGrid table, long userId, long originId);
+    void requestChangeOrigin(UniversalAsyncGrid table, long clietnId, long originId);
 }

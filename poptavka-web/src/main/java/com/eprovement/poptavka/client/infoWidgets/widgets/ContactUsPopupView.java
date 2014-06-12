@@ -75,7 +75,6 @@ public class ContactUsPopupView extends Modal implements IContactUsPopupView, Pr
         addStyleName(StyleResource.INSTANCE.modal().commonModalStyle());
         addStyleName(StyleResource.INSTANCE.modal().contactUsModal());
         setBackdrop(BackdropType.STATIC);
-        setAnimation(true);
         setDynamicSafe(true);
     }
 

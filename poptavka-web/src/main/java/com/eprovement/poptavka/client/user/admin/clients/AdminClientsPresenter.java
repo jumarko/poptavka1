@@ -129,7 +129,7 @@ public class AdminClientsPresenter
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.requestChangeOrigin(view.getTable(),
-                    view.getSelectionModel().getSelectedObject().getUserId(), view.getSelectedOriginId());
+                    view.getSelectionModel().getSelectedObject().getId(), view.getSelectedOriginId());
             }
         });
         view.getToolbar().getClientsFilterBtn().addClickHandler(new ClickHandler() {

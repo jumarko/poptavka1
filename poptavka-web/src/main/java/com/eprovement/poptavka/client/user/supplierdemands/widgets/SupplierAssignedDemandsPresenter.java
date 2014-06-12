@@ -116,7 +116,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
                 //init details
                 if (view.getSelectedObjects().size() == 1) {
                     view.getToolbar().getFinishBtn().setVisible(
-                        Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS ? true : false);
+                        Storage.getCurrentlyLoadedView() == Constants.SUPPLIER_ASSIGNED_DEMANDS);
                 } else {
                     view.getToolbar().getFinishBtn().setVisible(false);
                 }

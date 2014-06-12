@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 @Configurable
 public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
-        implements CatLocSelectorRPCService {
+    implements CatLocSelectorRPCService {
 
     private CategoryService categoryService;
     private LocalityService localityService;
@@ -60,13 +60,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     @Autowired
     public void setClientDemandMessageConverter(
-            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
+        @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
+        @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
@@ -164,7 +164,7 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public SuggestionResponse<CatLocSuggestionDetail> getSuggestions(
-            int requestId, int selectorType, String cityLike, int wordLength) throws RPCException {
+        int requestId, int selectorType, String cityLike, int wordLength) throws RPCException {
         ArrayList<CatLocSuggestionDetail> suggestions = null;
         switch (selectorType) {
             case CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES:
@@ -193,7 +193,7 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      */
     @Override
     public SuggestionResponse<CatLocSuggestionDetail> getShortSuggestions(
-            int requestId, int selectorType, String cityLike, int wordLength) throws RPCException {
+        int requestId, int selectorType, String cityLike, int wordLength) throws RPCException {
         ArrayList<CatLocSuggestionDetail> suggestions = null;
         switch (selectorType) {
             case CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES:
@@ -225,7 +225,7 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
         Category category = categoryConverter.convertToSource(catDetail);
         while (category != null) {
             categoryHierarchy.addFirst(
-                    new CatLocTreeItem(
+                new CatLocTreeItem(
                     categoryConverter.convertToTarget(category),
                     getCategoryIndex(category)));
             category = category.getParent();
@@ -242,14 +242,14 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     private LinkedList<CatLocTreeItem> requestLocalityHierarchy(
-            ICatLocDetail locDetail) throws RPCException {
+        ICatLocDetail locDetail) throws RPCException {
         LOGGER.info("Requesting locality hierarchy for " + locDetail.toString());
         final LinkedList<CatLocTreeItem> localityHierarchy = new LinkedList<CatLocTreeItem>();
 
         Locality locality = localityConverter.convertToSource(locDetail);
         while (locality != null) {
             localityHierarchy.addFirst(
-                    new CatLocTreeItem(
+                new CatLocTreeItem(
                     localityConverter.convertToTarget(locality),
                     getLocalityIndex(locality)));
             locality = locality.getParent();
@@ -269,13 +269,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     private ArrayList<CatLocSuggestionDetail> getCategorySuggestions(
-            String cityLike, int wordLength) throws RPCException {
+        String cityLike, int wordLength) throws RPCException {
         final List<Category> categories = categoryService.getCategoriesByMinLength(wordLength, cityLike);
         final ArrayList<CatLocSuggestionDetail> categorySuggestions = new ArrayList<CatLocSuggestionDetail>();
         for (Category cat : categories) {
             categorySuggestions.add(new CatLocSuggestionDetail(
-                    cat.getParent() == null ? null : categoryConverter.convertToTarget(cat.getParent()),
-                    categoryConverter.convertToTarget(cat)));
+                cat.getParent() == null ? null : categoryConverter.convertToTarget(cat.getParent()),
+                categoryConverter.convertToTarget(cat)));
         }
         return categorySuggestions;
     }
@@ -288,14 +288,14 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     private ArrayList<CatLocSuggestionDetail> getLocalitySuggestions(
-            String localityLike, int wordLength) throws RPCException {
+        String localityLike, int wordLength) throws RPCException {
         final List<Locality> categories = localityService.getLocalitiesByMinLength(wordLength, localityLike);
         final ArrayList<CatLocSuggestionDetail> localitySuggestions = new ArrayList<CatLocSuggestionDetail>();
         for (Locality loc : categories) {
             if (loc.getType() != LocalityType.COUNTRY) { //skip adding united states to suggestions
                 localitySuggestions.add(new CatLocSuggestionDetail(
-                        loc.getParent() == null ? null : localityConverter.convertToTarget(loc.getParent()),
-                        localityConverter.convertToTarget(loc)));
+                    loc.getParent() == null ? null : localityConverter.convertToTarget(loc.getParent()),
+                    localityConverter.convertToTarget(loc)));
             }
         }
         return localitySuggestions;
@@ -312,9 +312,9 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
         final int index;
         //if one of root
         if (parent == null) {
-            index = getCategoryIndex(categoryService.getRootCategories(), category);
+            index = categoryService.getRootCategories().indexOf(category);
         } else {
-            index = getCategoryIndex(parent.getChildren(), category);
+            index = parent.getChildren().indexOf(category);
         }
         LOGGER.debug("category: " + category.toString() + " index:" + index);
         return index;
@@ -329,13 +329,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     private ArrayList<CatLocSuggestionDetail> getShortCategorySuggestions(
-            String cityLike, int wordLength) throws RPCException {
+        String cityLike, int wordLength) throws RPCException {
         final List<Category> categories = categoryService.getCategoriesByMaxLengthExcl(wordLength, cityLike);
         final ArrayList<CatLocSuggestionDetail> categorySuggestions = new ArrayList<CatLocSuggestionDetail>();
         for (Category cat : categories) {
             categorySuggestions.add(new CatLocSuggestionDetail(
-                    cat.getParent() == null ? null : categoryConverter.convertToTarget(cat.getParent()),
-                    categoryConverter.convertToTarget(cat)));
+                cat.getParent() == null ? null : categoryConverter.convertToTarget(cat.getParent()),
+                categoryConverter.convertToTarget(cat)));
         }
         return categorySuggestions;
     }
@@ -349,13 +349,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     private ArrayList<CatLocSuggestionDetail> getShortLocalitySuggestions(
-            String localityLike, int wordLength) throws RPCException {
+        String localityLike, int wordLength) throws RPCException {
         final List<Locality> categories = localityService.getLocalitiesByMaxLengthExcl(wordLength, localityLike);
         final ArrayList<CatLocSuggestionDetail> localitySuggestions = new ArrayList<CatLocSuggestionDetail>();
         for (Locality loc : categories) {
             localitySuggestions.add(new CatLocSuggestionDetail(
-                    loc.getParent() == null ? null : localityConverter.convertToTarget(loc.getParent()),
-                    localityConverter.convertToTarget(loc)));
+                loc.getParent() == null ? null : localityConverter.convertToTarget(loc.getParent()),
+                localityConverter.convertToTarget(loc)));
         }
         return localitySuggestions;
     }
@@ -371,45 +371,11 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
         final int index;
         //if one of root
         if (parent == null) {
-            index = getLocalityIndex(localityService.getLocalities(LocalityType.COUNTRY), locality);
+            index = localityService.getLocalities(LocalityType.COUNTRY).indexOf(locality);
         } else {
-            index = getLocalityIndex(parent.getChildren(), locality);
+            index = parent.getChildren().indexOf(locality);
         }
         LOGGER.debug("locality: " + locality.toString() + " index:" + index);
         return index;
-    }
-
-    /**
-     * Get category index of given category list.
-     * @param children
-     * @param category
-     * @return category index in list
-     */
-    private int getCategoryIndex(List<Category> children, Category category) {
-        for (int i = 0; i < children.size(); i++) {
-            Long o1 = children.get(i).getId();
-            Long o2 = category.getId();
-            if (o1.equals(o2)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Get locality index of given locality list.
-     * @param children
-     * @param locality
-     * @return locality index in list
-     */
-    private int getLocalityIndex(List<Locality> children, Locality locality) {
-        for (int i = 0; i < children.size(); i++) {
-            Long o1 = children.get(i).getId();
-            Long o2 = locality.getId();
-            if (o1.equals(o2)) {
-                return i;
-            }
-        }
-        return -1;
     }
 }

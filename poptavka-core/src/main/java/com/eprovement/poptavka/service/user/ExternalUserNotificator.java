@@ -82,14 +82,16 @@ public class ExternalUserNotificator {
      *     If external unverified user logs in to our system, then he's verified and no more notifications will be sent.
      *
      * @param user user to be notified if conditions are satisfied
-     * @param notification notification which determines the message being sent to the user
+     * @param notificationType notification which determines the message being sent to the user
      * @param notificationParams custom notification params that will be expanded in notification template
      * @see com.eprovement.poptavka.service.notification.MailNotificationSender#doSendNotification
      */
     @Transactional
-    public void send(BusinessUser user, Registers.Notification notification, Map<String, String> notificationParams) {
+    public void send(
+        BusinessUser user, Registers.Notification notificationType, Map<String, String> notificationParams) {
+
         notNull(user, "user cannot be null!");
-        notNull(notification, "notification cannot be null!");
+        notNull(notificationType, "notification cannot be null!");
 
         if (user.isVerified() || ! user.isUserFromExternalSystem()) {
             LOGGER.info("external_notification status=skip user={} is already verified or not external", user);
@@ -114,8 +116,14 @@ public class ExternalUserNotificator {
                     PASSWORD_PARAM, newPassword,
                     // unsubscribe link is based on user's hashed password stored in DB
                     UNSUBSCRIBE_LINK_PARAM, unsubscribeUriTemplate.expand(user.getPassword()).toString()));
-            final Notification userNotification = registerService.getValue(notification.getCode(), Notification.class);
-            mailNotificationSender.doSendNotification(user, userNotification, notificationParameters);
+            final Notification notification = registerService.getValue(notificationType.getCode(), Notification.class);
+            mailNotificationSender.doSendNotification(user, notification, notificationParameters);
+
+            //TODO RELEASE JURAJ - please verify
+            UserNotification userNotification = new UserNotification();
+            userNotification.setNotification(notification);
+            userNotification.setUser(user);
+            generalService.persist(userNotification);
         }
     }
 

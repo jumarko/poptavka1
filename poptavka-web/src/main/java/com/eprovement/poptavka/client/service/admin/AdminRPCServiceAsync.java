@@ -66,5 +66,5 @@ public interface AdminRPCServiceAsync {
     /**
      * @see com.eprovement.poptavka.client.service.admin.AdminRPCService#setUserOrigin(long, long)
      */
-    void setUserOrigin(long userId, long originId, AsyncCallback<Void> callback);
+    void setUserOrigin(long clietnId, long originId, AsyncCallback<Void> callback);
 }
