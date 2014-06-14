@@ -309,7 +309,6 @@ public class UserMessageDaoImpl extends GenericHibernateDao<UserMessage> impleme
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         List<String> offerStates = new ArrayList();
         offerStates.add(OfferStateType.CLOSED.getValue());
-        offerStates.add(OfferStateType.DECLINED.getValue());
         queryParams.put("user", user);
         queryParams.put("offerStates", offerStates);
         return getClientConversations("getClientConversationsForOfferState", queryParams);
