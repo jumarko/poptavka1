@@ -76,8 +76,6 @@ public class AbstractSupplierView extends Composite implements IAbstractSupplier
     @Override
     public void initTable(UniversalAsyncGrid table) {
         this.table = table;
-        this.toolbar.getPager().setVisible(true);
-        this.toolbar.bindPager(this.table);
     }
 
     /**************************************************************************/

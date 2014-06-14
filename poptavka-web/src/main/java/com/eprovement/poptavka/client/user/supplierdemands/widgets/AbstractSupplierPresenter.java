@@ -118,6 +118,8 @@ public abstract class AbstractSupplierPresenter
         if (view.getTable().getSelectionModel() != null) {
             ((SetSelectionModel) view.getTable().getSelectionModel()).clear();
         }
+        view.getToolbar().getPager().setVisible(true);
+        view.getToolbar().bindPager(view.getTable());
         view.getTable().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
     }
 
