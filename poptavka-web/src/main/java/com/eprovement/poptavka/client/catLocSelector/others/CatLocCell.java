@@ -10,6 +10,7 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -54,7 +55,7 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
      * The html of the image used for contacts.
      */
     public CatLocCell(PresentersInterface presenter, SetSelectionModel<ICatLocDetail> selectionModel) {
-        super("click");
+        super(BrowserEvents.CLICK);
         this.presenter = presenter;
         this.selectionModel = selectionModel;
     }
@@ -75,7 +76,7 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
     @Override
     public void onBrowserEvent(Context context, Element parent, ICatLocDetail value,
             NativeEvent event, ValueUpdater<ICatLocDetail> valueUpdater) {
-        if ("click".equals(event.getType()) && presenter.getEventBus() != null) {
+        if (BrowserEvents.CLICK.equals(event.getType()) && presenter.getEventBus() != null) {
             switch (presenter.getBuilder().getWidgetType()) {
                 case CatLocSelectorBuilder.WIDGET_TYPE_BROWSER:
                     cellBrowserClickHandler(value);
