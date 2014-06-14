@@ -228,11 +228,11 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
     /**
      * Sets given origin to given user
      * @param table to be refreshed after change
-     * @param userId
+     * @param clietnId
      * @param originId
      */
-    public void onRequestChangeOrigin(final UniversalAsyncGrid table, long userId, long originId) {
-        adminService.setUserOrigin(userId, originId, new SecuredAsyncCallback<Void>(eventBus) {
+    public void onRequestChangeOrigin(final UniversalAsyncGrid table, long clietnId, long originId) {
+        adminService.setUserOrigin(clietnId, originId, new SecuredAsyncCallback<Void>(eventBus) {
 
             @Override
             public void onSuccess(Void result) {

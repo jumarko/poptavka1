@@ -1,8 +1,10 @@
 package com.eprovement.poptavka.service.user;
 
 import com.eprovement.poptavka.dao.user.BusinessUserRoleDao;
+import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.domain.enums.Status;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.register.Registers;
@@ -222,22 +224,18 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private void createDefaultNotifications(BusinessUserRole businessUserRole) {
         final Set<NotificationItem> notificationItems = new HashSet<>();
-        if (businessUserRole.getBusinessUser().isUserFromExternalSystem()) {
-            // external users have only one type of notification since we do not want to send them other emails
-            // until they get an offer and register themselves at our system as regular users
-            notificationItems.add(notificationUtils.createNotificationItemWithDefaultPeriod(
-                Registers.Notification.NEW_MESSAGE.getCode(), true));
-        } else {
-            for (Notification notification : getNotificationsWithDefaultPeriod()) {
-                notificationItems.add(
-                    notificationUtils.createNotificationItemWithDefaultPeriod(notification.getCode(), true));
-            }
-            for (Map.Entry<Notification, Period> customNotification : getNotificationsWithCustomPeriod().entrySet()) {
-                notNull(customNotification, "notification should not be null");
-                notificationItems.add(notificationUtils.createNotificationItem(customNotification.getKey().getCode(),
-                    customNotification.getValue(), true));
-            }
+        //Add always all notifications for earch type of bussinessUserRole
+        for (Notification notification : getNotificationsWithDefaultPeriod()) {
+            notificationItems.add(
+                notificationUtils.createNotificationItemWithDefaultPeriod(notification.getCode(), true));
         }
+        for (Map.Entry<Notification, Period> customNotification : getNotificationsWithCustomPeriod().entrySet()) {
+            notNull(customNotification, "notification should not be null");
+            notificationItems.add(notificationUtils.createNotificationItem(customNotification.getKey().getCode(),
+                customNotification.getValue(), true));
+        }
+        //Enable appropriate notifications according to business user origin
+        setNotificationItemsEnables(businessUserRole.getBusinessUser());
 
         LOGGER.info("action=businessUserRole_create_default_notifications businessUserRole={} notifications={}",
             businessUserRole, notificationItems);
@@ -260,4 +258,44 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         }
     }
 
+    /**
+     * Changes origin of given businessUserRole to given origin.
+     * Notifications are accordingly updated as well.
+     * @param businessUserRoleId defines user's to be updated
+     * @param originId defines new origin
+     */
+    public void changeOrigin(long businessUserRoleId, long originId) {
+        final BusinessUserRole user = generalService.find(BusinessUserRole.class, businessUserRoleId);
+        final Origin origin = generalService.find(Origin.class, originId);
+
+        user.getBusinessUser().setOrigin(origin);
+        user.getBusinessUser().setVerification(Verification.UNVERIFIED);
+        setNotificationItemsEnables(user.getBusinessUser());
+        generalService.merge(user);
+    }
+
+    /**
+     * Sets notifications enabled according to given businessUser (his origin).
+     * Enables all notifications for internal users.
+     * Otherwise enable only notifications enabled for external users.
+     * @param businessUser
+     */
+    private void setNotificationItemsEnables(BusinessUser businessUser) {
+         //if external, disable all notifications except those for external users
+        if (businessUser.isUserFromExternalSystem()) {
+            NotificationItem externalNotificationItem = notificationUtils.createNotificationItemWithDefaultPeriod(
+                Registers.Notification.NEW_MESSAGE.getCode(), true);
+            for (NotificationItem notificationItem : businessUser.getSettings().getNotificationItems()) {
+                if (notificationItem.equals(externalNotificationItem)) {
+                    notificationItem.setEnabled(Boolean.TRUE);
+                    continue;
+                }
+                notificationItem.setEnabled(Boolean.FALSE);
+            }
+        } else { //if not external, enable all notifications
+            for (NotificationItem notificationItem : businessUser.getSettings().getNotificationItems()) {
+                notificationItem.setEnabled(Boolean.TRUE);
+            }
+        }
+    }
 }

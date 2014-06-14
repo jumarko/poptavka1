@@ -11,7 +11,6 @@ import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
@@ -335,14 +334,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
      */
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public void setUserOrigin(long userId, long originId) throws RPCException, ApplicationSecurityException {
-        BusinessUser user = generalService.find(BusinessUser.class, userId);
-        if (originId == 0) { //no origin
-            user.setOrigin(null);
-        } else {
-            user.setOrigin(generalService.find(Origin.class, originId));
-        }
-        generalService.merge(user);
+    public void setUserOrigin(long clientId, long originId) throws RPCException, ApplicationSecurityException {
+        clientService.changeOrigin(clientId, originId);
     }
 
     /**

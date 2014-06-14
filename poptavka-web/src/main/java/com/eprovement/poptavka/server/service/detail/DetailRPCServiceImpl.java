@@ -94,7 +94,6 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         this.externalUserNotificator = externalUserNotificator;
     }
 
-
     //Converters
     @Autowired
     public void setDemandConverter(
@@ -281,11 +280,11 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         messageService.update(replyMessage.message);
 
         // notify external client if applicable - this time the original sender can only be in role CLIENT
-        final BusinessUser supplier = this.generalService.find(BusinessUser.class, offerMessageToSend.getSupplierId());
-        final BusinessUser client = this.generalService.find(BusinessUser.class, offerMessageToSend.getSenderId());
+        final Supplier supplier = this.generalService.find(Supplier.class, offerMessageToSend.getSupplierId());
+        final BusinessUser client = this.generalService.find(BusinessUser.class,
+            replyMessage.message.getThreadRoot().getSender().getId());
         externalUserNotificator.send(client, Registers.Notification.EXTERNAL_CLIENT,
-                singletonMap(SUPPLIER_NOTIFICATION_PARAM, supplier.getDisplayName()));
-
+            singletonMap(SUPPLIER_NOTIFICATION_PARAM, supplier.getBusinessUser().getDisplayName()));
 
         return getMessageDetail(replyMessage);
     }
@@ -320,7 +319,6 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         replyMessage.setBody(replyMessageToSend.getBody());
         replyMessage.setSubject(replyMessageToSend.getSubject());
         messageService.send(replyMessage);
-
 
         return new ReplyMessage(replyMessage, replyUserMessage);
     }

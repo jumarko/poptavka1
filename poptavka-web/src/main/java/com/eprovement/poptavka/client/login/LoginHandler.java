@@ -85,7 +85,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                     @Override
                     public void onSuccess(BusinessUserDetail user) {
                         if (user == null) {
-                            LOGGER.info("User entered invalid email=" + user);
+                            LOGGER.info("Email or password incorrect.");
                             eventBus.setErrorMessage(Storage.MSGS.wrongLoginMessage());
                             return;
                         }
