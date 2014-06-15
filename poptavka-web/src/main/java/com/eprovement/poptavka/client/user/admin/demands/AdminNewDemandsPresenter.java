@@ -121,6 +121,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             @Override
             public void onClick(ClickEvent event) {
                 eventBus.requestCreateConversation(selectedObject.getDemandId(), Storage.getUser().getUserId());
+                view.getToolbar().getCreateConversationBtn().setVisible(false);
             }
         });
     }
@@ -143,7 +144,6 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
         if (chatMessages.isEmpty()) {
-            view.getToolbar().getCreateConversationBtn().setVisible(chatMessages.isEmpty());
             initDetailSectionDemand(selectedObject);
         } else {
             initDetailSectionConversation(selectedObject);
