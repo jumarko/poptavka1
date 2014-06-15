@@ -9,6 +9,7 @@ import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.Client;
@@ -36,6 +37,7 @@ import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -289,6 +291,10 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         Demand demand = demandService.getById(demandId);
         Message threadRootMessage = messageService.getThreadRootMessage(demand);
         userMessageService.getAdminUserMessage(threadRootMessage, generalService.find(User.class, userAdminId));
+        //Set demand message to sent becasuse the message was actually sent to admin
+        threadRootMessage.setMessageState(MessageState.SENT);
+        threadRootMessage.setSent(new Date());
+        generalService.save(threadRootMessage);
         return threadRootMessage.getId();
     }
 
