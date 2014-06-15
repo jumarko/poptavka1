@@ -33,7 +33,6 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private String tooltip;
     private PopupPanel popup = new PopupPanel(true);
     private boolean displayed;
 
@@ -45,16 +44,9 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
      */
     @Override
     public void render(Cell.Context context, ICatLocDetail value,
-            SafeHtmlBuilder sb) {
+        SafeHtmlBuilder sb) {
         if (value != null) {
             sb.appendEscaped(value.toString());
-            if (value.getParentName() != null) {
-                StringBuilder tooltipBuilder = new StringBuilder();
-                tooltipBuilder.append(value.getName()).append(" (");
-                tooltipBuilder.append(value.getParentName());
-                tooltipBuilder.append(")");
-                this.tooltip = tooltipBuilder.toString();
-            }
         }
     }
 
@@ -63,10 +55,10 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
      */
     @Override
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-            Element parent, ICatLocDetail value, NativeEvent event,
-            ValueUpdater<ICatLocDetail> valueUpdater) {
+        Element parent, ICatLocDetail value, NativeEvent event,
+        ValueUpdater<ICatLocDetail> valueUpdater) {
         if (BrowserEvents.MOUSEOVER.equals(event.getType())) {
-            displayPopup(event, parent);
+            displayPopup(value, parent);
         }
         if (BrowserEvents.MOUSEOUT.equals(event.getType())) {
             hidePopup();
@@ -79,18 +71,18 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
     /**
      * Displays tooltip popup only when ICatLocDetail has a parent.
      */
-    private void displayPopup(NativeEvent event, Element parent) {
+    private void displayPopup(ICatLocDetail detail, Element parent) {
         if (displayed) {
             return;
         }
-        if (tooltip != null) {
+        if (detail.getParentName() != null) {
             displayed = true;
 
             VerticalPanel holder = new VerticalPanel();
             SimplePanel arrow = new SimplePanel();
             arrow.addStyleName("arrow-bottom");
 
-            HTMLPanel panel = new HTMLPanel(tooltip);
+            HTMLPanel panel = new HTMLPanel(getTooltip(detail));
             panel.addStyleName("panel");
 
             holder.add(panel);
@@ -101,8 +93,21 @@ public class CatLogSimpleCell extends AbstractCell<ICatLocDetail> {
             popup.addStyleName(StyleResource.INSTANCE.modal().tooltip());
             popup.show();
             popup.setPopupPosition(parent.getAbsoluteLeft() + (parent.getOffsetWidth() - popup.getOffsetWidth()) / 2,
-                    parent.getAbsoluteTop() - 35);
+                parent.getAbsoluteTop() - 35);
         }
+    }
+
+    /**
+     * Builds tooltip text.
+     * @param detail
+     * @return tooltip's text
+     */
+    private String getTooltip(ICatLocDetail detail) {
+        StringBuilder tooltipBuilder = new StringBuilder();
+        tooltipBuilder.append(detail.getName()).append(" (");
+        tooltipBuilder.append(detail.getParentName());
+        tooltipBuilder.append(")");
+        return tooltipBuilder.toString();
     }
 
     /**

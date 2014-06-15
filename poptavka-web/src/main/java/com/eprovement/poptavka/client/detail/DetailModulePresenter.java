@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -23,6 +24,7 @@ import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.CellPreviewEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.LinkedList;
@@ -116,6 +118,13 @@ public class DetailModulePresenter
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
                 requestActualTabData();
+            }
+        });
+        view.getMessageList().addCellPreviewHandler(new CellPreviewEvent.Handler() {
+
+            @Override
+            public void onCellPreview(CellPreviewEvent event) {
+                eventBus.resize(DetailModuleBuilder.CONVERSATION_TAB);
             }
         });
     }
