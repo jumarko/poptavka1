@@ -119,7 +119,7 @@ public class ExternalUserNotificator {
             final Notification notification = registerService.getValue(notificationType.getCode(), Notification.class);
             mailNotificationSender.doSendNotification(user, notification, notificationParameters);
 
-            //TODO RELEASE JURAJ - please verify
+            //Create user notification to know which notifications has been already sent to which user
             UserNotification userNotification = new UserNotification();
             userNotification.setNotification(notification);
             userNotification.setUser(user);

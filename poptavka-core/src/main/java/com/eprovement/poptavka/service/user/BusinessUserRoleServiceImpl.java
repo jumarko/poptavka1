@@ -281,6 +281,10 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
      * @param businessUser
      */
     private void setNotificationItemsEnables(BusinessUser businessUser) {
+        if (businessUser == null || businessUser.getSettings() == null
+            || businessUser.getSettings().getNotificationItems() == null) {
+            return;
+        }
          //if external, disable all notifications except those for external users
         if (businessUser.isUserFromExternalSystem()) {
             NotificationItem externalNotificationItem = notificationUtils.createNotificationItemWithDefaultPeriod(

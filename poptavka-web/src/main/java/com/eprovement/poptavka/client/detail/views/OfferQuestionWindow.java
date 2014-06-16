@@ -190,7 +190,8 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
     public MessageDetail getCreatedMessage() {
         MessageDetail message = new MessageDetail();
         message.setBody((String) bodyMonitor.getValue());
-        return message;
+        message.setSenderId(Storage.getUser().getUserId());
+        return updateSendingMessage(message);
     }
 
     /**
@@ -198,11 +199,12 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
      * @return created offer message
      */
     public OfferMessageDetail getCreatedOfferMessage() {
-        OfferMessageDetail offerMessageDetailImpl = new OfferMessageDetail();
-        offerMessageDetailImpl.setPrice((BigDecimal) priceMonitor.getValue());
-        offerMessageDetailImpl.setFinishDate((Date) finishDateMonitor.getValue());
-        offerMessageDetailImpl.setBody((String) bodyMonitor.getValue());
-        return offerMessageDetailImpl;
+        OfferMessageDetail offerMessage = new OfferMessageDetail();
+        offerMessage.setPrice((BigDecimal) priceMonitor.getValue());
+        offerMessage.setFinishDate((Date) finishDateMonitor.getValue());
+        offerMessage.setBody((String) bodyMonitor.getValue());
+        offerMessage.setSenderId(Storage.getUser().getUserId());
+        return updateSendingOfferMessage(offerMessage);
     }
 
     /**************************************************************************/
