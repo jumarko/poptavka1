@@ -9,6 +9,7 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -62,6 +63,7 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
         detail.setSuppliersCount(supplierService.getSuppliersCountQuick(category));
         detail.setLevel(category.getLevel());
         detail.setLeaf(category.isLeaf());
+        detail.setLeafsParent(isLeafsParent(category.getId()));
         Category categoryParent = category.getParent();
         if (categoryParent != null) {
             detail.setParentName(categoryParent.getName());
@@ -76,5 +78,24 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     @Override
     public Category convertToSource(ICatLocDetail categoryDetail) {
         return categoryService.getById(categoryDetail.getId());
+    }
+
+    /**************************************************************************/
+    /* Helper methods                                                         */
+    /**************************************************************************/
+    /**
+     * @param categoryId
+     * @return true if given category has only leafs as children, false otherwise
+     */
+    private boolean isLeafsParent(Long categoryId) {
+        final List<Category> children = categoryService.getById(categoryId).getChildren();
+        boolean leafsParent = true;
+        for (Category category : children) {
+            leafsParent &= category.isLeaf();
+            if (!leafsParent) {
+                break;
+            }
+        }
+        return leafsParent;
     }
 }

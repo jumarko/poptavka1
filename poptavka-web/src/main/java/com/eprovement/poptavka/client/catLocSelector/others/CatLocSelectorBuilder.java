@@ -22,6 +22,7 @@ public final class CatLocSelectorBuilder {
     public static final int CHECKBOXES_DISABLED = 0;
     public static final int CHECKBOXES = 1;
     public static final int CHECKBOXES_ON_LEAF_ONLY = 2;
+    public static final int CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT = 3;
     public static final int COUNTS_DISABLED = 0;
     public static final int COUNTS_DEMANDS = 1;
     public static final int COUNTS_SUPPLIERS = 2;
@@ -159,6 +160,11 @@ public final class CatLocSelectorBuilder {
 
         public Builder withCheckboxesOnLeafsOnly() {
             this.checkboxes = CHECKBOXES_ON_LEAF_ONLY;
+            return this;
+        }
+
+        public Builder withCheckboxesOnLeafsAndLeafsParent() {
+            this.checkboxes = CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT;
             return this;
         }
 

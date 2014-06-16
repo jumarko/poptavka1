@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
  */
 package com.eprovement.poptavka.shared.selectors.catLocSelector;
 
@@ -29,6 +28,8 @@ public interface ICatLocDetail extends IsSerializable {
 
     boolean isLeaf();
 
+    boolean isLeafsParent();
+
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
@@ -45,4 +46,6 @@ public interface ICatLocDetail extends IsSerializable {
     void setLevel(int level);
 
     void setLeaf(boolean isLeaf);
+
+    void setLeafsParent(boolean leafsParent);
 }
