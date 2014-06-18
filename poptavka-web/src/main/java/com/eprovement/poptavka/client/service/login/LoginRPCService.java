@@ -20,6 +20,8 @@ public interface LoginRPCService extends RemoteService {
 
     BusinessUserDetail getLoggedBusinessUser() throws RPCException;
 
+    void loginExternalUser(long userId) throws RPCException;
+
     String resetPassword(long userId) throws RPCException;
 
     /**************************************************************************/

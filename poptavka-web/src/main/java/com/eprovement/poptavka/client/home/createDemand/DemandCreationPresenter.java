@@ -180,7 +180,7 @@ public class DemandCreationPresenter
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_DEMAND)
                         .initCategorySelector()
                         .initSelectorManager()
-                        .withCheckboxes()
+                        .withCheckboxesOnLeafsAndLeafsParent()
                         .displayCountOfDemands()
                         .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                         .build();

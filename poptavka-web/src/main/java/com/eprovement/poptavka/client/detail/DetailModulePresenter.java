@@ -12,7 +12,6 @@ import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -88,24 +87,12 @@ public class DetailModulePresenter
                     //Deny next click until operation is finnished
                     view.getReplyHolder().getSubmitBtn().setEnabled(false);
                     // distinguish what kind of message should be sent
-                    //Kedze reply widget je robeny tak, ze najprv sa urci ci chcem poslat spravu alebo ponuku
-                    //zobrazi sa podla toho widget - budna poslanie spravy alebo na poslanie ponuky.
-                    //Potom samotne poslanie sa vykona kliknutim na tlacidlo Submit, teda musime zistit co
-                    //za akciu ma ten submit vykonat, teda ci poslat spravu alebo ponuku, podla skor zvolenej akcie.
                     switch (view.getReplyHolder().getSelectedResponse()) {
                         case OfferQuestionWindow.RESPONSE_QUESTION:
-                            MessageDetail questionMessageToSend
-                                = view.getReplyHolder().updateSendingMessage(
-                                    view.getReplyHolder().getCreatedMessage());
-                            questionMessageToSend.setSenderId(Storage.getUser().getUserId());
-                            eventBus.sendQuestionMessage(questionMessageToSend);
+                            eventBus.sendQuestionMessage(view.getReplyHolder().getCreatedMessage());
                             break;
                         case OfferQuestionWindow.RESPONSE_OFFER:
-                            OfferMessageDetail offerMessageToSend
-                                = view.getReplyHolder().updateSendingOfferMessage(
-                                    view.getReplyHolder().getCreatedOfferMessage());
-                            offerMessageToSend.setSenderId(Storage.getUser().getUserId());
-                            eventBus.sendOfferMessage(offerMessageToSend);
+                            eventBus.sendOfferMessage(view.getReplyHolder().getCreatedOfferMessage());
                             break;
                         default:
                             break;

@@ -23,6 +23,8 @@ public interface LoginRPCServiceAsync {
 
     void getLoggedBusinessUser(AsyncCallback<BusinessUserDetail> callback);
 
+    void loginExternalUser(long userId, AsyncCallback<Void> callback);
+
     /**
      * Reset password for user who forgot his password. New random password is saved into database.
      * @param userId whose password will be reset

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) 2011, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.shared.selectors.catLocSelector;
 
 import com.google.gwt.view.client.ProvidesKey;
@@ -16,6 +19,8 @@ public class CatLocDetail implements ICatLocDetail {
     private int level = -1;
     //if parent = false, no child category exists;
     private boolean leaf = false;
+    //all child items are leafs
+    private boolean leafsParent = false;
     /**
      * The key provider that provides the unique ID of a FullSupplierDetail.
      */
@@ -85,6 +90,11 @@ public class CatLocDetail implements ICatLocDetail {
         return leaf;
     }
 
+    @Override
+    public boolean isLeafsParent() {
+        return leafsParent;
+    }
+
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
@@ -121,6 +131,11 @@ public class CatLocDetail implements ICatLocDetail {
     @Override
     public void setLeaf(boolean isLeaf) {
         this.leaf = isLeaf;
+    }
+
+    @Override
+    public void setLeafsParent(boolean leafParent) {
+        this.leafsParent = leafParent;
     }
 
     /**************************************************************************/

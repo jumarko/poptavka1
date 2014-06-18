@@ -9,7 +9,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.util.Date;
 
 /**
@@ -27,7 +26,7 @@ public class UserNotification extends DomainObject {
     /** notification date. */
     @NotNull
     @Temporal(value = TemporalType.TIMESTAMP)
-    @Past
+
     private Date sent = new Date();
 
     /**

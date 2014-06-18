@@ -150,7 +150,7 @@ public class SupplierCreationPresenter
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
                                 .initCategorySelector()
                                 .initSelectorManager()
-                                .withCheckboxesOnLeafsOnly()
+                                .withCheckboxesOnLeafsAndLeafsParent()
                                 .displayCountOfSuppliers()
                                 .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                                 .build();

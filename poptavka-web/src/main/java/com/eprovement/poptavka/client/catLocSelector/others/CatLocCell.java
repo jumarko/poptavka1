@@ -75,7 +75,7 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
 
     @Override
     public void onBrowserEvent(Context context, Element parent, ICatLocDetail value,
-            NativeEvent event, ValueUpdater<ICatLocDetail> valueUpdater) {
+        NativeEvent event, ValueUpdater<ICatLocDetail> valueUpdater) {
         if (BrowserEvents.CLICK.equals(event.getType()) && presenter.getEventBus() != null) {
             switch (presenter.getBuilder().getWidgetType()) {
                 case CatLocSelectorBuilder.WIDGET_TYPE_BROWSER:
@@ -101,6 +101,11 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
                     manageSelectedItems(value);
                 }
                 break;
+            case CatLocSelectorBuilder.CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT:
+                if (value.isLeafsParent() || value.isLeaf()) {
+                    manageSelectedItems(value);
+                }
+                break;
             default: //CatLocSelectorBuilder.CHECKBOXES_DISABLED
                 break;
         }
@@ -108,7 +113,7 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
 
     private void cellTreeClickHandler(ICatLocDetail value) {
         presenter.getEventBus().requestHierarchy(
-                presenter.getBuilder().getSelectorType(), value, presenter.getInstanceId());
+            presenter.getBuilder().getSelectorType(), value, presenter.getInstanceId());
         manageSelectedItems(value);
     }
 
@@ -181,6 +186,11 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
                 return "";
             case CatLocSelectorBuilder.CHECKBOXES_ON_LEAF_ONLY:
                 if (!category.isLeaf()) {
+                    return "hidden";
+                }
+                return "";
+            case CatLocSelectorBuilder.CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT:
+                if (!category.isLeafsParent() && !category.isLeaf()) {
                     return "hidden";
                 }
                 return "";

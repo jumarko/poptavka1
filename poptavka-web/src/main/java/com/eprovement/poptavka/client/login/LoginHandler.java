@@ -81,24 +81,27 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
     public void onVerifyUser(final String userEmail, final String userPassword, final int widgetToLoad) {
         eventBus.setLoadingProgress(0, Storage.MSGS.loggingVerifyAccount());
         loginService.getBusinessUserByEmail(
-                userEmail.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
-                    @Override
-                    public void onSuccess(BusinessUserDetail user) {
-                        if (user == null) {
-                            LOGGER.info("Email or password incorrect.");
-                            eventBus.setErrorMessage(Storage.MSGS.wrongLoginMessage());
-                            return;
-                        }
+            userEmail.trim(), new SecuredAsyncCallback<BusinessUserDetail>(eventBus) {
+                @Override
+                public void onSuccess(BusinessUserDetail user) {
+                    if (user == null) {
+                        LOGGER.info("Email or password incorrect.");
+                        eventBus.setErrorMessage(Storage.MSGS.wrongLoginMessage());
+                        return;
+                    }
+                    // Need to set plaintext password for further usage
+                    // the current password from DB is encrypted and will not be useful
+                    user.setPassword(userPassword);
 
-                        if (user.isVerified()) {
-                            eventBus.setLoadingProgress(30, Storage.MSGS.loggingIn());
-                            // user has already been verified - it is ready for login
-                            loginUser(userEmail, userPassword, widgetToLoad);
+                    if (user.isVerified()) {
+                        eventBus.setLoadingProgress(30, Storage.MSGS.loggingIn());
+                        // user has already been verified - it is ready for login
+                        loginUser(user, widgetToLoad);
+                    } else {
+                        user.setPassword(userPassword);
+                        if (user.isExternal()) {
+                            loginExternalUser(user, widgetToLoad);
                         } else {
-                            // we need to set plaintext password for activation code popup
-                            // the current password from DB is encrypted and will not be useful
-                            user.setPassword(userPassword);
-
                             eventBus.hideView();
 
                             // user has not been verified yet - prompt user for activation code
@@ -106,30 +109,30 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                             // ActivationCodePopupPresenter performs autologin once user is activated properly
                         }
                     }
+                }
 
-                    @Override
-                    protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
-                        super.onServiceFailure(caught, errorResponse, errorId);
-                        eventBus.hideView();
-                    }
-                });
+                @Override
+                protected void onServiceFailure(Throwable caught, int errorResponse, String errorId) {
+                    super.onServiceFailure(caught, errorResponse, errorId);
+                    eventBus.hideView();
+                }
+            });
     }
 
     /**
      * Login user after successfull verification.
      * @param user
-     * @param password
      * @param widgetToLoad is a constant of view that will be loaded at the end
      */
-    public void loginUser(final String user, final String password, final int widgetToLoad) {
+    public void loginUser(final BusinessUserDetail user, final int widgetToLoad) {
 
         final RequestBuilder rb = new RequestBuilder(RequestBuilder.POST, getSpringLoginUrl());
         rb.setHeader("Content-Type", "application/x-www-form-urlencoded");
         final StringBuilder sbParams = new StringBuilder(100);
         sbParams.append("j_username=");
-        sbParams.append(URL.encode(user));
+        sbParams.append(URL.encode(user.getEmail()));
         sbParams.append("&j_password=");
-        sbParams.append(URL.encode(password));
+        sbParams.append(URL.encode(user.getPassword()));
 
         try {
             rb.sendRequest(sbParams.toString(), new RequestCallback() {
@@ -137,7 +140,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                 public void onError(final Request request, final Throwable exception) {
                     // Couldn't connect to server (could be timeout, SOP violation, etc.)
                     LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging, exception="
-                            + exception.getMessage());
+                        + exception.getMessage());
                     eventBus.setErrorMessage(Storage.MSGS.loginUnknownError());
                 }
 
@@ -147,7 +150,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                     int status = response.getStatusCode();
                     LOGGER.fine("Response status code = " + status);
                     if (status == Response.SC_OK) {
-                        LOGGER.info("User=" + user + " has logged in!");
+                        LOGGER.info("User=" + user.getEmail() + " has logged in!");
                         // notify all interested components that user has succesfully logged in
                         fireAfterLoginEvent(widgetToLoad);
                     } else if (status == Response.SC_UNAUTHORIZED) {
@@ -213,7 +216,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                     forwardUserLogout(widgetToLoad);
                 } else {
                     LOGGER.severe("Unexptected response status code while logging out, code="
-                            + response.getStatusCode());
+                        + response.getStatusCode());
                     eventBus.displayError(response.getStatusCode(), null);
                 }
             }
@@ -222,7 +225,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
             public void onError(Request request, Throwable exception) {
                 // Couldn't connect to server (could be timeout, SOP violation, etc.)
                 LOGGER.severe("Server part (poptavka-core) doesn't respond during user logging out, exception="
-                        + exception.getMessage());
+                    + exception.getMessage());
                 eventBus.displayError(0, null);
             }
         });
@@ -300,6 +303,21 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
     /* History helper methods                                                 */
     /**************************************************************************/
     /**
+     * Login external user.
+     * @param user
+     * @param widgetToLoad
+     */
+    private void loginExternalUser(final BusinessUserDetail user, final int widgetToLoad) {
+        loginService.loginExternalUser(user.getUserId(), new SecuredAsyncCallback<Void>(eventBus) {
+
+            @Override
+            public void onSuccess(Void result) {
+                loginUser(user, widgetToLoad);
+            }
+        });
+    }
+
+    /**
      * Set account layout and forward user to appropriate module according to his role.
      * Called by loginFromSession from HistoryConverter.
      * @param widgetToLoad is a constant of view that will be loaded at the end
@@ -340,10 +358,10 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
                 if (Storage.getUser().getAccessRoles().contains(CommonAccessRoles.ADMIN)) {
                     eventBus.goToAdminModule(null, IAdminModule.AdminWidget.DASHBOARD);
                 } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.SUPPLIER)) {
+                    BusinessUserDetail.BusinessRole.SUPPLIER)) {
                     forwardToSupplierDemands(widgetToLoad);
                 } else if (Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                        BusinessUserDetail.BusinessRole.CLIENT)) {
+                    BusinessUserDetail.BusinessRole.CLIENT)) {
                     forwardToClientDemands(widgetToLoad);
                 }
                 break;
@@ -382,7 +400,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         };
         if (displayThankYouPopup) {
             eventBus.showThankYouPopup(
-                    Storage.MSGS.thankYouCodeActivatedToDemandCreation(), additionalAction);
+                Storage.MSGS.thankYouCodeActivatedToDemandCreation(), additionalAction);
         } else {
             eventBus.goToCreateDemandModule();
         }
@@ -402,7 +420,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         };
         if (displayThankYouPopup) {
             eventBus.showThankYouPopup(
-                    Storage.MSGS.thankYouCodeActivatedToClientDashboard(), additionalAction);
+                Storage.MSGS.thankYouCodeActivatedToClientDashboard(), additionalAction);
         } else {
             eventBus.goToClientDemandsModule(null, widgetToLoad);
         }
@@ -422,7 +440,7 @@ public class LoginHandler extends BaseEventHandler<LoginEventBus> {
         };
         if (displayThankYouPopup) {
             eventBus.showThankYouPopup(
-                    Storage.MSGS.thankYouCodeActivatedToSupplierDashboard(), additionalAction);
+                Storage.MSGS.thankYouCodeActivatedToSupplierDashboard(), additionalAction);
         } else {
             eventBus.goToSupplierDemandsModule(null, widgetToLoad);
         }
