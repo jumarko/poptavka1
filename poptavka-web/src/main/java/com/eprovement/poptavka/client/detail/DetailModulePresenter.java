@@ -87,10 +87,6 @@ public class DetailModulePresenter
                     //Deny next click until operation is finnished
                     view.getReplyHolder().getSubmitBtn().setEnabled(false);
                     // distinguish what kind of message should be sent
-                    //Kedze reply widget je robeny tak, ze najprv sa urci ci chcem poslat spravu alebo ponuku
-                    //zobrazi sa podla toho widget - budna poslanie spravy alebo na poslanie ponuky.
-                    //Potom samotne poslanie sa vykona kliknutim na tlacidlo Submit, teda musime zistit co
-                    //za akciu ma ten submit vykonat, teda ci poslat spravu alebo ponuku, podla skor zvolenej akcie.
                     switch (view.getReplyHolder().getSelectedResponse()) {
                         case OfferQuestionWindow.RESPONSE_QUESTION:
                             eventBus.sendQuestionMessage(view.getReplyHolder().getCreatedMessage());

@@ -4,7 +4,11 @@
 package com.eprovement.poptavka.server.service.login;
 
 import com.eprovement.poptavka.client.service.login.LoginRPCService;
+import com.eprovement.poptavka.domain.enums.Verification;
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.BusinessUserRole;
+import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.exception.ExpiredActivationCodeException;
@@ -15,6 +19,8 @@ import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.notification.welcome.WelcomeMessageSender;
+import com.eprovement.poptavka.service.user.ClientService;
+import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.user.UserVerificationService;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.UserDetail;
@@ -48,6 +54,10 @@ public class LoginRPCServiceImpl extends AutoinjectingRemoteService implements L
     private UserVerificationService userVerificationService;
     @Autowired
     private WelcomeMessageSender welcomeMessageSender;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private SupplierService supplierService;
 
     //Converters
     @Autowired
@@ -107,6 +117,36 @@ public class LoginRPCServiceImpl extends AutoinjectingRemoteService implements L
     @Override
     public BusinessUserDetail getLoggedBusinessUser() throws RPCException {
         return businessUserConverter.convertToTarget(generalService.find(BusinessUser.class, getLoggedUserId()));
+    }
+
+    /**
+     * Login external supplier.
+     * According to business user role recreates default notifications and sets user as VERIFIED.
+     * @param userId
+     */
+    public void loginExternalUser(long userId) throws RPCException {
+        //If user is client
+        final BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        //recreate notifications
+        businessUser.getSettings().getNotificationItems().clear();
+        BusinessUserRole client = null;
+        BusinessUserRole supplier = null;
+        for (BusinessUserRole role : businessUser.getBusinessUserRoles()) {
+            if (role instanceof Client) {
+                client = role;
+            }
+            if (role instanceof Supplier) {
+                supplier = role;
+            }
+        }
+        if (supplier != null) {
+            supplierService.createDefaultNotifications(supplier);
+        } else if (client != null) {
+            clientService.createDefaultNotifications(client);
+        }
+        //set user as verified
+        businessUser.setVerification(Verification.VERIFIED);
+        generalService.save(businessUser);
     }
 
     /**

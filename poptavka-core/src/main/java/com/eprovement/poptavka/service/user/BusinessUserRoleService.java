@@ -23,4 +23,6 @@ public interface BusinessUserRoleService<BUR extends BusinessUserRole, BUDao ext
     BUR getByEmail(String email);
 
     void changeOrigin(long businessUserRoleId, long originId);
+
+    void createDefaultNotifications(BusinessUserRole businessUserRole);
 }

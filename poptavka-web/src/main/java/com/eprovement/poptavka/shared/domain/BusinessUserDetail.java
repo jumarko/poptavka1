@@ -159,6 +159,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     private String displayName;
     private BusinessType businessType;
     private Verification verification;
+    private boolean external;
 
     /**************************************************************************/
     /* Constuctors                                                            */
@@ -310,6 +311,14 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         this.displayName = displayName;
     }
 
+    public boolean isExternal() {
+        return external;
+    }
+
+    public void setExternal(boolean external) {
+        this.external = external;
+    }
+
     /**************************************************************************/
     /* Other                                                                  */
     /**************************************************************************/
@@ -328,6 +337,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         str.append(", addresses=" + addresses);
         str.append(", verification=" + verification);
         str.append(", businessType=" + businessType);
+        str.append(", external=" + external);
         str.append('}');
         return str.toString();
     }
