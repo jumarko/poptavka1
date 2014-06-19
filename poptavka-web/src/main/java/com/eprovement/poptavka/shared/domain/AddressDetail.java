@@ -40,7 +40,7 @@ public class AddressDetail implements IsSerializable {
     private String district;
 
     @NotEmpty(message = "{streetNotBlank}")
-    @Pattern(regexp = "[a-zA-Z0-9/\\-()\\ \\.]+", message = "{patternNoSpecChars}", groups = Extended.class)
+    @Pattern(regexp = "[a-zA-Z0-9/\\-()\\ \\.,]+", message = "{patternNoSpecChars}", groups = Extended.class)
     private String street;
     private String houseNum;
 

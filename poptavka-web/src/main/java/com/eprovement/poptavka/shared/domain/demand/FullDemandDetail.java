@@ -136,7 +136,7 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
     @Future(message = "{validToFuture}", groups = Extended.class)
     private Date validTo;
     @NotBlank(message = "{descriptionNotBlank}")
-    @Size(min = 20, max = 1500, message = "{descriptionSize}", groups = Extended.class)
+    @Size(min = 20, max = 5000, message = "{descriptionSize}", groups = Extended.class)
     private String description;
     private List<FullSupplierDetail> excludedSuppliers;
     //KeyProvider
