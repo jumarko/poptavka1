@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.server.service.detail;
 
-import static java.util.Collections.singletonMap;
 
 import com.eprovement.poptavka.client.service.demand.DetailRPCService;
 import com.eprovement.poptavka.domain.demand.Demand;
@@ -34,6 +33,7 @@ import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.google.common.collect.ImmutableMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -52,6 +52,9 @@ import org.springframework.security.access.annotation.Secured;
 @Configurable
 public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements DetailRPCService {
 
+    private static final String DEMAND_TITLE_NOTIFICATION_PARAM = "demand.title";
+    private static final String DEMAND_DESC_NOTIFICATION_PARAM = "demand.desc";
+    private static final String CLIENT_NOTIFICATION_PARAM = "client";
     private static final String SUPPLIER_NOTIFICATION_PARAM = "supplier";
     private GeneralService generalService;
     private MessageService messageService;
@@ -284,7 +287,13 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         final BusinessUser client = this.generalService.find(BusinessUser.class,
             replyMessage.message.getThreadRoot().getSender().getId());
         externalUserNotificator.send(client, Registers.Notification.EXTERNAL_CLIENT,
-            singletonMap(SUPPLIER_NOTIFICATION_PARAM, supplier.getBusinessUser().getDisplayName()));
+            ImmutableMap.of(
+                DEMAND_TITLE_NOTIFICATION_PARAM, demand.getTitle(),
+                DEMAND_DESC_NOTIFICATION_PARAM, demand.getDescription(),
+                CLIENT_NOTIFICATION_PARAM, client.getDisplayName(),
+                SUPPLIER_NOTIFICATION_PARAM, supplier.getBusinessUser().getDisplayName()
+            )
+        );
 
         return getMessageDetail(replyMessage);
     }

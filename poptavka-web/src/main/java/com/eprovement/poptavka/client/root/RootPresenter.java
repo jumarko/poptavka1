@@ -60,6 +60,7 @@ public class RootPresenter extends BasePresenter<IRootModule.View, RootEventBus>
             // normal start of app
             eventBus.createUnsubscribeToken();
             eventBus.createPaymentToken();
+            eventBus.createLoginToken();
             eventBus.goToHomeWelcomeModule();
             Storage.setAppCalledByURL(false);
         } else {
