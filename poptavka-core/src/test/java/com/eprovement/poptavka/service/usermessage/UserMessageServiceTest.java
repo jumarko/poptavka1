@@ -214,13 +214,12 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
                 .getClientConversationsWithoutOffer(this.businessUserClient, demand2);
         Assert.assertEquals(2, clientConversations.size());
-        checkUserMessageIdAndCountAndSupplierId(7L, 4, 111111111L, clientConversations);
+        checkUserMessageIdAndCountAndSupplierId(7L, 3, 111111111L, clientConversations);
 
         final Demand demand21 = generalService.find(Demand.class, 21L);
         final Map<UserMessage, ClientConversation> clientConversations2 = this.userMessageService
                 .getClientConversationsWithoutOffer(this.businessUserClient, demand21);
-        Assert.assertEquals(1, clientConversations2.size());
-        checkUserMessageIdAndCountAndSupplierId(201L, 1, 111111111L, clientConversations2);
+        Assert.assertEquals(0, clientConversations2.size());
     }
 
     @Test

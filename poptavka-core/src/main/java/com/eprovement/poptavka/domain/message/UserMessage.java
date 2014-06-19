@@ -145,6 +145,7 @@ import javax.persistence.NamedQuery;
                 query = "select count(latestUserMessage.id)\n"
                         + "from UserMessage as latestUserMessage\n"
                         + "where latestUserMessage.user = :user"
+                        + " and latestUserMessage.message.threadRoot != latestUserMessage.message"
                         + " and latestUserMessage.message.demand = :demand"
                         + " and latestUserMessage.message.demand.client.businessUser = :user"
                         + " and latestUserMessage.message.firstBorn is null"
@@ -169,6 +170,7 @@ import javax.persistence.NamedQuery;
                         + " or (latestUserMessage.message.sender = supplier"
                         + " and toRole.user = :user))"
                         + " and subUserMessage.user = supplier"
+                        + " and subUserMessage.message.threadRoot != subUserMessage.message"
                         + "\n"
                         + "group by latestUserMessage.id, supplier.id"),
             @NamedQuery(name = "getClientConversationsForDemandWithOffer",
