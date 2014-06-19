@@ -79,9 +79,6 @@ public class NotificationItem extends DomainObject {
         if (notification != null ? !notification.equals(that.notification) : that.notification != null) {
             return false;
         }
-        if (period != that.period) {
-            return false;
-        }
 
         return true;
     }
@@ -89,7 +86,6 @@ public class NotificationItem extends DomainObject {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (period != null ? period.hashCode() : 0);
         result = 31 * result + (notification != null ? notification.hashCode() : 0);
         return result;
     }

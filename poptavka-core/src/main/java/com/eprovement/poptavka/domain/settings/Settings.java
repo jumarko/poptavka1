@@ -33,7 +33,6 @@ public class Settings extends DomainObject {
     @Cascade(value = CascadeType.ALL)
     private List<NotificationItem> notificationItems;
 
-
     public List<Preference> getPreferences() {
         return preferences;
     }
@@ -50,6 +49,21 @@ public class Settings extends DomainObject {
         this.notificationItems = notificationItems;
     }
 
+    /**
+     * Adds given notifications items. Addition checks for duplicity.
+     * If no notifications yet set, new list of notification is created.
+     * @param notificationItems
+     */
+    public void addNotificationItems(List<NotificationItem> notificationItems) {
+        if (this.notificationItems == null || this.notificationItems.isEmpty()) {
+            setNotificationItems(notificationItems);
+        }
+        for (NotificationItem notificationItem : notificationItems) {
+            if (!this.notificationItems.contains(notificationItem)) {
+                this.notificationItems.add(notificationItem);
+            }
+        }
+    }
 
     @Override
     public String toString() {

@@ -140,9 +140,9 @@ public class LoginRPCServiceImpl extends AutoinjectingRemoteService implements L
             }
         }
         if (supplier != null) {
-            supplierService.createDefaultNotifications(supplier);
+            supplierService.createDefaultNotifications(supplier, true);
         } else if (client != null) {
-            clientService.createDefaultNotifications(client);
+            clientService.createDefaultNotifications(client, true);
         }
         //set user as verified
         businessUser.setVerification(Verification.VERIFIED);

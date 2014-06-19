@@ -32,10 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Common ancestor for all implementations of service methods for {@link BusinessUserRole}-s.
@@ -109,7 +107,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         LOGGER.info("action=create_new_business_user_role status=start businuessUser={}",
             businessUserRole.getBusinessUser());
 
-        createDefaultNotifications(businessUserRole);
+        createDefaultNotifications(businessUserRole, false);
         createDefaultAccessRole(businessUserRole);
 
         // set default service if no service provided from frontend when creating new business user
@@ -222,9 +220,19 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         return businessUserRole.getBusinessUser().getId() == null;
     }
 
-    public void createDefaultNotifications(BusinessUserRole businessUserRole) {
-        final Set<NotificationItem> notificationItems = new HashSet<>();
-        if (businessUserRole.getBusinessUser().isUserFromExternalSystem()) {
+    /**
+     * Creates default notifications both with default and custom period.
+     * <b>Note</b>
+     * Notice ignoreOrigin param. Since we want to manage this functionality at one place
+     * we need some kind of mechanism to set non-external notifications to external user.
+     * E.g. when external user first loggs in, he needs non-external notifications to be set,
+     * but we want to hold the information about his origin (he is valuated as external).
+     * @param businessUserRole
+     * @param ignoreOrigin true to create notifications no matter the origin
+     */
+    public void createDefaultNotifications(BusinessUserRole businessUserRole, boolean ignoreOrigin) {
+        final List<NotificationItem> notificationItems = new ArrayList<>();
+        if (!ignoreOrigin && businessUserRole.getBusinessUser().isUserFromExternalSystem()) {
             // external users have only one type of notification since we do not want to send them other emails
             // until they get an offer and register themselves at our system as regular users
             notificationItems.add(notificationUtils.createNotificationItemWithDefaultPeriod(
@@ -243,12 +251,8 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         LOGGER.info("action=businessUserRole_create_default_notifications businessUserRole={} notifications={}",
             businessUserRole, notificationItems);
-        if (businessUserRole.getBusinessUser().getSettings().getNotificationItems() != null) {
-            // add existing notification items
-            notificationItems.addAll(businessUserRole.getBusinessUser().getSettings().getNotificationItems());
-        }
 
-        businessUserRole.getBusinessUser().getSettings().setNotificationItems(new ArrayList<>(notificationItems));
+        businessUserRole.getBusinessUser().getSettings().addNotificationItems(notificationItems);
     }
 
     private void createDefaultAccessRole(BusinessUserRole businessUserRole) {
@@ -274,8 +278,8 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
         user.getBusinessUser().setOrigin(origin);
         user.getBusinessUser().setVerification(Verification.UNVERIFIED);
-        //No need to manage notifications now, by setting user as UNVERIFIED,
-        //notifications will be recreated during first login
+        user.getBusinessUser().getSettings().getNotificationItems().clear();
+        createDefaultNotifications(user, false);
         generalService.merge(user);
     }
 }
