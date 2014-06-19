@@ -73,8 +73,10 @@ public class MailNotificationSender implements NotificationSender {
         final SimpleMailMessage notificationMailMessage = new SimpleMailMessage();
         notificationMailMessage.setFrom(notificationFromAddress);
         notificationMailMessage.setTo(user.getEmail());
-        notificationMailMessage.setSubject(notification.getName());
-        notificationMailMessage.setText(NotificationSenderUtils.expandMessageBody(notification, messageVariables));
+        notificationMailMessage.setSubject(
+            NotificationSenderUtils.expandMessageSubject(notification, messageVariables));
+        notificationMailMessage.setText(
+            NotificationSenderUtils.expandMessageBody(notification, messageVariables));
 
         mailService.sendAsync(notificationMailMessage);
         LOGGER.info("action=notification_email_async status=finish user={} notification={}", user, notification);

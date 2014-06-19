@@ -17,6 +17,14 @@ final class NotificationSenderUtils {
 
     private static final PropertyPlaceholderHelper PLACEHOLDER_HELPER = new PropertyPlaceholderHelper("${", "}");
 
+    static String expandMessageSubject(Notification notificationEntity, Map<String, String> messageVariables) {
+        if (MapUtils.isEmpty(messageVariables)) {
+            return notificationEntity.getName();
+        }
+        return PLACEHOLDER_HELPER.replacePlaceholders(notificationEntity.getName(),
+                MapUtils.toProperties(messageVariables));
+    }
+
     static String expandMessageBody(Notification notificationEntity, Map<String, String> messageVariables) {
         if (MapUtils.isEmpty(messageVariables)) {
             return notificationEntity.getMessageTemplate();

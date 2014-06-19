@@ -32,7 +32,9 @@ import java.util.Map;
 public class ExternalUserNotificator {
 
     static final String DEPLOYMENT_URL_PARAM = "wantsomething.url";
+    static final String LOGIN_LINK_PARAM = "login.link";
     static final String UNSUBSCRIBE_LINK_PARAM = "unsubscribe.link";
+    static final String CLIENT_NOTIFICATION_PARAM = "client";
     static final String PASSWORD_PARAM = "password";
 
     private static final Logger LOGGER = getLogger(ExternalUserNotificator.class);
@@ -42,6 +44,7 @@ public class ExternalUserNotificator {
     private final RegisterService registerService;
     private final UserVerificationService userVerificationService;
 
+    private final UriTemplate loginUriTemplate;
     private final UriTemplate unsubscribeUriTemplate;
     private final String deploymentUrl;
 
@@ -62,7 +65,8 @@ public class ExternalUserNotificator {
         this.userVerificationService = userVerificationService;
         this.mailNotificationSender = mailNotificationSender;
         this.deploymentUrl = deploymentUrl;
-        this.unsubscribeUriTemplate = new UriTemplate(deploymentUrl + "#unsubscribe?id={passwordHash}");
+        this.loginUriTemplate = new UriTemplate(deploymentUrl + "/#login");
+        this.unsubscribeUriTemplate = new UriTemplate(deploymentUrl + "/#unsubscribe?id={passwordHash}");
     }
 
     public void send(BusinessUser user, Registers.Notification notification) {
@@ -114,6 +118,8 @@ public class ExternalUserNotificator {
                     DEPLOYMENT_URL_PARAM, deploymentUrl,
                     // plain-text password
                     PASSWORD_PARAM, newPassword,
+                    // login link
+                    LOGIN_LINK_PARAM, loginUriTemplate.toString(),
                     // unsubscribe link is based on user's hashed password stored in DB
                     UNSUBSCRIBE_LINK_PARAM, unsubscribeUriTemplate.expand(user.getPassword()).toString()));
             final Notification notification = registerService.getValue(notificationType.getCode(), Notification.class);
