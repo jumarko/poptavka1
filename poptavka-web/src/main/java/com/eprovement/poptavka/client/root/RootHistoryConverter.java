@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.root;
 
+import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.root.footer.texts.FooterInfo.FooterInfoViews;
 import com.eprovement.poptavka.client.root.interfaces.IRootModule;
 import com.google.gwt.user.client.Window;
@@ -41,6 +42,10 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
         return "";
     }
 
+    public String onCreateLoginToken() {
+        return "";
+    }
+
     /**
      * Converts URL tokens thant belongs to root module and fires appripriate action.
      * <b><i>Note:</i></b>
@@ -64,6 +69,8 @@ public class RootHistoryConverter implements HistoryConverter<RootEventBus> {
             }
         } else if (historyName.equals(IRootModule.PAYMENT_TOKEN)) {
             Window.alert(param);
+        } else if (historyName.equals(IRootModule.LOGIN_TOKEN)) {
+            eventBus.login(Constants.NONE);
         } else {
             if (FooterInfoViews.ABOUT_US.getValue().equals(param)) {
                 eventBus.displayAboutUs();

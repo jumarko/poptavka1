@@ -188,6 +188,9 @@ public interface RootEventBus extends EventBusWithLookup,
     @Event(historyConverter = RootHistoryConverter.class, name = IRootModule.PAYMENT_TOKEN)
     void createPaymentToken();
 
+    @Event(historyConverter = RootHistoryConverter.class, name = IRootModule.LOGIN_TOKEN)
+    void createLoginToken();
+
     /**************************************************************************/
     /* Unsubscribe                                                            */
     /**************************************************************************/
