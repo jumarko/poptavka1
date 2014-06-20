@@ -101,7 +101,7 @@ public final class CatLocSelectorBuilder {
          * 0 - no restriction
          * x - allow x selected categories
          */
-        private int selectionRestriction = 0;
+        private int selectionRestriction = -1;
         /**
          * Additional selection hadnler for handling selection events outside module.
          */
