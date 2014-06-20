@@ -115,8 +115,10 @@ public class CellBrowserView extends ReverseCompositeView<PresentersInterface>
      */
     @Override
     public void setSelectedCountLabel(int count, int countRestriction) {
-        selectedCountLabel.setText(
+        if (countRestriction != -1) {
+            selectedCountLabel.setText(
                 Storage.MSGS.commonSelected() + " (" + count + "/" + countRestriction + "):");
+        }
     }
 
     /**************************************************************************/

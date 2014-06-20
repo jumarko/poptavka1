@@ -166,6 +166,7 @@ public class ManagerPresenter
             .setSelectionRestriction(builder.getSelectionRestriction())
             .setCheckboxes(builder.getCheckboxes())
             .setSelectorType(builder.getSelectorType())
+            .setSelectionRestriction(builder.getSelectionRestriction())
             .build();
         initCatLocSelectorManager(embedWidget, builder);
     }
@@ -190,7 +191,7 @@ public class ManagerPresenter
      */
     public void onResponseHierarchyForManager(LinkedList<CatLocTreeItem> result, int instanceId) {
         if (this.instanceId == instanceId) {
-            if (view.getTableDataProvider().getList().size() >= registerRestrition) {
+            if (registerRestrition != -1 && view.getTableDataProvider().getList().size() >= registerRestrition) {
                 Window.alert(Storage.MSGS.commonCategorySelectionRestriction());
                 view.getSearchBox().setText("");
             } else {

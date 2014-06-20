@@ -27,6 +27,8 @@ import com.eprovement.poptavka.shared.selectors.SuggestionResponse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This RPC handles all requests for CatLocSelector module.
@@ -307,17 +309,48 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @param categoryDetail
      * @return index
      */
+    @Transactional(propagation = Propagation.REQUIRED)
     private int getCategoryIndex(Category category) {
-        final Category parent = category.getParent();
-        final int index;
         //if one of root
-        if (parent == null) {
-            index = categoryService.getRootCategories().indexOf(category);
+        if (category.getParent() == null) {
+            return categoryService.getRootCategories().indexOf(category);
         } else {
-            index = parent.getChildren().indexOf(category);
+            List<Category> children = category.getParent().getChildren();
+            //children.indexOf(category) not working, don't know why
+            for (int i = 0; i < children.size(); i++) {
+                Long o1 = children.get(i).getId();
+                Long o2 = category.getId();
+                if (o1.equals(o2)) {
+                    return i;
+                }
+            }
         }
-        LOGGER.debug("category: " + category.toString() + " index:" + index);
-        return index;
+        return -1;
+    }
+
+    /**
+     * Return index of given selected locality that refers to a given node's child.
+     * @param node
+     * @param localityDetail
+     * @return index
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    private int getLocalityIndex(Locality locality) {
+        //if one of root
+        if (locality.getParent() == null) {
+            return localityService.getLocalities(LocalityType.COUNTRY).indexOf(locality);
+        } else {
+            List<Locality> children = locality.getParent().getChildren();
+            //children.indexOf(locality) not working, don't know why
+            for (int i = 0; i < children.size(); i++) {
+                Long o1 = children.get(i).getId();
+                Long o2 = locality.getId();
+                if (o1.equals(o2)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     /**
@@ -350,32 +383,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      */
     private ArrayList<CatLocSuggestionDetail> getShortLocalitySuggestions(
         String localityLike, int wordLength) throws RPCException {
-        final List<Locality> categories = localityService.getLocalitiesByMaxLengthExcl(wordLength, localityLike);
+        final List<Locality> localities = localityService.getLocalitiesByMaxLengthExcl(wordLength, localityLike);
         final ArrayList<CatLocSuggestionDetail> localitySuggestions = new ArrayList<CatLocSuggestionDetail>();
-        for (Locality loc : categories) {
+        for (Locality loc : localities) {
             localitySuggestions.add(new CatLocSuggestionDetail(
                 loc.getParent() == null ? null : localityConverter.convertToTarget(loc.getParent()),
                 localityConverter.convertToTarget(loc)));
         }
         return localitySuggestions;
-    }
-
-    /**
-     * Return index of given selected locality that refers to a given node's child.
-     * @param node
-     * @param localityDetail
-     * @return index
-     */
-    private int getLocalityIndex(Locality locality) {
-        final Locality parent = locality.getParent();
-        final int index;
-        //if one of root
-        if (parent == null) {
-            index = localityService.getLocalities(LocalityType.COUNTRY).indexOf(locality);
-        } else {
-            index = parent.getChildren().indexOf(locality);
-        }
-        LOGGER.debug("locality: " + locality.toString() + " index:" + index);
-        return index;
     }
 }

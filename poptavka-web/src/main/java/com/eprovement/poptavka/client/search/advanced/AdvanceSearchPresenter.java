@@ -275,7 +275,6 @@ public class AdvanceSearchPresenter
                                         .initCategorySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
-                                        .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
                                         .build();
                             instaceIdCategories = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getCategorySelectorPanel(), builder);
@@ -289,7 +288,6 @@ public class AdvanceSearchPresenter
                                         .initLocalitySelector()
                                         .initSelectorManager()
                                         .withCheckboxes()
-                                        .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
                                         .build();
                             instaceIdLocalities = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getLocalitySelectorPanel(), builder);

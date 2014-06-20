@@ -184,8 +184,10 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
     /**************************************************************************/
     @Override
     public void setSelectedCountLabel(int count, int countRestriction) {
-        selectedCountLabel.setText(
+        if (countRestriction != -1) {
+            selectedCountLabel.setText(
                 Storage.MSGS.commonSelected() + " (" + count + "/" + countRestriction + "):");
+        }
     }
 
     /**
