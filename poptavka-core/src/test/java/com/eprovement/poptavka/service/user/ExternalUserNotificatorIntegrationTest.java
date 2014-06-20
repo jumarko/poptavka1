@@ -68,7 +68,7 @@ public class ExternalUserNotificatorIntegrationTest extends DBUnitIntegrationTes
                 notificationMail, containsString("password: "));
         assertThat("Unsubscribe link expected in mail body!",
                 notificationMail,
-                containsString("https://devel.want-something.com#unsubscribe?id=" + externalUser.getPassword()));
+                containsString("https://devel.want-something.com/#unsubscribe?id=" + externalUser.getPassword()));
     }
 
     @Test
