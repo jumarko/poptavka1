@@ -70,6 +70,9 @@ public interface DataGridStyles extends DataGrid.Style {
     /*
      * Cell styles
      */
+    @ClassName("cell-style-demandStatus")
+    String cellStyleDemandStatus();
+
     @ClassName("cell-style-star")
     String cellStyleStar();
 

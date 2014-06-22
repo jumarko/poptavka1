@@ -259,6 +259,10 @@
     width: 65px;
 }
 
+.cell-style-demandStatus {
+    padding: 5px 0 3px 11px;
+}
+
 .cell-style-urgency {
     padding: 5px 0 3px 5px;
 }

@@ -70,6 +70,7 @@
     width: 0;
 }
 
+.cell-style-demandStatus {}
 .cell-style-urgency {}
 .cell-style-star {
     padding: 2px 0 2px 5px;

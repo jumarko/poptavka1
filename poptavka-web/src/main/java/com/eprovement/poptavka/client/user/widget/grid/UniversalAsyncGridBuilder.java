@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.user.widget.grid;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.CssInjector;
+import com.eprovement.poptavka.client.user.widget.grid.cell.DemandStatusImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.StarImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.columns.CreatedDateColumn;
@@ -23,6 +24,7 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.SenderColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.StarColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.SubjectColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
@@ -312,8 +314,20 @@ public class UniversalAsyncGridBuilder<T> {
      */
     public UniversalAsyncGridBuilder addColumnDemandStatus() {
         sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.DEMAND_STATUS));
-        table.addColumn(MSGS.columnStatus(), GRSCS.dataGridStyle().colWidthIcon(),
-            new DemandStatusColumn());
+        //create header represented by urgency's image
+        Header demandStatusHeader = new Header<DemandStatus>(new DemandStatusImageCell()) {
+            @Override
+            public DemandStatus getValue() {
+                /* Returning null value tells DemandStatusImageCell to use header image.
+                 * Using it this way we can use same class:DemandStatusImageCell for
+                 * providing demand status images as for header as for column items.
+                 * Otherwise we must create new class image cell providing only header's image. */
+                return null;
+            }
+        };
+        demandStatusHeader.setHeaderStyleNames(GRSCS.dataGridStyle().cellStyleDemandStatus());
+        //put it together
+        table.addColumn(demandStatusHeader, GRSCS.dataGridStyle().colWidthIcon(), new DemandStatusColumn());
         return this;
     }
 
@@ -331,7 +345,7 @@ public class UniversalAsyncGridBuilder<T> {
             public Date getValue() {
                 /* Returning null value tells UrgetUmageCell to use header image.
                  * Using it this way we can use same class:UrgentImageCell for
-                 * providing urgency images as for hear as for urgency column items.
+                 * providing urgency images as for header as for urgency column items.
                  * Otherwise we must create new class image cell providing only header's image. */
                 return null;
             }

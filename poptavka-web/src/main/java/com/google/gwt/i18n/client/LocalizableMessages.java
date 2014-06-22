@@ -410,6 +410,7 @@ public interface LocalizableMessages extends Messages {
     String urgencyTooltip();
 
     /** Explanation texts for DemandStatus icon column. **/
+    String demandStatusHeader();
     String demandStatusActive();
     String demandStatusAssigned();
     String demandStatusCanceled();

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.google.gwt.dom.client.BrowserEvents;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -81,7 +82,7 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
      * Created DemandStatusImageCell.
      */
     public DemandStatusImageCell() {
-        super("mouseover", "mouseout");
+        super(BrowserEvents.MOUSEOVER, BrowserEvents.MOUSEOUT);
         if (renderer == null) {
             renderer = new ImageResourceRenderer();
         }
@@ -97,10 +98,6 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
     public void render(com.google.gwt.cell.client.Cell.Context context,
             DemandStatus value, SafeHtmlBuilder sb) {
 
-        if (value == null) {
-            return;
-        }
-
         setImage(value, sb);
     }
 
@@ -111,10 +108,10 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
     public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
             Element parent, DemandStatus value, NativeEvent event,
             ValueUpdater<DemandStatus> valueUpdater) {
-        if ("mouseover".equals(event.getType())) {
+        if (BrowserEvents.MOUSEOVER.equals(event.getType())) {
             displayPopup(event, value);
         }
-        if ("mouseout".equals(event.getType())) {
+        if (BrowserEvents.MOUSEOUT.equals(event.getType())) {
             hidePopup();
         }
     }
@@ -161,6 +158,10 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
      * @param value - demand status value
      */
     private void setImage(DemandStatus value, SafeHtmlBuilder sb) {
+        if (value == null) { //header
+            sb.append(renderer.render(Storage.RSCS.images().demadStatus()));
+            return;
+        }
         switch (value) {
             case NEW:
                 sb.append(renderer.render(Storage.RSCS.images().newDemand()));
@@ -182,6 +183,9 @@ public class DemandStatusImageCell extends AbstractCell<DemandStatus> {
      * @return string
      */
     private String getExplanationText(DemandStatus value) {
+        if (value == null) { //header
+            return Storage.MSGS.demandStatusHeader();
+        }
         switch (value) {
             case NEW:
                 return Storage.MSGS.demandStatusNew();

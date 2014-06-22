@@ -120,6 +120,9 @@ public interface Images extends ClientBundle {
     ImageResource ctrlMouseLeft();
 
     //Demand Status
+    @Source("demand-status.png")
+    ImageResource demadStatus();
+
     @Source("new.png")
     ImageResource newDemand();
 
