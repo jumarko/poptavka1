@@ -31,4 +31,9 @@ public interface MailService {
      * @param message
      */
     void sendAsync(SimpleMailMessage... message);
+
+    /**
+     * @return MIME message.
+     */
+    MimeMessage createMimeMessage();
 }

@@ -80,4 +80,12 @@ public class MailServiceImpl implements MailService {
             LOGGER.error("action=send_mail_async status=error messages=" + message, e);
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MimeMessage createMimeMessage() {
+        return javaMailSender.createMimeMessage();
+    }
 }

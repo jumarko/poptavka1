@@ -28,7 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,6 +42,9 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
     /** Default number of max count of suppliers to which the demand is sent. */
     private static final Integer DEFAULT_MAX_SUPPLIERS = 50;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageBasedPotentialDemandService.class);
+    private static final String DEMAND_TITLE_NOTIFICATION_PARAM = "demand.title";
+    private static final String DEMAND_DESC_NOTIFICATION_PARAM = "demand.desc";
+    private static final String SUPPLIER_NOTIFICATION_PARAM = "supplier";
 
     private final MessageService messageService;
     private final UserMessageService userMessageService;
@@ -74,7 +79,12 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
 
         // update thread root message before sending to potential suppliers
         final Set<PotentialSupplier> potentialSuppliers = this.suppliersSelection.getPotentialSuppliers(demand);
-        notifyExternalSuppliers(potentialSuppliers);
+        // set notification params
+        Map<String, String> notificationParams = new HashMap<>();
+        notificationParams.put(DEMAND_TITLE_NOTIFICATION_PARAM, demand.getTitle());
+        notificationParams.put(DEMAND_DESC_NOTIFICATION_PARAM, demand.getDescription());
+
+        notifyExternalSuppliers(potentialSuppliers, notificationParams);
         final Message threadRootMessage = updateDemandThreadRootMessage(demand, potentialSuppliers);
         messageService.send(threadRootMessage);
 
@@ -107,11 +117,15 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
      * @param potentialSuppliers potential suppliers, some of them can still be the external ones
      * @see com.eprovement.poptavka.service.user.ExternalUserNotificator
      */
-    private void notifyExternalSuppliers(Set<PotentialSupplier> potentialSuppliers) {
+    private void notifyExternalSuppliers(
+        Set<PotentialSupplier> potentialSuppliers, Map<String, String> notificationParams) {
+
         for (PotentialSupplier potentialSupplier : potentialSuppliers) {
-            // TODO: probably we will need to pass some variables for notification message
+            notificationParams.put(SUPPLIER_NOTIFICATION_PARAM,
+                potentialSupplier.getSupplier().getBusinessUser().getDisplayName());
+
             externalUserNotificator.send(potentialSupplier.getSupplier().getBusinessUser(),
-                    Registers.Notification.EXTERNAL_SUPPLIER);
+                    Registers.Notification.EXTERNAL_SUPPLIER, notificationParams);
         }
     }
 

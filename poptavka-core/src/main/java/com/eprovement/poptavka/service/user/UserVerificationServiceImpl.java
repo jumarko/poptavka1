@@ -22,6 +22,10 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class UserVerificationServiceImpl implements UserVerificationService {
 
@@ -46,7 +50,6 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         this.activationEmailFromAddress = activationEmailFromAddress;
     }
 
-
     @Override
     public String sendNewActivationCode(User businessUser) {
         return sendNewActivationCode(businessUser, false);
@@ -63,8 +66,8 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         final String activationCode = generateActivationCode(user);
         LOGGER.info("action=send_new_activation_email email={} businuessUser={}",
                 user.getEmail(), user);
-        final SimpleMailMessage activationMailMessage =
-                createActivationMailMessage(user.getEmail(), activationCode);
+        final MimeMessage activationMailMessage = createActivationMimeMailMessage(
+                user.getEmail(), activationCode);
         if (async) {
             mailService.sendAsync(activationMailMessage);
         } else {
@@ -100,7 +103,7 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
         verifyActivationCode(user, activationCode);
         boolean alreadyVerified = true;
-        if (! user.isVerified()) {
+        if (!user.isVerified()) {
             alreadyVerified = false;
             user.setVerification(Verification.VERIFIED);
             LOGGER.debug("action=verify_user status=set_verification_for_role user={}", user);
@@ -170,11 +173,11 @@ public class UserVerificationServiceImpl implements UserVerificationService {
         generalService.save(user);
     }
 
-    private SimpleMailMessage createActivationMailMessage(String userMail, String activationCode) {
+    private SimpleMailMessage createActivationSimpleMailMessage(String userMail, String activationCode) {
         final SimpleMailMessage activationMessage = new SimpleMailMessage();
 
         ResourceBundle rb = ResourceBundle.getBundle("localization", ENGLISH_LOCALE);
-        String activationEmailText = MessageFormat.format(rb.getString("activation.mail.body"), activationCode);
+        String activationEmailText = MessageFormat.format(rb.getString("activation.mail.body.text"), activationCode);
 
         activationMessage.setFrom(activationEmailFromAddress);
         activationMessage.setTo(userMail);
@@ -183,6 +186,31 @@ public class UserVerificationServiceImpl implements UserVerificationService {
 
         activationMessage.setText(activationEmailText);
         return activationMessage;
+    }
 
+    /**
+     * Creates activation MIME message.
+     * @param userMail defines recipient email address
+     * @param activationCode defines user's activation code
+     * @return mime message
+     */
+    private MimeMessage createActivationMimeMailMessage(String userMail, String activationCode) {
+        final ResourceBundle rb = ResourceBundle.getBundle("localization", ENGLISH_LOCALE);
+        final String emailContent = MessageFormat.format(rb.getString("activation.mail.body.html"), activationCode);
+
+        MimeMessageHelper message = null;
+        try {
+            message = new MimeMessageHelper(mailService.createMimeMessage(), true, "UTF-8");
+            message.setFrom(activationEmailFromAddress);
+            message.setTo(userMail);
+            message.setSubject(rb.getString("activation.mail.subject"));
+            message.setText(emailContent, true);
+            message.addInline("logo", new ClassPathResource("images/email_logo.png"));
+            message.addInline("background", new ClassPathResource("images/email_bg.jpg"));
+        } catch (MessagingException ex) {
+            LOGGER.error("action=create_activation_mime_message status=error messages=" + ex.getLocalizedMessage(), ex);
+        }
+
+        return message.getMimeMessage();
     }
 }

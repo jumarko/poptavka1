@@ -9,9 +9,11 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.mail.MailService;
 import com.eprovement.poptavka.validation.EmailValidator;
 import org.slf4j.Logger;
-import org.springframework.mail.SimpleMailMessage;
 
 import java.util.Map;
+import javax.mail.MessagingException;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 /**
  * Implementation of {@link NotificationSender} which sends notifications via email.
@@ -70,15 +72,20 @@ public class MailNotificationSender implements NotificationSender {
         checkParams(user, notification);
 
         LOGGER.info("action=notification_email_async status=start user={} notification={}", user, notification);
-        final SimpleMailMessage notificationMailMessage = new SimpleMailMessage();
-        notificationMailMessage.setFrom(notificationFromAddress);
-        notificationMailMessage.setTo(user.getEmail());
-        notificationMailMessage.setSubject(
-            NotificationSenderUtils.expandMessageSubject(notification, messageVariables));
-        notificationMailMessage.setText(
-            NotificationSenderUtils.expandMessageBody(notification, messageVariables));
+        MimeMessageHelper message = null;
+        try {
+            message = new MimeMessageHelper(mailService.createMimeMessage(), true, "UTF-8");
+            message.setFrom(notificationFromAddress);
+            message.setTo(user.getEmail());
+            message.setSubject(NotificationSenderUtils.expandMessageSubject(notification, messageVariables));
+            message.setText(NotificationSenderUtils.expandMessageBody(notification, messageVariables), true);
+            message.addInline("logo", new ClassPathResource("images/email_logo.png"));
+            message.addInline("background", new ClassPathResource("images/email_bg.jpg"));
+        } catch (MessagingException ex) {
+            LOGGER.error("action=notification_email_async status=error messages=" + ex.getLocalizedMessage(), ex);
+        }
 
-        mailService.sendAsync(notificationMailMessage);
+        mailService.sendAsync(message.getMimeMessage());
         LOGGER.info("action=notification_email_async status=finish user={} notification={}", user, notification);
     }
 
