@@ -363,7 +363,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllDemands() {
-        Assert.assertEquals(15, this.demandService.getAll().size());
+        Assert.assertEquals(16, this.demandService.getAll().size());
     }
 
     @Test
@@ -465,16 +465,17 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetClientDemandsWithOffer() {
-        Client client = generalService.find(Client.class, 111111112L);
-        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 6, client.getDemands().size());
-        Client client2 = generalService.find(Client.class, 111111113L);
+        Client client = generalService.find(Client.class, 111111121L);
+        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 8, client.getDemands().size());
+        Client client2 = generalService.find(Client.class, 111111131L);
         Assert.assertEquals("Number of client demands [" + client2.toString() + "]", 1, client2.getDemands().size());
 
-        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 3L,
+        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 6L,
                 demandService.getClientDemandsWithOfferCount(client));
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 2L);
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 22L);
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 23L);
+        checkDemandExists(demandService.getClientDemandsWithOffer(client), 70L);
 
         Assert.assertEquals("Number of client demands with offer [" + client2.toString() + "]", 0L,
                 demandService.getClientDemandsWithOfferCount(client2));
@@ -500,11 +501,12 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         final Demand demand10 = this.demandService.getById(10L);
         final Demand demand21 = this.demandService.getById(21L);
         final Demand demand22 = this.demandService.getById(22L);
+        final Demand demand70 = this.demandService.getById(70L);
         final BusinessUser client = this.generalService.find(BusinessUser.class, 111111112L);
         final Map<Demand, Integer> clientDemands =
                 this.demandService.getClientDemandsWithUnreadSubMsgs(client);
         Assert.assertEquals("Inacurrate number of threadRoot messages selected",
-                5, clientDemands.size());
+                7, clientDemands.size());
 
         checkDemandExists(demand1, clientDemands.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
@@ -521,20 +523,27 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
         checkDemandExists(demand22, clientDemands.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 (Object) 0, (Object) clientDemands.get(demand22));
+        checkDemandExists(demand70, clientDemands.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                (Object) 0, (Object) clientDemands.get(demand70));
     }
 
     @Test
     public void testGetClientDemandsWithUnreadOfferSubMsgs() {
         final Demand demand22 = this.demandService.getById(22L);
+        final Demand demand70 = this.demandService.getById(70L);
         final BusinessUser client = this.generalService.find(BusinessUser.class, 111111112L);
         final Map<Demand, Integer> clientDemandsWithOffer =
                 this.demandService.getClientOfferedDemandsWithUnreadOfferSubMsgs(client);
         Assert.assertEquals("Inacurrate number of demands selected",
-                1, clientDemandsWithOffer.size());
+                2, clientDemandsWithOffer.size());
 
         checkDemandExists(demand22, clientDemandsWithOffer.keySet());
         Assert.assertEquals("Inacurrate number of unread subMessages selected",
                 1, (Object) clientDemandsWithOffer.get(demand22));
+        checkDemandExists(demand70, clientDemandsWithOffer.keySet());
+        Assert.assertEquals("Inacurrate number of unread subMessages selected",
+                1, (Object) clientDemandsWithOffer.get(demand70));
     }
 
     //------------------------------ HELPER METHODS --------------------------------------------------------------------

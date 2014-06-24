@@ -99,7 +99,7 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
                 clients2.get(1).getBusinessUser().getBusinessUserData().getPersonFirstName()));
 
 
-        final Client hovnoClient = clientService.getById(111111114L);
+        final Client hovnoClient = clientService.getById(111111141L);
         Assert.assertTrue("hovna".equals(hovnoClient.getBusinessUser().getBusinessUserData().getTaxId()));
     }
 

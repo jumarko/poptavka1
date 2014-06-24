@@ -105,7 +105,7 @@
     <MESSAGEUSERROLE ID="52" MESSAGE_ID="5" USER_ID="111111113" TYPE="TO"/>
     <MESSAGEUSERROLE ID="54" MESSAGE_ID="7" USER_ID="111111113" TYPE="TO"/>
 
-    !-- Completely different Thread root -->
+    <!-- Completely different Thread root -->
     <MESSAGE ID="100"
              BODY="Ahoj, ahoj, ahoj, dnes, kupit, slivowitz."
              PARENT_ID="[NULL]"

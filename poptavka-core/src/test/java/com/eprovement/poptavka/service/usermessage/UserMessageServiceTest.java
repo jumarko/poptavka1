@@ -6,7 +6,6 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.offer.OfferState;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
@@ -51,6 +50,8 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     private BusinessUser businessUser4;
     private BusinessUser businessUserClient;
     private Demand demand2;
+    private User user5;
+    private BusinessUser businessUser5;
 
 
     @Before
@@ -70,6 +71,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         businessUserClient.setId(111111112L);
         this.demand2 = new Demand();
         demand2.setId(2L);
+        // initialize user5 who has roles Supplier (id=1111111115) and Client(id=1111111115)
+        this.user5 = new User();
+        user5.setId(111111115L);
+        this.businessUser5 = new BusinessUser();
+        businessUser5.setId(111111115L);
     }
 
 
@@ -79,7 +85,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(9, inbox.size());
+        Assert.assertEquals(12, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -87,7 +93,12 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
         checkUserMessageExists(407L, inbox);
-        checkUserMessageExists(503L, inbox);
+        checkUserMessageExists(501L, inbox);
+        checkUserMessageExists(601L, inbox);
+        checkUserMessageExists(702L, inbox);
+        checkUserMessageExists(705L, inbox);
+        checkUserMessageExists(709L, inbox);
+
     }
 
     @Test
@@ -95,7 +106,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(9, inbox.size());
+        Assert.assertEquals(12, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
@@ -103,7 +114,16 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
         checkUserMessageExists(407L, inbox);
-        checkUserMessageExists(503L, inbox);
+        checkUserMessageDoesntExists(500L, inbox);
+        checkUserMessageExists(501L, inbox);
+        checkUserMessageDoesntExists(502L, inbox);
+        checkUserMessageExists(601L, inbox);
+        checkUserMessageDoesntExists(602L, inbox);
+        checkUserMessageDoesntExists(603L, inbox);
+        checkUserMessageDoesntExists(604L, inbox);
+        checkUserMessageExists(702L, inbox);
+        checkUserMessageExists(705L, inbox);
+        checkUserMessageExists(709L, inbox);
     }
 
     @Test
@@ -113,47 +133,138 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> sentItems = this.userMessageService
                 .getSentItems(this.user);
 
-        Assert.assertEquals(4, sentItems.size());
+        Assert.assertEquals(5, sentItems.size());
         checkUserMessageExists(6L, sentItems);
         checkUserMessageExists(304L, sentItems);
         checkUserMessageExists(404L, sentItems);
+        checkUserMessageExists(603L, sentItems);
+        checkUserMessageExists(707L, sentItems);
 
-        // test for businessUser
+        // test for SUPPLIER - BUSINESSS_USER="111111111"
         final List<UserMessage> potentialDemands = this.userMessageService.getPotentialDemands(businessUser);
         Assert.assertEquals(3, potentialDemands.size());
-        checkUserMessageExists(2L, potentialDemands);
-        checkUserMessageExists(202L, potentialDemands);
-        checkUserMessageExists(503L, potentialDemands);
-        checkUserMessageDoesntExists(302L, potentialDemands);
-        checkUserMessageDoesntExists(501L, potentialDemands);
-        checkUserMessageDoesntExists(502L, potentialDemands);
-        checkUserMessageDoesntExists(501L, potentialDemands);
-        checkUserMessageDoesntExists(401L, potentialDemands);
-        checkUserMessageDoesntExists(403L, potentialDemands);
-        checkUserMessageDoesntExists(405L, potentialDemands);
-        checkUserMessageDoesntExists(406L, potentialDemands);
-        checkUserMessageDoesntExists(408L, potentialDemands);
+
+        // check THREADROOT_ID="1" with DEMAND_ID="2"
         checkUserMessageDoesntExists(1L, potentialDemands);
+        checkUserMessageDoesntExists(2L, potentialDemands);
         checkUserMessageDoesntExists(3L, potentialDemands);
         checkUserMessageDoesntExists(4L, potentialDemands);
+        checkUserMessageDoesntExists(5L, potentialDemands);
+        checkUserMessageDoesntExists(6L, potentialDemands);
+        checkUserMessageDoesntExists(7L, potentialDemands);
+        checkUserMessageExists(8L, potentialDemands);
 
-        // test for businessUser2
+        // check THREADROOT_ID="200" with DEMAND_ID="21"
+        checkUserMessageDoesntExists(201L, potentialDemands);
+        checkUserMessageExists(202L, potentialDemands);
+
+        // check THREADROOT_ID="300" with DEMAND_ID="22"
+        checkUserMessageDoesntExists(301L, potentialDemands);
+        checkUserMessageDoesntExists(302L, potentialDemands);
+        checkUserMessageDoesntExists(303L, potentialDemands);
+        checkUserMessageDoesntExists(304L, potentialDemands);
+
+        // check THREADROOT_ID="400" with DEMAND_ID="[NULL]"
+        checkUserMessageDoesntExists(400L, potentialDemands);
+        checkUserMessageDoesntExists(407L, potentialDemands);
+        checkUserMessageDoesntExists(408L, potentialDemands);
+
+        // check THREADROOT_ID="500" with DEMAND_ID="10"
+        checkUserMessageDoesntExists(500L, potentialDemands);
+        checkUserMessageDoesntExists(502L, potentialDemands);
+        checkUserMessageExists(501L, potentialDemands);
+
+        // check THREADROOT_ID="550" with DEMAND_ID="9"
+        checkUserMessageDoesntExists(550L, potentialDemands);
+        checkUserMessageDoesntExists(551L, potentialDemands);
+
+        // check THREADROOT_ID="601" with DEMAND_ID="23"
+        checkUserMessageDoesntExists(601L, potentialDemands);
+        checkUserMessageDoesntExists(602L, potentialDemands);
+        checkUserMessageDoesntExists(603L, potentialDemands);
+        checkUserMessageDoesntExists(604L, potentialDemands);
+
+        // check THREADROOT_ID="701" with DEMAND_ID="70"
+        checkUserMessageDoesntExists(701L, potentialDemands);
+        checkUserMessageDoesntExists(702L, potentialDemands);
+        checkUserMessageDoesntExists(703L, potentialDemands);
+        checkUserMessageDoesntExists(704L, potentialDemands);
+        checkUserMessageDoesntExists(705L, potentialDemands);
+        checkUserMessageDoesntExists(706L, potentialDemands);
+        checkUserMessageDoesntExists(707L, potentialDemands);
+        checkUserMessageDoesntExists(708L, potentialDemands);
+        checkUserMessageDoesntExists(709L, potentialDemands);
+        checkUserMessageDoesntExists(710L, potentialDemands);
+        checkUserMessageDoesntExists(711L, potentialDemands);
+        checkUserMessageDoesntExists(712L, potentialDemands);
+
+
+        // test for SUPPLIER - BUSINESSS_USER="111111114"
         final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser4);
         Assert.assertEquals(2, potentialDemands2.size());
-        checkUserMessageExists(501L, potentialDemands2);
-        checkUserMessageExists(502L, potentialDemands2);
-        checkUserMessageDoesntExists(401L, potentialDemands2);
-        checkUserMessageDoesntExists(403L, potentialDemands2);
-        checkUserMessageDoesntExists(405L, potentialDemands2);
-        checkUserMessageDoesntExists(406L, potentialDemands2);
-        checkUserMessageDoesntExists(408L, potentialDemands2);
-        checkUserMessageDoesntExists(1L, potentialDemands2);
-        checkUserMessageDoesntExists(2L, potentialDemands2);
-        checkUserMessageDoesntExists(3L, potentialDemands2);
-        checkUserMessageDoesntExists(4L, potentialDemands2);
-        checkUserMessageDoesntExists(503L, potentialDemands2);
+
+        // check THREADROOT_ID="1" with DEMAND_ID="2"
+        checkUserMessageDoesntExists(7L, potentialDemands2);
+        checkUserMessageDoesntExists(8L, potentialDemands2);
+
+        // check THREADROOT_ID="200" with DEMAND_ID="21"
+        checkUserMessageDoesntExists(201L, potentialDemands2);
         checkUserMessageDoesntExists(202L, potentialDemands2);
-        checkUserMessageDoesntExists(302L, potentialDemands2);
+
+        // check THREADROOT_ID="300" with DEMAND_ID="22"
+        checkUserMessageDoesntExists(303L, potentialDemands2);
+        checkUserMessageDoesntExists(304L, potentialDemands2);
+
+        // check THREADROOT_ID="400" with DEMAND_ID="[NULL]"
+        checkUserMessageDoesntExists(407L, potentialDemands2);
+        checkUserMessageDoesntExists(408L, potentialDemands2);
+
+        // check THREADROOT_ID="500" with DEMAND_ID="10"
+        checkUserMessageDoesntExists(500L, potentialDemands2);
+        checkUserMessageDoesntExists(501L, potentialDemands2);
+        checkUserMessageExists(502L, potentialDemands2);
+
+        // check THREADROOT_ID="550" with DEMAND_ID="9"
+        checkUserMessageDoesntExists(550L, potentialDemands2);
+        checkUserMessageExists(551L, potentialDemands2);
+
+        // check THREADROOT_ID="601" with DEMAND_ID="23"
+        checkUserMessageDoesntExists(604L, potentialDemands2);
+
+        // check THREADROOT_ID="701" with DEMAND_ID="70"
+        checkUserMessageDoesntExists(701L, potentialDemands2);
+        checkUserMessageDoesntExists(702L, potentialDemands2);
+        checkUserMessageDoesntExists(703L, potentialDemands2);
+        checkUserMessageDoesntExists(704L, potentialDemands2);
+        checkUserMessageDoesntExists(705L, potentialDemands2);
+        checkUserMessageDoesntExists(706L, potentialDemands2);
+        checkUserMessageDoesntExists(707L, potentialDemands2);
+        checkUserMessageDoesntExists(708L, potentialDemands2);
+        checkUserMessageDoesntExists(709L, potentialDemands2);
+        checkUserMessageDoesntExists(710L, potentialDemands2);
+        checkUserMessageDoesntExists(711L, potentialDemands2);
+        checkUserMessageDoesntExists(712L, potentialDemands2);
+
+
+        // test for SUPPLIER - BUSINESSS_USER="1111111115"
+        final List<UserMessage> potentialDemands5 = this.userMessageService.getPotentialDemands(businessUser5);
+        final int potentialDemands5count = this.userMessageService.getPotentialDemandsCount(businessUser5);
+//        Assert.assertEquals(1, potentialDemands5count);
+
+        // check THREADROOT_ID="701" with DEMAND_ID="70"
+        checkUserMessageDoesntExists(701L, potentialDemands5);
+        checkUserMessageDoesntExists(702L, potentialDemands5);
+        checkUserMessageDoesntExists(703L, potentialDemands5);
+        checkUserMessageDoesntExists(704L, potentialDemands5);
+        checkUserMessageDoesntExists(705L, potentialDemands5);
+        checkUserMessageDoesntExists(706L, potentialDemands5);
+        checkUserMessageDoesntExists(707L, potentialDemands5);
+        checkUserMessageDoesntExists(708L, potentialDemands5);
+        checkUserMessageDoesntExists(709L, potentialDemands5);
+        checkUserMessageDoesntExists(710L, potentialDemands5);
+        checkUserMessageDoesntExists(711L, potentialDemands5);
+        // TODO RELEASE: this test should be working but it is not. The 712 UserMessage should be inside of collection
+        checkUserMessageExists(712L, potentialDemands5);
 
     }
 
@@ -183,16 +294,16 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         Assert.assertEquals(3, supplierConversations.size());
         checkUserMessageIdAndCount(8L, 4, supplierConversations);
         checkUserMessageIdAndCount(202L, 1, supplierConversations);
-        checkUserMessageIdAndCount(503L, 1, supplierConversations);
+        checkUserMessageIdAndCount(501L, 1, supplierConversations);
     }
 
     @Test
     public void testGetSupplierConversationsWithOffer() {
-        final OfferState pendingState = generalService.find(OfferState.class, 2L);
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
-                .getSupplierConversationsWithOffer(this.businessUser);
-        Assert.assertEquals(1, supplierConversations.size());
+                   .getSupplierConversationsWithOffer(this.businessUser);
+        Assert.assertEquals(2, supplierConversations.size());
         checkUserMessageIdAndCount(304L, 1, supplierConversations);
+        checkUserMessageIdAndCount(709L, 3, supplierConversations);
     }
 
     @Test
@@ -206,7 +317,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithOfferCount() {
         final int supplierConversationsCount = this.userMessageService
                 .getSupplierConversationsWithOfferCount(this.businessUser);
-        Assert.assertEquals(2, supplierConversationsCount);
+        Assert.assertEquals(3, supplierConversationsCount);
     }
 
     @Test
