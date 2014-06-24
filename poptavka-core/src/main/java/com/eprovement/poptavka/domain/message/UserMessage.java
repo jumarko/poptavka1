@@ -77,21 +77,32 @@ import javax.persistence.NamedQuery;
                         + "where userMessage.user = :user"
                         + " and userMessage.message.sender = :user"),
         @NamedQuery(name = "getPotentialDemands",
-                query = "select userMessage"
-                        + " from UserMessage userMessage "
-                        + "where userMessage.user = :supplier"
-                        + " and userMessage.message.demand is not NULL"
-                        + " and userMessage.message.parent is NULL"
-                        + " and userMessage.message.demand.status"
-                        + " = 'ACTIVE'"),
+                query = "select latestUserMessage\n"
+                        + "from UserMessage as subUserMessage right join\n"
+                        + " subUserMessage.message.threadRoot as rootMessage,"
+                        + "UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.id in ( select MAX(userMessage.id)"
+                        + " from UserMessage as userMessage\n"
+                        + "where userMessage.message.demand is not null"
+                        + " and userMessage.message.demand.client.businessUser != :supplier"
+                        + " and userMessage.user = :supplier\n"
+                        + "group by userMessage.message.threadRoot"
+                        + ")"
+                        + " and latestUserMessage.message.threadRoot = rootMessage"
+                        + " and subUserMessage.user = :supplier"
+                        + " and latestUserMessage.message.offer is null\n"
+                        + "group by latestUserMessage.id"),
         @NamedQuery(name = "getPotentialDemandsCount",
-                query = "select count(*)"
-                        + " from UserMessage userMessage "
-                        + "where userMessage.user = :supplier"
-                        + " and userMessage.message.demand is not NULL"
-                        + " and userMessage.message.parent is NULL"
-                        + " and userMessage.message.demand.status"
-                        + " = 'ACTIVE'"),
+                query = "select count(latestUserMessage.id)\n"
+                        + "from UserMessage as latestUserMessage\n"
+                        + "where latestUserMessage.id in ( select MAX(userMessage.id)"
+                        + " from UserMessage as userMessage\n"
+                        + "where userMessage.message.demand is not null"
+                        + " and userMessage.message.demand.client.businessUser != :supplier"
+                        + " and userMessage.user = :supplier\n"
+                        + "group by userMessage.message.threadRoot"
+                        + ")"
+                        + " and latestUserMessage.message.offer is null\n"),
         @NamedQuery(name = "getSupplierConversationsWithoutOffer",
                 query = "select latestUserMessage, count(subUserMessage.id)\n"
                         + "from UserMessage as subUserMessage right join\n"

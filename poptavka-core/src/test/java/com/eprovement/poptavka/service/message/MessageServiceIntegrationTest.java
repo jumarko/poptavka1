@@ -73,11 +73,14 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        Assert.assertEquals(6, messageThreads.size());
+        Assert.assertEquals(7, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
         checkUserMessageExists(200L, messageThreads);
         checkUserMessageExists(300L, messageThreads);
         checkUserMessageExists(400L, messageThreads);
+        checkUserMessageExists(500L, messageThreads);
+        checkUserMessageExists(601L, messageThreads);
+        checkUserMessageExists(701L, messageThreads);
 
         // one reply to the thread root message
         Assert.assertEquals(1, messageThreads.get(0).getChildren().size());
@@ -93,7 +96,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(13, allUserMessages.size());
+        Assert.assertEquals(17, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
@@ -112,7 +115,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(9, allUserReceivedMessages.size());
+        Assert.assertEquals(12, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);
@@ -120,7 +123,11 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(300L, allUserReceivedMessages);
         checkUserMessageExists(400L, allUserReceivedMessages);
         checkUserMessageExists(402L, allUserReceivedMessages);
-        checkUserMessageExists(501L, allUserReceivedMessages);
+        checkUserMessageExists(500L, allUserReceivedMessages);
+        checkUserMessageExists(601L, allUserReceivedMessages);
+        checkUserMessageExists(701L, allUserReceivedMessages);
+        checkUserMessageExists(704L, allUserReceivedMessages);
+        checkUserMessageExists(702L, allUserReceivedMessages);
     }
 
     @Test
@@ -129,7 +136,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
-        Assert.assertEquals(4, allUserReceivedMessages.size());
+        Assert.assertEquals(5, allUserReceivedMessages.size());
         checkUserMessageExists(3L, allUserReceivedMessages);
         checkUserMessageExists(301L, allUserReceivedMessages);
         checkUserMessageExists(401L, allUserReceivedMessages);
@@ -373,20 +380,20 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         Message message2 = messageService.getThreadRootMessage(demand2);
         Assert.assertNotNull(message2);
         Assert.assertEquals("Expected thread root message for demnand [id=" + demand2.getId() + "]"
-                + message2.getId().longValue(), 502L, message2.getId().longValue());
+                + message2.getId().longValue(), 550L, message2.getId().longValue());
     }
 
     @Test
     public void testGetOffersCountForSupplier() {
-        long supplierId = 1111111111L;
+        long supplierId = 111111112L;
         long count = offerService.getPendingOffersCountForSupplier(supplierId);
         Assert.assertEquals("Expected count of pending offers [count=" + count
-                + "]for supplier was different", 1L, count);
+                + "]for supplier was different", 2L, count);
 
-        long supplierId2 = 1111111114L;
+        long supplierId2 = 111111142L;
         long count2 = offerService.getPendingOffersCountForSupplier(supplierId2);
         Assert.assertEquals("Expected count of pending offers [count=" + count2
-                + "]for supplier was different", 1L, count2);
+                + "]for supplier was different", 2L, count2);
 
         long count3 = offerService.getAcceptedOffersCountForSupplier(supplierId);
         Assert.assertEquals("Expected count of accepted offers [count=" + count3

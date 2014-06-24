@@ -55,7 +55,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 .andExpect(jsonPath("$.collection[14].title").value("Demand 11"))
                 .andExpect(jsonPath("$.links.self").value("/api/demands"))
                 .andExpect(jsonPath("$.paging.offset").value(0))
-                .andExpect(jsonPath("$.paging.count").value(15));
+                .andExpect(jsonPath("$.paging.count").value(16));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
 
                 // demand's client
                 .andExpect(jsonPath("$.client").exists())
-                .andExpect(jsonPath("$.client.id").value(111111113))
+                .andExpect(jsonPath("$.client.id").value(111111131))
                 .andExpect(jsonPath("$.client.email").value("lisohlavka@email.com"))
                 .andExpect(jsonPath("$.client.personFirstName").value("Lisohlávka"))
                 .andExpect(jsonPath("$.client.personLastName").value("Čínska"))
@@ -259,7 +259,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 put("endDate", new DateTime().plusDays(30).toDate());
                 put("categories", newArrayList(DEMAND_CATEGORY));
                 put("localities", newArrayList(DEMAND_LOCALITY));
-                put("client", new ClientDto().setId(111111113L));
+                put("client", new ClientDto().setId(111111131L));
             }
         };
     }
@@ -281,7 +281,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 .andExpect(jsonPath("$.localities[0].id").value(11))
                 .andExpect(jsonPath("$.localities[0].region").value("locality1"))
                 .andExpect(jsonPath("$.localities[0].district").value("locality11"))
-                .andExpect(jsonPath("$.client.id").value(111111113))
+                .andExpect(jsonPath("$.client.id").value(111111131))
                 .andExpect(jsonPath("$.links.self").exists())
                 // createdDate should never be null even if it was not explicitly set when POSTing new demand
                 .andExpect(jsonPath("$.createdDate").exists())

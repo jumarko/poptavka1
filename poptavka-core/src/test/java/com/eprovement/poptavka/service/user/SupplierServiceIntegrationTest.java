@@ -290,7 +290,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                         .withCompanyName(supplierCompanyName)
                         .build());
         assertNotNull(suppliers);
-        Assert.assertEquals(1, suppliers.size());
+        Assert.assertEquals(2, suppliers.size());
 
         final Supplier supplierToModify = suppliers.get(0);
         // remember original certification of supplier
