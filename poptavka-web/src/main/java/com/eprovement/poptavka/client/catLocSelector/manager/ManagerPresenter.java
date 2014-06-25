@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocSuggestionDetail;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -64,9 +63,9 @@ public class ManagerPresenter
 
         void setPresenter(ManagerPresenter p);
 
-        DataGrid<LinkedList<CatLocTreeItem>> getDataGrid();
+        DataGrid<LinkedList<ICatLocDetail>> getDataGrid();
 
-        ListDataProvider<LinkedList<CatLocTreeItem>> getTableDataProvider();
+        ListDataProvider<LinkedList<ICatLocDetail>> getTableDataProvider();
     }
 
     /**************************************************************************/
@@ -189,7 +188,7 @@ public class ManagerPresenter
      * @param result item hierarchy as list
      * @param instanceId instance id
      */
-    public void onResponseHierarchyForManager(LinkedList<CatLocTreeItem> result, int instanceId) {
+    public void onResponseHierarchyForManager(LinkedList<ICatLocDetail> result, int instanceId) {
         if (this.instanceId == instanceId) {
             if (registerRestrition != -1 && view.getTableDataProvider().getList().size() >= registerRestrition) {
                 Window.alert(Storage.MSGS.commonCategorySelectionRestriction());
@@ -218,8 +217,8 @@ public class ManagerPresenter
             } else {
                 selectedCatLocs.clear();
             }
-            for (LinkedList<CatLocTreeItem> tableItem : view.getTableDataProvider().getList()) {
-                selectedCatLocs.add(tableItem.getLast().getCatLoc());
+            for (LinkedList<ICatLocDetail> tableItem : view.getTableDataProvider().getList()) {
+                selectedCatLocs.add(tableItem.getLast());
             }
         }
     }
@@ -263,7 +262,7 @@ public class ManagerPresenter
      * @param idx updating table row index
      * @param catLocHierarchy selected item - catLoc's hierarchy
      */
-    public void tableBrowseHandler(int idx, LinkedList<CatLocTreeItem> catLocHierarchy, int instanceId) {
+    public void tableBrowseHandler(int idx, LinkedList<ICatLocDetail> catLocHierarchy, int instanceId) {
         if (this.instanceId == instanceId) {
             updatingTableItemIdx = idx;
             eventBus.initCatLocSelector(popup.getSelectorPanel(), browserBuilder);
@@ -323,8 +322,8 @@ public class ManagerPresenter
      * @return true if selected, false otherwise
      */
     private boolean isAlreadySelected(ICatLocDetail catLocDetail) {
-        for (LinkedList<CatLocTreeItem> item : view.getTableDataProvider().getList()) {
-            if (item.getLast().getCatLoc().equals(catLocDetail)) {
+        for (LinkedList<ICatLocDetail> item : view.getTableDataProvider().getList()) {
+            if (item.getLast().equals(catLocDetail)) {
                 return true;
             }
         }

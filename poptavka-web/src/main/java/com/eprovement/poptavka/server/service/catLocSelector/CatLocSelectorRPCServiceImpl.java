@@ -20,15 +20,12 @@ import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocSuggestionDetail;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.selectors.SuggestionResponse;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This RPC handles all requests for CatLocSelector module.
@@ -143,14 +140,14 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @return
      */
     @Override
-    public LinkedList<CatLocTreeItem> requestHierarchy(int selectorType, ICatLocDetail detail) throws RPCException {
+    public LinkedList<ICatLocDetail> requestHierarchy(int selectorType, ICatLocDetail detail) throws RPCException {
         switch (selectorType) {
             case CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES:
                 return requestCategoryHierarchy(detail);
             case CatLocSelectorBuilder.SELECTOR_TYPE_LOCALITIES:
                 return requestLocalityHierarchy(detail);
             default:
-                return new LinkedList<CatLocTreeItem>();
+                return new LinkedList<ICatLocDetail>();
         }
     }
 
@@ -220,16 +217,13 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @return category hierarchy as a linked list.
      * @throws RPCException
      */
-    private LinkedList<CatLocTreeItem> requestCategoryHierarchy(ICatLocDetail catDetail) throws RPCException {
+    private LinkedList<ICatLocDetail> requestCategoryHierarchy(ICatLocDetail catDetail) throws RPCException {
         LOGGER.info("Requesting category hierarchy for " + catDetail.toString());
-        final LinkedList<CatLocTreeItem> categoryHierarchy = new LinkedList<CatLocTreeItem>();
+        final LinkedList<ICatLocDetail> categoryHierarchy = new LinkedList<ICatLocDetail>();
 
         Category category = categoryConverter.convertToSource(catDetail);
         while (category != null) {
-            categoryHierarchy.addFirst(
-                new CatLocTreeItem(
-                    categoryConverter.convertToTarget(category),
-                    getCategoryIndex(category)));
+            categoryHierarchy.addFirst(categoryConverter.convertToTarget(category));
             category = category.getParent();
         }
 
@@ -243,17 +237,14 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @return locality hierarchy as a linked list.
      * @throws RPCException
      */
-    private LinkedList<CatLocTreeItem> requestLocalityHierarchy(
+    private LinkedList<ICatLocDetail> requestLocalityHierarchy(
         ICatLocDetail locDetail) throws RPCException {
         LOGGER.info("Requesting locality hierarchy for " + locDetail.toString());
-        final LinkedList<CatLocTreeItem> localityHierarchy = new LinkedList<CatLocTreeItem>();
+        final LinkedList<ICatLocDetail> localityHierarchy = new LinkedList<ICatLocDetail>();
 
         Locality locality = localityConverter.convertToSource(locDetail);
         while (locality != null) {
-            localityHierarchy.addFirst(
-                new CatLocTreeItem(
-                    localityConverter.convertToTarget(locality),
-                    getLocalityIndex(locality)));
+            localityHierarchy.addFirst(localityConverter.convertToTarget(locality));
             locality = locality.getParent();
         }
         //Remove first because COUNTRY is not supported yet.
@@ -301,56 +292,6 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
             }
         }
         return localitySuggestions;
-    }
-
-    /**
-     * Return index of given selected category that refers to a given node's child.
-     * @param node
-     * @param categoryDetail
-     * @return index
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    private int getCategoryIndex(Category category) {
-        //if one of root
-        if (category.getParent() == null) {
-            return categoryService.getRootCategories().indexOf(category);
-        } else {
-            List<Category> children = category.getParent().getChildren();
-            //children.indexOf(category) not working, don't know why
-            for (int i = 0; i < children.size(); i++) {
-                Long o1 = children.get(i).getId();
-                Long o2 = category.getId();
-                if (o1.equals(o2)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Return index of given selected locality that refers to a given node's child.
-     * @param node
-     * @param localityDetail
-     * @return index
-     */
-    @Transactional(propagation = Propagation.REQUIRED)
-    private int getLocalityIndex(Locality locality) {
-        //if one of root
-        if (locality.getParent() == null) {
-            return localityService.getLocalities(LocalityType.COUNTRY).indexOf(locality);
-        } else {
-            List<Locality> children = locality.getParent().getChildren();
-            //children.indexOf(locality) not working, don't know why
-            for (int i = 0; i < children.size(); i++) {
-                Long o1 = children.get(i).getId();
-                Long o2 = locality.getId();
-                if (o1.equals(o2)) {
-                    return i;
-                }
-            }
-        }
-        return -1;
     }
 
     /**

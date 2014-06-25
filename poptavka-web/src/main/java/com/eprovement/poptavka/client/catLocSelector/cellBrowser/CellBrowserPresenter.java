@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManag
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
@@ -35,8 +34,8 @@ import java.util.List;
  */
 @Presenter(view = CellBrowserView.class, multiple = true)
 public class CellBrowserPresenter
-        extends LazyPresenter<CellBrowserPresenter.CellBrowserInterface, CatLocSelectorEventBus>
-        implements PresentersInterface {
+    extends LazyPresenter<CellBrowserPresenter.CellBrowserInterface, CatLocSelectorEventBus>
+    implements PresentersInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -67,7 +66,7 @@ public class CellBrowserPresenter
     /**************************************************************************/
     private int instanceId;
     private int registerRestriction;
-    private LinkedList<CatLocTreeItem> todoOpen;
+    private LinkedList<ICatLocDetail> todoOpen;
     private TreeNode lastOpened;
     private CatLocSelectorBuilder builder;
     /**************************************************************************/
@@ -160,10 +159,10 @@ public class CellBrowserPresenter
      * for better user experience.
      * @param categoryHierarchy category's hierarchy to be opened
      */
-    public void onResponseHierarchyForCellBrowser(LinkedList<CatLocTreeItem> categoryHierarchy, int instanceId) {
+    public void onResponseHierarchyForCellBrowser(LinkedList<ICatLocDetail> categoryHierarchy, int instanceId) {
         if (this.instanceId == instanceId) {
-            view.getCellBrowserSelectionModel().setSelected(categoryHierarchy.getLast().getCatLoc(), true);
-            todoOpen = new LinkedList<CatLocTreeItem>(categoryHierarchy);
+            view.getCellBrowserSelectionModel().setSelected(categoryHierarchy.getLast(), true);
+            todoOpen = new LinkedList<ICatLocDetail>(categoryHierarchy);
         }
     }
 
@@ -196,7 +195,7 @@ public class CellBrowserPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (todoOpen != null && !todoOpen.isEmpty()) {
-                    lastOpened = lastOpened.setChildOpen(todoOpen.removeFirst().getIndex(), true);
+                    lastOpened = lastOpened.setChildOpen(getIndex(todoOpen.removeFirst()), true);
                 }
             }
         };
@@ -270,4 +269,19 @@ public class CellBrowserPresenter
             view.getCellList().removeStyleName("hide");
         }
     }
+
+    /**
+     * Returns index of given item in list related to lastOpened item.
+     * @param item
+     * @return index value
+     */
+    private int getIndex(ICatLocDetail item) {
+        for (int i = 0; i < lastOpened.getChildCount(); i++) {
+            if (((ICatLocDetail) lastOpened.getChildValue(i)).getId() == item.getId()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

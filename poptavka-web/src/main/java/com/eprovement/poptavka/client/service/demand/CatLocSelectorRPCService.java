@@ -1,6 +1,5 @@
 package com.eprovement.poptavka.client.service.demand;
 
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.selectors.SuggestionResponse;
@@ -21,7 +20,7 @@ public interface CatLocSelectorRPCService extends RemoteService {
 
     List<ICatLocDetail> getRootItems(int selectorType) throws RPCException;
 
-    LinkedList<CatLocTreeItem> requestHierarchy(int selectorType, ICatLocDetail detail) throws RPCException;
+    LinkedList<ICatLocDetail> requestHierarchy(int selectorType, ICatLocDetail detail) throws RPCException;
 
     SuggestionResponse<CatLocSuggestionDetail> getSuggestions(
             int requestId, int selectorType, String itemLike, int wordLength) throws RPCException;

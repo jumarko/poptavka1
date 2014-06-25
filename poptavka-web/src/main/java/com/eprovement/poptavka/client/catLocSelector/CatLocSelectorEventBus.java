@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.catLocSelector.manager.ManagerPresenter;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.catLocSelector.treeBrowser.TreeBrowserPresenter;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Event;
@@ -55,7 +54,7 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     void requestHierarchy(int selectorType, ICatLocDetail catLoc, int instanceId);
 
     @Event(handlers = CatLocSelectorInstanceManager.class)
-    void responseHierarchy(LinkedList<CatLocTreeItem> result, int instanceId);
+    void responseHierarchy(LinkedList<ICatLocDetail> result, int instanceId);
 
     /**************************************************************************/
     /* Business events handled by CatLocManagerPresenter                    */
@@ -70,7 +69,7 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     void fillCatLocsFromManager(List<ICatLocDetail> selectedCatLocs, int instanceId);
 
     @Event(handlers = ManagerPresenter.class)
-    void responseHierarchyForManager(LinkedList<CatLocTreeItem> result, int instanceId);
+    void responseHierarchyForManager(LinkedList<ICatLocDetail> result, int instanceId);
 
     @Event(handlers = ManagerPresenter.class)
     void setCatLocs(List<ICatLocDetail> catLocs, int instanceId);
@@ -91,7 +90,7 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     void fillCatLocsFromTreeBrowser(List<ICatLocDetail> selectedCatLocs, int instanceId);
 
     @Event(handlers = TreeBrowserPresenter.class)
-    void responseHierarchyForTreeBrowser(LinkedList<CatLocTreeItem> result, int instanceId);
+    void responseHierarchyForTreeBrowser(LinkedList<ICatLocDetail> result, int instanceId);
 
     /**************************************************************************/
     /* Business events handled by CellBrowserPresenter                        */
@@ -106,5 +105,5 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     void fillCatLocsFromCellBrowser(List<ICatLocDetail> selectedCatLocs, int instanceId);
 
     @Event(handlers = CellBrowserPresenter.class)
-    void responseHierarchyForCellBrowser(LinkedList<CatLocTreeItem> result, int instanceId);
+    void responseHierarchyForCellBrowser(LinkedList<ICatLocDetail> result, int instanceId);
 }
