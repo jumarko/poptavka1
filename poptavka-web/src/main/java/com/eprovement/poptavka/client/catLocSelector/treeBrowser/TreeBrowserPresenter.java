@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorEventBus;
 import com.eprovement.poptavka.client.catLocSelector.CatLocSelectorInstanceManager.PresentersInterface;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
@@ -56,8 +55,8 @@ public class TreeBrowserPresenter
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
-    private LinkedList<CatLocTreeItem> todoOpen;
-    private LinkedList<CatLocTreeItem> openedHierarchy;
+    private LinkedList<ICatLocDetail> todoOpen;
+    private LinkedList<ICatLocDetail> openedHierarchy;
     private TreeNode lastOpened;
     private boolean cancelNextOpenEvent;
     private boolean cancelNextCloseEvent;
@@ -90,9 +89,9 @@ public class TreeBrowserPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (todoOpen != null && !todoOpen.isEmpty()
-                        && !lastOpened.isChildLeaf(todoOpen.getFirst().getIndex())) {
+                        && !lastOpened.isChildLeaf(getIndex(todoOpen.getFirst()))) {
                     cancelNextOpenEvent = true;
-                    lastOpened = lastOpened.setChildOpen(todoOpen.removeFirst().getIndex(), true);
+                    lastOpened = lastOpened.setChildOpen(getIndex(todoOpen.removeFirst()), true);
                 }
             }
         };
@@ -111,14 +110,14 @@ public class TreeBrowserPresenter
                 if (!cancelNextOpenEvent) {
                     //Close previous opened node
                     //Find previous opened node of the same level as the new one
-                    CatLocTreeItem sameLevelOldItem = getSameLevelOldItem(
+                    ICatLocDetail sameLevelOldItem = getSameLevelOldItem(
                             openedHierarchy,
                             ((ICatLocDetail) event.getTarget().getValue()).getLevel());
                     //and close it if needed
                     if (sameLevelOldItem != null) {
-                        manageLastOpenedNode(sameLevelOldItem.getCatLoc().getLevel());
+                        manageLastOpenedNode(sameLevelOldItem.getLevel());
                         cancelNextCloseEvent = true;
-                        lastOpened.setChildOpen(sameLevelOldItem.getIndex(), false);
+                        lastOpened.setChildOpen(getIndex(sameLevelOldItem), false);
                     }
                     //set flags according to new selection
                     manageOpenedHierarchy(
@@ -136,8 +135,8 @@ public class TreeBrowserPresenter
             public void onClose(CloseEvent<TreeNode> event) {
                 if (!cancelNextCloseEvent) {
                     manageOpenedHierarchy(
-                            (ICatLocDetail) event.getTarget().getValue(),
-                            event.getTarget().getIndex());
+                        (ICatLocDetail) event.getTarget().getValue(),
+                        event.getTarget().getIndex());
                     manageLastOpenedNode(((ICatLocDetail) event.getTarget().getValue()).getLevel());
                 }
                 cancelNextCloseEvent = false;
@@ -178,22 +177,22 @@ public class TreeBrowserPresenter
      *
      * @param result nodes hierarchy to restore
      */
-    public void onResponseHierarchyForTreeBrowser(LinkedList<CatLocTreeItem> result, int instanceId) {
+    public void onResponseHierarchyForTreeBrowser(LinkedList<ICatLocDetail> result, int instanceId) {
         if (this.instanceId == instanceId) {
             openedHierarchy = result;
             //nothing opened yet
             if (lastOpened.getValue() != null
-                    && lastOpened.getValue().equals(result.getLast().getCatLoc())) {
+                    && lastOpened.getValue().equals(result.getLast())) {
                 //if lastOpen exuals with selected category, it means that its open
                 //and it shoud be closed
                 lastOpened = lastOpened.getParent();
                 closeAllNodes(lastOpened);
             } else {
                 //if already selected, fire selection event manually
-                if (view.getTreeSelectionModel().isSelected(result.getLast().getCatLoc())) {
+                if (view.getTreeSelectionModel().isSelected(result.getLast())) {
                     SelectionChangeEvent.fire(view.getTreeSelectionModel());
                 } else {
-                    view.getTreeSelectionModel().setSelected(result.getLast().getCatLoc(), true);
+                    view.getTreeSelectionModel().setSelected(result.getLast(), true);
                 }
                 //otherwise open node hierarchy from scrach
                 lastOpened = view.getCellTree().getRootTreeNode();
@@ -256,7 +255,7 @@ public class TreeBrowserPresenter
         this.bindTreeBrowserHanlders();
         lastOpened = view.getCellTree().getRootTreeNode();
         closeAllNodes(lastOpened);
-        openedHierarchy = new LinkedList<CatLocTreeItem>();
+        openedHierarchy = new LinkedList<ICatLocDetail>();
         embedToWidget.setWidget(view.getWidgetView());
     }
 
@@ -271,14 +270,14 @@ public class TreeBrowserPresenter
      */
     private void manageOpenedHierarchy(ICatLocDetail selectedCatLoc, int index) {
         //remove all levels which levels are more or even to selected category
-        Iterator<CatLocTreeItem> iterator = openedHierarchy.iterator();
+        Iterator<ICatLocDetail> iterator = openedHierarchy.iterator();
         while (iterator.hasNext()) {
-            if (iterator.next().getCatLoc().getLevel() >= selectedCatLoc.getLevel()) {
+            if (iterator.next().getLevel() >= selectedCatLoc.getLevel()) {
                 iterator.remove();
             }
         }
         //replace last level index with actual one - selected by user
-        openedHierarchy.add(new CatLocTreeItem(selectedCatLoc, index));
+        openedHierarchy.add(selectedCatLoc);
     }
 
     /**
@@ -305,9 +304,9 @@ public class TreeBrowserPresenter
      * @param level of which item is returned
      * @return item of given level
      */
-    private CatLocTreeItem getSameLevelOldItem(LinkedList<CatLocTreeItem> hierarchy, int level) {
-        for (CatLocTreeItem item : hierarchy) {
-            if (item.getCatLoc().getLevel() == level) {
+    private ICatLocDetail getSameLevelOldItem(LinkedList<ICatLocDetail> hierarchy, int level) {
+        for (ICatLocDetail item : hierarchy) {
+            if (item.getLevel() == level) {
                 return item;
             }
         }
@@ -321,11 +320,11 @@ public class TreeBrowserPresenter
      *
      * @param result
      */
-    private void openNodes(LinkedList<CatLocTreeItem> result) {
+    private void openNodes(LinkedList<ICatLocDetail> result) {
         if (result != null && !result.isEmpty()) {
-            todoOpen = new LinkedList<CatLocTreeItem>(result);
+            todoOpen = new LinkedList<ICatLocDetail>(result);
             cancelNextOpenEvent = true;
-            lastOpened = lastOpened.setChildOpen(todoOpen.removeFirst().getIndex(), true);
+            lastOpened = lastOpened.setChildOpen(getIndex(todoOpen.removeFirst()), true);
         }
     }
 
@@ -339,4 +338,19 @@ public class TreeBrowserPresenter
             node.setChildOpen(i, false);
         }
     }
+
+    /**
+     * Returns index of given item in list related to lastOpened item.
+     * @param item
+     * @return index value
+     */
+    private int getIndex(ICatLocDetail item) {
+        for (int i = 0; i < lastOpened.getChildCount(); i++) {
+            if (((ICatLocDetail) lastOpened.getChildValue(i)).getId() == item.getId()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

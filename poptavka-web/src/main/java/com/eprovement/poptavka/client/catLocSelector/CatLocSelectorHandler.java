@@ -5,7 +5,6 @@ package com.eprovement.poptavka.client.catLocSelector;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -35,9 +34,9 @@ public class CatLocSelectorHandler extends BaseEventHandler<CatLocSelectorEventB
      */
     public void onRequestHierarchy(int selectorType, ICatLocDetail catLoc, final int instanceId) {
         catLocSelectorService.requestHierarchy(selectorType, catLoc,
-                new SecuredAsyncCallback<LinkedList<CatLocTreeItem>>(eventBus) {
+                new SecuredAsyncCallback<LinkedList<ICatLocDetail>>(eventBus) {
                 @Override
-                public void onSuccess(LinkedList<CatLocTreeItem> result) {
+                public void onSuccess(LinkedList<ICatLocDetail> result) {
                     eventBus.responseHierarchy(result, instanceId);
                 }
             });

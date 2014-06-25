@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.catLocSelector;
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.catLocSelector.others.HasCellTreeLoadingHandlers;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -112,7 +111,7 @@ public class CatLocSelectorInstanceManager extends BaseEventHandler<CatLocSelect
      * Only same instance are allowed to response.
      * @param result
      */
-    public void onResponseHierarchy(LinkedList<CatLocTreeItem> result, int instanceId) {
+    public void onResponseHierarchy(LinkedList<ICatLocDetail> result, int instanceId) {
         if (this.instanceIds.containsKey(instanceId)) {
             switch (this.instanceIds.get(instanceId)) {
                 case CatLocSelectorBuilder.WIDGET_TYPE_MANAGER:

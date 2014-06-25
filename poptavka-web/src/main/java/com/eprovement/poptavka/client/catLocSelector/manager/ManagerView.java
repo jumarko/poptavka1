@@ -12,7 +12,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.resources.selectordatagrid.SelectorDataGrid;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocTreeItem;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.github.gwtbootstrap.client.ui.ButtonCell;
 import com.github.gwtbootstrap.client.ui.Heading;
 import com.github.gwtbootstrap.client.ui.TextBox;
@@ -67,10 +67,10 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
     @UiField Heading headerTitle;
     @UiField Label selectItemByLabel, selectedCountLabel;
     @UiField(provided = true)
-    DataGrid<LinkedList<CatLocTreeItem>> dataGrid;
+    DataGrid<LinkedList<ICatLocDetail>> dataGrid;
     /** Class attributes. **/
     TextBox searchTextBoxBase;
-    ListDataProvider<LinkedList<CatLocTreeItem>> dataProvider;
+    ListDataProvider<LinkedList<ICatLocDetail>> dataProvider;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -102,8 +102,8 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
      */
     private void initTable() {
         DataGrid.Resources resource = GWT.create(SelectorDataGrid.class);
-        dataGrid = new DataGrid<LinkedList<CatLocTreeItem>>(10, resource);
-        dataProvider = new ListDataProvider<LinkedList<CatLocTreeItem>>();
+        dataGrid = new DataGrid<LinkedList<ICatLocDetail>>(10, resource);
+        dataProvider = new ListDataProvider<LinkedList<ICatLocDetail>>();
         dataProvider.addDataDisplay(dataGrid);
         initTableColumns();
     }
@@ -115,19 +115,19 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
         //CatLoc hierarchy
         addColumn(new SafeHtmlCell(), "100%", new GetValue<SafeHtml>() {
             @Override
-            public SafeHtml getValue(LinkedList<CatLocTreeItem> hierarchy) {
+            public SafeHtml getValue(LinkedList<ICatLocDetail> hierarchy) {
                 SafeHtmlBuilder str = new SafeHtmlBuilder();
 
                 for (int i = 0; i < hierarchy.size(); i++) {
                     if (i == hierarchy.size() - 1) {
                         str.appendHtmlConstant("<strong>");
-                        str.appendEscaped(hierarchy.get(i).getCatLoc().getName());
+                        str.appendEscaped(hierarchy.get(i).getName());
                         str.appendHtmlConstant("</strong>");
-                        if (!hierarchy.get(i).getCatLoc().isLeaf()) {
+                        if (!hierarchy.get(i).isLeaf()) {
                             str.appendEscaped(" -> ...");
                         }
                     } else {
-                        str.appendEscaped(hierarchy.get(i).getCatLoc().getName());
+                        str.appendEscaped(hierarchy.get(i).getName());
                         str.appendEscaped(" -> ");
                     }
                 }
@@ -140,12 +140,12 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
         //Browse cell
         addColumn(new ButtonCell(), "100px", new GetValue<String>() {
             @Override
-            public String getValue(LinkedList<CatLocTreeItem> contact) {
+            public String getValue(LinkedList<ICatLocDetail> contact) {
                 return "Browse";
             }
-        }, new FieldUpdater<LinkedList<CatLocTreeItem>, String>() {
+        }, new FieldUpdater<LinkedList<ICatLocDetail>, String>() {
             @Override
-            public void update(int index, LinkedList<CatLocTreeItem> object, String value) {
+            public void update(int index, LinkedList<ICatLocDetail> object, String value) {
                 //This is not going throug eventBus, therefore doesn't need to pass instanceId.
                 //But in case of further development this can be forget, therefore pass id anyway.
                 presenter.tableBrowseHandler(dataProvider.getList().indexOf(object),
@@ -157,15 +157,15 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
         SafeHtmlBuilder as = new SafeHtmlBuilder();
         as.appendHtmlConstant(AbstractImagePrototype.create(StyleResource.INSTANCE.images().removeIcon()).getHTML());
         addColumn(new ActionCell(as.toSafeHtml(),
-                new ActionCell.Delegate<LinkedList<CatLocTreeItem>>() {
+                new ActionCell.Delegate<LinkedList<ICatLocDetail>>() {
                     @Override
-                    public void execute(LinkedList<CatLocTreeItem> contact) {
+                    public void execute(LinkedList<ICatLocDetail> contact) {
                         dataProvider.getList().remove(contact);
                         setSelectedCountLabel(dataProvider.getList().size(), presenter.getRegisterRestriction());
                     }
-                }), "75px", new GetValue<LinkedList<CatLocTreeItem>>() {
+                }), "75px", new GetValue<LinkedList<ICatLocDetail>>() {
                     @Override
-                    public LinkedList<CatLocTreeItem> getValue(LinkedList<CatLocTreeItem> detail) {
+                    public LinkedList<ICatLocDetail> getValue(LinkedList<ICatLocDetail> detail) {
                         return detail;
                     }
                 }, null, StyleResource.INSTANCE.common().buttonEmpty());
@@ -173,7 +173,7 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
         //Cost
 //        addColumn(new TextCell(), "100px", new GetValue<String>() {
 //            @Override
-//            public String getValue(LinkedList<CatLocTreeItem> contact) {
+//            public String getValue(LinkedList<ICatLocDetail> contact) {
 //                return "50c";
 //            }
 //        }, null);
@@ -256,7 +256,7 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
      * @return the table (dataGrid)
      */
     @Override
-    public DataGrid<LinkedList<CatLocTreeItem>> getDataGrid() {
+    public DataGrid<LinkedList<ICatLocDetail>> getDataGrid() {
         return dataGrid;
     }
 
@@ -264,7 +264,7 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
      * @return the table data provider
      */
     @Override
-    public ListDataProvider<LinkedList<CatLocTreeItem>> getTableDataProvider() {
+    public ListDataProvider<LinkedList<ICatLocDetail>> getTableDataProvider() {
         return dataProvider;
     }
 
@@ -287,12 +287,12 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
      * @param headerText the header string
      * @param getter the value getter for the cell
      */
-    private <C> Column<LinkedList<CatLocTreeItem>, C> addColumn(Cell<C> cell, String width,
-            final GetValue<C> getter, FieldUpdater<LinkedList<CatLocTreeItem>, C> fieldUpdater, String columnStyle) {
-        Column<LinkedList<CatLocTreeItem>, C> column =
-                new Column<LinkedList<CatLocTreeItem>, C>(cell) {
+    private <C> Column<LinkedList<ICatLocDetail>, C> addColumn(Cell<C> cell, String width,
+            final GetValue<C> getter, FieldUpdater<LinkedList<ICatLocDetail>, C> fieldUpdater, String columnStyle) {
+        Column<LinkedList<ICatLocDetail>, C> column =
+                new Column<LinkedList<ICatLocDetail>, C>(cell) {
                     @Override
-                    public C getValue(LinkedList<CatLocTreeItem> object) {
+                    public C getValue(LinkedList<ICatLocDetail> object) {
                         return getter.getValue(object);
                     }
                 };
@@ -312,6 +312,6 @@ public class ManagerView extends ReverseCompositeView<ManagerPresenter> implemen
      */
     private interface GetValue<C> {
 
-        C getValue(LinkedList<CatLocTreeItem> detail);
+        C getValue(LinkedList<ICatLocDetail> detail);
     }
 }
