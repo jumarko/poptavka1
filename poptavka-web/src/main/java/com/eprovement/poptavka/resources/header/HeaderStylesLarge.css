@@ -361,6 +361,7 @@
     display: block;
     line-height: 28px;
     padding: 0 15px;
+    white-space: nowrap;
 }
 
 .logout-menu-bar td:hover {
