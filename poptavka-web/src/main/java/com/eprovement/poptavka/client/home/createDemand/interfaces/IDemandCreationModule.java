@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.home.createDemand.interfaces;
 
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.github.gwtbootstrap.client.ui.Tooltip;
@@ -65,7 +66,7 @@ public interface IDemandCreationModule {
         void onGoToCreateDemandModule();
     }
 
-    public interface View extends LazyView, IsWidget {
+    public interface View extends LazyView, IsWidget, ProvidesValidate {
 
         void setFirstTabVisibility(boolean visible);
 

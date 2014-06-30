@@ -3,13 +3,14 @@
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -21,20 +22,19 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = ServiceSelectorView.class, multiple = true)
+@Presenter(view = ServiceSelectorView.class)
 public class ServiceSelectorPresenter extends LazyPresenter<
         ServiceSelectorPresenter.SupplierServiceInterface, ServiceSelectorEventBus> {
 
     /**************************************************************************/
     /* View interface                                                         */
     /**************************************************************************/
-    public interface SupplierServiceInterface extends LazyView {
+    public interface SupplierServiceInterface extends LazyView, ProvidesValidate, IsWidget {
 
         void initTableColumns(Column<ServiceDetail, Boolean> radioBtnColumn);
 
         void displayServices(ArrayList<ServiceDetail> services);
 
-        Widget getWidgetView();
     }
 
     /**************************************************************************/
@@ -73,7 +73,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
             default:
                 break;
         }
-        embedToWidget.setWidget(view.getWidgetView());
+        embedToWidget.setWidget(view);
     }
 
     /**************************************************************************/

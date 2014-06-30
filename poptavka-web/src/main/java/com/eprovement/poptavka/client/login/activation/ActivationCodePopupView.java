@@ -59,7 +59,6 @@ public class ActivationCodePopupView extends Modal
         setBackdrop(BackdropType.STATIC);
         setKeyboard(false);
         setDynamicSafe(true);
-        show();
     }
 
     /**************************************************************************/
@@ -140,6 +139,9 @@ public class ActivationCodePopupView extends Modal
         controlGroup.setType(ControlGroupType.INFO);
         status.setType(AlertType.INFO);
         statusLabel.setText("Please insert your activation code");
+        activationCodeBox.setText("");
+        activateButton.setEnabled(true);
+        sendAgainButton.setEnabled(true);
     }
 
     /**

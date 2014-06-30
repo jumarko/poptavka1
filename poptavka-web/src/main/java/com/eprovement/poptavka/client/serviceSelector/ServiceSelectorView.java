@@ -130,7 +130,7 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     */
     @Override
     public void reset() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        dataProvider.getList().clear();
     }
 
     /**************************************************************************/
@@ -143,13 +143,5 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     @Override
     public boolean isValid() {
         return presenter.getSelected() != null;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }

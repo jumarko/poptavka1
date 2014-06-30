@@ -5,7 +5,6 @@ package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.UrgencySelectorView;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 
@@ -25,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Beho, Martin Slavkovsky
  */
 public class FormDemandAdvView extends Composite
-        implements FormDemandAdvPresenter.FormDemandAdvViewInterface, ProvidesValidate {
+        implements FormDemandAdvPresenter.FormDemandAdvViewInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -100,7 +99,8 @@ public class FormDemandAdvView extends Composite
      */
     @Override
     public void reset() {
-        //nothing by default
+        setDemandTypeChoicePanelStyles(false);
+        urgencySelector.reset();
     }
 
     /**************************************************************************/
@@ -133,14 +133,6 @@ public class FormDemandAdvView extends Composite
         demandToUpdate.setDemandType(getDemandType());
         demandToUpdate.setValidTo(urgencySelector.getValidTo());
         return demandToUpdate;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /**************************************************************************/

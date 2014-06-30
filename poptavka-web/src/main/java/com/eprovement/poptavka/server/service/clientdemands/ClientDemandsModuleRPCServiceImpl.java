@@ -153,7 +153,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
      *
      * @param userId id of user represented by client. Note that userId and userId are different If userId represents
      * some different user than client, exception will be thrown
-     * @param filter - define searching criteria if any
+     * @param searchDefinition - define searching criteria if any
      * @return count
      */
     @Override

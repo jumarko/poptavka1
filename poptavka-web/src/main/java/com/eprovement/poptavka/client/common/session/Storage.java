@@ -243,6 +243,8 @@ public final class Storage {
         setBusinessUserDetail(null);
         setAppCalledByURL(null);
         setDemandId(-1L);
+        setClientId(-1L);
+        setSupplierId(-1L);
         setCurrentlyLoadedView(-1);
     }
 

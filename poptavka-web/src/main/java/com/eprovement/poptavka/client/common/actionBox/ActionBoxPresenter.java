@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = ActionBoxView.class, multiple = true)
+@Presenter(view = ActionBoxView.class)
 public class ActionBoxPresenter extends LazyPresenter<ActionBoxPresenter.ActionBoxViewInterface, ActionBoxEventBus> {
 
     /**************************************************************************/

@@ -60,7 +60,7 @@ public interface UserRegistrationEventBus extends EventBusWithLookup,
     /**************************************************************************/
     /* Business events.                                                       */
     /**************************************************************************/
-    @Event(generate = UserRegistrationPresenter.class)
+    @Event(handlers = UserRegistrationPresenter.class)
     void initUserRegistration(SimplePanel holderWidget);
 
     @Event(handlers = UserRegistrationHandler.class)

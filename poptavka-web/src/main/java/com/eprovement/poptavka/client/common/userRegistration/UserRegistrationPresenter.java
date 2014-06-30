@@ -4,15 +4,16 @@
 package com.eprovement.poptavka.client.common.userRegistration;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -22,19 +23,15 @@ import com.mvp4g.client.view.LazyView;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = UserRegistrationView.class, multiple = true)
+@Presenter(view = UserRegistrationView.class)
 public class UserRegistrationPresenter
         extends LazyPresenter<UserRegistrationPresenter.AccountFormInterface, UserRegistrationEventBus> {
 
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
     /**************************************************************************/
-    public interface AccountFormInterface extends LazyView {
+    public interface AccountFormInterface extends LazyView, ProvidesValidate, IsWidget {
         SimplePanel getAddressHolder();
-
-        Widget getWidgetView();
-
-        boolean isValid();
 
         ValidationMonitor getEmailBox();
 
@@ -70,7 +67,8 @@ public class UserRegistrationPresenter
      * @param embedToWidget
      */
     public void onInitUserRegistration(SimplePanel embedToWidget) {
-        embedToWidget.setWidget(view.getWidgetView());
+        view.reset();
+        embedToWidget.setWidget(view);
         eventBus.initAddressSelector(view.getAddressHolder());
     }
 
