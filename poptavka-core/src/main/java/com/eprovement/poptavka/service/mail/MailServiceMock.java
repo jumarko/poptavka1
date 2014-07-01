@@ -42,6 +42,10 @@ public class MailServiceMock implements MailService {
         sentSimpleMailMessages.addAll(asList(message));
     }
 
+    @Override
+    public MimeMessage createMimeMessage() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     public List<MimeMessage> getSentMimeMessages() {
         return unmodifiableList(sentMimeMessages);
