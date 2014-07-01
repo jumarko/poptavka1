@@ -3,7 +3,6 @@ package com.eprovement.poptavka.service.notification;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -22,9 +21,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 
 import java.util.ArrayList;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.mock;
 
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
@@ -46,7 +52,11 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Before
     public void setUp() throws Exception {
-        mailServiceMock = mock(MailService.class);
+        mailServiceMock = mock(MailService.class, Mockito.RETURNS_SMART_NULLS);
+        // mailServiceMock must return empty MimeMessage when createMimeMessage is invoked in our tests
+        Mockito.when(mailServiceMock.createMimeMessage()).thenReturn(
+                new MimeMessage(Session.getInstance(new Properties())));
+
         mailNotificationSender = spy(new MailNotificationSender(mailServiceMock, NOTIFICATION_FROM));
         this.notificationService = new NotificationServiceImpl(registerService, mailNotificationSender);
     }
@@ -104,22 +114,26 @@ public class NotificationServiceIntegrationTest extends DBUnitIntegrationTest {
     }
 
     private void checkNotificationSent(String expectedMessageBody, Message... originalMessages) {
-        final User notifiedUser = generalService.find(User.class, 111111111L);
-        final ArrayList<UserMessage> newUserMessages = new ArrayList<>();
-        for (Message message : originalMessages) {
-            newUserMessages.add(createUserMessage(message, notifiedUser));
-        }
-        notificationService.notifyUserNewMessage(Period.INSTANTLY,
-                newUserMessages.toArray(new UserMessage[newUserMessages.size()]));
+        try {
+            final User notifiedUser = generalService.find(User.class, 111111111L);
+            final ArrayList<UserMessage> newUserMessages = new ArrayList<>();
+            for (Message message : originalMessages) {
+                newUserMessages.add(createUserMessage(message, notifiedUser));
+            }
+            notificationService.notifyUserNewMessage(Period.INSTANTLY,
+                    newUserMessages.toArray(new UserMessage[newUserMessages.size()]));
 
-        final ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailServiceMock).sendAsync(messageCaptor.capture());
-        final SimpleMailMessage message = messageCaptor.getValue();
-        assertNotNull(message);
-        assertThat(message.getFrom(), is(NOTIFICATION_FROM));
-        assertThat(message.getTo()[0], is(notifiedUser.getEmail()));
-        assertThat("Incorrect message subject", message.getSubject(), is("New message"));
-        assertThat("Incorrect message body", message.getText(), is(expectedMessageBody));
+            final ArgumentCaptor<MimeMessage> messageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+            verify(mailServiceMock).sendAsync(messageCaptor.capture());
+            final MimeMessage message = messageCaptor.getValue();
+            assertNotNull(message);
+            assertThat(message.getFrom()[0].toString(), is(NOTIFICATION_FROM));
+            assertThat(message.getAllRecipients()[0].toString(), is(notifiedUser.getEmail()));
+            assertThat("Incorrect message subject", message.getSubject(), is("New message"));
+            // TODO LATER ivlcek - test body content of Mime Message
+        } catch (MessagingException ex) {
+            Logger.getLogger(NotificationServiceIntegrationTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void checkNotificationNotSentForReadMessages(Message... originalMessages) {
