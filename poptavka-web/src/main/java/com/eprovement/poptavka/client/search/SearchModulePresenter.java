@@ -31,7 +31,7 @@ import java.util.ArrayList;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = SearchModuleView.class, multiple = true)
+@Presenter(view = SearchModuleView.class)
 public class SearchModulePresenter
         extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
 
@@ -49,9 +49,6 @@ public class SearchModulePresenter
         Button getSearchBtn();
 
         Button getAdvSearchBtn();
-
-        //GETTERS - widgets & panel
-        Widget getWidgetView();
     }
 
     /**

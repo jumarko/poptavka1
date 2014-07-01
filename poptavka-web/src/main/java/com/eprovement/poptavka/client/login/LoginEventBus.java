@@ -132,7 +132,7 @@ public interface LoginEventBus extends EventBusWithLookup, InfoWidgetsGateway,
     /**************************************************************************/
     /* User Activation                                                        */
     /**************************************************************************/
-    @Event(generate = ActivationCodePopupPresenter.class)
+    @Event(handlers = ActivationCodePopupPresenter.class)
     void initActivationCodePopup(BusinessUserDetail user, int widgetToLoad);
 
     @Event(handlers = ActivationCodePopupHandler.class)

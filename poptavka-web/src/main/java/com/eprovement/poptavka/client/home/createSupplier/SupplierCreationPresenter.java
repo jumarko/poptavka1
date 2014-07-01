@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = SupplierCreationView.class, multiple = true)
+@Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
         extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
         implements ISupplierCreationModule.Presenter {
@@ -226,12 +226,11 @@ public class SupplierCreationPresenter
     @Override
     public void onGoToCreateSupplierModule() {
         view.getMainPanel().selectTab(FIRST_TAB_USER_REGISTRATION);
-        eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
+        if (view.getHolderPanel(FIRST_TAB_USER_REGISTRATION).getWidget() == null) {
+            eventBus.initUserRegistration(view.getHolderPanel(FIRST_TAB_USER_REGISTRATION));
+        }
+        view.reset();
         setHeightRegistration();
-        //remove widgets to force widget to init them again
-        view.getHolderPanel(SECOND_TAB_CATEGORY).setWidget(null);
-        view.getHolderPanel(THIRD_TAB_LOCALITY).setWidget(null);
-        view.getHolderPanel(FOURTH_TAB_SERVICES).setWidget(null);
     }
 
     /**

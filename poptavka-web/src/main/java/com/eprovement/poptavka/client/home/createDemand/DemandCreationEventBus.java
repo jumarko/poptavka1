@@ -64,13 +64,13 @@ public interface DemandCreationEventBus extends EventBusWithLookup, BaseChildEve
     /**************************************************************************/
     /* Business events handled by FormDemandBasicPresenter.                   */
     /**************************************************************************/
-    @Event(generate = FormDemandBasicPresenter.class)
+    @Event(handlers = FormDemandBasicPresenter.class)
     void initDemandBasicForm(SimplePanel holderWidget);
 
     /**************************************************************************/
     /* Business events handled by FormDemandAdvPresenter.                     */
     /**************************************************************************/
-    @Event(generate = FormDemandAdvPresenter.class)
+    @Event(handlers = FormDemandAdvPresenter.class)
     void initDemandAdvForm(SimplePanel holderWidget);
 
     /**************************************************************************/

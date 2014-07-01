@@ -30,7 +30,7 @@ import java.util.Date;
  * Activation code popup presenter.
  * @author Martin Slavkovsky
  */
-@Presenter(view = ActivationCodePopupView.class, multiple = true)
+@Presenter(view = ActivationCodePopupView.class)
 public class ActivationCodePopupPresenter
     extends LazyPresenter<ActivationCodePopupPresenter.ActivationCodePopupInterface, LoginEventBus> {
 
@@ -133,7 +133,9 @@ public class ActivationCodePopupPresenter
         this.user = user;
         this.widgetToLoad = widgetToLoad;
         eventBus.checkActivationEmail(user);
+        view.reset();
         view.getStatusLabel().setText(MSGS.activationCodeSent() + " " + user.getEmail());
+        view.getWidgetView().show();
     }
 
     /**************************************************************************/

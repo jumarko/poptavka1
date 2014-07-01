@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  *
  * @author Martin Slavkovsky
  */
-@Presenter(view = DemandCreationView.class, multiple = true)
+@Presenter(view = DemandCreationView.class)
 public class DemandCreationPresenter
     extends LazyPresenter<IDemandCreationModule.View, DemandCreationEventBus>
     implements IDemandCreationModule.Presenter {
@@ -308,16 +308,15 @@ public class DemandCreationPresenter
     public void onGoToCreateDemandModule() {
         //must be set to null to force beforeSelectionHandler to handle selection
         //and create new instance of widgets
-        view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).setWidget(null);
-        view.getHolderPanel(THIRD_TAB_CATEGORY).setWidget(null);
-        view.getHolderPanel(FOURTH_TAB_LOCALITY).setWidget(null);
-        view.getHolderPanel(FIFTH_TAB_DEMAND_ADVANCE_FORM).setWidget(null);
+        view.reset();
         setHeightBasic();
         if (Storage.getUser() != null) {
             view.setFirstTabVisibility(false);
             view.getMainPanel().selectTab(SECONT_TAB_DEMAND_BASIC_FORM, false);
             view.getMainPanel().addStyleName(Storage.RSCS.createTabPanel().fourStepTabPanel());
-            eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
+            if (view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget() == null) {
+                eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
+            }
         } else {
             view.getMainPanel().removeStyleName(Storage.RSCS.createTabPanel().fourStepTabPanel());
             view.setFirstTabVisibility(true);

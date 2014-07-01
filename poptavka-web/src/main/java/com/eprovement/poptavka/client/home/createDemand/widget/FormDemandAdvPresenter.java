@@ -3,13 +3,14 @@
  */
 package com.eprovement.poptavka.client.home.createDemand.widget;
 
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
 import com.eprovement.poptavka.client.home.createDemand.DemandCreationEventBus;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.google.gwt.user.client.ui.IsWidget;
 
 
 /**
@@ -17,18 +18,14 @@ import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
  *
  * @author Beho, Martin Slavkovsky
  */
-@Presenter(view = FormDemandAdvView.class, multiple = true)
+@Presenter(view = FormDemandAdvView.class)
 public class FormDemandAdvPresenter extends
     LazyPresenter<FormDemandAdvPresenter.FormDemandAdvViewInterface, DemandCreationEventBus> {
 
     /**************************************************************************/
     /* View interface                                                         */
     /**************************************************************************/
-    public interface FormDemandAdvViewInterface extends LazyView {
-
-        Widget getWidgetView();
-
-        boolean isValid();
+    public interface FormDemandAdvViewInterface extends LazyView, ProvidesValidate, IsWidget {
 
         FullDemandDetail updateAdvDemandInfo(FullDemandDetail demandToUpdate);
     }
@@ -37,7 +34,7 @@ public class FormDemandAdvPresenter extends
     /* Business events                                                        */
     /**************************************************************************/
     public void onInitDemandAdvForm(SimplePanel embedToWidget) {
-        embedToWidget.setWidget(view.getWidgetView());
+        embedToWidget.setWidget(view);
     }
 
 }

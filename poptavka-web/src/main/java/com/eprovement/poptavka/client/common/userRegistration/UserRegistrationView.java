@@ -31,7 +31,7 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 public class UserRegistrationView extends Composite
-        implements UserRegistrationPresenter.AccountFormInterface, ProvidesValidate {
+        implements UserRegistrationPresenter.AccountFormInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -156,11 +156,21 @@ public class UserRegistrationView extends Composite
      */
     @Override
     public void reset() {
-        accountInfoForm.reset();
-        contactInfoForm.reset();
-        companyInfoForm.reset();
-        additionalInfoForm.reset();
-        ((ProvidesValidate) addressHolder.getWidget()).reset();
+        if (accountInfoForm != null) {
+            accountInfoForm.reset();
+        }
+        if (companyInfoForm != null) {
+            contactInfoForm.reset();
+        }
+        if (companyInfoForm != null) {
+            companyInfoForm.reset();
+        }
+        if (additionalInfoForm != null) {
+            additionalInfoForm.reset();
+        }
+        if (addressHolder.getWidget() != null) {
+            ((ProvidesValidate) addressHolder.getWidget()).reset();
+        }
     }
 
     /**************************************************************************/
@@ -189,14 +199,6 @@ public class UserRegistrationView extends Composite
     @Override
     public SimplePanel getAddressHolder() {
         return addressHolder;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /**

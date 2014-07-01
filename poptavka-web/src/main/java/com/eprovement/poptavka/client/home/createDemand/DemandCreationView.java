@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.home.createDemand;
 import com.eprovement.poptavka.client.common.OverflowComposite;
 import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 import com.eprovement.poptavka.client.home.createDemand.widget.ButtonsPanel;
 import com.github.gwtbootstrap.client.ui.Tooltip;
@@ -125,6 +126,26 @@ public class DemandCreationView extends OverflowComposite implements IDemandCrea
     public void setRegisterLayout() {
         panel1.setVisible(false);
         panel2.setVisible(true);
+    }
+
+    @Override
+    public boolean isValid() {
+        boolean valid = true;
+        for (SimplePanel holder : holderPanels) {
+            if (holder.getWidget() != null) {
+                valid = ((ProvidesValidate) contentHolder1.getWidget()).isValid() && valid;
+            }
+        }
+        return valid;
+    }
+
+    @Override
+    public void reset() {
+        for (SimplePanel holder : holderPanels) {
+            if (holder.getWidget() != null) {
+                ((ProvidesValidate) holder.getWidget()).reset();
+            }
+        }
     }
 
     /**************************************************************************/

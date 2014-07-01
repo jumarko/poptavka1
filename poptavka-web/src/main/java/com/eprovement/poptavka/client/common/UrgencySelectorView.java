@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.common;
 
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.github.gwtbootstrap.client.ui.Column;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,7 +22,7 @@ import java.util.Date;
  *
  * @author Martin Slavkovsky
  */
-public class UrgencySelectorView extends Composite {
+public class UrgencySelectorView extends Composite implements ProvidesValidate {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -101,6 +102,16 @@ public class UrgencySelectorView extends Composite {
             CalendarUtil.addDaysToDate(validTo, -1);
         }
         return validTo;
+    }
+
+    @Override
+    public boolean isValid() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void reset() {
+        urgency1.setValue(true);
     }
 
     /** CheckBoxes. **/

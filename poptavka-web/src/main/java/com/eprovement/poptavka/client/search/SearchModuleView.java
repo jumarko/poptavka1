@@ -68,12 +68,4 @@ public class SearchModuleView extends Composite implements SearchModulePresenter
     public Button getAdvSearchBtn() {
         return advSearchBtn;
     }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
 }

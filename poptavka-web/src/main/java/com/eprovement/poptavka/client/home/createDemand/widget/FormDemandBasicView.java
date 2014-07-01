@@ -5,7 +5,6 @@ package com.eprovement.poptavka.client.home.createDemand.widget;
 
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
 import com.google.gwt.core.client.GWT;
@@ -27,7 +26,7 @@ import java.util.Date;
  * @author Beho, Martin Slavkovsky
  */
 public class FormDemandBasicView extends Composite
-        implements FormDemandBasicPresenter.FormDemandBasicInterface, ProvidesValidate {
+        implements FormDemandBasicPresenter.FormDemandBasicInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -91,11 +90,6 @@ public class FormDemandBasicView extends Composite
             valid = monitor.isValid() && valid;
         }
         return valid;
-    }
-
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 
     /**************************************************************************/
