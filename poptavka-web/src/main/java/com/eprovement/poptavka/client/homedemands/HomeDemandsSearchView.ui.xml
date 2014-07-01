@@ -33,12 +33,12 @@
                     </b:Column>
                     <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="priceMonitorFrom">
-                            <cmn:WSBigDecimalBox placeholder="Price from" styleName="append-dollar" />
+                            <cmn:WSPriceBox placeholder="Price from" styleName="append-dollar" />
                         </cm:ValidationMonitor>
                     </b:Column>
                     <b:Column size="5" addStyleNames='{res.initial.expandHalfOnSmall}'>
                         <cm:ValidationMonitor ui:field="priceMonitorTo">
-                            <cmn:WSBigDecimalBox placeholder="Price to" styleName="append-dollar" />
+                            <cmn:WSPriceBox placeholder="Price to" styleName="append-dollar" />
                         </cm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>

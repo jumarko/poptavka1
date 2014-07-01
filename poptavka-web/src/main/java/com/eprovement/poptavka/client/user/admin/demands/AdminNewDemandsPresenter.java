@@ -143,6 +143,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
      * @param chatMessages
      */
     public void onResponseConversation(List<MessageDetail> chatMessages) {
+        view.getToolbar().getCreateConversationBtn().setVisible(chatMessages.isEmpty());
         if (chatMessages.isEmpty()) {
             initDetailSectionDemand(selectedObject);
         } else {

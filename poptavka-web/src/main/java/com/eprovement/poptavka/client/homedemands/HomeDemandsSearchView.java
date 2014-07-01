@@ -3,13 +3,13 @@
  */
 package com.eprovement.poptavka.client.homedemands;
 
-import com.eprovement.poptavka.client.common.ui.WSBigDecimalBox;
 import com.eprovement.poptavka.client.common.ui.WSDateBox;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.ui.WSListBox;
 import com.eprovement.poptavka.client.common.ui.WSListBoxData;
 import com.eprovement.poptavka.client.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.ui.WSPriceBox;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView.SearchModulViewUiBinder;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
@@ -69,9 +69,9 @@ public class HomeDemandsSearchView extends Composite implements
     @Override
     public void reset() {
         titleMonitor.setValue("");
-        ((WSBigDecimalBox) priceMonitorFrom.getWidget()).setText("");
+        ((WSPriceBox) priceMonitorFrom.getWidget()).setText("");
         priceMonitorFrom.reset();
-        ((WSBigDecimalBox) priceMonitorTo.getWidget()).setText("");
+        ((WSPriceBox) priceMonitorTo.getWidget()).setText("");
         priceMonitorTo.reset();
         demandTypes.setSelected(Storage.MSGS.columnType());
         creationDate.setSelected(Storage.MSGS.creationDateNoLimits());

@@ -44,7 +44,7 @@
                         </b:Column>
                         <b:Column size="8">
                             <vm:ValidationMonitor ui:field="priceMonitor">
-                                <cmn:WSBigDecimalBox debugId="priceBox" addStyleNames='append-dollar'/>
+                                <cmn:WSPriceBox debugId="priceBox" addStyleNames='append-dollar'/>
                             </vm:ValidationMonitor>
                         </b:Column>
                     </b:FluidRow>
