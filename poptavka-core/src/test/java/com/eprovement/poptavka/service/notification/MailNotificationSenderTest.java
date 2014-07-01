@@ -11,9 +11,16 @@ import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.mail.MailService;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.springframework.mail.SimpleMailMessage;
 
 import java.util.Collections;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+
+import org.mockito.Mockito;
 
 public class MailNotificationSenderTest extends NotificationSenderTest {
 
@@ -45,19 +52,27 @@ public class MailNotificationSenderTest extends NotificationSenderTest {
     @Override
     protected void verifyNotificationSent(User notifiedUser, String expectedMessageSubject,
                                           String expectedMessageBody) {
-        final ArgumentCaptor<SimpleMailMessage> messageCaptor = ArgumentCaptor.forClass(SimpleMailMessage.class);
-        verify(mailServiceMock).sendAsync(messageCaptor.capture());
-        final SimpleMailMessage message = messageCaptor.getValue();
-        assertNotNull(message);
-        assertThat(message.getFrom(), is(NOTIFICATION_FROM));
-        assertThat(message.getTo()[0], is(notifiedUser.getEmail()));
-        assertThat("Incorrect message subject", message.getSubject(), is(expectedMessageSubject));
-        assertThat("Incorrect message body", message.getText(), is(expectedMessageBody));
+        try {
+            final ArgumentCaptor<MimeMessage> messageCaptor = ArgumentCaptor.forClass(MimeMessage.class);
+            verify(mailServiceMock).sendAsync(messageCaptor.capture());
+            final MimeMessage message = messageCaptor.getValue();
+            assertNotNull(message);
+            assertThat(message.getFrom()[0].toString(), is(NOTIFICATION_FROM));
+            assertThat(message.getAllRecipients()[0].toString(), is(notifiedUser.getEmail()));
+            assertThat("Incorrect message subject", message.getSubject(), is("New message"));
+            // TODO LATER ivlcek - check the body content of MimeMessage
+            // assertThat("Incorrect message body", message.getText(), is(expectedMessageBody));
+        } catch (MessagingException ex) {
+            Logger.getLogger(MailNotificationSenderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     protected NotificationSender getNotificationSender() {
-        mailServiceMock = mock(MailService.class);
+        mailServiceMock = mock(MailService.class, Mockito.RETURNS_SMART_NULLS);
+        Mockito.when(mailServiceMock.createMimeMessage()).thenReturn(
+                new MimeMessage(Session.getInstance(new Properties())));
+
         return new MailNotificationSender(mailServiceMock, NOTIFICATION_FROM);
     }
 }

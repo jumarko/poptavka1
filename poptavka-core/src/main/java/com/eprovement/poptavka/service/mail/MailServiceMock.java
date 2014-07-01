@@ -11,6 +11,8 @@ import org.springframework.mail.SimpleMailMessage;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import javax.mail.Session;
 
 /**
  * Dummy implementation of {@link com.eprovement.poptavka.service.mail.MailService} that doesn't really send messages
@@ -44,7 +46,7 @@ public class MailServiceMock implements MailService {
 
     @Override
     public MimeMessage createMimeMessage() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new MimeMessage(Session.getInstance(new Properties()));
     }
 
     public List<MimeMessage> getSentMimeMessages() {

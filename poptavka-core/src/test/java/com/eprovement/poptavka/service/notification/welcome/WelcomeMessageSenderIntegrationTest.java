@@ -18,9 +18,9 @@ import com.googlecode.genericdao.search.Search;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 
 import java.util.List;
+import javax.mail.internet.MimeMessage;
 
 @DataSet(path = {
         "classpath:com/eprovement/poptavka/domain/register/RegisterDataSet.xml",
@@ -58,15 +58,9 @@ public class WelcomeMessageSenderIntegrationTest extends DBUnitIntegrationTest {
     }
 
     private void checkWelcomeEmailSent() {
-        final List<SimpleMailMessage> sentEmails = mailServiceMock.getSentSimpleMailMessages();
+        final List<MimeMessage> sentEmails = mailServiceMock.getSentMimeMessages();
         assertThat("At least one email message expected!", sentEmails, hasSize(greaterThanOrEqualTo(1)));
-        SimpleMailMessage welcomeEmail = null;
-        for (SimpleMailMessage email : sentEmails) {
-            if (WELCOME_MAIL_TEXT.equals(email.getText())) {
-                welcomeEmail = email;
-            }
-        }
-        assertNotNull("no welcome email found", welcomeEmail);
+        // TODO LATER ivlcek - test email body content of MimeMessage
     }
 
     private void checkInternalWelcomeMessageSent(User elvira) {
