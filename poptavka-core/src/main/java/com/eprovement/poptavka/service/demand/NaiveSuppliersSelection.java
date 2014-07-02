@@ -222,7 +222,6 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
      */
     private void removeSupplierHimself(Demand demand, Set<Supplier> suppliers) {
         LOGGER.debug("action=remove_admin_suppliers status=start demandId=" + demand.getId());
-        System.err.println("prasiatko demandId=" + demand.getId());
         User user = (User) demand.getClient().getBusinessUser();
         final List<Supplier> foundSuppliers = this.supplierService.searchByCriteria(
                 UserSearchCriteria.Builder.userSearchCriteria().withEmail(user.getEmail()).build());
