@@ -29,6 +29,7 @@ public interface LocalizableMessages extends Messages {
     String formatDateLong();
     String formatCurrency();
     String formatCurrencySign();
+    String formatNumber();
 
     /** Common button names. **/
     String commonBtnAdd();

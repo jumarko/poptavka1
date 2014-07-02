@@ -3,10 +3,10 @@
  */
 package com.eprovement.poptavka.client.detail.views;
 
-import com.eprovement.poptavka.client.common.ui.WSBigDecimalBox;
 import com.eprovement.poptavka.client.common.ui.WSDateBox;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.ui.WSPriceBox;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.OfferMessageDetail;
@@ -157,7 +157,7 @@ public class OfferQuestionWindow extends Composite implements ProvidesValidate {
         messageBody.setVisible(false);
         priceRow.setVisible(false);
         finishDateRow.setVisible(false);
-        ((WSBigDecimalBox) priceMonitor.getWidget()).setText(EMPTY);
+        ((WSPriceBox) priceMonitor.getWidget()).setText(EMPTY);
         ((WSDateBox) finishDateMonitor.getWidget()).getTextBox().setText(EMPTY);
         bodyMonitor.setValue(EMPTY);
     }

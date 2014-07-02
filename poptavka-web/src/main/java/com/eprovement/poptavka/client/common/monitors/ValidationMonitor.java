@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.common.monitors;
 
 import com.eprovement.poptavka.client.common.ui.WSBigDecimalBox;
 import com.eprovement.poptavka.client.common.ui.WSIntegerBox;
+import com.eprovement.poptavka.client.common.ui.WSPriceBox;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -134,6 +135,8 @@ public class ValidationMonitor<T> extends AbstractValidationMonitor<T> {
                 ((WSBigDecimalBox) holder.getWidget()).getValueOrThrow();
             } else if (holder.getWidget() instanceof WSIntegerBox) {
                 ((WSIntegerBox) holder.getWidget()).getValueOrThrow();
+            } else if (holder.getWidget() instanceof WSPriceBox) {
+                ((WSPriceBox) holder.getWidget()).formatAndValidate();
             }
         } catch (ParseException ex) {
             return validateNumberException();

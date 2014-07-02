@@ -40,7 +40,7 @@
                             <b:Column size="9">
                                 <g:HTMLPanel styleName="input-append">
                                     <cm:ValidationMonitor ui:field="priceMonitor">
-                                        <cmn:WSBigDecimalBox placeholder="{msgs.placeholderOfferPrice}" styleName="append-dollar" />
+                                        <cmn:WSPriceBox placeholder="{msgs.placeholderOfferPrice}" styleName="append-dollar" />
                                     </cm:ValidationMonitor>
                                 </g:HTMLPanel>
                             </b:Column>
