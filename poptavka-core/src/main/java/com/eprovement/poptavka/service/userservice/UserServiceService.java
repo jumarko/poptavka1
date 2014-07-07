@@ -23,4 +23,12 @@ public interface UserServiceService extends GenericService<UserService, UserServ
      * @see UserService
      */
     List<UserService> getUsersServices(BusinessUser businessUser);
+
+    /**
+     * Adds credits to user's service.
+     *
+     * @param userServiceId the user's service ID
+     * @param newCredits credits to be added
+     */
+    void addCredits(long userServiceId, int newCredits);
 }

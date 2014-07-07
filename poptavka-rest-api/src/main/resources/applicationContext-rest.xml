@@ -113,5 +113,24 @@
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".html" />
 	</bean>
+	
+    <!--Payment-->
+    <bean class="com.eprovement.poptavka.rest.payment.PaypalIPN"/>
+    <bean name="paymentService" class="com.eprovement.poptavka.rest.payment.PaymentService"/>
+
+    <bean name="systemUtil" class="com.eprovement.poptavka.rest.payment.SimpleSystemUtil">
+		<property name="production">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean name="paymentSetting" class="com.eprovement.poptavka.rest.payment.PaymentSetting">
+		<property name="businessEmail">
+			<value>boss@eprovement.com</value>
+		</property>
+	</bean>
+	
+    <bean name="paymentValidator" class="com.eprovement.poptavka.rest.payment.PaymentValidator"/>
+	
 </beans>
 

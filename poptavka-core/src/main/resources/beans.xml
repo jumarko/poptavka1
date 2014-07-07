@@ -37,6 +37,8 @@
 
     <bean id="offerDao" class="com.eprovement.poptavka.dao.offer.OfferDaoImpl" />
 
+    <bean id="userServiceDao" class="com.eprovement.poptavka.dao.userservice.UserServiceDaoImpl" />
+
 
     <!-- Service -->
     <bean id="generalService" class="com.eprovement.poptavka.service.GeneralServiceImpl">
@@ -167,6 +169,10 @@
         <constructor-arg ref="userVerificationService"/>
         <constructor-arg ref="mailNotificationSender"/>
         <constructor-arg value="${deployment.url}"/>
+    </bean>
+
+    <bean id="userServiceService" class="com.eprovement.poptavka.service.userservice.UserServiceServiceImpl">
+        <constructor-arg ref="userServiceDao"/>
     </bean>
 
     <!-- Jobs -->

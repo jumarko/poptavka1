@@ -1,9 +1,11 @@
 package com.eprovement.poptavka.domain.product;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
 import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.util.orm.OrmConstants;
+import java.util.Date;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -11,7 +13,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Represents the binding between {@link com.eprovement.poptavka.domain.user.BusinessUser} and {@link Service}.
@@ -23,6 +29,9 @@ import javax.persistence.ManyToOne;
 @Audited
 public class UserService extends DomainObject {
 
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
     @ManyToOne
     @NotAudited
     private Service service;
@@ -34,7 +43,26 @@ public class UserService extends DomainObject {
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private Status status;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long orderNumber;
 
+    private String transactionNumber;
+
+    @Enumerated(EnumType.STRING)
+    private PaypalTransactionStatus transactionStatus;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date request;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date response;
+
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
+    /**
+     * @return Appropriate service
+     */
     public Service getService() {
         return service;
     }
@@ -43,6 +71,9 @@ public class UserService extends DomainObject {
         this.service = service;
     }
 
+    /**
+     * @return Appropriate user
+     */
     public BusinessUser getBusinessUser() {
         return businessUser;
     }
@@ -51,6 +82,9 @@ public class UserService extends DomainObject {
         this.businessUser = businessUser;
     }
 
+    /**
+     * @return User Service status
+     */
     public Status getStatus() {
         return status;
     }
@@ -59,14 +93,75 @@ public class UserService extends DomainObject {
         this.status = status;
     }
 
+    /**
+     * @return Unique value for payment.
+     */
+    public Long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Long orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    /**
+     * @return Transaction number sent from paypal.
+     */
+    public String getTransactionNumber() {
+        return transactionNumber;
+    }
+
+    public void setTransactionNumber(String transactionNumber) {
+        this.transactionNumber = transactionNumber;
+    }
+
+    /**
+     * @return Transaction status sent by paypal after finnished transaction.
+     */
+    public PaypalTransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setTransactionStatus(PaypalTransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
+    /**
+     * @return Date when was UserService created and a request has been sent to PayPal.
+     */
+    public Date getRequest() {
+        return request;
+    }
+
+    public void setRequest(Date request) {
+        this.request = request;
+    }
+
+    /**
+     * @return Date when response came from PayPal.
+     */
+    public Date getResponse() {
+        return response;
+    }
+
+    public void setResponse(Date response) {
+        this.response = response;
+    }
+
+    /**************************************************************************/
+    /*  Override methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("UserService");
-        sb.append("{service=").append(service);
-        sb.append(", businessUser=").append(businessUser);
-        sb.append(", status=").append(status);
-        sb.append('}');
-        return sb.toString();
+        return new StringBuilder().append("UserService")
+            .append("{service=").append(service)
+            .append(", businessUser=").append(businessUser)
+            .append(", status=").append(status)
+            .append(", orderNumber=").append(orderNumber)
+            .append(", transactionNumber=").append(transactionNumber)
+            .append(", transactionStatus=").append(transactionStatus)
+            .append(", request=").append(request)
+            .append(", response=").append(response).append('}')
+            .toString();
     }
 }
