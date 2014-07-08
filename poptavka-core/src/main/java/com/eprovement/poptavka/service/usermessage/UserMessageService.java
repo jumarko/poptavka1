@@ -232,18 +232,18 @@ public interface UserMessageService extends GenericService<UserMessage, UserMess
             Search search);
 
     /** Retrieves the count of supplier's conversations where an offer has been
-     * made
-     *
-     * @param user the supplier whose conversations to get
-     * @return number of supplier conversations where an offer has been made
-     */
-    int getSupplierConversationsWithoutOfferCount(BusinessUser user);
-
-    /** Retrieves the count of supplier's conversations where an offer has not
-     * been made
+     * made. The actual type of offer state <code>OfferStateType</code> is not considered.
      *
      * @param user the supplier whose conversations to get
      * @return number of supplier conversations where an offer has not been made
+     */
+    int getSupplierConversationsWithoutOfferCount(BusinessUser user);
+
+    /** Retrieves the count of supplier's conversations where an offer has
+     * been made. The actual type of offer state <code>OfferStateType</code> is not considered.
+     *
+     * @param user the supplier whose conversations to get
+     * @return number of supplier conversations where an offer has been made
      */
     int getSupplierConversationsWithOfferCount(BusinessUser user);
 
