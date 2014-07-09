@@ -15,7 +15,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -145,15 +144,6 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
                     eventBus.responseConversation(result);
                 }
             });
-    }
-
-    public void onUpdateUnreadMessagesCount() {
-        adminService.updateUnreadMessagesCount(new SecuredAsyncCallback<UnreadMessagesDetail>(eventBus) {
-            @Override
-            public void onSuccess(UnreadMessagesDetail result) {
-                eventBus.setUpdatedUnreadMessagesCount(result);
-            }
-        });
     }
 
     /**

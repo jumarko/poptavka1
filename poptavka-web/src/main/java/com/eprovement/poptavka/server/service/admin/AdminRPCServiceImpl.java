@@ -16,7 +16,6 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.converter.SearchConverter;
-import com.eprovement.poptavka.server.security.PoptavkaUserAuthentication;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.demand.DemandService;
@@ -29,11 +28,9 @@ import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
-import com.googlecode.genericdao.search.Field;
 import com.googlecode.genericdao.search.Search;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,7 +44,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * This RPC handles all requests for Admin module.
@@ -210,39 +206,6 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
 
         }
         LOGGER.info("action=approve_demands status=start");
-    }
-
-    /**
-     * This method will update number of unread messages of logged user.
-     * Since this RPC class requires access of authenticated user (see security-web.xml) this method will be called
-     * only when PoptavkaUserAuthentication object exist in SecurityContextHolder and we can retrieve userId.
-     *
-     * @return UnreadMessagesDetail with number of unread messages and other info to be displayed after users logs in
-     * @throws RPCException
-     * @throws ApplicationSecurityException
-     */
-    @Override
-    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
-    public UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException {
-        Long userId = ((PoptavkaUserAuthentication) SecurityContextHolder.getContext().getAuthentication()).getUserId();
-        Search unreadMessagesSearch = new Search(UserMessage.class);
-        unreadMessagesSearch.addFilterNotNull("message.demand");
-        unreadMessagesSearch.addFilterEqual("isRead", false);
-        unreadMessagesSearch.addFilterEqual("user.id", userId.longValue());
-        unreadMessagesSearch.addField("id", Field.OP_COUNT);
-        unreadMessagesSearch.setResultMode(Search.RESULT_SINGLE);
-        UnreadMessagesDetail unreadMessagesDetail = new UnreadMessagesDetail();
-        unreadMessagesDetail.setUnreadMessagesCount(
-            ((Long) generalService.searchUnique(unreadMessagesSearch)).intValue());
-        Search unreadSystemMessagesSearch = new Search(UserMessage.class);
-        unreadSystemMessagesSearch.addFilterNull("message.demand");
-        unreadSystemMessagesSearch.addFilterEqual("isRead", false);
-        unreadSystemMessagesSearch.addFilterEqual("user.id", userId.longValue());
-        unreadSystemMessagesSearch.addField("id", Field.OP_COUNT);
-        unreadSystemMessagesSearch.setResultMode(Search.RESULT_SINGLE);
-        unreadMessagesDetail.setUnreadSystemMessageCount(
-            ((Long) generalService.searchUnique(unreadSystemMessagesSearch)).intValue());
-        return unreadMessagesDetail;
     }
 
     /**

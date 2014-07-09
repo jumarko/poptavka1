@@ -94,10 +94,6 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
      * Sets body, toolbar
      */
     public void onForward() {
-        //Must be set before any widget start initialize because of autoDisplay feature
-        if (!(Storage.getUser() == null && Storage.isAppCalledByURL() != null && Storage.isAppCalledByURL())) {
-            eventBus.updateUnreadMessagesCount();
-        }
         eventBus.setBody(view);
         //TODO Martin - add i18n string
         eventBus.setToolbarContent("Admin Menu", view.getToolbarContent());

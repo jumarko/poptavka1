@@ -5,7 +5,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
@@ -36,9 +35,6 @@ public interface AdminRPCServiceAsync {
     void createConversation(long demandId, long userAdminId, AsyncCallback<Long> callback);
 
     void approveDemands(Set<AdminDemandDetail> demandsToApprove, AsyncCallback<Void> callback);
-
-    //---------------------- OTHERS -------------------------------------------------------
-    void updateUnreadMessagesCount(AsyncCallback<UnreadMessagesDetail> callback);
 
     /**************************************************************************/
     /*                        Admin Clients                                   */
