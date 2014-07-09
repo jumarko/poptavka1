@@ -125,11 +125,7 @@ public class ExternalUserNotificator {
             final Notification notification = registerService.getValue(notificationType.getCode(), Notification.class);
             mailNotificationSender.doSendNotification(user, notification, notificationParameters);
 
-            //Create user notification to know which notifications has been already sent to which user
-            UserNotification userNotification = new UserNotification();
-            userNotification.setNotification(notification);
-            userNotification.setUser(user);
-            generalService.persist(userNotification);
+            saveUserNotification(user, notification);
         }
     }
 
@@ -142,5 +138,20 @@ public class ExternalUserNotificator {
         final Search userNotificationSearch = new Search(UserNotification.class);
         userNotificationSearch.addFilterEqual("user", user);
         return generalService.search(userNotificationSearch);
+    }
+
+    /**
+     * Persist UserNotification entity in one transaction to prevent deadlocks. Create user notification to
+     * know which notifications has been already sent to which external imported user.
+     *
+     * @param user external user who received one-time notification
+     * @param notification that was sent to user
+     */
+    @Transactional
+    private void saveUserNotification(BusinessUser user, Notification notification) {
+        UserNotification userNotification = new UserNotification();
+        userNotification.setUser(user);
+        userNotification.setNotification(notification);
+        generalService.save(userNotification);
     }
 }
