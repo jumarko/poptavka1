@@ -16,6 +16,7 @@
         <!-- TODO RELEASE ivlcek: test that all secured RPC working correctly. -->
         <security:intercept-url pattern="/poptavka/service/rpc" access="IS_AUTHENTICATED_ANONYMOUSLY" />
         <security:intercept-url pattern="/poptavka/service/clientdemandsmodule" access="ROLE_CLIENT" />
+        <security:intercept-url pattern="/poptavka/service/detail" access="IS_AUTHENTICATED_ANONYMOUSLY,ROLE_CLIENT,ROLE_SUPPLIER" />
         <security:intercept-url pattern="/poptavka/service/settings" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/messagesmodule" access="ROLE_CLIENT" />
         <security:intercept-url pattern="/poptavka/service/supplierdemandsmodule" access="ROLE_SUPPLIER" />

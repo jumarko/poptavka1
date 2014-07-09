@@ -267,7 +267,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
      * @throws ApplicationSecurityException
      */
     @Override
-    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    @Secured(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE)
     public MessageDetail sendOfferMessage(OfferMessageDetail offerMessageToSend) throws RPCException,
         ApplicationSecurityException {
         final ReplyMessage replyMessage = sendReplyMessage(offerMessageToSend);
