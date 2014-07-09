@@ -16,7 +16,6 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEvent
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -80,9 +79,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     @Event(forwardToParent = true)
     void atAccount();
 
-    @Event(forwardToParent = true)
-    void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
-
     /**************************************************************************/
     /* Common event                                                           */
     /**************************************************************************/
@@ -121,9 +117,6 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     @Override
     @Event(handlers = AdminHandler.class)
     void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
-
-    @Event(handlers = AdminHandler.class)
-    void updateUnreadMessagesCount();
 
     @Event(handlers = AdminHandler.class)
     void requestApproveDemands(UniversalAsyncGrid grid, Set<AdminDemandDetail> demandsToApprove);

@@ -5,7 +5,6 @@ import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
-import com.eprovement.poptavka.shared.domain.message.UnreadMessagesDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -48,9 +47,6 @@ public interface AdminRPCService extends RemoteService {
     Long createConversation(long demandId, long userAdminId) throws RPCException, ApplicationSecurityException;
 
     void approveDemands(Set<AdminDemandDetail> demandsToApprove) throws RPCException, ApplicationSecurityException;
-
-    //---------------------- OTHERS -------------------------------------------------------
-    UnreadMessagesDetail updateUnreadMessagesCount() throws RPCException, ApplicationSecurityException;
 
     /**************************************************************************/
     /*                        Admin Clients                                   */
