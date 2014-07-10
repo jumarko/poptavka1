@@ -53,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
             LOGGER.debug("action=notification_new_message status=notification_message_composed user={}",
                     userToBeNotified);
             notificationSender.sendNotification(userToBeNotified, notificationEntity, ImmutableMap.of(
-                        "header", "You have " + newMessages.length + " new message(s)",
+                        "header", Integer.toString(newMessages.length),
                         "body", composedMessageBody));
             LOGGER.debug("action=notification_new_message status=notification_sent user={}", userToBeNotified);
         }
@@ -105,12 +105,13 @@ public class NotificationServiceImpl implements NotificationService {
             Validate.notNull(newUserMessage.getMessage(), "userMessage.message cannot be null!");
             Validate.notNull(newUserMessage.getMessage().getSubject(), "userMessage.message.subject cannot be null!");
             Validate.notNull(newUserMessage.getMessage().getBody(), "userMessage.message.body cannot be null!");
-            composedMessageBody.append("    ");
-            composedMessageBody.append(newUserMessage.getMessage().getSubject());
-            composedMessageBody.append(" - ");
-            composedMessageBody.append(newUserMessage.getMessage().getBody().substring(
-                    0, Math.min(newUserMessage.getMessage().getBody().length(), MAX_LENGTH_OF_MESSAGE)));
-            composedMessageBody.append("...\n");
+            composedMessageBody
+                .append("<li><b>")
+                .append(newUserMessage.getMessage().getSubject())
+                .append("</b> - ")
+                .append(newUserMessage.getMessage().getBody().substring(
+                    0, Math.min(newUserMessage.getMessage().getBody().length(), MAX_LENGTH_OF_MESSAGE)))
+                .append("...</li>");
         }
         return composedMessageBody.toString();
     }
