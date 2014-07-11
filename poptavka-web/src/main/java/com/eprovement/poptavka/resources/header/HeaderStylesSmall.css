@@ -17,7 +17,9 @@
     margin-right: 3%;
 }
 */
-.menu li button {
+.menu li button {    
+    line-height: 60px;
+    height: 60px;
     /*height: 30px;
     margin: 7px 5px;
     padding: 7px 10px 7px 40px;
@@ -33,64 +35,49 @@
     box-shadow: 0px 0px 2px #067202 inset;
 }
 */
-/*
-.menu .button1 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 0;
+
+.menu .button1, .menu .button1:hover, .button1.act {
+    background-position: 0 0;
+    border-bottom: 1px solid #1C466E;    
 }
-.menu .button2 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -30px;
+.menu .button2, .menu .button2:hover, .button2.act {
+    background-position: 0 -75px;
+    border-bottom: 1px solid #1C466E;
+    border-top: 1px solid #3078A5;
 }
-.menu .button3 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -60px;
+.menu .button3, .menu .button3:hover, .button3.act {
+    background-position: 0 -145px;
+    border-bottom: 1px solid #1C466E;
+    border-top: 1px solid #3078A5;
 }
-.menu .button4 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -90px;
+.menu .button4, .menu .button4:hover, .button4.act {
+    background-position: 0 -215px;
+    border-bottom: 1px solid #1C466E;
+    border-top: 1px solid #3078A5;
 }
-.menu .button5 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -120px;
-    padding: 0 10px 7px 40px;
+.menu .button5, .menu .button5:hover, .button5.act {
+    background-position: 0 -285px;    
+    border-top: 1px solid #3078A5;
 }
-.menu .button6 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -150px;
+.menu .button6, .menu .button6:hover, .button6.act {
+    background-position: 0 -355px;
+    border-bottom: 1px solid #1C466E;    
 }
-.menu .button7 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -180px;
+.menu .button7, .menu .button7:hover, .button7.act {
+    background-position: 0 -425px;
+    border-bottom: 1px solid #1C466E;
+    border-top: 1px solid #3078A5;
 }
-.menu .button8 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -90px;
+.menu .button8, .menu .button8:hover, .button8.act {
+    background-position: 0 -495px;
+    border-top: 1px solid #3078A5;
 }
-.menu .button9 {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -210px;
+.menu .button9, .menu .button9:hover, .button9.act {
+    background-position: 0 -565px;
+    border-bottom: 1px solid #1C466E;
+    border-top: 1px solid #3078A5;
 }
 
-.menu .button1:hover, .button1.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -240px;
-}
-.menu .button2:hover, .button2.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -270px;
-}
-.menu .button3:hover, .button3.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -300px;
-}
-.menu .button4:hover, .button4.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -330px;
-}
-.menu .button5:hover, .button5.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -360px;
-}
-.menu .button6:hover, .button6.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -390px;
-}
-.menu .button7:hover, .button7.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -420px;
-}
-.menu .button8:hover, .button8.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -330px;
-}
-.menu .button9:hover, .button9.act {
-    background: url(images/menu-icons-responsive.png) no-repeat 0 -450px;
-}
-*/
 .user-responsive-menu {}
 .user-label {}
 .user-settings {}

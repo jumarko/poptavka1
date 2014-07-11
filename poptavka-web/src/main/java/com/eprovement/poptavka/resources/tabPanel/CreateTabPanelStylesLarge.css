@@ -181,6 +181,7 @@
     background: url(images/button-left-large.png) no-repeat;
     height: 50px;
     width: 236px;
+    padding: 0 0 0 15px;
 }
 .buttons-panel .button.left-middle {
     background: url(images/button-left-medium.png) no-repeat;
@@ -197,6 +198,7 @@
     background: url(images/button-right-large.png) no-repeat;
     height: 50px;
     width: 236px;
+    padding: 0 15px 0 0;
 }
 .buttons-panel .button.right-middle {
     background: url(images/button-right-medium.png) no-repeat;

@@ -1,9 +1,6 @@
 .detailTabPanel {
     margin: 0;
 }
-.detailTabPanel .gwt-TabLayoutPanelTab {
-    width: 107px;
-}
 .empty-view {}
 .demandDetailSectionHeader {}
 .demand-detail-content {}

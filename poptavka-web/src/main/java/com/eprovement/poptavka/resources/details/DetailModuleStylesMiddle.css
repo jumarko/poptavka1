@@ -2,6 +2,9 @@
     margin-top: 10px;
     margin-right: 5px;
 }
+.detailTabPanel .gwt-TabLayoutPanelTab {
+    width: 107px;
+}
 .empty-view {}
 .demandDetailSectionHeader {}
 .demand-detail-content {}

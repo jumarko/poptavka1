@@ -36,6 +36,7 @@
     background: url(images/button-left-small.png) no-repeat;
     height: 43px;
     width: 101px;
+    padding: 0 0 0 8px;
 }
 .buttons-panel .button.left-middle {
     background: url(images/button-left-small.png) no-repeat;
@@ -46,6 +47,7 @@
     background: url(images/button-right-small.png) no-repeat;
     height: 43px;
     width: 101px;
+    padding: 0 8px 0 0;
 }
 .buttons-panel .button.right-middle {
     background: url(images/button-right-small.png) no-repeat;
