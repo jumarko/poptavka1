@@ -48,7 +48,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
         //in order to reload new demands after submit (the demand is moved assigned demands)
         //But that click handler brings admin RPC call within it. Even in other roles
         //that have no rights to access admin methods ... access denied is thrown
-        //...table won't reload automatically ... only manualy 
+        //...table won't reload automatically ... only manualy
 //        eventBus.registerQuestionSubmitHandler(new ClickHandler() {
 //
 //            @Override
