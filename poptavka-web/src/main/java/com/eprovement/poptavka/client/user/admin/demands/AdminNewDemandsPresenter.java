@@ -44,17 +44,22 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
     public void onInitNewDemands(final SearchModuleDataHolder searchModuleDataHolder) {
         Storage.setCurrentlyLoadedView(Constants.ADMIN_NEW_DEMANDS);
         initAbstractPresenter(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
-        eventBus.registerQuestionSubmitHandler(new ClickHandler() {
-
-            @Override
-            public void onClick(ClickEvent event) {
-                //Need to load again, cause I need replied demand to dissapear from new demands
-                //But reload only when in new demands
-                if (mode == AdminWidget.NEW_DEMANDS) {
-                    eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
-                }
-            }
-        });
+        //Comented 11.7 by Martin - once logged as admin, click handler is registered
+        //in order to reload new demands after submit (the demand is moved assigned demands)
+        //But that click handler brings admin RPC call within it. Even in other roles
+        //that have no rights to access admin methods ... access denied is thrown
+        //...table won't reload automatically ... only manualy 
+//        eventBus.registerQuestionSubmitHandler(new ClickHandler() {
+//
+//            @Override
+//            public void onClick(ClickEvent event) {
+//                //Need to load again, cause I need replied demand to dissapear from new demands
+//                //But reload only when in new demands
+//                if (mode == AdminWidget.NEW_DEMANDS) {
+//                    eventBus.goToAdminModule(searchModuleDataHolder, AdminWidget.NEW_DEMANDS);
+//                }
+//            }
+//        });
     }
 
     /**
