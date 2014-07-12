@@ -4,6 +4,11 @@ import static org.apache.commons.lang.Validate.notNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
+import com.eprovement.poptavka.domain.enums.Verification;
+import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.BusinessUserRole;
+import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.UserNotification;
 import com.eprovement.poptavka.service.GeneralService;
@@ -38,7 +43,21 @@ public class ExternalUserChecker implements Job {
     }
 
     /**
-     * Sends notifications about new messages once per day.
+     * <p>Day-to-day job that disables all external users where following conditions are met.</p>
+     *
+     * <p>
+     * <code>User</code> already received a one-time <code>UserNotification</code> several days ago, see
+     * {@link com.eprovement.poptavka.service.jobs.notification.ExternalUserChecker#MAX_PENDING_NOTIFICATION_DAYS}
+     * and haven't logged in to the system with provided credentials until now. Since <code>User</code> hasn't logged in
+     * he is still unverified, see {@link com.eprovement.poptavka.domain.user.User#verification}.
+     * </p>
+     * <p>
+     * We suppose that this external <code>User</code> is not interested in our service thus we disable corresponding
+     * <code>BusinessUser</code> and all its <code>BusinessUserRole</code>-s. The external <code>User</code> will not
+     * receive any other notifications, see {@link com.eprovement.poptavka.service.user.ExternalUserNotificator#send(
+     * BusinessUser, Registers.Notification, Map)}, unless we enable the user again e.g. after one year since last
+     * notification.
+     * </p>
      */
     @Override
     @Scheduled(cron = EVERY_DAY)
@@ -47,6 +66,7 @@ public class ExternalUserChecker implements Job {
         final Search notificationsSearch = new Search(UserNotification.class);
         final DateTime maxDaysAgo = new DateTime().minusDays(MAX_PENDING_NOTIFICATION_DAYS);
         notificationsSearch.addFilterLessThan("sent", maxDaysAgo.toDate());
+        notificationsSearch.addFilterNotEqual("user.verification", Verification.VERIFIED);
         final List<UserNotification> pendingNotifications = generalService.search(notificationsSearch);
 
         for (UserNotification notification : pendingNotifications) {
@@ -56,7 +76,18 @@ public class ExternalUserChecker implements Job {
                 continue;
             }
 
-            disable(user);
+            // Disable corresponding BusinessUser and all its BusinessUserRoles.
+            BusinessUser businessUser = (BusinessUser) generalService.find(BusinessUser.class, user.getId());
+            for (BusinessUserRole businessUserRole : businessUser.getBusinessUserRoles()) {
+                if (businessUserRole instanceof Client) {
+                    disable((Client) businessUserRole);
+                }
+                if (businessUserRole instanceof Supplier) {
+                    disable((Supplier) businessUserRole);
+                }
+            }
+
+            disable(businessUser);
             disable(notification);
         }
     }
