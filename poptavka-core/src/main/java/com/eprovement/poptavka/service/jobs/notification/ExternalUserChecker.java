@@ -5,10 +5,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.enums.Verification;
+import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.BusinessUserRole;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.SupplierCategory;
+import com.eprovement.poptavka.domain.user.SupplierLocality;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.domain.user.UserNotification;
 import com.eprovement.poptavka.service.GeneralService;
@@ -69,26 +72,59 @@ public class ExternalUserChecker implements Job {
         notificationsSearch.addFilterNotEqual("user.verification", Verification.VERIFIED);
         final List<UserNotification> pendingNotifications = generalService.search(notificationsSearch);
 
-        for (UserNotification notification : pendingNotifications) {
-            final User user = notification.getUser();
+        for (UserNotification userNotification : pendingNotifications) {
+            final User user = userNotification.getUser();
             if (user == null) {
-                LOGGER.warn("action=external_user_check status=skip no user set in user notification={}", notification);
+                LOGGER.warn("action=external_user_check status=skip no user set in user notification={}",
+                        userNotification);
                 continue;
             }
-
             // Disable corresponding BusinessUser and all its BusinessUserRoles.
+            // Disabling of associated entities must be done in following order below.
             BusinessUser businessUser = (BusinessUser) generalService.find(BusinessUser.class, user.getId());
             for (BusinessUserRole businessUserRole : businessUser.getBusinessUserRoles()) {
                 if (businessUserRole instanceof Client) {
                     disable((Client) businessUserRole);
                 }
                 if (businessUserRole instanceof Supplier) {
-                    disable((Supplier) businessUserRole);
+                    Supplier supplierToDisable = (Supplier) businessUserRole;
+                    // Disable SupplierCategory-ies.
+                    Search searchCategories = new Search(SupplierCategory.class);
+                    searchCategories.addFilterEqual("supplier", supplierToDisable);
+                    List<SupplierCategory> supplierCategories = generalService.search(searchCategories);
+                    for (SupplierCategory supplierCategory : supplierCategories) {
+                        disable(supplierCategory);
+                    }
+                    // Disable SupplierLocality-ies.
+                    Search searchLocalities = new Search(SupplierLocality.class);
+                    searchLocalities.addFilterEqual("supplier", supplierToDisable);
+                    List<SupplierLocality> supplierLocalities = generalService.search(searchLocalities);
+                    for (SupplierLocality supplierLocality : supplierLocalities) {
+                        disable(supplierLocality);
+                    }
+                    // Disable Supplier.
+                    disable(supplierToDisable);
                 }
             }
-
+            disable(businessUser.getBusinessUserData());
+            // For external User-s there is no activation email when User is imported into our system.
+            if (businessUser.getActivationEmail() != null) {
+                disable(businessUser.getActivationEmail());
+            }
+            // Disable NotificationItem-s.
+            for (NotificationItem notificationItem : businessUser.getSettings().getNotificationItems()) {
+                disable(notificationItem);
+            }
+            // Disable User's settings.
+            disable(businessUser.getSettings());
             disable(businessUser);
-            disable(notification);
+            // TODO RELEASE ivlcek - is it necessary to disable UserNotification?
+            // Maybe it woule be better not to disable this item so that we know that we have already sent the one-time
+            // notification to external user.
+            disable(userNotification);
+            // TODO LATER ivlcek - later consider disabling of associated UserService.
+            LOGGER.debug("action=external_user_check status=user={} has been disabled",
+                    userNotification);
         }
     }
 
