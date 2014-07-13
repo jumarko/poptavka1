@@ -15,6 +15,7 @@ import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.settings.Settings;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Supplier;
+import com.eprovement.poptavka.domain.user.UserNotification;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.address.LocalityService;
@@ -25,9 +26,12 @@ import com.eprovement.poptavka.util.aop.AopUtils;
 import com.eprovement.poptavka.util.user.UserTestUtils;
 import com.googlecode.genericdao.search.Search;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -158,11 +162,15 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetSuppliersForCategoriesAndLocalitiesIncludingParents() {
         final Long[] catArr1 = {11L, 312L};
         final Long[] locArr1 = {11L, 21L};
-        checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr1, locArr1);
+        Set<Supplier> allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr1, locArr1);
+        checkSupplierExists(11L, allSuppliers);
+        checkSupplierExists(12L, allSuppliers);
+        checkSupplierExists(14L, allSuppliers);
 
         final Long[] catArr2 = {312L};
         final Long[] locArr2 = {21L};
         checkSuppliersForCategoriesAndLocalitiesIncludingParents(1, catArr2, locArr2);
+        checkSupplierExists(14L, allSuppliers);
 
         final Long[] catArr3 = {1L, 3L};
         final Long[] locArr3 = {2L};
@@ -405,12 +413,13 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals(expectedCount, suppliersCount);
     }
 
-    private void checkSuppliersForCategoriesAndLocalitiesIncludingParents(int expectedCount,
+    private Set<Supplier> checkSuppliersForCategoriesAndLocalitiesIncludingParents(int expectedCount,
             Long[] categoryIds, Long[] localityIds) {
         final Set<Supplier> suppliers = this.supplierService.getSuppliersIncludingParents(
                 Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)), null);
         assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());
+        return suppliers;
     }
 
     private void checkNotifications(Supplier createdSupplier, Registers.Notification... notifications) {
@@ -419,5 +428,24 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                     this.registerService.getValue(notification.getCode(), Notification.class), true, Period.DAILY);
         }
 
+    }
+
+    /**
+     * Checks if <code>Supplier</code> with given id <code>supplierId</code> exists in collection
+     * <code>allSuppliers</code>.
+     *
+     * @param supplierId the existence of which to be tested
+     * @param allSuppliers collection with all <code>Supplier</code>-s
+     */
+    private void checkSupplierExists(final Long supplierId, Set<Supplier> allSuppliers) {
+        Assert.assertTrue(
+                "Supplier [id=" + supplierId + "] expected to be in"
+                + " collection [" + allSuppliers + "] is not there.",
+                CollectionUtils.exists(allSuppliers, new Predicate() {
+                    @Override
+                    public boolean evaluate(Object object) {
+                        return supplierId.equals(((Supplier) object).getId());
+                    }
+                }));
     }
 }
