@@ -5,6 +5,7 @@
     <SETTINGST ID="12" />
     <SETTINGST ID="13" />
     <SETTINGST ID="14" />
+    <SETTINGST ID="15" />
 
     <!--################################ Suppliers ##################################################################-->
     <USERT ID="11" EMAIL="elvira11@email.com" PASSWORD="ahoj" SETTINGS_ID="11" VERIFICATION="UNVERIFIED" />
@@ -35,6 +36,14 @@
     <CLIENT ID="14" />
     <SUPPLIER ID="14" />
 
+    <!-- User/BusinessUserRole-s with id=15 are disabled and shouldn't be involved in supplier related queries-->
+    <USERT ID="15" EMAIL="importedSupplier15@email.com" PASSWORD="imported" SETTINGS_ID="15" VERIFICATION="UNVERIFIED" ENABLED="0" />
+    <BUSINESSUSERDATA ID="15" COMPANYNAME="My Fifthe Company imported to WS" TAXID="123" IDENTIFICATIONNUMBER="12309892" PERSONFIRSTNAME="Ivan" PERSONLASTNAME="Importovany" ENABLED="0" />
+    <BUSINESSUSER  ID="15"  BUSINESSUSERDATA_ID="15" />
+    <BUSINESSUSERROLE ID="15" BUSINESSUSER_ID="15" ENABLED="0" />
+    <CLIENT ID="15" ENABLED="0" />
+    <SUPPLIER ID="15" ENABLED="0" />
+
 
     <!--################################ Suppliers to Localities#####################################################-->
     <!-- loc1 && loc213 -->
@@ -44,6 +53,8 @@
     <SUPPLIER_LOCALITY ID="3" SUPPLIER_ID="12" LOCALITY_ID="2" />
     <SUPPLIER_LOCALITY ID="4" SUPPLIER_ID="13" LOCALITY_ID="11" />
     <SUPPLIER_LOCALITY ID="5" SUPPLIER_ID="14" LOCALITY_ID="21" />
+    <!-- supplier_locality id=10 is disabled and it shouldn't be involved in supplier related queries-->
+    <SUPPLIER_LOCALITY ID="10" SUPPLIER_ID="15" LOCALITY_ID="21" ENABLED="0" />
 
 
     <!--################################ Suppliers to Categories#####################################################-->
@@ -51,5 +62,7 @@
     <SUPPLIER_CATEGORY ID="7" SUPPLIER_ID="12" CATEGORY_ID="11" />
     <SUPPLIER_CATEGORY ID="8" SUPPLIER_ID="13" CATEGORY_ID="113" />
     <SUPPLIER_CATEGORY ID="9" SUPPLIER_ID="14" CATEGORY_ID="312" />
-    
+    <!-- supplier_category id=11 is disabled and it shouldn't be involved in supplier related queries-->
+    <SUPPLIER_CATEGORY ID="11" SUPPLIER_ID="15" CATEGORY_ID="312" ENABLED="0" />
+
 </dataset>
