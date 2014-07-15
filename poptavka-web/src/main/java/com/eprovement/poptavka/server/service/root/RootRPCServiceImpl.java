@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.server.service.root;
 
 import com.eprovement.poptavka.client.service.root.RootRPCService;
+import com.eprovement.poptavka.domain.settings.NotificationItem;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
@@ -28,9 +29,11 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService implements Ro
         Search search = new Search(User.class);
         search.addFilterEqual("password", password);
         User user = (User) generalService.searchUnique(search);
-        user.setEnabled(Boolean.FALSE);
+        for (NotificationItem notificationItem : user.getSettings().getNotificationItems()) {
+            notificationItem.setEnabled(Boolean.FALSE);
+        }
         generalService.save(user);
-        return !user.isEnabled();
+        return true;
     }
 
 }
