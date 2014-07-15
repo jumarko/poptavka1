@@ -120,7 +120,7 @@ public class EditableDemandDetailPresenter extends
                 } else {
                     eventBus.fillCatLocs(view.getLocalities(), instaceIdLocalities);
                 }
-                view.getSelectorPopup().show();
+                view.getSelectorPopup().hide();
             }
         });
         view.getSubmitButton().addClickHandler(new ClickHandler() {

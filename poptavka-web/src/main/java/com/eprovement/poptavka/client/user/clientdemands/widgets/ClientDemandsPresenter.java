@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.detail.DetailModuleView;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailPresenter;
 import com.eprovement.poptavka.client.user.widget.detail.EditableDemandDetailView;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandConversationDetail;
 import com.eprovement.poptavka.shared.domain.clientdemands.ClientDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
@@ -44,7 +45,6 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /* Attributes                                                             */
     /**************************************************************************/
     private EditableDemandDetailPresenter editDemandPresenter;
-//    private boolean isInitializing;
 
     /**************************************************************************/
     /* Bind actions                                                           */
@@ -65,7 +65,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         addBackBtnClickHandler();
         addToolbarButtonsClickHandlers();
         // Selection Handlers
-        addChildTableSelectionModelHandler();
+        addParentTableSelectionModelHandler();
         // Detail section
         addDetailSelectionHandler();
     }
@@ -178,18 +178,15 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
     /**************************************************************************/
     /** SelectionHandlers. **/
     //--------------------------------------------------------------------------
-    /**
-     * Show or Hide details section and action box.
-     * Show if and only of one table row is selected.
-     * Hide otherwise - not or more than one rows are selected.
-     */
-    private void addChildTableSelectionModelHandler() {
-        view.getChildTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+    private void addParentTableSelectionModelHandler() {
+        view.getParentTable().getSelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                if (view.getChildTableSelectedObjects().size() != 1) {
-                    view.getToolbar().setEditDemandBtnsVisibility(false);
-                }
+                SingleSelectionModel<ClientDemandDetail> selectionModel = (SingleSelectionModel) event.getSource();
+                view.getToolbar().setEditDemandBtnsVisibility(
+                    view.getToolbar().getEditBtn().isVisible()
+                    && selectionModel.getSelectedObject().getDemandStatus() == DemandStatus.NEW);
             }
         });
     }
@@ -201,8 +198,11 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         eventBus.setCustomSelectionHandler(new SelectionHandler<Integer>() {
             @Override
             public void onSelection(SelectionEvent<Integer> event) {
+                SingleSelectionModel<ClientDemandDetail> selectionModel
+                    = (SingleSelectionModel) view.getParentTable().getSelectionModel();
                 view.getToolbar().setEditDemandBtnsVisibility(
-                    event.getSelectedItem() == DetailModuleBuilder.DEMAND_DETAIL_TAB);
+                    event.getSelectedItem() == DetailModuleBuilder.DEMAND_DETAIL_TAB
+                    && selectionModel.getSelectedObject().getDemandStatus() == DemandStatus.NEW);
             }
         });
     }

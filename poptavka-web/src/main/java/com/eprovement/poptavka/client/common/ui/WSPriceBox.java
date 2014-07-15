@@ -40,6 +40,13 @@ public class WSPriceBox extends BigDecimalBox {
         }
     }
 
+    @Override
+    public void setValue(BigDecimal value) {
+        if (value != null) {
+            setText(NUMBER_FORMAT.format(value));
+        }
+    }
+
     /**
      * Formats & validates input.
      * <b>Note</b>
