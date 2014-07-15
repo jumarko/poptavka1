@@ -9,51 +9,91 @@
         font-weight: bold;
         size: 14px;
         }
+        
+        .italic {
+        font-style: italic;
+        }
+        
+        .answer-block {
+            margin: 5px 20px 10px;
+        }
     </ui:style>
 
     <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
             <h1>
                 Frequently Asked Questions
-            </h1>
-            <h3>How does Want-Something.com works?</h3>
+            </h1>            
+            <g:Label addStyleNames='{style.question}'>How does Want-Something.com works?</g:Label>
+            <g:HTMLPanel addStyleNames='{style.answer-block}'>
+                <g:Label addStyleNames='{style.italic}'>
+                    1. Tell us about your project
+                </g:Label>
+                <g:Label>
+                    Select a project category that best matches your project or any other need. You will be asked few questions via online form to help us match the right professional for your job. Want-Something.com has thousands professionals specializing in over 4,600 categories and 33,000 US localities.
+                </g:Label>
+                <br />
+                <g:Label addStyleNames='{style.italic}'>
+                    2. Receive offers
+                </g:Label>
+                <g:Label>
+                    After your project is approved by Customer Support you'll receive offers from local professionals. You can compare offers, check reviews or negotiate the price before you select the right professional. 
+                </g:Label>
+                <br />
+                <g:Label addStyleNames='{style.italic}'>
+                    3. Get it done
+                </g:Label>            
+                <g:Label>
+                    Selected professional starts working on the project. Once the project is finished  both parties, client and professional, post feedback to each other. 
+                </g:Label>
+                <g:Label>
+                    We are here to help local business grow across the U.S.
+                </g:Label>
+            </g:HTMLPanel>
             <g:Label addStyleNames='{style.question}'>
-                1. Tell us about your project
+                How much does it cost to post a project?
             </g:Label>
-            <g:Label>
-                Select a project category that best matches your project or any other need. You will be asked few questions via online form to help us match the right professional for your job. Want-Something.com has thousands professionals specializing in over 4,600 categories and 33,000 US localities.
+            <g:Label addStyleNames='{style.answer-block}'>
+                Posting of  project is free
             </g:Label>
-            <br />
             <g:Label addStyleNames='{style.question}'>
-                2. Receive offers
+                Who will send me offers for my project?
             </g:Label>
-            <g:Label>
-                After your project is approved by Customer Support you'll receive offers from local professionals. You can compare offers, check reviews or negotiate the price before you select the right professional. 
+            <g:Label addStyleNames='{style.answer-block}'>
+                Offers for your project will be sent by certain professional individuals or companies. The main role of demand marketplace system Want-Something.com is to send your project to certain Professionals marching selected locality and profession field.
             </g:Label>
-            <br />
             <g:Label addStyleNames='{style.question}'>
-                3. Get it done
+                How long will it take?
             </g:Label>
-            <g:Label>
-                Selected professional starts working on the project. Once the project is finished  both parties, client and professional, post feedback to each other. 
+            <g:Label addStyleNames='{style.answer-block}'>
+                The project is distributed to professionals within 1-3 hours based on workload level of our operators. All professionals are subesquently notified by email and it will take some more time for them to prepare an adequate offer for you. The amount of time required by professional depends on type of required service and complexity of offer preparation.
             </g:Label>
-            <g:Label>
-                We are here to help local business grow across the U.S.
+            <g:Label addStyleNames='{style.question}'>
+                Do I pay some commision when my project is finished?
             </g:Label>
-            <br />
-            <h3>What is Want-Something.com?</h3>
-            <g:Label>
-                Want-Something.com is a consumer service that helps family owners, managers or companies to accomplish their projects or satisfy their demands. Whether customers need to paint their home, learn a new language, or plan their daughter's birthday party.
+            <g:Label addStyleNames='{style.answer-block}'>
+                You in a role of Client don't pay any commision.
             </g:Label>
-            <g:Label>
-                Want-Something.com is the easiest and most dependable way to hire the right professional. Customers tell us what they need, and we introduce them to several qualified professionals.
-                Then, customers compare and hire the pro that's right for them.
+            <g:Label addStyleNames='{style.question}'>
+                Can I ask for anything I want?
             </g:Label>
-            <br />
-            <g:Label>
-                Want-Something.com searches for people or businesses in your area that can address your needs. Need your house painted? Need your lawn mowed?  Need your car fixed? Want-Something.com does the search for you so that you don't waste your time browsing through Internet.
-            </g:Label>            
-            <br />
+            <g:Label addStyleNames='{style.answer-block}'>
+                Yes, you can demand any product or service without limitation. Want-Something.com is first demand marketplace website offering few thousands categories so that any professional or company can find new business opportunities here.
+            </g:Label>
+            <g:Label addStyleNames='{style.question}'>What is Want-Something.com?</g:Label>            
+            <g:HTMLPanel addStyleNames='{style.answer-block}'>
+                <g:Label>
+                    Want-Something.com is a consumer service that helps family owners, managers or companies to accomplish their projects or satisfy their demands. Whether customers need to paint their home, learn a new language, or plan their daughter's birthday party.
+                </g:Label>
+                <g:Label>
+                    Want-Something.com is the easiest and most dependable way to hire the right professional. Customers tell us what they need, and we introduce them to several qualified professionals.
+                    Then, customers compare and hire the pro that's right for them.
+                </g:Label>
+                <br />
+                <g:Label>
+                    Want-Something.com searches for people or businesses in your area that can address your needs. Need your house painted? Need your lawn mowed?  Need your car fixed? Want-Something.com does the search for you so that you don't waste your time browsing through Internet.
+                </g:Label>            
+            </g:HTMLPanel>            
             <br />
 
             <g:SimplePanel ui:field="footer"/>
