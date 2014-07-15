@@ -58,7 +58,7 @@ public class NotificationItemView extends Composite {
 
         initWidget(uiBinder.createAndBindUi(this));
 
-        name.setText(item.getName());
+        name.setText(item.getName().replaceAll("[${}]", ""));
         setOnOffStyles(item.isEnabled());
         period.setSelected(item.getPeriod().getValue());
 
