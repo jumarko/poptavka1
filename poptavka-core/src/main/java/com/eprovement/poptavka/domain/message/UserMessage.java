@@ -1,15 +1,10 @@
 package com.eprovement.poptavka.domain.message;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
-import com.eprovement.poptavka.domain.enums.MessageContext;
-import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.user.User;
 
-import com.eprovement.poptavka.util.orm.OrmConstants;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -273,13 +268,6 @@ public class UserMessage extends DomainObject {
     @ManyToOne
     private User user;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
-    private MessageUserRoleType roleType;
-
-    @Enumerated(value = EnumType.ORDINAL)
-    @Column(length = OrmConstants.ENUM_SHORTINT_FIELD_LENGTH)
-    private MessageContext messageContext;
 
     /** Column cannot be named "read" because that is MySQL reserved key word */
     // workaround - see http://stackoverflow.com/questions/8667965/found-bit-expected-boolean-after-hibernate-4-upgrade
@@ -306,21 +294,6 @@ public class UserMessage extends DomainObject {
         this.user = user;
     }
 
-    public MessageUserRoleType getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(MessageUserRoleType roleType) {
-        this.roleType = roleType;
-    }
-
-    public MessageContext getMessageContext() {
-        return messageContext;
-    }
-
-    public void setMessageContext(MessageContext messageContext) {
-        this.messageContext = messageContext;
-    }
 
     public boolean isRead() {
         return isRead;
@@ -344,7 +317,6 @@ public class UserMessage extends DomainObject {
         sb.append("ContactMessage");
         sb.append("{user.email='").append(user.getEmail()).append('\'');
         sb.append("{message='").append(message).append('\'');
-        sb.append("{roleType='").append(roleType).append('\'');
         sb.append('}');
         return sb.toString();
     }
