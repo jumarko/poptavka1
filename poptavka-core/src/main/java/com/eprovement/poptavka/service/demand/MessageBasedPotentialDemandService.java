@@ -8,7 +8,6 @@ import static org.apache.commons.lang.Validate.notNull;
 
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
-import com.eprovement.poptavka.domain.enums.MessageContext;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 import com.eprovement.poptavka.domain.enums.Period;
@@ -150,7 +149,6 @@ public class MessageBasedPotentialDemandService implements PotentialDemandServic
             messageUserRole.setMessage(threadRootMessage);
             messageUserRole.setUser(potentialSupplier.getSupplier().getBusinessUser());
             messageUserRole.setType(MessageUserRoleType.BCC);
-            messageUserRole.setMessageContext(MessageContext.POTENTIAL_SUPPLIERS_DEMAND);
             messageUserRoles.add(messageUserRole);
         }
 
