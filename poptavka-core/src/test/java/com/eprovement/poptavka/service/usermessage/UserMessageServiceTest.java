@@ -7,6 +7,7 @@ import com.eprovement.poptavka.domain.message.ClientConversation;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
@@ -358,7 +359,15 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         Search search = new Search(UserMessage.class);
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
                 .getClientConversationsWithAcceptedOffer(this.businessUserClient, search);
-        Assert.assertEquals(0, clientConversations.size());
+        //TODO RELEASE - test count and getData
+        Assert.assertEquals(1, clientConversations.size());
+        UserMessage latestUserMessage = generalService.find(UserMessage.class, 804L);
+        BusinessUser supplier = generalService.find(BusinessUser.class, 111111115L);
+        clientConversations.containsKey(latestUserMessage);
+        ClientConversation clientConversation = clientConversations.get(latestUserMessage);
+        Assert.assertEquals("expected size 2 was not there", 2, clientConversation.getMessageCount());
+        Assert.assertEquals("expected supplier was not there", supplier.getId(), clientConversation.getSupplier().getId());
+        Assert.assertEquals("expected usermessage id was not there", latestUserMessage.getId(), clientConversation.getLatestUserMessage().getId());
     }
 
     @Test
