@@ -100,8 +100,8 @@ public class GeneralServiceIntegrationTest extends DBUnitIntegrationTest {
 
         Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(0).getId(), Is.is(2L));
         Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(1).getId(), Is.is(1L));
-        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(2).getId(), Is.is(10L));
-        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(3).getId(), Is.is(11L));
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(2).getId(), Is.is(80L));
+        Assert.assertThat("Unexpected demand", demandsSortedByCreatedDate.get(3).getId(), Is.is(10L));
         // the fifth demand can be any, because many of demands have the same createdDate
     }
 

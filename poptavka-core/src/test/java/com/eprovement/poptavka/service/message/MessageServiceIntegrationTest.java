@@ -73,7 +73,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         final List<Message> messageThreads = this.messageService.getMessageThreads(this.user,
                 MessageFilter.EMPTY_FILTER);
 
-        Assert.assertEquals(7, messageThreads.size());
+        Assert.assertEquals(8, messageThreads.size());
         checkUserMessageExists(1L, messageThreads);
         checkUserMessageExists(200L, messageThreads);
         checkUserMessageExists(300L, messageThreads);
@@ -81,6 +81,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(500L, messageThreads);
         checkUserMessageExists(601L, messageThreads);
         checkUserMessageExists(701L, messageThreads);
+        checkUserMessageExists(800L, messageThreads);
 
         // one reply to the thread root message
         Assert.assertEquals(1, messageThreads.get(0).getChildren().size());
@@ -96,7 +97,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetAllUserMessages() {
         final List<Message> allUserMessages = this.messageService.getAllMessages(this.user, MessageFilter.EMPTY_FILTER);
-        Assert.assertEquals(17, allUserMessages.size());
+        Assert.assertEquals(19, allUserMessages.size());
         checkUserMessageExists(1L, allUserMessages);
         checkUserMessageExists(2L, allUserMessages);
         checkUserMessageExists(3L, allUserMessages);
@@ -115,7 +116,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.TO).build());
-        Assert.assertEquals(12, allUserReceivedMessages.size());
+        Assert.assertEquals(13, allUserReceivedMessages.size());
         checkUserMessageExists(1L, allUserReceivedMessages);
         checkUserMessageExists(2L, allUserReceivedMessages);
         checkUserMessageExists(4L, allUserReceivedMessages);
@@ -128,6 +129,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
         checkUserMessageExists(701L, allUserReceivedMessages);
         checkUserMessageExists(704L, allUserReceivedMessages);
         checkUserMessageExists(702L, allUserReceivedMessages);
+        checkUserMessageExists(800L, allUserReceivedMessages);
     }
 
     @Test
@@ -136,9 +138,10 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.user,
                 MessageFilter.MessageFilterBuilder.messageFilter()
                         .withMessageUserRoleType(MessageUserRoleType.SENDER).build());
-        Assert.assertEquals(5, allUserReceivedMessages.size());
+        Assert.assertEquals(6, allUserReceivedMessages.size());
         checkUserMessageExists(3L, allUserReceivedMessages);
         checkUserMessageExists(301L, allUserReceivedMessages);
+        checkUserMessageExists(401L, allUserReceivedMessages);
         checkUserMessageExists(401L, allUserReceivedMessages);
     }
 
