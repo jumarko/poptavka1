@@ -325,16 +325,14 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     }
 
     @Test
-    public void testGetClientConversationsWithoutOffer() {
-        final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
-                .getClientConversationsWithoutOffer(this.businessUserClient, demand2);
-        Assert.assertEquals(2, clientConversations.size());
-        checkUserMessageIdAndCountAndSupplierId(7L, 3, 111111111L, clientConversations);
-
-        final Demand demand21 = generalService.find(Demand.class, 21L);
-        final Map<UserMessage, ClientConversation> clientConversations2 = this.userMessageService
-                .getClientConversationsWithoutOffer(this.businessUserClient, demand21);
-        Assert.assertEquals(0, clientConversations2.size());
+    public void testGetSupplierConversationsWithAcceptedOffer() {
+        final Map<UserMessage, Integer> supplierConversations = this.userMessageService
+                .getSupplierConversationsWithAcceptedOffer(this.businessUser5);
+        // TODO RELEASE ivlcek - test this method
+        Assert.assertEquals("expected size 1 was different", 1, supplierConversations.size());
+        UserMessage userMessage = this.generalService.find(UserMessage.class, 805L);
+        supplierConversations.containsKey(userMessage);
+        supplierConversations.containsValue(new Integer(3));
     }
 
     @Test
