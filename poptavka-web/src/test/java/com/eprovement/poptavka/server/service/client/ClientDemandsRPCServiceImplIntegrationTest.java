@@ -46,9 +46,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
         "classpath:com/eprovement/poptavka/domain/address/LocalityDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/demand/RatingDataSet.xml",
         "classpath:com/eprovement/poptavka/domain/user/UsersDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/demand/DemandDataSet.xml",
+        "classpath:com/eprovement/poptavka/domain/demand/Demand2DataSet.xml",
         "classpath:com/eprovement/poptavka/domain/message/OfferMessageDataSet.xml",
-        "classpath:com/eprovement/poptavka/domain/offer/OfferDataSet.xml" },
+        "classpath:com/eprovement/poptavka/domain/offer/Offer2DataSet.xml" },
         dtd = "classpath:test.dtd",
         disableForeignKeyChecks = true)
 public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegrationTest {
@@ -122,29 +122,29 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
         SearchDefinition searchDefinition = new SearchDefinition(SearchModuleDataHolder.getSearchModuleDataHolder());
         long count = clientDemandsRPCService.getClientOfferedDemandOffersCount(111111112L, 2L, searchDefinition);
         Assert.assertEquals("getClientOfferedDemandOffersCount [count=" + count + "] was not correct",
-                Long.valueOf(3L), Long.valueOf(count));
+                Long.valueOf(2L), Long.valueOf(count));
         List<ClientOfferedDemandOffersDetail> offers = clientDemandsRPCService.getClientOfferedDemandOffers(
                 111111112L, 2L, 1L, searchDefinition);
-        assertThat(offers.size(), is(3));
+        assertThat(offers.size(), is(2));
         Assert.assertEquals("getClientOfferedDemandOffers size [size=" + offers.size() + "] was not correct",
-                3, offers.size());
+                2, offers.size());
 
-        checkClientOfferedDemandOffersDetailExists(offers, 11, 3);
-        checkClientOfferedDemandOffersDetailExists(offers, 11, 7);
-        checkClientOfferedDemandOffersDetailExists(offers, 12, 9);
+        checkClientOfferedDemandOffersDetailExists(offers, 11, 10);
+        checkClientOfferedDemandOffersDetailExists(offers, 12, 7);
         searchDefinition.getFilter().setSearchText("Fourth");
         offers = clientDemandsRPCService.getClientOfferedDemandOffers(111111112L, 2L, 1L, searchDefinition);
-        assertThat(offers.size(), is(3));
+        assertThat(offers.size(), is(2));
     }
 
     @Test
     public void testAcceptOffer() {
-        long demandId = 2;
-        long offerToBeAccepted = 12;
+        long demandId = 70;
+        long offerToBeAccepted = 70;
+        // Offer to be declined is offer.id=71
         Demand demand = generalService.find(Demand.class, demandId);
         Assert.assertEquals("Number of offers [offers.size="
                 + demand.getOffers() + "] for given demand [demandId="
-                + demandId + "] is not as expected", 1, demand.getOffers().size());
+                + demandId + "] is not as expected", 2, demand.getOffers().size());
         for (Offer offer : demand.getOffers()) {
             Assert.assertThat("Unexpected offer state for offer.id=" + offer.getId(),
                     OfferStateType.PENDING.getValue(), is(offer.getState().getCode()));

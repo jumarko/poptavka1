@@ -84,13 +84,13 @@ import java.util.List;
                         + " and l.rightBound <= demandLocality.locality.rightBound"
                         + " and l.id in (:localityIds))"),
     @NamedQuery(name = "getClientDemandsWithOfferCount",
-                query = "select count(*) from Demand as demand, Offer as offer"
+                query = "select count(*) from Demand as demand"
                         + " where demand.client = :client"
-                        + " and offer.demand = demand"),
+                        + " and demand.status = :status"),
     @NamedQuery(name = "getClientDemandsWithOffer",
-                query = "select demand from Demand as demand, Offer as offer"
+                query = "select demand from Demand as demand"
                         + " where demand.client = :client"
-                        + " and offer.demand = demand"),
+                        + " and demand.status = :status"),
         @NamedQuery(name = "getClientDemandsWithUnreadSubMsgs",
                 query = "select demand, ("
                         + "select count(subUserMessage.id) from UserMessage as subUserMessage"

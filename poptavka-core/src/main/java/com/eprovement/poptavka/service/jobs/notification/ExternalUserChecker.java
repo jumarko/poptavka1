@@ -118,9 +118,6 @@ public class ExternalUserChecker implements Job {
             // Disable User's settings.
             disable(businessUser.getSettings());
             disable(businessUser);
-            // TODO RELEASE ivlcek - is it necessary to disable UserNotification?
-            // Maybe it woule be better not to disable this item so that we know that we have already sent the one-time
-            // notification to external user.
             disable(userNotification);
             // TODO LATER ivlcek - later consider disabling of associated UserService.
             LOGGER.debug("action=external_user_check status=user={} has been disabled",

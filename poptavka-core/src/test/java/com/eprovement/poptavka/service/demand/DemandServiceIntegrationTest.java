@@ -363,7 +363,7 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetAllDemands() {
-        Assert.assertEquals(17, this.demandService.getAll().size());
+        Assert.assertEquals(18, this.demandService.getAll().size());
     }
 
     @Test
@@ -466,17 +466,14 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
     @Test
     public void testGetClientDemandsWithOffer() {
         Client client = generalService.find(Client.class, 111111121L);
-        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 9, client.getDemands().size());
+        Assert.assertEquals("Number of client demands [" + client.toString() + "]", 10, client.getDemands().size());
         Client client2 = generalService.find(Client.class, 111111131L);
         Assert.assertEquals("Number of client demands [" + client2.toString() + "]", 1, client2.getDemands().size());
 
-        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 7L,
+        Assert.assertEquals("Number of client demands with offer [" + client.toString() + "]", 2L,
                 demandService.getClientDemandsWithOfferCount(client));
-        checkDemandExists(demandService.getClientDemandsWithOffer(client), 2L);
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 22L);
-        checkDemandExists(demandService.getClientDemandsWithOffer(client), 23L);
         checkDemandExists(demandService.getClientDemandsWithOffer(client), 70L);
-        checkDemandExists(demandService.getClientDemandsWithOffer(client), 80L);
 
         Assert.assertEquals("Number of client demands with offer [" + client2.toString() + "]", 0L,
                 demandService.getClientDemandsWithOfferCount(client2));

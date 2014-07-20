@@ -216,14 +216,18 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
                                            ResultCriteria resultCriteria);
 
     /**
-     * Get number of all client demands that have at least one offer.
+     * Get number of all client demands that have at least one offer and are not assigned yet i.e. demands are in status
+     * {@link com.eprovement.poptavka.domain.enums.DemandStatus#OFFERED} only.
+     *
      * @param client - client's demands
      * @return number of client's demands with offers
      */
     long getClientDemandsWithOfferCount(Client client);
 
     /**
-     * Get all client demands that have at least one offer.
+     * Get all client demands that have at least one offer and are not assigned yet i.e. demands are in status
+     * {@link com.eprovement.poptavka.domain.enums.DemandStatus#OFFERED} only.
+     *
      * @param client - client's demands
      * @return client's demands with offers
      */

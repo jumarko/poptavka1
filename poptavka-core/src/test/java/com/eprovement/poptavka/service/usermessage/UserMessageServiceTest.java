@@ -85,10 +85,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(13, inbox.size());
+        Assert.assertEquals(15, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
+        checkUserMessageExists(53L, inbox);
         checkUserMessageExists(202L, inbox);
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
@@ -98,6 +99,8 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(702L, inbox);
         checkUserMessageExists(705L, inbox);
         checkUserMessageExists(709L, inbox);
+        checkUserMessageExists(808L, inbox);
+        checkUserMessageExists(908L, inbox);
 
     }
 
@@ -106,10 +109,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> inbox = this.userMessageService.getInbox(
                 this.user);
 
-        Assert.assertEquals(13, inbox.size());
+        Assert.assertEquals(15, inbox.size());
         checkUserMessageExists(2L, inbox);
         checkUserMessageExists(4L, inbox);
         checkUserMessageExists(8L, inbox);
+        checkUserMessageExists(53L, inbox);
         checkUserMessageExists(202L, inbox);
         checkUserMessageExists(302L, inbox);
         checkUserMessageExists(402L, inbox);
@@ -125,6 +129,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageExists(705L, inbox);
         checkUserMessageExists(709L, inbox);
         checkUserMessageExists(808L, inbox);
+        checkUserMessageExists(908L, inbox);
     }
 
     @Test
@@ -134,17 +139,19 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final List<UserMessage> sentItems = this.userMessageService
                 .getSentItems(this.user);
 
-        Assert.assertEquals(6, sentItems.size());
+        Assert.assertEquals(8, sentItems.size());
         checkUserMessageExists(6L, sentItems);
+        checkUserMessageExists(54L, sentItems);
         checkUserMessageExists(304L, sentItems);
         checkUserMessageExists(404L, sentItems);
         checkUserMessageExists(603L, sentItems);
         checkUserMessageExists(707L, sentItems);
         checkUserMessageExists(809L, sentItems);
+        checkUserMessageExists(909L, sentItems);
 
         // test for SUPPLIER - BUSINESSS_USER="111111111"
         final List<UserMessage> potentialDemands = this.userMessageService.getPotentialDemands(businessUser);
-        Assert.assertEquals(4, potentialDemands.size());
+        Assert.assertEquals(5, potentialDemands.size());
 
         // check THREADROOT_ID="1" with DEMAND_ID="2"
         checkUserMessageDoesntExists(1L, potentialDemands);
@@ -200,10 +207,14 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageDoesntExists(711L, potentialDemands);
         checkUserMessageDoesntExists(712L, potentialDemands);
 
+        // check THREADROOT_ID="800" with DEMAND_ID="80"
+        checkUserMessageExists(809L, potentialDemands);
+        // check THREADROOT_ID="900" with DEMAND_ID="90"
+        checkUserMessageExists(909L, potentialDemands);
 
         // test for SUPPLIER - BUSINESSS_USER="111111114"
         final List<UserMessage> potentialDemands2 = this.userMessageService.getPotentialDemands(businessUser4);
-        Assert.assertEquals(3, potentialDemands2.size());
+        Assert.assertEquals(4, potentialDemands2.size());
 
         // check THREADROOT_ID="1" with DEMAND_ID="2"
         checkUserMessageDoesntExists(7L, potentialDemands2);
@@ -247,11 +258,15 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageDoesntExists(711L, potentialDemands2);
         checkUserMessageDoesntExists(712L, potentialDemands2);
 
+        // check THREADROOT_ID="800" with DEMAND_ID="80"
+        checkUserMessageExists(806L, potentialDemands2);
+        // check THREADROOT_ID="900" with DEMAND_ID="90"
+        checkUserMessageExists(906L, potentialDemands2);
 
         // test for SUPPLIER - BUSINESSS_USER="1111111115"
         final List<UserMessage> potentialDemands5 = this.userMessageService.getPotentialDemands(businessUser5);
         final int potentialDemands5count = this.userMessageService.getPotentialDemandsCount(businessUser5);
-//        Assert.assertEquals(1, potentialDemands5count);
+        Assert.assertEquals(1, potentialDemands5count);
 
         // check THREADROOT_ID="701" with DEMAND_ID="70"
         checkUserMessageDoesntExists(701L, potentialDemands5);
@@ -265,9 +280,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         checkUserMessageDoesntExists(709L, potentialDemands5);
         checkUserMessageDoesntExists(710L, potentialDemands5);
         checkUserMessageDoesntExists(711L, potentialDemands5);
-        // TODO RELEASE: this test should be working but it is not. The 712 UserMessage should be inside of collection
         checkUserMessageExists(712L, potentialDemands5);
-
     }
 
     @Test
@@ -275,11 +288,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
 
         final long potentialDemandsCount = this.userMessageService
                 .getPotentialDemandsCount(this.businessUser);
-        Assert.assertEquals(4L, potentialDemandsCount);
+        Assert.assertEquals(5L, potentialDemandsCount);
         // test for businessUser2
         final long potentialDemandsCount2 = this.userMessageService
                 .getPotentialDemandsCount(this.businessUser4);
-        Assert.assertEquals(3L, potentialDemandsCount2);
+        Assert.assertEquals(4L, potentialDemandsCount2);
     }
 
     @Test
@@ -293,12 +306,13 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithoutOffer() {
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
                 .getSupplierConversationsWithoutOffer(this.businessUser);
-        Assert.assertEquals(4, supplierConversations.size());
+        Assert.assertEquals(5, supplierConversations.size());
         checkUserMessageIdAndCount(8L, 4, supplierConversations);
         checkUserMessageIdAndCount(202L, 1, supplierConversations);
         checkUserMessageIdAndCount(501L, 1, supplierConversations);
         checkUserMessageIdAndCount(501L, 1, supplierConversations);
         checkUserMessageIdAndCount(809L, 2, supplierConversations);
+        checkUserMessageIdAndCount(909L, 2, supplierConversations);
     }
 
     @Test
@@ -314,7 +328,7 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithoutOfferCount() {
         final int supplierConversationsCount = this.userMessageService
                 .getSupplierConversationsWithoutOfferCount(this.businessUser);
-        Assert.assertEquals(4, supplierConversationsCount);
+        Assert.assertEquals(5, supplierConversationsCount);
     }
 
     @Test
@@ -328,11 +342,22 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
     public void testGetSupplierConversationsWithAcceptedOffer() {
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
                 .getSupplierConversationsWithAcceptedOffer(this.businessUser5);
-        // TODO RELEASE ivlcek - test this method
-        Assert.assertEquals("expected size 1 was different", 1, supplierConversations.size());
-        UserMessage userMessage = this.generalService.find(UserMessage.class, 805L);
-        supplierConversations.containsKey(userMessage);
-        supplierConversations.containsValue(new Integer(3));
+        Assert.assertEquals("Actual size=" + supplierConversations.size() + " was different than expected", 2,
+                supplierConversations.size());
+        int iteration = 0;
+        for (Map.Entry<UserMessage, Integer> entry : supplierConversations.entrySet()) {
+            UserMessage key = entry.getKey();
+            Integer value = entry.getValue();
+            if (iteration == 0) {
+                Assert.assertEquals("userMessage is different than expected", Long.valueOf(805L), key.getId());
+                Assert.assertEquals("conversation count is wrong", 2, value.intValue());
+            }
+            if (iteration == 1) {
+                Assert.assertEquals("userMessage is different than expected", Long.valueOf(905L), key.getId());
+                Assert.assertEquals("conversation count is wrong", 2, value.intValue());
+            }
+            iteration++;
+        }
     }
 
     @Test
@@ -360,17 +385,30 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         Search search = new Search(UserMessage.class);
         final Map<UserMessage, ClientConversation> clientConversations = this.userMessageService
                 .getClientConversationsWithAcceptedOffer(this.businessUserClient, search);
-        //TODO RELEASE - test count and getData
-        Assert.assertEquals(1, clientConversations.size());
+        Assert.assertEquals(2, clientConversations.size());
+        // test first demand conversation for demand.id=80
         UserMessage latestUserMessage = generalService.find(UserMessage.class, 804L);
         BusinessUser supplier = generalService.find(BusinessUser.class, 111111115L);
-        clientConversations.containsKey(latestUserMessage);
+        Assert.assertTrue("expected clientConversation was not in a map",
+                clientConversations.containsKey(latestUserMessage));
         ClientConversation clientConversation = clientConversations.get(latestUserMessage);
         Assert.assertEquals("expected size 2 was not there", 2, clientConversation.getMessageCount());
         Assert.assertEquals("expected supplier was not there",
                 supplier.getId(), clientConversation.getSupplier().getId());
         Assert.assertEquals("expected usermessage id was not there",
                 latestUserMessage.getId(), clientConversation.getLatestUserMessage().getId());
+
+        // test second demand conversation for demand.id=90
+        UserMessage latestUserMessage2 = generalService.find(UserMessage.class, 904L);
+        BusinessUser supplier2 = generalService.find(BusinessUser.class, 111111115L);
+        Assert.assertTrue("expected clientConversation was not in a map",
+                clientConversations.containsKey(latestUserMessage2));
+        ClientConversation clientConversation2 = clientConversations.get(latestUserMessage2);
+        Assert.assertEquals("expected size 2 was not there", 2, clientConversation2.getMessageCount());
+        Assert.assertEquals("expected supplier was not there",
+                supplier2.getId(), clientConversation2.getSupplier().getId());
+        Assert.assertEquals("expected usermessage id was not there",
+                latestUserMessage2.getId(), clientConversation2.getLatestUserMessage().getId());
     }
 
     @Test

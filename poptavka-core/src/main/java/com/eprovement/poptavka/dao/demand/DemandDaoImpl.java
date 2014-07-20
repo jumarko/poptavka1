@@ -11,6 +11,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
+import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
@@ -182,6 +183,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     public long getClientDemandsWithOfferCount(Client client) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("client", client);
+        params.put("status", DemandStatus.OFFERED);
         return (Long) runNamedQueryForSingleResult("getClientDemandsWithOfferCount", params);
     }
 
@@ -189,6 +191,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     public List<Demand> getClientDemandsWithOffer(Client client) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("client", client);
+        params.put("status", DemandStatus.OFFERED);
         return  runNamedQuery("getClientDemandsWithOffer", params);
     }
 
