@@ -46,7 +46,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testGetAllWithNoCriteria() {
         // no restrictions
         final List<Demand> allDemands = this.demandService.getAll(ResultCriteria.EMPTY_CRITERIA);
-        Assert.assertEquals(16, allDemands.size());
+        Assert.assertEquals(18, allDemands.size());
     }
 
 
@@ -102,7 +102,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
                 .firstResult(firstResult)
                 .orderByColumns(Arrays.asList("id"))
                 .build());
-        Assert.assertEquals(8, allDemandsMaxResults.size());
+        Assert.assertEquals(10, allDemandsMaxResults.size());
         checkDemandExistence(9L, allDemandsMaxResults);
         checkDemandExistence(10L, allDemandsMaxResults);
         checkDemandExistence(18L, allDemandsMaxResults);
@@ -110,12 +110,14 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
         checkDemandExistence(22L, allDemandsMaxResults);
         checkDemandExistence(23L, allDemandsMaxResults);
         checkDemandExistence(70L, allDemandsMaxResults);
+        checkDemandExistence(80L, allDemandsMaxResults);
+        checkDemandExistence(90L, allDemandsMaxResults);
     }
 
     @Test
     public void testGetAllWithFirstResultBeyondMaximum() {
         // restrict number of demands - no ordering is guaranteed!
-        final int firstResult = 16;
+        final int firstResult = 18;
         final List<Demand> allDemands = this.demandService.getAll(new ResultCriteria.Builder()
                 .firstResult(firstResult)
                 .orderByColumns(Arrays.asList("id"))
@@ -132,7 +134,7 @@ public class GenericServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.localityService.getCount());
         Assert.assertEquals("Category count is incorrect.", 17,
                 this.categoryService.getCount());
-        Assert.assertEquals("Demand count is incorrect.", 16,
+        Assert.assertEquals("Demand count is incorrect.", 18,
                 this.demandService.getCount());
     }
 

@@ -55,7 +55,7 @@ public class DemandResourceIntegrationTest extends ResourceIntegrationTest {
                 .andExpect(jsonPath("$.collection[14].title").value("Demand 11"))
                 .andExpect(jsonPath("$.links.self").value("/api/demands"))
                 .andExpect(jsonPath("$.paging.offset").value(0))
-                .andExpect(jsonPath("$.paging.count").value(16));
+                .andExpect(jsonPath("$.paging.count").value(18));
     }
 
     @Test

@@ -37,9 +37,6 @@ public class ContactUsDetail implements IsSerializable {
 
     private String recipient;
     private String subject;
-    // TODO RELEASE ivlcek: test it and resolve,
-    // chceme rozlisovat, v ktorom okne?
-    // Pri moznej zmene alebo preklade bude treba menit na viacerych miestach
     @NotBlank(message = "{emailNotBlank}")
     @Email(message = "{patternEmail}", groups = Extended.class)
     @Size(max = 255, message = "{emailSize}", groups = Extended.class)

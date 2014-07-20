@@ -3,10 +3,10 @@
              xmlns:co="urn:import:com.eprovement.poptavka.client.common"
              xmlns:g="urn:import:com.google.gwt.user.client.ui"
              xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
-    
+
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
-    
+
     <ui:style>
         .tooltip-icon {
         float: left;
@@ -41,7 +41,7 @@
                     </b:FluidRow>
                 </g:HTMLPanel>
             </b:Column>
-                        
+
             <b:Column size="6" addStyleNames='{res.initial.expandOnSmall}'>
                 <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
                     <b:FluidRow addStyleNames='well-header'>
@@ -82,7 +82,7 @@
                         </g:Label>
                     </b:Column>
                     <b:Column size="8">
-                        <g:IntegerBox ui:field="maxOffersBox">10</g:IntegerBox>
+                        <g:IntegerBox ui:field="maxOffersBox">50</g:IntegerBox>
                     </b:Column>
                 </b:FluidRow>
             </b:Column>

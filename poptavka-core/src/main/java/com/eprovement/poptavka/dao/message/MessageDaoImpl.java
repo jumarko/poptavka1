@@ -156,9 +156,6 @@ public class MessageDaoImpl extends GenericHibernateDao<Message> implements Mess
             userMessagesCriteria.createCriteria("message").createCriteria("roles")
                     .add(Restrictions.eq("user", user))
                     .add(Restrictions.eq("type", messageFilter.getMessageUserRoleType()));
-            if (messageFilter.getMessageContext() != null) {
-                userMessagesCriteria.add(Restrictions.eq("messageContext", messageFilter.getMessageContext()));
-            }
         } else {
             userMessagesCriteria = getHibernateSession().createCriteria(UserMessage.class);
             userMessagesCriteria.add(Restrictions.eq("user", user));

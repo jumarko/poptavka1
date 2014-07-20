@@ -114,7 +114,7 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         demand.setDescription(detail.getDescription());
         demand.setType(this.demandService.getDemandType(detail.getDemandType()));
         demand.setPrice(detail.getPrice());
-        // if max suppliers has not been specified, default value is used. @See Demand#DEFAULT_MAX_SUPPLIERS
+        // if max suppliers has not been specified, default value is used, see Demand#DEFAULT_MAX_SUPPLIERS
         if (maxOffersSpecified(detail)) {
             demand.setMaxSuppliers(detail.getMaxSuppliers());
         }

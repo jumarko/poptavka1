@@ -1,7 +1,6 @@
 package com.eprovement.poptavka.dao.message;
 
 import com.eprovement.poptavka.domain.common.ResultCriteria;
-import com.eprovement.poptavka.domain.enums.MessageContext;
 import com.eprovement.poptavka.domain.enums.MessageUserRoleType;
 
 /**
@@ -17,7 +16,6 @@ public final class MessageFilter {
     public static final MessageFilter EMPTY_FILTER = new MessageFilter();
 
     private MessageUserRoleType messageUserRoleType;
-    private MessageContext messageContext;
 
     private ResultCriteria resultCriteria;
 
@@ -30,10 +28,6 @@ public final class MessageFilter {
 
     public MessageUserRoleType getMessageUserRoleType() {
         return messageUserRoleType;
-    }
-
-    public MessageContext getMessageContext() {
-        return messageContext;
     }
 
     public ResultCriteria getResultCriteria() {
@@ -50,11 +44,6 @@ public final class MessageFilter {
 
         public MessageFilterBuilder withMessageUserRoleType(MessageUserRoleType messageUserRoleType) {
             messageFilter.messageUserRoleType = messageUserRoleType;
-            return this;
-        }
-
-        public MessageFilterBuilder withMessageContext(MessageContext messageContext) {
-            messageFilter.messageContext = messageContext;
             return this;
         }
 
