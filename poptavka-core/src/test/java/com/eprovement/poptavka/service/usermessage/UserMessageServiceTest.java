@@ -320,8 +320,8 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
         final Map<UserMessage, Integer> supplierConversations = this.userMessageService
                    .getSupplierConversationsWithOffer(this.businessUser);
         Assert.assertEquals(2, supplierConversations.size());
-        checkUserMessageIdAndCount(304L, 1, supplierConversations);
-        checkUserMessageIdAndCount(709L, 3, supplierConversations);
+        checkUserMessageIdAndCount(304L, 2, supplierConversations);
+        checkUserMessageIdAndCount(709L, 4, supplierConversations);
     }
 
     @Test
@@ -350,11 +350,11 @@ public class UserMessageServiceTest extends DBUnitIntegrationTest {
             Integer value = entry.getValue();
             if (iteration == 0) {
                 Assert.assertEquals("userMessage is different than expected", Long.valueOf(805L), key.getId());
-                Assert.assertEquals("conversation count is wrong", 2, value.intValue());
+                Assert.assertEquals("conversation count is wrong", 3, value.intValue());
             }
             if (iteration == 1) {
                 Assert.assertEquals("userMessage is different than expected", Long.valueOf(905L), key.getId());
-                Assert.assertEquals("conversation count is wrong", 2, value.intValue());
+                Assert.assertEquals("conversation count is wrong", 3, value.intValue());
             }
             iteration++;
         }

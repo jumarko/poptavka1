@@ -80,6 +80,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
      * Displays thank you popup when offer has been finnished and clien has been rated.
      */
     public void onResponseFeedback() {
+        view.getToolbar().getFinishBtn().setEnabled(false);
         Timer additionalAction = new Timer() {
             @Override
             public void run() {
@@ -132,6 +133,7 @@ public class SupplierAssignedDemandsPresenter extends AbstractSupplierPresenter 
         view.getToolbar().getFinishBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                view.getToolbar().getFinishBtn().setEnabled(false);
                 ratePopup = new FeedbackPopupView(FeedbackPopupView.SUPPLIER);
                 ratePopup.setDisplayName(((TableDisplayDisplayName) selectedObject).getDisplayName());
                 ratePopup.getRateBtn().addClickHandler(new ClickHandler() {

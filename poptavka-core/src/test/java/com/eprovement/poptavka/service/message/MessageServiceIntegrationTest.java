@@ -449,7 +449,7 @@ public class MessageServiceIntegrationTest extends DBUnitIntegrationTest {
             Assert.assertEquals("Expected sumbessages count [count=" + countOfSubmessages
                 + "] for latestUserMessage id [id=" + latestUserMessage.getId() + "] "
                     + " in conversation for closed demands for user was different than expected",
-                    1L, countOfSubmessages);
+                    2L, countOfSubmessages);
         }
     }
 
