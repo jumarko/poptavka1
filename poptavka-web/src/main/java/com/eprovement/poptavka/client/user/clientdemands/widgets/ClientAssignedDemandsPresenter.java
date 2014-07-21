@@ -195,12 +195,13 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
             .addColumnStar(starFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)
             .addColumnPrice(textFieldUpdater)
-            .addColumnSupplierRating(textFieldUpdater)
+            //Martin 21.7.2014 - commented until some relevant rating data will be available
+            //.addColumnSupplierRating(textFieldUpdater)
             .addColumnOfferReceivedDate(textFieldUpdater)
             .addColumnFinishDate(textFieldUpdater)
             .addDefaultSort(Arrays.asList(SortPair.asc(OfferField.FINISH_DATE)))
             .addSelectionModel(new MultiSelectionModel(), ClientOfferedDemandOffersDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

@@ -78,10 +78,11 @@ public class SupplierDemandsPresenter extends AbstractSupplierPresenter {
             .addColumnDemandTitle(textFieldUpdater)
             .addColumnPrice(textFieldUpdater)
             .addColumnUrgency()
-            .addColumnClientRating(textFieldUpdater)
+            //Martin 21.7.2014 - commented until some relevant rating data will be available
+            //.addColumnClientRating(textFieldUpdater)
             .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.VALID_TO)))
             .addSelectionModel(new MultiSelectionModel(), SupplierPotentialDemandDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

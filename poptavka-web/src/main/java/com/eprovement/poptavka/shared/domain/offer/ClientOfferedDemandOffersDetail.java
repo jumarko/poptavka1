@@ -6,7 +6,7 @@ package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
-import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleMessages;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
 import com.eprovement.poptavka.client.user.widget.grid.columns.FinishDateColumn.TableDisplayFinishDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.OfferReceivedDateColumn.TableDisplayOfferReceivedDate;
@@ -23,7 +23,7 @@ import java.util.Date;
  * @author ivlcek, Martin Slavkovsky
  */
 public class ClientOfferedDemandOffersDetail implements IsSerializable, IUniversalDetail,
-    TableDisplayUserMessage, TableDisplayPrice, TableDisplayDemandTitle, TableDisplayRating,
+    TableDisplayUserMessage, TableDisplayPrice, TableDisplayDemandTitleMessages, TableDisplayRating,
     TableDisplayDisplayName, TableDisplayOfferReceivedDate, TableDisplayFinishDate {
 
     /**************************************************************************/
@@ -182,14 +182,6 @@ public class ClientOfferedDemandOffersDetail implements IsSerializable, IUnivers
     @Override
     public void setMessagesCount(int messagesCount) {
         this.messagesCount = messagesCount;
-    }
-
-    /**
-     * @return unread messages count, 0 couse its unvailable
-     */
-    @Override
-    public int getUnreadMessagesCount() {
-        return 0;
     }
 
     /**

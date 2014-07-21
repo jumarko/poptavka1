@@ -6,13 +6,13 @@ package com.eprovement.poptavka.shared.domain.offer;
 
 import com.eprovement.poptavka.client.user.widget.grid.IUniversalDetail;
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
-import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn.TableDisplayDisplayName;
 import com.eprovement.poptavka.client.user.widget.grid.columns.FinishDateColumn.TableDisplayFinishDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.OfferReceivedDateColumn.TableDisplayOfferReceivedDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleMessages;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -25,7 +25,7 @@ import java.util.Date;
  */
 public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     TableDisplayDetailModuleClient, TableDisplayOfferReceivedDate, TableDisplayFinishDate,
-    TableDisplayDemandTitle, TableDisplayPrice, TableDisplayRating, TableDisplayDisplayName,
+    TableDisplayDemandTitleMessages, TableDisplayPrice, TableDisplayRating, TableDisplayDisplayName,
     TableDisplayUserMessage {
 
     /**************************************************************************/
@@ -185,14 +185,6 @@ public class SupplierOffersDetail implements IsSerializable, IUniversalDetail,
     @Override
     public void setMessagesCount(int messagesCount) {
         this.messagesCount = messagesCount;
-    }
-
-    /**
-     * @return unread messages count
-     */
-    @Override
-    public int getUnreadMessagesCount() {
-        return 0;
     }
 
     /**

@@ -19,10 +19,28 @@ public class DemandTitleColumn extends Column<TableDisplayDemandTitle, String> {
     public interface TableDisplayDemandTitle {
 
         String getDemandTitle();
+    }
 
-        /**
-         * Provide 0 if count unavailable or if only demand title alone needed.
-         */
+    /**
+     * Note - used in ClientDemand and SupplierDemands modules in all widgets
+     * except parent tables in ClientDemands and ClientOffers.
+     * Messages count and read flag is available.
+     * If MessagesCount > 0, its value is displayed and if isRead value == false, row is consider as unread.
+     */
+    public interface TableDisplayDemandTitleMessages extends TableDisplayDemandTitle {
+
+        int getMessagesCount();
+
+        boolean isRead();
+    }
+
+    /**
+     * Note - used in ClientDemands and ClientOffers use cases in parent tables.
+     * Unread messages count is available.
+     * If UnreadMessagesCount > 0, its value is displayed and row is consider as unread.
+     */
+    public interface TableDisplayDemandTitleUnreadMessages extends TableDisplayDemandTitle {
+
         int getUnreadMessagesCount();
     }
 
@@ -49,23 +67,30 @@ public class DemandTitleColumn extends Column<TableDisplayDemandTitle, String> {
      */
     @Override
     public String getValue(TableDisplayDemandTitle object) {
-        return getCellTextAccordingToUnreadMessagesCount(object.getUnreadMessagesCount(), object.getDemandTitle());
+        if (object instanceof TableDisplayDemandTitleMessages) {
+            return getCellTextAccordingToMessagesCount(
+                ((TableDisplayDemandTitleMessages) object).getMessagesCount(), object.getDemandTitle());
+        } else if (object instanceof TableDisplayDemandTitleUnreadMessages) {
+            return getCellTextAccordingToMessagesCount(
+                ((TableDisplayDemandTitleUnreadMessages) object).getUnreadMessagesCount(), object.getDemandTitle());
+        } else {
+            return getCellTextAccordingToMessagesCount(0, object.getDemandTitle());
+        }
     }
 
     /**
-     * Formats demand title text by adding unread messages count abter it
-     * if unread messages count is not 0.
+     * Formats demand title text by adding messages count after it if messages count is not 0.
      *
-     * @param unreadMessageCount value
+     * @param messagesCount value
      * @param cellText - demand title text
      * @return formated cell value
      */
-    private String getCellTextAccordingToUnreadMessagesCount(int unreadMessageCount, String cellText) {
-        if (unreadMessageCount > 0) {
+    private String getCellTextAccordingToMessagesCount(int messagesCount, String cellText) {
+        if (messagesCount > 0) {
             StringBuilder title = new StringBuilder();
             title.append(cellText);
             title.append(" (");
-            title.append(unreadMessageCount);
+            title.append(messagesCount);
             title.append(")");
             return title.toString();
         } else {

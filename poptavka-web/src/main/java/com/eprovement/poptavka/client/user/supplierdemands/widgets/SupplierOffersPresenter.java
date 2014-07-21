@@ -58,12 +58,13 @@ public class SupplierOffersPresenter extends AbstractSupplierPresenter {
             .addColumnStar(starFieldUpdater)
             .addColumnDemandTitle(textFieldUpdater)
             .addColumnPrice(textFieldUpdater)
-            .addColumnClientRating(textFieldUpdater) //TODO rename to rating
+            //Martin 21.7.2014 - commented until some relevant rating data will be available
+            //.addColumnClientRating(textFieldUpdater) //TODO rename to rating
             .addColumnOfferReceivedDate(textFieldUpdater)
             .addColumnFinishDate(textFieldUpdater)
             .addDefaultSort(Arrays.asList(SortPair.desc(ClientField.OVERALL_RATING)))
             .addSelectionModel(new MultiSelectionModel(), SupplierOffersDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

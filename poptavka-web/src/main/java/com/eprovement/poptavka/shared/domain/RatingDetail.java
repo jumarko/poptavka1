@@ -52,11 +52,6 @@ public class RatingDetail implements IsSerializable,
     }
 
     @Override
-    public int getUnreadMessagesCount() {
-        return 0;
-    }
-
-    @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         str.append("id=" + demandId);

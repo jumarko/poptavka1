@@ -173,8 +173,4 @@ public class FullRatingDetail implements IsSerializable,
         this.clientName = clientName;
     }
 
-    @Override
-    public int getUnreadMessagesCount() {
-        return 0;
-    }
 }

@@ -240,14 +240,6 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         this.created = created;
     }
 
-    /**
-     * @return the unread messages count
-     */
-    @Override
-    public int getUnreadMessagesCount() {
-        return 0;
-    }
-
     /*
      * Offer status pair.
      */

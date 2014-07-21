@@ -206,7 +206,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             .addColumnUrgency()
             .addDefaultSort(Arrays.asList(SortPair.asc(DemandField.VALID_TO)))
             .addSelectionModel(new SingleSelectionModel(), ClientDemandDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 
@@ -225,7 +225,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             .addColumnFinishDate(textFieldUpdater)
             .addDefaultSort(Arrays.asList(SortPair.asc(OfferField.CREATED)))
             .addSelectionModel(new MultiSelectionModel(), ClientOfferedDemandOffersDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

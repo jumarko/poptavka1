@@ -4,11 +4,11 @@
 package com.eprovement.poptavka.shared.domain.supplierdemands;
 
 import com.eprovement.poptavka.client.user.widget.grid.TableDisplayUserMessage;
-import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
 import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleClient;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleMessages;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import java.util.Date;
  * @since 02.02.2014
  */
 public class SupplierPotentialDemandDetail implements IsSerializable,
-    TableDisplayRating, TableDisplayUserMessage, TableDisplayDemandTitle, TableDisplayPrice,
+    TableDisplayRating, TableDisplayUserMessage, TableDisplayDemandTitleMessages, TableDisplayPrice,
     TableDisplayValidTo, TableDisplayDetailModuleClient {
 
     /**************************************************************************/
@@ -133,14 +133,6 @@ public class SupplierPotentialDemandDetail implements IsSerializable,
     @Override
     public void setMessagesCount(int messagesCount) {
         this.messagesCount = messagesCount;
-    }
-
-    /**
-     * @return unread messages count
-     */
-    @Override
-    public int getUnreadMessagesCount() {
-        return 0;
     }
 
     /**
