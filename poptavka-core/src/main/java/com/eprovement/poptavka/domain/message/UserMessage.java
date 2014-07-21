@@ -137,7 +137,7 @@ import javax.persistence.NamedQuery;
                 query = "select latestUserMessage, ("
                         + "select count(subUserMessage.id) from UserMessage as subUserMessage\n"
                         + "where subUserMessage.message.threadRoot = latestUserMessage.message.threadRoot"
-                        + " and subUserMessage.message.offer is not null"
+//                        + " and subUserMessage.message.offer is not null"
                         + " and subUserMessage.user = :user"
                         + ")\n"
                         + "from UserMessage latestUserMessage\n"

@@ -81,6 +81,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      * Displays thank you popup and forwards user to closed demands.
      */
     public void onResponseFeedback() {
+        view.getToolbar().getCloseBtn().setEnabled(true);
         Timer additionalAction = new Timer() {
             @Override
             public void run() {
@@ -148,6 +149,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         view.getToolbar().getCloseBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                view.getToolbar().getCloseBtn().setEnabled(false);
                 ratePopup = new FeedbackPopupView(FeedbackPopupView.CLIENT);
                 ratePopup.setDisplayName(((TableDisplayDisplayName) selectedChildObject).getDisplayName());
                 ratePopup.getRateBtn().addClickHandler(new ClickHandler() {

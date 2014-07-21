@@ -110,6 +110,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
      * Shows thank you popup when offer is accepted and forwards user to ClientAssignedDemands.
      */
     public void onResponseAcceptOffer() {
+        view.getToolbar().getAcceptBtn().setEnabled(true);
         Timer additionalAction = new Timer() {
             @Override
             public void run() {
@@ -186,6 +187,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             public void onClick(ClickEvent event) {
                 if (selectedOfferedDemandOfferObject != null) {
                     eventBus.requestAcceptOffer(selectedOfferedDemandOfferObject.getOfferId());
+                    view.getToolbar().getAcceptBtn().setEnabled(false);
                 } else {
                     Window.alert("To accept an offer you need to select one (just one).");
                 }
