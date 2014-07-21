@@ -14,7 +14,6 @@ import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SetSelectionModel;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -60,15 +59,6 @@ public abstract class AbstractSupplierPresenter
             }
         }
     };
-    protected RowStyles rowStyles = new RowStyles<TableDisplayUserMessage>() {
-            @Override
-            public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
-                if (!row.isRead()) {
-                    return Storage.GRSCS.dataGridStyle().unread();
-                }
-                return "";
-            }
-        };
 
     /**************************************************************************/
     /* General Widget events                                                  */

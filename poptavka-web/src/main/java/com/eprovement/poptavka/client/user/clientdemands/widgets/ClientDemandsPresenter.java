@@ -291,7 +291,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             .addColumnUrgency()
             .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .addSelectionModel(new SingleSelectionModel(), ClientDemandDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 
@@ -306,11 +306,12 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             .addColumnStar(starFieldUpdater)
             .addColumnDisplayName(textFieldUpdater)
             .addColumnMessageText(textFieldUpdater)
-            .addColumnClientRating(textFieldUpdater) //TODO rename to rating
+            //Martin 21.7.2014 - commented until some relevant rating data will be available
+            //.addColumnClientRating(textFieldUpdater) //TODO rename to rating
             .addColumnMessageSent(textFieldUpdater)
             .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .addSelectionModel(new MultiSelectionModel(), ClientDemandConversationDetail.KEY_PROVIDER)
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

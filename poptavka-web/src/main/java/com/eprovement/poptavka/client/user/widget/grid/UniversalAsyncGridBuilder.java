@@ -11,6 +11,8 @@ import com.eprovement.poptavka.client.user.widget.grid.cell.UrgentImageCell;
 import com.eprovement.poptavka.client.user.widget.grid.columns.CreatedDateColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandStatusColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleMessages;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleUnreadMessages;
 import com.eprovement.poptavka.client.user.widget.grid.columns.DisplayNameColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.EndDateColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.FinishDateColumn;
@@ -106,7 +108,7 @@ public class UniversalAsyncGridBuilder<T> {
     /* Selection Model initialization                                     */
     /**********************************************************************/
     public UniversalAsyncGridBuilder addSelectionModel(SelectionModel selectionModel, ProvidesKey<T> keyProvider) {
-            // Selection Model - must define different from default which is used in UniversalAsyncGrid
+        // Selection Model - must define different from default which is used in UniversalAsyncGrid
         // Add a selection model so we can select cells.
         if (selectionModel instanceof MultiSelectionModel) {
             table.setSelectionModel(new MultiSelectionModel<T>(keyProvider),
@@ -130,9 +132,30 @@ public class UniversalAsyncGridBuilder<T> {
     /**********************************************************************/
     /**
      * Set custom row style according to given row styles condition.
+     * @param rowStyles if not null, given rowstyle is used, if null, default one is used
      */
     public UniversalAsyncGridBuilder addRowStyles(RowStyles rowStyles) {
-        table.setRowStyles(rowStyles);
+        if (rowStyles == null) {
+            table.setRowStyles(new RowStyles() {
+                @Override
+                public String getStyleNames(Object row, int rowIndex) {
+                    boolean isRead = true;
+                    if (row instanceof TableDisplayUserMessage) {
+                        isRead = ((TableDisplayUserMessage) row).isRead();
+                    } else if (row instanceof TableDisplayDemandTitleMessages) {
+                        isRead = ((TableDisplayDemandTitleMessages) row).isRead();
+                    } else if (row instanceof TableDisplayDemandTitleUnreadMessages) {
+                        isRead = ((TableDisplayDemandTitleUnreadMessages) row).getUnreadMessagesCount() == 0;
+                    }
+                    if (!isRead) {
+                        return GRSCS.dataGridStyle().unread();
+                    }
+                    return "";
+                }
+            });
+        } else {
+            table.setRowStyles(rowStyles);
+        }
         return this;
     }
 
@@ -358,7 +381,7 @@ public class UniversalAsyncGridBuilder<T> {
 
     public UniversalAsyncGrid build() {
         table.setWidth("100%");
-            //In order to have no scroll bar inside table, its height must be always set
+        //In order to have no scroll bar inside table, its height must be always set
         //exactly according to its row count. Therefore height is set in updateRowData in UniversalAsyncGrid
         table.setGridColumns(new SortDataHolder(defaultSortColumns, sortColumns));
         return table;

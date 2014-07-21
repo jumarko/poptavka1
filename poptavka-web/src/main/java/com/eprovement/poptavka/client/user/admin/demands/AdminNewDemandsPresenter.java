@@ -187,7 +187,7 @@ public class AdminNewDemandsPresenter extends AbstractAdminPresenter {
             .addColumnUrgency()
             .addSelectionModel(new MultiSelectionModel(), AdminDemandDetail.KEY_PROVIDER)
             .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
-            .addRowStyles(rowStyles)
+            .addRowStyles(null)
             .build();
     }
 }

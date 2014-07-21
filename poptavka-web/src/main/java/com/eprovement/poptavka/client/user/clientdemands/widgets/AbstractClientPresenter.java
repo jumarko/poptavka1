@@ -15,7 +15,6 @@ import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModule
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SetSelectionModel;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -61,21 +60,6 @@ public abstract class AbstractClientPresenter
             for (Object row : view.getChildTable().getVisibleItems()) {
                 ((SetSelectionModel) view.getChildTable().getSelectionModel()).setSelected(row, value);
             }
-        }
-    };
-    protected RowStyles rowStyles = new RowStyles() {
-        @Override
-        public String getStyleNames(Object row, int rowIndex) {
-            boolean unread = false;
-            if (row instanceof TableDisplayUserMessage) {
-                unread = !((TableDisplayUserMessage) row).isRead();
-            } else if (row instanceof TableDisplayDemandTitle) {
-                unread = ((TableDisplayDemandTitle) row).getUnreadMessagesCount() > 0;
-            }
-            if (unread) {
-                return Storage.GRSCS.dataGridStyle().unread();
-            }
-            return "";
         }
     };
     protected boolean isInitializing;

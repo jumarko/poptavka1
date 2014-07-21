@@ -25,7 +25,6 @@ import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -91,15 +90,6 @@ public class MessageListPresenter
             }
         }
     };
-    private RowStyles rowStyles = new RowStyles<TableDisplayUserMessage>() {
-            @Override
-            public String getStyleNames(TableDisplayUserMessage row, int rowIndex) {
-                if (!row.isRead()) {
-                    return Storage.GRSCS.dataGridStyle().unread();
-                }
-                return "";
-            }
-        };
 
     /**************************************************************************/
     /* General Widget events                                                  */
@@ -193,7 +183,6 @@ public class MessageListPresenter
             .addColumnMessageCreated(textFieldUpdater)
             .addSelectionModel(new MultiSelectionModel(), MessageDetail.KEY_PROVIDER)
             .addDefaultSort(Arrays.asList(SortPair.asc(MessageField.CREATED)))
-            .addRowStyles(rowStyles)
             .build();
     }
 }

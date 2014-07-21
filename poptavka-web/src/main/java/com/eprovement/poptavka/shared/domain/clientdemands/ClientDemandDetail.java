@@ -4,12 +4,12 @@
 package com.eprovement.poptavka.shared.domain.clientdemands;
 
 import com.eprovement.poptavka.client.user.widget.grid.columns.DemandStatusColumn.TableDisplayDemandStatus;
-import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitle;
 import com.eprovement.poptavka.client.user.widget.grid.columns.EndDateColumn.TableDisplayEndDate;
 import com.eprovement.poptavka.client.user.widget.grid.columns.PriceColumn.TableDisplayPrice;
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.client.detail.interfaces.TableDisplayDetailModuleSupplier;
+import com.eprovement.poptavka.client.user.widget.grid.columns.DemandTitleColumn.TableDisplayDemandTitleUnreadMessages;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ import java.util.Date;
  * @author Martin Slavkovsky
  */
 public class ClientDemandDetail implements IsSerializable,
-    TableDisplayDemandTitle, TableDisplayDetailModuleSupplier,
+    TableDisplayDemandTitleUnreadMessages, TableDisplayDetailModuleSupplier,
     TableDisplayDemandStatus, TableDisplayEndDate, TableDisplayValidTo,
     TableDisplayPrice {
 
