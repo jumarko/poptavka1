@@ -159,7 +159,7 @@ public class UserRegistrationView extends Composite
         if (accountInfoForm != null) {
             accountInfoForm.reset();
         }
-        if (companyInfoForm != null) {
+        if (contactInfoForm != null) {
             contactInfoForm.reset();
         }
         if (companyInfoForm != null) {

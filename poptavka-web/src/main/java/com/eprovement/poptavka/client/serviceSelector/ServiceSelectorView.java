@@ -4,8 +4,7 @@
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.common.ReverseCompositeView;
+import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.cell.client.TextCell;
@@ -14,17 +13,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import java.util.ArrayList;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * View consists of Table.
  *
  * @author Martin Slavkovsky
  */
-public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPresenter>
-    implements ServiceSelectorPresenter.SupplierServiceInterface, ProvidesValidate {
+public class ServiceSelectorView extends Composite implements ServiceSelectorPresenter.SupplierServiceInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -41,6 +40,7 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     @UiField(provided = true) DataGrid table;
     /** Class attributes. **/
     private ListDataProvider<ServiceDetail> dataProvider;
+    private SingleSelectionModel<ServiceDetail> selectionModel;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -64,17 +64,25 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
         table = new DataGrid<ServiceDetail>(10, resource, ServiceDetail.KEY_PROVIDER);
         dataProvider = new ListDataProvider<ServiceDetail>();
         dataProvider.addDataDisplay(table);
+        selectionModel = new SingleSelectionModel<ServiceDetail>();
+        table.setSelectionModel(selectionModel);
+
+        initTableColumns();
     }
 
     /**
      * Creates table columns.
      * @param radioBtnColumn - radio button column.
      */
-    @Override
-    public void initTableColumns(Column<ServiceDetail, Boolean> radioBtnColumn) {
+    private void initTableColumns() {
         /** Column initialization. **/
         //Radio column
-        table.addColumn(radioBtnColumn);
+        table.addColumn(new Column<ServiceDetail, Boolean>(new RadioCell()) {
+            @Override
+            public Boolean getValue(ServiceDetail object) {
+                return selectionModel.isSelected(object);
+            }
+        });
         //Service title column
         table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
             @Override
@@ -117,20 +125,34 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
     /* Setters                                                                */
     /**************************************************************************/
     /**
-     * Set retrieved services in Table.
-     * @param services
+     * {@inheritDoc}
      */
-    @Override
-    public void displayServices(ArrayList<ServiceDetail> services) {
-        dataProvider.setList(services);
+    public DataGrid getTable() {
+        return table;
     }
 
     /**
      * {@inheritDoc}
-    */
+     */
+    @Override
+    public SingleSelectionModel<ServiceDetail> getSelectionModel() {
+        return selectionModel;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ListDataProvider<ServiceDetail> getDataProvider() {
+        return dataProvider;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void reset() {
-        dataProvider.getList().clear();
+        selectionModel.clear();
     }
 
     /**************************************************************************/
@@ -142,6 +164,6 @@ public class ServiceSelectorView extends ReverseCompositeView<ServiceSelectorPre
      */
     @Override
     public boolean isValid() {
-        return presenter.getSelected() != null;
+        return selectionModel.getSelectedObject() != null;
     }
 }

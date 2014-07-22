@@ -4,13 +4,13 @@
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
-import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
@@ -31,17 +31,13 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     /**************************************************************************/
     public interface SupplierServiceInterface extends LazyView, ProvidesValidate, IsWidget {
 
-        void initTableColumns(Column<ServiceDetail, Boolean> radioBtnColumn);
+        DataGrid getTable();
 
-        void displayServices(ArrayList<ServiceDetail> services);
+        SingleSelectionModel<ServiceDetail> getSelectionModel();
+
+        ListDataProvider<ServiceDetail> getDataProvider();
 
     }
-
-    /**************************************************************************/
-    /* Attributes                                                             */
-    /**************************************************************************/
-    private FieldUpdater fieldUpdater;
-    private ServiceDetail selected;
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -77,33 +73,6 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     }
 
     /**************************************************************************/
-    /* Bind handlers                                                          */
-    /**************************************************************************/
-    /**
-     * Creates FieldUpdater for table to handle selection.
-     * Cannot use selection model because selection manager is used to manages radio buttons.
-     */
-    @Override
-    public void bindView() {
-        fieldUpdater = new FieldUpdater<ServiceDetail, Boolean>() {
-            @Override
-            public void update(int index, ServiceDetail object, Boolean value) {
-                if (value) {
-                    selected = object;
-                }
-            }
-        };
-        Column<ServiceDetail, Boolean> radioButton = new Column<ServiceDetail, Boolean>(new RadioCell()) {
-            @Override
-            public Boolean getValue(ServiceDetail object) {
-                return object.equals(selected);
-            }
-        };
-        radioButton.setFieldUpdater(fieldUpdater);
-        view.initTableColumns(radioButton);
-    }
-
-    /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
     /**
@@ -112,9 +81,10 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * @param services
      */
     public void onDisplayServices(ArrayList<ServiceDetail> services) {
-        view.displayServices(services);
+        view.getDataProvider().setList(services);
         //set default selected value
         this.onSelectService(services.get(0));
+        view.getTable().setHeight((services.size() * 45 + 50) + "px");
     }
 
     /**
@@ -122,7 +92,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * @param service
      */
     public void onSelectService(ServiceDetail service) {
-        fieldUpdater.update(0, service, true);
+        view.getSelectionModel().setSelected(service, true);
     }
 
     /**
@@ -136,7 +106,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
         } else {
             services.clear();
         }
-        services.add(selected);
+        services.add(view.getSelectionModel().getSelectedObject());
     }
 
     /**************************************************************************/
@@ -146,6 +116,6 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * @return the selected service detail
      */
     public ServiceDetail getSelected() {
-        return selected;
+        return view.getSelectionModel().getSelectedObject();
     }
 }
