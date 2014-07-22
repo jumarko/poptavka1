@@ -332,11 +332,11 @@ public interface LocalizableMessages extends Messages {
     String columnCode();
     String columnCompany();
     String columnCreatedDate();
+    String columnCredits();
     String columnDate();
     String columnDeliveryDate();
     String columnDemandTitle();
     String columnDID();
-    String columnDuration();
     String columnEndDate();
     String columnExpiration();
     String columnEmail();

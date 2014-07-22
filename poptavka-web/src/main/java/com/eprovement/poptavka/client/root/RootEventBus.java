@@ -36,7 +36,6 @@ import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
@@ -419,7 +418,7 @@ public interface RootEventBus extends EventBusWithLookup,
     /* SERVICE SELECTOR MODULE.                                               */
     /**************************************************************************/
     @Event(forwardToModules = ServiceSelectorModule.class)
-    void initServicesWidget(ServiceType serviceType, SimplePanel embedToWidget);
+    void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToModules = ServiceSelectorModule.class)
     void fillServices(List<ServiceDetail> services);

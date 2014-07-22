@@ -7,6 +7,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -98,27 +99,27 @@ public class ServiceSelectorView extends Composite implements ServiceSelectorPre
             }
         }, Storage.MSGS.columDescription());
         //Price column
-        // TODO LATER ivlcek - commented for BETA version
-//        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
-//            @Override
-//            public Number getValue(ServiceDetail object) {
-//                return object.getPrice();
-//            }
-//        }, Storage.MSGS.columnPrice());
-        //Duration column -
-//        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
-//            @Override
-//            public Number getValue(ServiceDetail object) {
-//                return object.getPrepaidMonths();
-//            }
-//        }, Storage.MSGS.columnDuration());
+        table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
+            @Override
+            public String getValue(ServiceDetail object) {
+                return Storage.CURRENCY_FORMAT.format(object.getPrice());
+            }
+        }, Storage.MSGS.columnPrice());
+        //Credits column
+        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
+            @Override
+            public Number getValue(ServiceDetail object) {
+                return object.getCredits();
+            }
+        }, Storage.MSGS.columnCredits());
 
         //Set table and columns sizes
         table.setSize("100%", "100px");
         table.setColumnWidth(0, "35px");
-        table.setColumnWidth(1, "55px");
-        table.setColumnWidth(2, "210px");
-//        table.setColumnWidth(3, "55px");
+        table.setColumnWidth(1, "30%");
+        table.setColumnWidth(2, "70%");
+        table.setColumnWidth(3, "55px");
+        table.setColumnWidth(4, "55px");
     }
 
     /**************************************************************************/

@@ -11,5 +11,5 @@ import java.util.ArrayList;
  */
 public interface ServiceSelectorRPCServiceAsync {
 
-    void getSupplierServices(ServiceType serviceType, AsyncCallback<ArrayList<ServiceDetail>> callback);
+    void getSupplierServices(ServiceType[] serviceTypes, AsyncCallback<ArrayList<ServiceDetail>> callback);
 }

@@ -3,7 +3,6 @@
  */
 package com.eprovement.poptavka.client.root.gateways;
 
-import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Event;
@@ -18,7 +17,7 @@ import java.util.List;
 public interface ServiceSelectorGateway {
 
     @Event(forwardToParent = true)
-    void initServicesWidget(ServiceType serviceType, SimplePanel embedToWidget);
+    void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToParent = true)
     void fillServices(List<ServiceDetail> services);

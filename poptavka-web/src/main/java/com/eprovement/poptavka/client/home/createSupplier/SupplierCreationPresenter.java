@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.GATracker;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
-import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
@@ -179,7 +178,7 @@ public class SupplierCreationPresenter
                 LOGGER.info(" -> init Service Form supplierService");
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_SERVICES);
                 if (view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget() == null) {
-                    eventBus.initServicesWidget(ServiceType.SUPPLIER, view.getHolderPanel(FOURTH_TAB_SERVICES));
+                    eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICES));
                 }
                 setHeightServices();
                 break;

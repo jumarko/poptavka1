@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.interfaces.ISupplierSettings;
-import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -52,9 +51,9 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
         if (Storage.getBusinessUserDetail() != null
             && Storage.getBusinessUserDetail().getBusinessRoles().contains(
                 BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            eventBus.initServicesWidget(ServiceType.SUPPLIER, view.getServicePanel());
+            eventBus.initServicesWidget(view.getServicePanel());
         } else {
-            eventBus.initServicesWidget(ServiceType.CLIENT, view.getServicePanel());
+            eventBus.initServicesWidget(view.getServicePanel());
         }
     }
 
