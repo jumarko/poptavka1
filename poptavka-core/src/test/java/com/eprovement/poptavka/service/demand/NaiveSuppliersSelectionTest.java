@@ -52,7 +52,7 @@ public class NaiveSuppliersSelectionTest {
         final Supplier excludedSupplier = createSupplier(11L, 30);
         suppliers.add(excludedSupplier);
         suppliers.add(createSupplier(10L, 100, CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE));
-        Mockito.when(supplierServiceMock.getSuppliersIncludingParents(anyListOf(Category.class),
+        Mockito.when(supplierServiceMock.getSuppliersIncludingParentsAndChildren(anyListOf(Category.class),
                 anyListOf(Locality.class),
                 any(ResultCriteria.class)))
                 .thenReturn(suppliers);

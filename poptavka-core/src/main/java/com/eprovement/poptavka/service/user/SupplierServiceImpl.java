@@ -144,9 +144,9 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     }
 
     @Override
-    public Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+    public Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
                                                       ResultCriteria resultCriteria) {
-        return getDao().getSuppliersIncludingParents(categories, localities, resultCriteria);
+        return getDao().getSuppliersIncludingParentsAndChildren(categories, localities, resultCriteria);
     }
 
 

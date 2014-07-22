@@ -54,7 +54,7 @@ public class NaiveSuppliersSelection implements SuppliersSelection {
 
         LOGGER.debug("action=get_potential_suppliers status=start demand={}. Find all possible suppliers for demand",
                 demand);
-        final Set<Supplier> suppliers = supplierService.getSuppliersIncludingParents(
+        final Set<Supplier> suppliers = supplierService.getSuppliersIncludingParentsAndChildren(
                 demand.getCategories(), demand.getLocalities(), ResultCriteria.EMPTY_CRITERIA);
         LOGGER.debug("action=get_potential_suppliers status=finish demand={} suppliers_count={} ",
                 new Object[] {demand, demand.getCategories().size(), suppliers.size()});
