@@ -31,16 +31,10 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
 
         OVERALL_RATING("overalRating");
 
-        public static final String SEARCH_CLASS = "supplier";
         private String value;
 
         private SupplierField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override

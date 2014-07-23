@@ -22,7 +22,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -70,7 +69,6 @@ public class HomeDemandsPresenter
 
         SimplePanel getFooterPanel();
 
-        Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -132,7 +130,7 @@ public class HomeDemandsPresenter
      * Inits Detail module and category selector.
      */
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
+        eventBus.setBody(view);
         eventBus.setToolbarContent("Categories", view.getToolbarContent());
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_DEMANDS_MODULE);

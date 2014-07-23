@@ -15,6 +15,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
+import com.github.gwtbootstrap.client.ui.TextArea;
 import com.github.gwtbootstrap.client.ui.TextBox;
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  * @author Martin Slavkovsky
  */
 public class HomeSuppliersSearchView extends Composite implements
-        SearchModulePresenter.SearchModulesViewInterface {
+    SearchModulePresenter.SearchModulesViewInterface {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -75,29 +76,29 @@ public class HomeSuppliersSearchView extends Composite implements
         int group = 0;
         if (!((TextBox) companyMonitor.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
-                    UserDataField.COMPANY_NAME,
-                    Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
+                UserDataField.COMPANY_NAME,
+                Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
             filters.add(new FilterItem(
-                    UserDataField.FIRST_NAME,
-                    Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
+                UserDataField.FIRST_NAME,
+                Operation.OPERATION_LIKE, companyMonitor.getValue(), group));
             filters.add(new FilterItem(
-                    UserDataField.LAST_NAME,
-                    Operation.OPERATION_LIKE, companyMonitor.getValue(), group++));
+                UserDataField.LAST_NAME,
+                Operation.OPERATION_LIKE, companyMonitor.getValue(), group++));
         }
-        if (!((TextBox) descriptionMonitor.getWidget()).getText().isEmpty()) {
+        if (!((TextArea) descriptionMonitor.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
-                    UserDataField.DESCRIPTION,
-                    Operation.OPERATION_LIKE, descriptionMonitor.getValue(), group++));
+                UserDataField.DESCRIPTION,
+                Operation.OPERATION_LIKE, descriptionMonitor.getValue(), group++));
         }
         if (ratingMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
-                    UserDataField.OVERALL_RATING,
-                    Operation.OPERATION_FROM, ratingMonitorFrom.getValue(), group++));
+                UserDataField.OVERALL_RATING,
+                Operation.OPERATION_FROM, ratingMonitorFrom.getValue(), group++));
         }
         if (ratingMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
-                    UserDataField.OVERALL_RATING,
-                    Operation.OPERATION_TO, ratingMonitorTo.getValue(), group++));
+                UserDataField.OVERALL_RATING,
+                Operation.OPERATION_TO, ratingMonitorTo.getValue(), group++));
         }
         return filters;
     }

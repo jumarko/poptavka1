@@ -60,17 +60,10 @@ public class FullDemandDetail implements IsSerializable, TableDisplayCreatedDate
         CREATED("createdDate"),
         EXCLUDE_SUPPLIER("excludedSuppliers");
 
-        public static final String SEARCH_CLASS = "demand";
-
         private String value;
 
         private DemandField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override

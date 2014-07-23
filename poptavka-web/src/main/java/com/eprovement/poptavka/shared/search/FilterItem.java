@@ -93,8 +93,8 @@ public class FilterItem implements IsSerializable {
         return item.getValue();
     }
 
-    public String getFieldClass() {
-        return item.getFieldClass();
+    public Class getFieldClass() {
+        return item.getClass();
     }
 
     public Operation getOperation() {

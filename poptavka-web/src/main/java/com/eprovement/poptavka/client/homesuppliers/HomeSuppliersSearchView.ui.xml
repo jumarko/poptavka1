@@ -51,7 +51,7 @@
                     </b:Column>
                     <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
                         <cm:ValidationMonitor ui:field="descriptionMonitor">
-                            <b:TextArea placeholder="{msgs.placeholderCompanyDescription}" styleName='full-width'/>
+                            <b:TextArea height="90px" placeholder="{msgs.placeholderCompanyDescription}" styleName='full-width'/>
                         </cm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>

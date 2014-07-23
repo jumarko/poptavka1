@@ -165,12 +165,4 @@ public class HomeDemandsView extends OverflowComposite
     public Widget getToolbarContent() {
         return pager;
     }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
-    }
 }

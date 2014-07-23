@@ -57,38 +57,38 @@ public final class DomainObjectsMaping {
      */
     private DomainObjectsMaping() {
         //Demand
-        mapingPairs.add(new MapingPair(Demand.class, DemandField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(DemandCategory.class, DemandField.SEARCH_CLASS, "demand."));
-        mapingPairs.add(new MapingPair(DemandLocality.class, DemandField.SEARCH_CLASS, "demand."));
+        mapingPairs.add(new MapingPair(Demand.class, DemandField.class, ""));
+        mapingPairs.add(new MapingPair(DemandCategory.class, DemandField.class, "demand."));
+        mapingPairs.add(new MapingPair(DemandLocality.class, DemandField.class, "demand."));
         //Client
-        mapingPairs.add(new MapingPair(Client.class, ClientField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(Client.class, UserField.SEARCH_CLASS, "businessUser."));
-        mapingPairs.add(new MapingPair(Client.class, UserDataField.SEARCH_CLASS, "businessUser.businessUserData."));
+        mapingPairs.add(new MapingPair(Client.class, ClientField.class, ""));
+        mapingPairs.add(new MapingPair(Client.class, UserField.class, "businessUser."));
+        mapingPairs.add(new MapingPair(Client.class, UserDataField.class, "businessUser.businessUserData."));
         //Supplier
-        mapingPairs.add(new MapingPair(Supplier.class, SupplierField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(SupplierCategory.class, SupplierField.SEARCH_CLASS, "supplier."));
-        mapingPairs.add(new MapingPair(SupplierLocality.class, SupplierField.SEARCH_CLASS, "supplier."));
+        mapingPairs.add(new MapingPair(Supplier.class, SupplierField.class, ""));
+        mapingPairs.add(new MapingPair(Supplier.class, UserDataField.class, "businessUser.businessUserData."));
+        mapingPairs.add(new MapingPair(SupplierCategory.class, SupplierField.class, "supplier."));
+        mapingPairs.add(new MapingPair(SupplierLocality.class, SupplierField.class, "supplier."));
         //Offer
-        mapingPairs.add(new MapingPair(Offer.class, DemandField.SEARCH_CLASS, "demand."));
+        mapingPairs.add(new MapingPair(Offer.class, DemandField.class, "demand."));
         //UserMessage
-        mapingPairs.add(new MapingPair(UserMessage.class, DemandField.SEARCH_CLASS, "message.demand."));
-        mapingPairs.add(new MapingPair(UserMessage.class, ClientField.SEARCH_CLASS, "message.demand.client."));
-        mapingPairs.add(new MapingPair(UserMessage.class, SupplierField.SEARCH_CLASS, "message.offer.supplier."));
-        mapingPairs.add(new MapingPair(UserMessage.class, OfferField.SEARCH_CLASS, "message.offer."));
-        mapingPairs.add(new MapingPair(UserMessage.class, MessageField.SEARCH_CLASS, "message."));
-        mapingPairs.add(new MapingPair(UserMessage.class, UserMessageField.SEARCH_CLASS, ""));
-        mapingPairs.add(new MapingPair(UserMessage.class,
-            UserDataField.SEARCH_CLASS, "businessUser.businessUserData."));
+        mapingPairs.add(new MapingPair(UserMessage.class, DemandField.class, "message.demand."));
+        mapingPairs.add(new MapingPair(UserMessage.class, ClientField.class, "message.demand.client."));
+        mapingPairs.add(new MapingPair(UserMessage.class, SupplierField.class, "message.offer.supplier."));
+        mapingPairs.add(new MapingPair(UserMessage.class, OfferField.class, "message.offer."));
+        mapingPairs.add(new MapingPair(UserMessage.class, MessageField.class, "message."));
+        mapingPairs.add(new MapingPair(UserMessage.class, UserMessageField.class, ""));
+        mapingPairs.add(new MapingPair(UserMessage.class, UserDataField.class, "businessUser.businessUserData."));
     }
 
     /**
      *
      * @param searchClass - class used in com.google.genericdao.Search object.
-     * @param searchClassAttributes = class whose attributes we want to search.
+     * @param enumClass - enum class defining search attributes.
      * @return
      */
-    public String getPath(Class<?> searchClass, String searchClassAttributes) {
-        int idx = mapingPairs.indexOf(new MapingPair(searchClass, searchClassAttributes, null));
+    public String getPath(Class<?> searchClass, Class<?> enumClass) {
+        int idx = mapingPairs.indexOf(new MapingPair(searchClass, enumClass, null));
         if (idx != -1) {
             return mapingPairs.get(idx).getPath();
         }
@@ -106,12 +106,12 @@ class MapingPair {
      * searchClass and searchClassAttributes builds unique identifications.
      */
     private Class<?> searchClass;
-    private String fieldEnum;
+    private Class<?> enumClass;
     private String path;
 
-    public MapingPair(Class<?> searchClass, String searchClassAttributes, String path) {
+    public MapingPair(Class<?> searchClass, Class<?> enumClass, String path) {
         this.searchClass = searchClass;
-        this.fieldEnum = searchClassAttributes;
+        this.enumClass = enumClass;
         this.path = path;
     }
 
@@ -123,7 +123,7 @@ class MapingPair {
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.searchClass);
-        hash = 97 * hash + Objects.hashCode(this.fieldEnum);
+        hash = 97 * hash + Objects.hashCode(this.enumClass);
         return hash;
     }
 
@@ -139,7 +139,7 @@ class MapingPair {
         if (!Objects.equals(this.searchClass, other.searchClass)) {
             return false;
         }
-        if (!Objects.equals(this.fieldEnum, other.fieldEnum)) {
+        if (!Objects.equals(this.enumClass, other.enumClass)) {
             return false;
         }
         return true;

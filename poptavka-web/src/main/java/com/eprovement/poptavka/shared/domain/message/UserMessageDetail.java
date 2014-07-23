@@ -18,16 +18,10 @@ public class UserMessageDetail implements IsSerializable {
 
         STARRED("starred");
 
-        public static final String SEARCH_CLASS = "userMessage";
         private String value;
 
         private UserMessageField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override

@@ -25,6 +25,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.IdentityColumn;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,6 +54,7 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
     @UiField SimplePanel detailPanel, footerPanel, categoryTreePanel;
     @UiField Label filterLabel;
+    @UiField Button filterClearBtn;
     /** Class attributes. **/
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private static final DataGridResources GRSCS = GWT.create(DataGridResources.class);
@@ -180,6 +182,14 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
         return filterLabel;
     }
 
+    /**
+     * @return the filter clear button
+     */
+    @Override
+    public Button getFilterClearBtn() {
+        return filterClearBtn;
+    }
+
     /** Other. **/
     /**
      * @return the category tree panel
@@ -213,13 +223,5 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     @Override
     public Widget getToolbarContent() {
         return pager;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }
