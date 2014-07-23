@@ -27,16 +27,10 @@ public class FullClientDetail implements IsSerializable, TableDisplayRating {
         ID("id"),
         OVERALL_RATING("overalRating");
 
-        public static final String SEARCH_CLASS = "client";
         private String value;
 
         private ClientField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override

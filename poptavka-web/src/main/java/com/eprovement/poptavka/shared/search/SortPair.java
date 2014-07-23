@@ -14,7 +14,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  */
 public class SortPair implements IsSerializable {
 
-    private String fieldClass;
+    private ISortField sortField;
     private String columnName;
     private OrderType columnOrderType;
 
@@ -22,18 +22,18 @@ public class SortPair implements IsSerializable {
         //for serialization
     }
 
-    public SortPair(String fieldClass, String columnName, OrderType columnOrderType) {
-        this.fieldClass = fieldClass;
+    public SortPair(ISortField sortField, String columnName, OrderType columnOrderType) {
+        this.sortField = sortField;
         this.columnName = columnName;
         this.columnOrderType = columnOrderType;
     }
 
     public static SortPair asc(ISortField fieldEnum) {
-        return new SortPair(fieldEnum.getFieldClass(), fieldEnum.getValue(), OrderType.ASC);
+        return new SortPair(fieldEnum, fieldEnum.getValue(), OrderType.ASC);
     }
 
     public static SortPair desc(ISortField fieldEnum) {
-        return new SortPair(fieldEnum.getFieldClass(), fieldEnum.getValue(), OrderType.DESC);
+        return new SortPair(fieldEnum, fieldEnum.getValue(), OrderType.DESC);
     }
 
     public String getColumnName() {
@@ -48,7 +48,7 @@ public class SortPair implements IsSerializable {
         this.columnOrderType = columnOrderType;
     }
 
-    public String getFieldClass() {
-        return fieldClass;
+    public Class getFieldClass() {
+        return sortField.getClass();
     }
 }

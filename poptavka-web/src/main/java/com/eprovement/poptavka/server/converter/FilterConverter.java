@@ -31,13 +31,6 @@ public final class FilterConverter {
     /**
      * @{inheritDoc}
      */
-//    public FilterItem convertToTarget(Filter source) {
-//        throw new UnsupportedOperationException("Convertion Filter to FilterItem failed!");
-//    }
-
-    /**
-     * @{inheritDoc}
-     */
     public Filter convertToSource(Class<?> searchClass, FilterItem filterItem) {
         String path = DomainObjectsMaping.getInstance().getPath(searchClass, filterItem.getFieldClass());
         Filter filter;
@@ -71,16 +64,6 @@ public final class FilterConverter {
         return filter;
     }
 
-    /**
-     * @{inheritDoc}
-     */
-//    public ArrayList<FilterItem> convertToTargetList(Collection<Filter> sourceObjects) {
-//        final ArrayList<FilterItem> detailObjects = new ArrayList<FilterItem>();
-//        for (Filter domainObject : sourceObjects) {
-//            detailObjects.add(convertToTarget(domainObject));
-//        }
-//        return detailObjects;
-//    }
     /**
      * @{inheritDoc}
      */

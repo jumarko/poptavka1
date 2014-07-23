@@ -32,16 +32,10 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         EMAIL("email"),
         PASSWORD("password");
 
-        public static final String SEARCH_CLASS = "businessUser";
         private String value;
 
         private UserField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override
@@ -62,16 +56,10 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         VAT_NUMBER("identificationNumber"),
         WEBSITE("website");
 
-        public static final String SEARCH_CLASS = "businessUserData";
         private String value;
 
         private UserDataField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override

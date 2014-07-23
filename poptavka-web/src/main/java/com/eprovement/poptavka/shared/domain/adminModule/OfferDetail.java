@@ -20,16 +20,10 @@ public class OfferDetail implements IsSerializable {
         CREATED("created"),
         FINISH_DATE("finishDate");
 
-        public static final String SEARCH_CLASS = "offer";
         private String value;
 
         private OfferField(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String getFieldClass() {
-            return SEARCH_CLASS;
         }
 
         @Override
