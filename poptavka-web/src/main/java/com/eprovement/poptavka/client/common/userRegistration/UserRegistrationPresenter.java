@@ -69,7 +69,9 @@ public class UserRegistrationPresenter
     public void onInitUserRegistration(SimplePanel embedToWidget) {
         view.reset();
         embedToWidget.setWidget(view);
-        eventBus.initAddressSelector(view.getAddressHolder());
+        if (view.getAddressHolder().getWidget() == null) {
+            eventBus.initAddressSelector(view.getAddressHolder());
+        }
     }
 
     /**************************************************************************/

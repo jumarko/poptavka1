@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.addressSelector;
 import com.eprovement.poptavka.client.addressSelector.others.AddressSelectorSuggestDisplay;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Constants;
+import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.service.demand.AddressSelectorRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.selectors.addressSelector.AddressSuggestionDetail;
@@ -13,12 +14,12 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -48,7 +49,7 @@ public class AddressSelectorPresenter
     /**************************************************************************/
     /* VIEW INTERFACE                                                         */
     /**************************************************************************/
-    public interface AddressSelectorInterface extends LazyView {
+    public interface AddressSelectorInterface extends LazyView, ProvidesValidate, IsWidget {
 
         //Setters
         void setAddressForEditing(AddressDetail address);
@@ -65,10 +66,6 @@ public class AddressSelectorPresenter
         TextBox getStreetMonitorBox();
 
         TextBox getZipcodeMonitorBox();
-
-        boolean isValid();
-
-        Widget getWidgetView();
     }
 
     /**************************************************************************/
@@ -127,18 +124,7 @@ public class AddressSelectorPresenter
      * @param embedWidget holder for widget view
      */
     public void onInitAddressSelector(SimplePanel embedWidget) {
-        embedWidget.setWidget(view.getWidgetView());
-        //presenter is not multiple due to widget recycling (Google I-O 2010 - GWT testing best practices)
-        //Anyway, it can be multiple, but due to keep presenter references inside AddressSelector module
-        //due to codesplitting, instances must be generated from eventbus by generate anotation,
-        //not by eventBus.addHandler from refereced module. This require some kind of instance manager.
-        //See CatLocSelectorInstanceManager.
-        view.getCityMonitor().setValue("");
-        view.getZipcodeMonitor().setValue("");
-        view.getStreetMonitor().setValue("");
-        view.getCityMonitor().reset();
-        view.getZipcodeMonitor().reset();
-        view.getStreetMonitor().reset();
+        embedWidget.setWidget(view);
     }
 
     /**************************************************************************/

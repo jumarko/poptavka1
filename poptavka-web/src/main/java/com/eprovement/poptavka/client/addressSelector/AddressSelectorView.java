@@ -8,7 +8,6 @@ import com.eprovement.poptavka.client.addressSelector.others.AddressSelectorSugg
 import com.eprovement.poptavka.client.addressSelector.AddressSelectorPresenter.AddressSelectorInterface;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.CssInjector;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.AddressDetail.AddressField;
@@ -25,7 +24,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Martin Slavkovsky
  */
 public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPresenter>
-        implements AddressSelectorInterface, ProvidesValidate {
+        implements AddressSelectorInterface {
 
     /**************************************************************************/
     /* UIBINDER                                                               */
@@ -175,13 +174,5 @@ public class AddressSelectorView extends ReverseCompositeView<AddressSelectorPre
         valid = zipcodeMonitor.isValid() && valid;
         valid = streetMonitor.isValid() && valid;
         return valid;
-    }
-
-    /**
-     * @return the widget view
-     */
-    @Override
-    public Widget getWidgetView() {
-        return this;
     }
 }
