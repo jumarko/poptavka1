@@ -97,7 +97,7 @@ public class SupplierDemandsModuleHandler extends BaseEventHandler<SupplierDeman
      * Requests supplier dashboard data.
      */
     public void onGetSupplierDashboardDetail() {
-        supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getUser().getUserId(),
+        supplierDemandsService.getSupplierDashboardDetail(Storage.getUser().getUserId(), Storage.getSupplierId(),
             new SecuredAsyncCallback<SupplierDashboardDetail>(eventBus) {
 
                 @Override
