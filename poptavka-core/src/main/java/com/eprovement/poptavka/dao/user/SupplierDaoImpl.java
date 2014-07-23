@@ -87,7 +87,7 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
 
 
     @Override
-    public Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+    public Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
                                                       ResultCriteria resultCriteria) {
         if (CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
@@ -100,7 +100,8 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
         params.put("categoryIds", CollectionsHelper.getCollectionOfIds(categories));
         params.put("localityIds", CollectionsHelper.getCollectionOfIds(localities));
 
-        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalitiesIncludingParents", params, resultCriteria));
+        return toSet(runNamedQuery("getSuppliersForCategoriesAndLocalitiesIncludingParentsAndChildren", params,
+                resultCriteria));
     }
 
 

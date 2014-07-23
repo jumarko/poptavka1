@@ -38,35 +38,25 @@ import org.hibernate.validator.constraints.NotEmpty;
                         + " supplierLocality.supplier"
                         + " and supplierCategory.category.id in (:categoryIds)"
                         + " and supplierLocality.locality.id in (:localityIds)"),
-        @NamedQuery(name = "getSuppliersForCategoriesAndLocalitiesIncludingParents",
+        @NamedQuery(name = "getSuppliersForCategoriesAndLocalitiesIncludingParentsAndChildren",
                 query = "select supplierCategory.supplier"
                         + " from SupplierCategory supplierCategory,"
                         + " SupplierLocality supplierLocality "
                         + "where supplierCategory.supplier ="
                         + " supplierLocality.supplier"
                         + " and exists (select c.id from Category c "
-                        + "where c.leftBound >= supplierCategory.category.leftBound"
-                        + " and c.rightBound <= supplierCategory.category.rightBound "
+                        + "where ((c.leftBound >= supplierCategory.category.leftBound"
+                        + " and c.rightBound <= supplierCategory.category.rightBound)"
+                        + " or (c.leftBound <= supplierCategory.category.leftBound"
+                        + " and c.rightBound >= supplierCategory.category.rightBound)) "
                         + "and c.id in (:categoryIds))"
                         + " and exists (select l.id from Locality l "
-                        + "where l.leftBound >= supplierLocality.locality.leftBound"
-                        + " and l.rightBound <= supplierLocality.locality.rightBound"
+                        + "where ((l.leftBound >= supplierLocality.locality.leftBound"
+                        + " and l.rightBound <= supplierLocality.locality.rightBound)"
+                        + " or (l.leftBound <= supplierLocality.locality.leftBound"
+                        + " and l.rightBound >= supplierLocality.locality.rightBound))"
                         + " and l.id in (:localityIds))"
         ),
-        @NamedQuery(name = "getSuppliersCountForCategoriesAndLocalitiesIncludingParents",
-                query = "select count(supplierCategory.supplier)"
-                        + " from SupplierCategory supplierCategory,"
-                        + " SupplierLocality supplierLocality"
-                        + " where supplierCategory.supplier ="
-                        + " supplierLocality.supplier"
-                        + " and exists (select c.id from Category c "
-                        + "where c.leftBound >= supplierCategory.category.leftBound"
-                        + " and c.rightBound <= supplierCategory.category.rightBound"
-                        + " and c.id in (:categoryIds))"
-                        + " and exists (select l.id from Locality l "
-                        + "where l.leftBound >= supplierLocality.locality.leftBound"
-                        + " and l.rightBound <= supplierLocality.locality.rightBound"
-                        + " and l.id in (:localityIds))"),
 })
 @Audited
 public class Supplier extends BusinessUserRole {

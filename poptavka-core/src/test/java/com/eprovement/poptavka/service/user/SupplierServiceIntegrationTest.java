@@ -34,6 +34,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Assert;
@@ -158,21 +159,34 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSuppliersForCategoriesAndLocalitiesIncludingParents() {
+        // Based on tree structure in CategoryDataSet, LocalityDataSet, SupplierDataSet these associations exists
+        // cat:312 includes suppliers 11,14
+        // cat:11 includes suppliers 12,13
+        // loc:11 includes suppliers 11,13
+        // loc:21 includes suppliers 11,12,14
+        // loc2: includes suppliers 11,12,14
+        // cat:1 includes suppliers 12,14
+        // cat:3 includes suppliers 11,14
         final Long[] catArr1 = {11L, 312L};
         final Long[] locArr1 = {11L, 21L};
-        Set<Supplier> allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr1, locArr1);
+        Set<Supplier> allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(4, catArr1, locArr1);
+        checkSupplierExists(11L, allSuppliers);
+        checkSupplierExists(12L, allSuppliers);
+        checkSupplierExists(13L, allSuppliers);
+        checkSupplierExists(14L, allSuppliers);
+
+        final Long[] catArr2 = {312L}; // cat:312 includes suppliers 11,14
+        final Long[] locArr2 = {21L};  // loc:21 includes suppliers 11,12,14
+        allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(2, catArr2, locArr2);
+        checkSupplierExists(11L, allSuppliers);
+        checkSupplierExists(14L, allSuppliers);
+
+        final Long[] catArr3 = {1L, 3L}; // cat:1 includes suppliers 12,14 + cat:3 includes suppliers 11,14 = 11,12,14
+        final Long[] locArr3 = {2L};     // loc2: includes suppliers 11,12,14
+        allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr3, locArr3);
         checkSupplierExists(11L, allSuppliers);
         checkSupplierExists(12L, allSuppliers);
         checkSupplierExists(14L, allSuppliers);
-
-        final Long[] catArr2 = {312L};
-        final Long[] locArr2 = {21L};
-        checkSuppliersForCategoriesAndLocalitiesIncludingParents(1, catArr2, locArr2);
-        checkSupplierExists(14L, allSuppliers);
-
-        final Long[] catArr3 = {1L, 3L};
-        final Long[] locArr3 = {2L};
-        checkSuppliersForCategoriesAndLocalitiesIncludingParents(0, catArr3, locArr3);
     }
 
 
@@ -276,10 +290,12 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         // check that potential demand has been sent to supplier immediately after he has been created
         final ArgumentCaptor<Demand> demandCaptor = ArgumentCaptor.forClass(Demand.class);
         final ArgumentCaptor<PotentialSupplier> supplierCaptor = ArgumentCaptor.forClass(PotentialSupplier.class);
-        verify(potentialDemandServiceMock).sendDemandToPotentialSupplier(
+        verify(potentialDemandServiceMock, times(2)).sendDemandToPotentialSupplier(
                 demandCaptor.capture(), supplierCaptor.capture());
         assertNotNull("Potential demand cannot be null!", demandCaptor.getValue());
-        assertThat("Incorrect demand has been sent to supplier", demandCaptor.getValue().getId(), is(8L));
+        assertThat("Incorrect number of demand has been sent to supplier", demandCaptor.getAllValues().size(), is(2));
+        assertThat("Incorrect demand has been sent to supplier", demandCaptor.getAllValues().get(0).getId(), is(2L));
+        assertThat("Incorrect demand has been sent to supplier", demandCaptor.getAllValues().get(1).getId(), is(8L));
         assertNotNull("Potential supplier cannot be null!", supplierCaptor.getValue());
         assertThat("Incorrect supplier has been passed",
                 supplierCaptor.getValue().getSupplier().getId(), is(newSupplier.getId()));
@@ -413,7 +429,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     private Set<Supplier> checkSuppliersForCategoriesAndLocalitiesIncludingParents(int expectedCount,
             Long[] categoryIds, Long[] localityIds) {
-        final Set<Supplier> suppliers = this.supplierService.getSuppliersIncludingParents(
+        final Set<Supplier> suppliers = this.supplierService.getSuppliersIncludingParentsAndChildren(
                 Arrays.asList(getCategories(categoryIds)), Arrays.asList(getLocalities(localityIds)), null);
         assertNotNull(suppliers);
         Assert.assertEquals(expectedCount, suppliers.size());

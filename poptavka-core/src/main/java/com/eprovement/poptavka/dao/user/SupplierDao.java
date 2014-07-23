@@ -112,8 +112,8 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
     Set<Supplier> getSuppliers(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
     /**
-     * Load all suppliers associated to any category (or its parent) from given categories
-     *      AND to any locality (or its) from given localities.
+     * Load all suppliers associated to any category (or its parent or its children) from given categories
+     *      AND to any locality (or its parent or its children) from given localities.
      * This is somewhat opposite to the functionality provided by {@link #getSuppliers(java.util.List, java.util.List,
      * com.eprovement.poptavka.domain.common.ResultCriteria)}.
      *
@@ -131,14 +131,14 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * when passing locality 'Montgomery' and category 'Desktop computers' as arguments to this method.
      *
      * @param categories list of categories, supplier must be associated either directly to any of these categories
-     *                   or to some parent
+     *                   or to some parent or to some children
      * @param localities list of localities, supplier must be associated either directly to any of these localities
-     *                   or to some parent
+     *                   or to some parent or to some children
      * @param resultCriteria filtering criteria
      * @return collection of suppliers that are related to the given localities and adher to <code>resultCriteria</code>
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
-    Set<Supplier> getSuppliersIncludingParents(List<Category> categories, List<Locality> localities,
+    Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
                                                ResultCriteria resultCriteria);
 
 
