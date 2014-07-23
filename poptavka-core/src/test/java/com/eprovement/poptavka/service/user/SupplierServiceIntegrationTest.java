@@ -75,8 +75,8 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSuppliersForLocalities() {
-        checkSuppliersForLocalities(2, 1L);
-        checkSuppliersForLocalities(1, 11L);
+        checkSuppliersForLocalities(3, 1L);
+        checkSuppliersForLocalities(2, 11L);
         checkSuppliersForLocalities(0, 121L);
         checkSuppliersForLocalities(3, 2L);
         checkSuppliersForLocalities(0, 214L);
@@ -90,8 +90,8 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
                 this.supplierService.getSuppliersCountForAllLocalities();
         Assert.assertEquals(12, suppliersCountForAllLocalities.size());
 
-        checkSuppliersCountForLocality(1L, 2L, suppliersCountForAllLocalities);
-        checkSuppliersCountForLocality(11L, 1L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality(1L, 3L, suppliersCountForAllLocalities);
+        checkSuppliersCountForLocality(11L, 2L, suppliersCountForAllLocalities);
         checkSuppliersCountForLocality(121L, 0L, suppliersCountForAllLocalities);
         checkSuppliersCountForLocality(2L, 3L, suppliersCountForAllLocalities);
         checkSuppliersCountForLocality(214L, 0L, suppliersCountForAllLocalities);
@@ -99,8 +99,8 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
     @Test
     public void testGetSuppliersCountForLocalities() {
-        checkSuppliersCountForLocalities(2, 1L);
-        checkSuppliersCountForLocalities(1, 11L);
+        checkSuppliersCountForLocalities(3, 1L);
+        checkSuppliersCountForLocalities(2, 11L);
         checkSuppliersCountForLocalities(0, 121L);
         checkSuppliersCountForLocalities(3, 2L);
         checkSuppliersCountForLocalities(0, 214L);
@@ -111,7 +111,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
     public void testSuppliersCountWithoutChildrenByLocality() {
         checkSuppliersCountWithoutChildrenByLocality(1L, 1);
         checkSuppliersCountWithoutChildrenByLocality(2L, 1);
-        checkSuppliersCountWithoutChildrenByLocality(11L, 1);
+        checkSuppliersCountWithoutChildrenByLocality(11L, 2);
         checkSuppliersCountWithoutChildrenByLocality(21L, 1);
         checkSuppliersCountWithoutChildrenByLocality(213L, 1);
 
@@ -128,14 +128,15 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         checkSuppliersForCategories(2, 3L);
         checkSuppliersForCategories(1, 113L);
         checkSuppliersForCategories(1, 312L);
-        checkSuppliersForCategories(0, 2L);
+        checkSuppliersForCategories(1, 2L);
+        checkSuppliersForCategories(0, 23L);
     }
 
     @Test
     public void testGetSuppliersForCategoriesAndLocalities() {
         Long[] catArr1 = {1L, 2L};
         Long[] locArr1 = {1L, 2L};
-        checkSuppliersForCategoriesAndLocalities(2, catArr1,
+        checkSuppliersForCategoriesAndLocalities(3, catArr1,
                 locArr1);
         Long[] catArr2 = {312L};
         Long[] locArr2 = {21L};
@@ -149,7 +150,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 //        checkSuppliersCountForCategories(2, "11");
         Long[] catArr1 = {1L, 2L};
         Long[] locArr1 = {1L, 2L};
-        checkSuppliersCountForCategoriesAndLocalities(2, catArr1,
+        checkSuppliersCountForCategoriesAndLocalities(3, catArr1,
                 locArr1);
         Long[] catArr2 = {312L};
         Long[] locArr2 = {21L};
@@ -162,11 +163,12 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         // Based on tree structure in CategoryDataSet, LocalityDataSet, SupplierDataSet these associations exists
         // cat:312 includes suppliers 11,14
         // cat:11 includes suppliers 12,13
-        // loc:11 includes suppliers 11,13
+        // loc:11 includes suppliers 11,13,16
         // loc:21 includes suppliers 11,12,14
         // loc2: includes suppliers 11,12,14
-        // cat:1 includes suppliers 12,14
+        // cat:1 includes suppliers 12,13
         // cat:3 includes suppliers 11,14
+        // cat:2 includes suppliers 16
         final Long[] catArr1 = {11L, 312L};
         final Long[] locArr1 = {11L, 21L};
         Set<Supplier> allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(4, catArr1, locArr1);
@@ -181,12 +183,28 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         checkSupplierExists(11L, allSuppliers);
         checkSupplierExists(14L, allSuppliers);
 
-        final Long[] catArr3 = {1L, 3L}; // cat:1 includes suppliers 12,14 + cat:3 includes suppliers 11,14 = 11,12,14
+        final Long[] catArr3 = {1L, 3L};
+        // cat:1 includes suppliers 12,13
+        // cat:3 includes suppliers 11,14  ->  cat1+cat3 = 11,12,13,14
         final Long[] locArr3 = {2L};     // loc2: includes suppliers 11,12,14
         allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(3, catArr3, locArr3);
         checkSupplierExists(11L, allSuppliers);
         checkSupplierExists(12L, allSuppliers);
         checkSupplierExists(14L, allSuppliers);
+
+        final Long[] catArr4 = {312L};   // cat:312 includes suppliers 11,14
+        final Long[] locArr4 = {11L};    // loc:11 includes suppliers 11,13,16
+        allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(1, catArr4, locArr4);
+        checkSupplierExists(11L, allSuppliers);
+
+        final Long[] catArr5 = {1L};     // cat:1 includes suppliers 12,13
+        final Long[] locArr5 = {11L};    // loc:11 includes suppliers 11,13,16
+        allSuppliers = checkSuppliersForCategoriesAndLocalitiesIncludingParents(1, catArr5, locArr5);
+        checkSupplierExists(13L, allSuppliers);
+
+        final Long[] catArr6 = {2L};     // cat:2 includes suppliers 16
+        final Long[] locArr6 = {21L};    // loc:21 includes suppliers 11,12,14
+        checkSuppliersForCategoriesAndLocalitiesIncludingParents(0, catArr6, locArr6);
     }
 
 
@@ -200,7 +218,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         checkSuppliersForCategory(3L, 2L, suppliersCountForAllCategories);
         checkSuppliersForCategory(113L, 1L, suppliersCountForAllCategories);
         checkSuppliersForCategory(312L, 1L, suppliersCountForAllCategories);
-        checkSuppliersForCategory(2L, 0L, suppliersCountForAllCategories);
+        checkSuppliersForCategory(2L, 1L, suppliersCountForAllCategories);
     }
 
 
@@ -211,7 +229,8 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         checkSuppliersCountForCategories(1, 31L);
         checkSuppliersCountForCategories(1, 113L);
         checkSuppliersCountForCategories(1, 312L);
-        checkSuppliersCountForCategories(0, 2L);
+        checkSuppliersCountForCategories(1, 2L);
+        checkSuppliersCountForCategories(0, 21L);
     }
 
 
@@ -223,7 +242,7 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         checkSuppliersCountWithoutChildrenByCategory(312L, 1);
 
         checkSuppliersCountWithoutChildrenByCategory(1L, 0);
-        checkSuppliersCountWithoutChildrenByCategory(2L, 0);
+        checkSuppliersCountWithoutChildrenByCategory(2L, 1);
         checkSuppliersCountWithoutChildrenByCategory(22L, 0);
         checkSuppliersCountWithoutChildrenByCategory(111L, 0);
         checkSuppliersCountWithoutChildrenByCategory(1131L, 0);

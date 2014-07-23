@@ -51,7 +51,7 @@ public class SupplierResourceIntegrationTest extends ResourceIntegrationTest {
                 .andExpect(jsonPath("$.collection[3].email").value("elvira14@email.com"))
                 .andExpect(jsonPath("$.links.self").value("/api/suppliers"))
                 .andExpect(jsonPath("$.paging.offset").value(0))
-                .andExpect(jsonPath("$.paging.count").value(4));
+                .andExpect(jsonPath("$.paging.count").value(5));
     }
 
     @Test

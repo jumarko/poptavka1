@@ -6,6 +6,7 @@
     <SETTINGST ID="13" />
     <SETTINGST ID="14" />
     <SETTINGST ID="15" />
+    <SETTINGST ID="16" />
 
     <!--################################ Suppliers ##################################################################-->
     <USERT ID="11" EMAIL="elvira11@email.com" PASSWORD="ahoj" SETTINGS_ID="11" VERIFICATION="UNVERIFIED" />
@@ -44,7 +45,13 @@
     <CLIENT ID="15" ENABLED="0" />
     <SUPPLIER ID="15" ENABLED="0" />
 
-
+    <USERT ID="16" EMAIL="elvira16@email.com" PASSWORD="ahoj" SETTINGS_ID="16" VERIFICATION="UNVERIFIED" />
+    <BUSINESSUSERDATA ID="16" COMPANYNAME="My Fourth Company" TAXID="hovna" IDENTIFICATIONNUMBER="sracky" PERSONFIRSTNAME="Elvíra" PERSONLASTNAME="Maslová"/>
+    <BUSINESSUSER  ID="16"  BUSINESSUSERDATA_ID="16" />
+    <BUSINESSUSERROLE ID="16" BUSINESSUSER_ID="16" />
+    <CLIENT ID="16" />
+    <SUPPLIER ID="16" />
+    
     <!--################################ Suppliers to Localities#####################################################-->
     <!-- loc1 && loc213 -->
     <SUPPLIER_LOCALITY ID="1" SUPPLIER_ID="11" LOCALITY_ID="1" />
@@ -55,6 +62,7 @@
     <SUPPLIER_LOCALITY ID="5" SUPPLIER_ID="14" LOCALITY_ID="21" />
     <!-- supplier_locality id=10 is disabled and it shouldn't be involved in supplier related queries-->
     <SUPPLIER_LOCALITY ID="10" SUPPLIER_ID="15" LOCALITY_ID="21" ENABLED="0" />
+    <SUPPLIER_LOCALITY ID="11" SUPPLIER_ID="16" LOCALITY_ID="11" ENABLED="1" />
 
 
     <!--################################ Suppliers to Categories#####################################################-->
@@ -64,5 +72,6 @@
     <SUPPLIER_CATEGORY ID="9" SUPPLIER_ID="14" CATEGORY_ID="312" />
     <!-- supplier_category id=11 is disabled and it shouldn't be involved in supplier related queries-->
     <SUPPLIER_CATEGORY ID="11" SUPPLIER_ID="15" CATEGORY_ID="312" ENABLED="0" />
+    <SUPPLIER_CATEGORY ID="12" SUPPLIER_ID="16" CATEGORY_ID="2" ENABLED="1" />
 
 </dataset>
