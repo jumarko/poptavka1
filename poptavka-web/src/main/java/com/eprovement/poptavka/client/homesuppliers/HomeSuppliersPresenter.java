@@ -15,11 +15,13 @@ import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -63,6 +65,8 @@ public class HomeSuppliersPresenter
         //Filter
         Label getFilterLabel();
 
+        Button getFilterClearBtn();
+
         //Other
         SimplePanel getCategoryTreePanel();
 
@@ -70,7 +74,6 @@ public class HomeSuppliersPresenter
 
         SimplePanel getFooterPanel();
 
-        Widget getWidgetView();
     }
     /**************************************************************************/
     /* Attributes                                                             */
@@ -131,7 +134,7 @@ public class HomeSuppliersPresenter
      * Inits Detail module and category selector.
      */
     public void onForward() {
-        eventBus.setBody(view.getWidgetView());
+        eventBus.setBody(view);
         eventBus.setToolbarContent("Categories", view.getToolbarContent());
         eventBus.setFooter(view.getFooterPanel());
         eventBus.menuStyleChange(Constants.HOME_SUPPLIERS_MODULE);
@@ -163,7 +166,7 @@ public class HomeSuppliersPresenter
         //----------------------------------------------------------------------
         createTokenForHistory();
         deselectGridSelection();
-        restoreFiltering(searchModuleDataHolder);
+        setFilteringLabel(searchModuleDataHolder);
         //Get data
         view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchModuleDataHolder));
     }
@@ -180,7 +183,7 @@ public class HomeSuppliersPresenter
     public void onGoToHomeSuppliersModuleByHistory(SearchModuleDataHolder filterHolder,
         ICatLocDetail categoryDetail, int page, long supplierID) {
         calledFromHistory = true;
-        restoreFiltering(filterHolder);
+        setFilteringLabel(filterHolder);
         //Restore tree opened nodes
         if (categoryDetail == null) {
             //if no category selection -> no selection model selection -> no data retrieving -> manually ask for data
@@ -206,17 +209,19 @@ public class HomeSuppliersPresenter
      * - if null - hides filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_DEFAULT
      * - if not null - display filterLabel and sets currentlyLoadedView to Constants.HOME_SUPPLIERS_BY_SEARCH
      */
-    private void restoreFiltering(SearchModuleDataHolder filterHolder) {
+    private void setFilteringLabel(SearchModuleDataHolder filterHolder) {
         //FILTER
         //----------------------------------------------------------------------
         if (filterHolder == null) {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_DEFAULT);
             view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
+            view.getFilterClearBtn().setVisible(false);
         } else {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
             view.getFilterLabel().setTitle(filterHolder.toString());
             view.getFilterLabel().setVisible(true);
+            view.getFilterClearBtn().setVisible(true);
         }
         searchDataHolder = filterHolder;
     }
@@ -241,6 +246,13 @@ public class HomeSuppliersPresenter
     public void bindView() {
         dataGridRangeChangeHandler();
         dataGridSelectioChangeHandler();
+        view.getFilterClearBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.goToHomeSuppliersModule(null);
+            }
+        });
     }
 
     /**************************************************************************/
