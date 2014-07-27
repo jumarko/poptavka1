@@ -28,7 +28,7 @@ public class UserServiceServiceImpl extends GenericServiceImpl<UserService, User
     @Transactional(readOnly = false)
     public void addCredits(final long userServiceId, final int newCredits) {
         final UserService userService = getDao().findById(userServiceId);
-        userService.getUser().getBusinessUserData().addCredits(newCredits);
+        userService.getBusinessUser().getBusinessUserData().addCredits(newCredits);
         getDao().update(userService);
     }
 

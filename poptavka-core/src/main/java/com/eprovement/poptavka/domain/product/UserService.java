@@ -49,6 +49,7 @@ public class UserService extends DomainObject {
     private String transactionNumber;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private PaypalTransactionStatus transactionStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -72,8 +73,8 @@ public class UserService extends DomainObject {
     }
 
     /**
-     * @return Appropriate user
-     */
+     * @return Appropriate BusinessUser
+    */
     public BusinessUser getBusinessUser() {
         return businessUser;
     }

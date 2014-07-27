@@ -145,6 +145,10 @@ public class BusinessUserData extends DomainObject {
         return currentCredits;
     }
 
+    public void setCurrentCredits(int currentCredits) {
+        this.currentCredits = currentCredits;
+    }
+
     public void addCredits(int creditsToAdd) {
         this.currentCredits += creditsToAdd;
     }
