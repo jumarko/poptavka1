@@ -75,10 +75,14 @@
 
 
     <!--see real DB for more information on SERVICEs-->
-    <SERVICE ID="1" CODE="validity.1month" VALID="1" />
-    <SERVICE ID="2" CODE="validity.3month" VALID="1" />
-    <SERVICE ID="3" CODE="validity.1year" VALID="1" />
-    <SERVICE ID="4" CODE="classic" VALID="1" />
+    <SERVICE ID="1" ENABLED="1" CODE="FREE" CREDITS="50" DESCRIPTION="Free service description"  PRICE="0"
+             SERVICETYPE="PROMOTION" TITLE="Free" VALID="1"/>
+    <SERVICE ID="2" ENABLED="1" CODE="BASIC" CREDITS="100" DESCRIPTION="Basic service description"  PRICE="20"
+             SERVICETYPE="RECHARGE" TITLE="Basic" VALID="1"/>
+    <SERVICE ID="3" ENABLED="1" CODE="PROFI" CREDITS="250" DESCRIPTION="Profi service description"  PRICE="50"
+             SERVICETYPE="RECHARGE" TITLE="Profi" VALID="1"/>
+    <SERVICE ID="4" ENABLED="1" CODE="CLASSIC" CREDITS="0" DESCRIPTION="Client's default service"  PRICE="0"
+             SERVICETYPE="RECHARGE" TITLE="Classic" VALID="1"/>
 
 
 </dataset>

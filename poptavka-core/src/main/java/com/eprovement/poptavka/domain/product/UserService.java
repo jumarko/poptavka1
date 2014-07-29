@@ -22,6 +22,10 @@ import javax.persistence.TemporalType;
 /**
  * Represents the binding between {@link com.eprovement.poptavka.domain.user.BusinessUser} and {@link Service}.
  *
+ * <code>UserService</code> always contains particular <code>Service</code> FREE, BASIC, PROFI.
+ * Everytime <code>BusinessUser</code> pays for a <code>Service</code> the <code>UserService</code> is created.
+ * The Free service can be chosen only during new registration.
+ *
  * @author Juraj Martinka
  *         Date: 29.1.11
  */
@@ -63,7 +67,7 @@ public class UserService extends DomainObject {
     /**************************************************************************/
     /**
      * @return Appropriate service
-     */
+    */
     public Service getService() {
         return service;
     }
@@ -85,7 +89,7 @@ public class UserService extends DomainObject {
 
     /**
      * @return User Service status
-     */
+    */
     public Status getStatus() {
         return status;
     }

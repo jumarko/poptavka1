@@ -37,7 +37,7 @@ public class RegisterServiceIntegrationTest extends DBUnitIntegrationTest {
         checkRegister(newMessageClient, 1L, "new.message");
 
         final Service serviceClassic = this.registerService.getValue(Registers.Service.CLASSIC, Service.class);
-        checkRegister(serviceClassic, 4L, "classic");
+        checkRegister(serviceClassic, 4L, "CLASSIC");
     }
 
     private <T extends Register> void checkRegister(T register, long expectedId, String expectedCode) {

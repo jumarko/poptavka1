@@ -4,14 +4,20 @@
  */
 package com.eprovement.poptavka.service.userservice;
 
-import java.util.List;
+import static org.apache.commons.lang.Validate.notNull;
 
+import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.dao.userservice.UserServiceDao;
+import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUser;
+import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
+import com.googlecode.genericdao.search.Search;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
 *
@@ -20,8 +26,12 @@ import com.eprovement.poptavka.service.GenericServiceImpl;
 public class UserServiceServiceImpl extends GenericServiceImpl<UserService, UserServiceDao> implements
         UserServiceService {
 
-    public UserServiceServiceImpl(UserServiceDao userServiceDao) {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceServiceImpl.class);
+    private GeneralService generalService;
+
+    public UserServiceServiceImpl(UserServiceDao userServiceDao, GeneralService generalService) {
         setDao(userServiceDao);
+        this.generalService = generalService;
     }
 
     @Override
@@ -35,5 +45,29 @@ public class UserServiceServiceImpl extends GenericServiceImpl<UserService, User
     @Override
     public List<UserService> getUsersServices(BusinessUser businessUser) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UserService> getPromotionUserServices(final BusinessUser businessUser) {
+        notNull(businessUser, "businessUser cannot be null");
+        final Search freeUserServiceSearch = new Search(UserService.class);
+        freeUserServiceSearch.addFilterEqual("businessUser", businessUser);
+        freeUserServiceSearch.addFilterEqual("service.serviceType", ServiceType.PROMOTION);
+        return this.generalService.search(freeUserServiceSearch);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean hasUserHadPromoService(final BusinessUser businessUser, final String serviceCode) {
+        notNull(businessUser, "businessUser cannot be null");
+        final Search freeUserServiceSearch = new Search(UserService.class);
+        freeUserServiceSearch.addFilterEqual("businessUser", businessUser);
+        freeUserServiceSearch.addFilterEqual("service.code", serviceCode);
+        return !(this.generalService.search(freeUserServiceSearch)).isEmpty();
     }
 }
