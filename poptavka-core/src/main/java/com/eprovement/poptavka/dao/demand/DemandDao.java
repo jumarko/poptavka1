@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.eprovement.poptavka.dao.demand;
 
 import com.eprovement.poptavka.dao.GenericDao;
@@ -12,6 +11,7 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
+import java.util.Collection;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,6 @@ import java.util.Set;
  * @author Excalibur
  */
 public interface DemandDao extends GenericDao<Demand> {
-
 
     /**
      * Load all demands for given localities while applying additional criteria if they are specified.
@@ -55,14 +54,12 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     Set<Demand> getDemands(Locality[] localities, ResultCriteria resultCriteria);
 
-
     /**
      * Optmized method for loading demands count for all localities in one query!
      *
      * @return list of maps, each map containing only 2 items ("locality" => locality, "demandsCount" => demandsCount)
      */
     List<Map<String, Object>> getDemandsCountForAllLocalities();
-
 
     /**
      * Get count of ALL demands associated to the some locality from given <code>localities</code>
@@ -92,7 +89,6 @@ public interface DemandDao extends GenericDao<Demand> {
      * any sublocality are included!
      */
     long getDemandsCountWithoutChildren(Locality locality);
-
 
     /**
      * Optmized method for loading demands count for all categories in one query!
@@ -148,15 +144,11 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getDemandsCountWithoutChildren(Category category);
 
-
-
     /**
      * Returns the count of all demands in DB.
      * @return
      */
     long getAllDemandsCount();
-
-
 
     /**
      * Load all demands associated to the given category (-ies) and
@@ -171,8 +163,7 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     Set<Demand> getDemands(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
-
-     /**
+    /**
      * Evaluates the number of demands associated to the given
      * <code>locality</code>(-ies) and <code>category</code>(-ies).
      * <p>
@@ -186,9 +177,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @param localities
      * @return number of suppliers related to the <code>locality</code>(-ies).
      */
-
     long getDemandsCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
-
 
     /**
      * Loads all the demands associated to the any category (or its parent) of given {@code categories}
@@ -256,7 +245,7 @@ public interface DemandDao extends GenericDao<Demand> {
      * @return list of demands associated to proper locality and category
      */
     Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
-                                           ResultCriteria resultCriteria);
+        ResultCriteria resultCriteria);
 
     /**
      * Get number of all client demands that have at least one offer.
@@ -313,4 +302,27 @@ public interface DemandDao extends GenericDao<Demand> {
      */
     long getClientOfferedDemandsCount(BusinessUser businessUser);
 
+    /**
+     * Increments demand counts for given categories.
+     * @param categoryIds list of category ids to be updated
+     */
+    void incrementCategoryDemandCount(Collection<Long> categoryIds);
+
+    /**
+     * Decrements demand counts for given categories.
+     * @param categoryIds list of category ids to be updated
+     */
+    void decrementCategoryDemandCount(Collection<Long> categoryIds);
+
+    /**
+     * Increments demand counts for given localities.
+     * @param localityIds list of category ids to be updated
+     */
+    void incrementLocalityDemandCount(Collection<Long> localityIds);
+
+    /**
+     * Decrements demand counts for given localities.
+     * @param localityIds list of category ids to be updated
+     */
+    void decrementLocalityDemandCount(Collection<Long> localityIds);
 }

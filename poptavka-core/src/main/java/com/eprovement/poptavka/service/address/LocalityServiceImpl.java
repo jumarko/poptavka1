@@ -30,7 +30,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalityServiceImpl.class);
 
-
     public LocalityServiceImpl(LocalityDao localityDao) {
         setDao(localityDao);
     }
@@ -40,7 +39,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     public Locality getLocality(Long id) {
         return getDao().getLocality(id);
     }
-
 
     @Override
     @Cacheable(cacheName = "localityCache")
@@ -73,7 +71,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
         final Locality c = getDao().findCityByName(d, city);
         if (c == null) {
             LOGGER.info("No city has been found for region_name={} district_name={} city_name={}",
-                    region, district, city);
+                region, district, city);
             return null;
         }
         return c;
@@ -124,7 +122,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
         return getDao().getLocalities(localityType, resultCriteria);
     }
 
-
     @Override
     @Cacheable(cacheName = "localityCache")
     public List<Locality> getSubLocalities(long localityId) {
@@ -133,10 +130,7 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
         return locality.getChildren();
     }
 
-
     //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------
-
-
     @Override
     public Locality create(Locality entity) {
         throw new TreeItemModificationException();
@@ -175,13 +169,13 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
 
     @Override
     public List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring,
-            LocalityType type) {
+        LocalityType type) {
         return getDao().getLocalitiesByMaxLengthExcl(maxLengthExcl, nameSubstring, type);
     }
 
     @Override
     public List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring,
-            LocalityType type) {
+        LocalityType type) {
         return getDao().getLocalitiesByMinLength(minLength, nameSubstring, type);
     }
 }

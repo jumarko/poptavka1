@@ -5,8 +5,6 @@ package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.demand.CategoryService;
-import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import java.util.List;
@@ -22,22 +20,10 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     /* RPC Services                                                           */
     /**************************************************************************/
     private CategoryService categoryService;
-    private DemandService demandService;
-    private SupplierService supplierService;
 
     @Autowired
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
-    }
-
-    @Autowired
-    public void setDemandService(DemandService demandService) {
-        this.demandService = demandService;
-    }
-
-    @Autowired
-    public void setSupplierService(SupplierService supplierService) {
-        this.supplierService = supplierService;
     }
 
     /**************************************************************************/
@@ -59,8 +45,8 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     @Override
     public ICatLocDetail convertToTarget(Category category) {
         CatLocDetail detail = new CatLocDetail(category.getId(), category.getName());
-        detail.setDemandsCount(demandService.getDemandsCountQuick(category));
-        detail.setSuppliersCount(supplierService.getSuppliersCountQuick(category));
+        detail.setDemandsCount(category.getDemandCount());
+        detail.setSuppliersCount(category.getSupplierCount());
         detail.setLevel(category.getLevel());
         detail.setLeaf(category.isLeaf());
         detail.setLeafsParent(isLeafsParent(category.getId()));

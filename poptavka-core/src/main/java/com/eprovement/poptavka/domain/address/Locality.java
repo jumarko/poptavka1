@@ -16,6 +16,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import java.util.List;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * Some type of locality.
@@ -27,31 +29,47 @@ import java.util.List;
  */
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "getLocalitiesByMaxLength",
-                query = "select locality "
-                        + " from Locality locality\n"
-                        + "where LENGTH(locality.name) < :length"
-                        + " and lower(locality.name) like lower(:name)"),
-        @NamedQuery(name = "getLocalitiesByMinLength",
-                query = "select locality "
-                        + " from Locality locality\n"
-                        + "where LENGTH(locality.name) >= :length"
-                        + " and lower(locality.name) like (:name)"),
-        @NamedQuery(name = "getLocalitiesByMaxLengthAndType",
-                query = "select locality "
-                        + " from Locality locality\n"
-                        + "where LENGTH(locality.name) < :length"
-                        + " and locality.type = :type"
-                        + " and lower(locality.name) like lower(:name)"),
-        @NamedQuery(name = "getLocalitiesByMinLengthAndType",
-                query = "select locality "
-                        + " from Locality locality\n"
-                        + "where LENGTH(locality.name) >= :length"
-                        + " and locality.type = :type"
-                        + " and lower(locality.name) like (:name)")
+    @NamedQuery(name = "getLocalitiesByMaxLength",
+        query = "select locality "
+        + " from Locality locality\n"
+        + "where LENGTH(locality.name) < :length"
+        + " and lower(locality.name) like lower(:name)"),
+    @NamedQuery(name = "getLocalitiesByMinLength",
+        query = "select locality "
+        + " from Locality locality\n"
+        + "where LENGTH(locality.name) >= :length"
+        + " and lower(locality.name) like (:name)"),
+    @NamedQuery(name = "getLocalitiesByMaxLengthAndType",
+        query = "select locality "
+        + " from Locality locality\n"
+        + "where LENGTH(locality.name) < :length"
+        + " and locality.type = :type"
+        + " and lower(locality.name) like lower(:name)"),
+    @NamedQuery(name = "getLocalitiesByMinLengthAndType",
+        query = "select locality "
+        + " from Locality locality\n"
+        + "where LENGTH(locality.name) >= :length"
+        + " and locality.type = :type"
+        + " and lower(locality.name) like (:name)"),
+    @NamedQuery(name = Locality.INCREMENT_DEMAND_COUNT,
+        query = "UPDATE Locality SET demandCount = demandCount +  1 WHERE id IN :ids"),
+    @NamedQuery(name = Locality.DECREMENT_DEMAND_COUNT,
+        query = "UPDATE Locality SET demandCount = demandCount -  1 WHERE id IN :ids"),
+    @NamedQuery(name = Locality.INCREMENT_SUPPLIER_COUNT,
+        query = "UPDATE Locality SET supplierCount = supplierCount +  1 WHERE id IN :ids"),
+    @NamedQuery(name = Locality.DECREMENT_SUPPLIER_COUNT,
+        query = "UPDATE Locality SET supplierCount = supplierCount -  1 WHERE id IN :ids")
 })
 public class Locality extends TreeItem {
 
+    public static final String INCREMENT_DEMAND_COUNT = "Locality.INCREMENT_DEMAND_COUNT";
+    public static final String DECREMENT_DEMAND_COUNT = "Locality.DECREMENT_DEMAND_COUNT";
+    public static final String INCREMENT_SUPPLIER_COUNT = "Locality.INCREMENT_SUPPLIER_COUNT";
+    public static final String DECREMENT_SUPPLIER_COUNT = "Locality.DECREMENT_SUPPLIER_COUNT";
+
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
     private String name;
 
     @Enumerated(value = EnumType.STRING)
@@ -61,6 +79,25 @@ public class Locality extends TreeItem {
     @ManyToMany(mappedBy = "localities")
     private List<Demand> demands;
 
+    @Min(0)
+    @NotNull
+    private Integer demandCount = 0;
+
+    @Min(0)
+    @NotNull
+    private Integer supplierCount = 0;
+
+    /** Reference to the parent tree item. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Locality parent;
+
+    /** All children of this tree item in tree structure. */
+    @OneToMany(mappedBy = "parent")
+    private List<Locality> children;
+
+    /**************************************************************************/
+    /*  Initialization                                                        */
+    /**************************************************************************/
     public Locality(String name, LocalityType type) {
         this.name = name;
         this.type = type;
@@ -69,7 +106,9 @@ public class Locality extends TreeItem {
     public Locality() {
     }
 
-
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
     public String getName() {
         return name;
     }
@@ -104,27 +143,6 @@ public class Locality extends TreeItem {
         this.type = type;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Locality");
-        sb.append("{id='").append(getId()).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", type=").append(type);
-        sb.append('}');
-        return sb.toString();
-    }
-
-
-    //---------------------- Locality attributes and methods -----------------------------------------------------------
-    /** Reference to the parent tree item. */
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Locality parent;
-
-    /** All children of this tree item in tree structure. */
-    @OneToMany(mappedBy = "parent")
-    private List<Locality> children;
-
     public Locality getParent() {
         return parent;
     }
@@ -141,4 +159,43 @@ public class Locality extends TreeItem {
         this.children = children;
     }
 
+    public void incrementDemandCount() {
+        demandCount += 1;
+    }
+
+    public void decrementDemandCount() {
+        demandCount -= 1;
+    }
+
+    public Integer getDemandCount() {
+        return demandCount;
+    }
+
+    public void incrementSupplierCount() {
+        supplierCount += 1;
+    }
+
+    public void decrementSupplierCount() {
+        supplierCount -= 1;
+    }
+
+    public Integer getSupplierCount() {
+        return supplierCount;
+    }
+
+    /**************************************************************************/
+    /*  Override methods                                                      */
+    /**************************************************************************/
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Locality");
+        sb.append("{id='").append(getId()).append("'");
+        sb.append(", name='").append(name).append("'");
+        sb.append(", type=").append(type);
+        sb.append(", demandCount='").append(demandCount);
+        sb.append(", supplierCount='").append(supplierCount);
+        sb.append('}');
+        return sb.toString();
+    }
 }

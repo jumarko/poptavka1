@@ -124,6 +124,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         client.getBusinessUser().getBusinessUserRoles().add(client);
 
         clientService.create(client);
+        supplierService.incrementSupplierCount(newSupplier);
 
         return supplierConverter.convertToTarget(supplierFromDB);
     }

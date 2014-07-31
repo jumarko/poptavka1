@@ -17,7 +17,6 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
     /** @see com.eprovement.poptavka.dao.demand.CategoryDao#getRootCategories()  */
     List<Category> getRootCategories();
 
-
     /**
      * The same as {@link #getRootCategories()},
      * but additional criteria can be applied to the result
@@ -25,7 +24,6 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
      * @return all root categories that (eventually) satisfy given (optional) criteria.
      */
     List<Category> getRootCategories(ResultCriteria resultCriteria);
-
 
     /** @see com.eprovement.poptavka.dao.demand.CategoryDao#getCategory(Long)  */
     Category getCategory(Long id);
@@ -62,6 +60,4 @@ public interface CategoryService extends GenericService<Category, CategoryDao> {
      * @return a <code>List<code> of categories satisfying criteria
      */
     List<Category> getCategoriesByMinLength(int minLength, String nameSubstring);
-
-
 }

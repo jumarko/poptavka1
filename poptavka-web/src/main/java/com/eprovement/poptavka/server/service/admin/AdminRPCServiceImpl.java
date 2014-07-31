@@ -199,6 +199,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             try {
                 final Demand demand = demandService.getById(demandDetail.getDemandId());
                 demandService.activateDemand(demand);
+                demandService.incrementDemandCount(demand);
                 potentialDemandService.sendDemandToPotentialSuppliers(demand);
             } catch (Exception e) {
                 LOGGER.warn("action=approve_demands status=error demand_id={}", demandDetail.getDemandId(), e);

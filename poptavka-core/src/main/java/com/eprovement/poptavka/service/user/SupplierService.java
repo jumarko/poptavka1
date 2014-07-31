@@ -29,7 +29,6 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     Set<Supplier> getSuppliers(Locality... localities);
 
-
     /**
      * The same as {@link #getSuppliers(com.eprovement.poptavka.domain.address.Locality...)}
      * but apply additional criteria to the result.
@@ -59,7 +58,6 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     long getSuppliersCount(Locality... localities);
 
-
     /**
      * Similar to the {@link #getSuppliersCount(com.eprovement.poptavka.domain.address.Locality...)}
      * but restricted to the one locality and with better performance.
@@ -69,14 +67,11 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     long getSuppliersCountQuick(Locality locality);
 
-
     /**
      *  @see com.eprovement.poptavka.dao.user.SupplierDao#
      *  getSuppliersCountWithoutChildren(com.eprovement.poptavka.domain.address.Locality)
      */
     long getSuppliersCountWithoutChildren(Locality locality);
-
-
 
     /**
      * Load all suppliers associated to the given category (-ies).
@@ -96,6 +91,7 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      * @return
      */
     Set<Supplier> getSuppliers(ResultCriteria resultCriteria, Category... categories);
+
     /**
      * Gets all the supplier from given categories (including their
      * subcategories) which are also associated to the given localities
@@ -107,14 +103,15 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      * @return
      */
     Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
-                               List<Category> categories, List<Locality> localities);
+        List<Category> categories, List<Locality> localities);
 
     /**
      * @see SupplierDao#getSuppliersIncludingParentsAndChildren(java.util.List, java.util.List,
      * com.eprovement.poptavka.domain.common.ResultCriteria).
      */
     Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
-                                               ResultCriteria resultCriteria);
+        ResultCriteria resultCriteria);
+
     /**
      * Highly optimized method for getting number of suppliers for all categories.
      *
@@ -144,16 +141,16 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     long getSuppliersCount(List<Category> categories, List<Locality> localities);
 
-   /**
-    * Evaluate the number of suppliers associated to the given
-    * <code>category</code>(-ies) and <code>locality</code>(-ies)
-    * at the same time.
-    *
-    * @param categories
-    * @param localities
-    * @param resultCriteria
-    * @return
-    */
+    /**
+     * Evaluate the number of suppliers associated to the given
+     * <code>category</code>(-ies) and <code>locality</code>(-ies)
+     * at the same time.
+     *
+     * @param categories
+     * @param localities
+     * @param resultCriteria
+     * @return
+     */
     long getSuppliersCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria);
 
     /**
@@ -165,10 +162,24 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     long getSuppliersCountQuick(Category category);
 
-
     /**
      *  @see com.eprovement.poptavka.dao.user.SupplierDao#
      *  getSuppliersCountWithoutChildren(com.eprovement.poptavka.domain.demand.Category)
      */
     long getSuppliersCountWithoutChildren(Category category);
+
+    /**
+     * Increment demand counts for given suppleir.
+     * For each supplier category and locality and its parents supplier count is incremented by 1.
+     * @param supplier refering to categories and localities that have to be updated
+     */
+    void incrementSupplierCount(Supplier supplier);
+
+    /**
+     * Decrement demand counts for given suppleir.
+     * For each supplier category and locality and its parents supplier count is decremented by 1.
+     * @param supplier refering to categories and localities that have to be updated
+     */
+    void decrementSupplierCount(Supplier supplier);
+
 }

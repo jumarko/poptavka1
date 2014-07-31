@@ -5,8 +5,6 @@ package com.eprovement.poptavka.server.converter;
 
 import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.service.address.LocalityService;
-import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +24,10 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
     /* RPC Services                                                           */
     /**************************************************************************/
     private LocalityService localityService;
-    private DemandService demandService;
-    private SupplierService supplierService;
 
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;
-    }
-
-    @Autowired
-    public void setDemandService(DemandService demandService) {
-        this.demandService = demandService;
-    }
-
-    @Autowired
-    public void setSupplierService(SupplierService supplierService) {
-        this.supplierService = supplierService;
     }
 
     /**************************************************************************/
@@ -63,8 +49,8 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
     @Override
     public ICatLocDetail convertToTarget(Locality locality) {
         CatLocDetail detail = new CatLocDetail(locality.getId(), constructName(locality));
-        detail.setDemandsCount(demandService.getDemandsCountQuick(locality));
-        detail.setSuppliersCount(supplierService.getSuppliersCountQuick(locality));
+        detail.setDemandsCount(locality.getDemandCount());
+        detail.setSuppliersCount(locality.getSupplierCount());
         detail.setLevel(locality.getLevel());
         detail.setLeaf(locality.isLeaf());
         Locality localityParent = locality.getParent();

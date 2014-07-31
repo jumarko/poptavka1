@@ -14,6 +14,7 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
+import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.user.ClientService;
@@ -29,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +48,18 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private final MessageService messageService;
     private ClientService clientService;
     private RegisterService registerService;
+    private CategoryService categoryService;
+    private LocalityService localityService;
 
-
-    public DemandServiceImpl(DemandDao demandDao, MessageService messageService) {
+    public DemandServiceImpl(DemandDao demandDao, MessageService messageService,
+        CategoryService categoryService, LocalityService localityService) {
         Validate.notNull(demandDao, "demandDao cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");
+        Validate.notNull(categoryService, "categoryService cannot be null!");
+        Validate.notNull(localityService, "localityService cannot be null!");
         setDao(demandDao);
         this.messageService = messageService;
+        this.systemPropertiesService = systemPropertiesService;
     }
 
     @Override
@@ -67,7 +74,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             demand.setType(getDemandType(DemandTypeType.NORMAL.getValue()));
         }
         demand.setStatus(DemandStatus.NEW);
-
 
         if (isNewClient(demand)) {
             LOGGER.info("action=create_demand demand={} creating new client={}", demand.getClient().getId());
@@ -136,11 +142,11 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         final List<Map<String, Object>> demandsCountForAllLocalities = this.getDao().getDemandsCountForAllLocalities();
 
         // convert to suitable Map: <locality, demandsCountForLocality>
-        final Map<Locality, Long> demandsCountForLocalitiesMap =
-                new HashMap<>(ESTIMATED_NUMBER_OF_LOCALITIES);
+        final Map<Locality, Long> demandsCountForLocalitiesMap
+            = new HashMap<>(ESTIMATED_NUMBER_OF_LOCALITIES);
         for (Map<String, Object> demandsCountForLocality : demandsCountForAllLocalities) {
             demandsCountForLocalitiesMap.put((Locality) demandsCountForLocality.get("locality"),
-                    (Long) demandsCountForLocality.get("demandsCount"));
+                (Long) demandsCountForLocality.get("demandsCount"));
         }
 
         return demandsCountForLocalitiesMap;
@@ -163,7 +169,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      * <p>
      * The result of this operation is cached therefore client cannot rely on the freshness of result.
      */
-
     @Override
     @Cacheable(cacheName = "cache5min")
     @Transactional(readOnly = true)
@@ -199,11 +204,11 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         final List<Map<String, Object>> demandsCountForAllCategories = this.getDao().getDemandsCountForAllCategories();
 
         // convert to suitable Map: <locality, demandsCountForLocality>
-        final Map<Category, Long> demandsCountForCategoriesMap =
-                new HashMap<>(ESTIMATED_NUMBER_OF_CATEGORIES);
+        final Map<Category, Long> demandsCountForCategoriesMap
+            = new HashMap<>(ESTIMATED_NUMBER_OF_CATEGORIES);
         for (Map<String, Object> demandsCountForCategory : demandsCountForAllCategories) {
             demandsCountForCategoriesMap.put((Category) demandsCountForCategory.get("category"),
-                    (Long) demandsCountForCategory.get("demandsCount"));
+                (Long) demandsCountForCategory.get("demandsCount"));
         }
 
         return demandsCountForCategoriesMap;
@@ -255,7 +260,6 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         return demand.getOffers().size();
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public Set<Demand> getDemands(ResultCriteria resultCriteria, List<Category> categories, List<Locality> localities) {
@@ -271,7 +275,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
-                                                  ResultCriteria resultCriteria) {
+        ResultCriteria resultCriteria) {
         return this.getDao().getDemandsIncludingParents(categories, localities, resultCriteria);
     }
 
@@ -283,7 +287,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         final long demandsCount = getDao().getClientDemandsWithOfferCount(client);
         LOGGER.debug("action=get_client_demands_with_offer_count status=finish client{} demands_count_size={}",
-                client, demandsCount);
+            client, demandsCount);
         return demandsCount;
     }
 
@@ -295,7 +299,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         final List<Demand> demands = getDao().getClientDemandsWithOffer(client);
         LOGGER.debug("action=get_client_demands_with_offer_count status=finish client={} demands_count_size={}",
-                client, demands);
+            client, demands);
         return demands;
     }
 
@@ -318,7 +322,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getDao().getClientDemandsWithUnreadSubMsgs(businessUser), search);
     }
 
@@ -338,7 +342,7 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional(readOnly = true)
     public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser,
-            Search search) {
+        Search search) {
         return Searcher.searchMapByKeys(getDao().getClientOfferedDemandsWithUnreadOfferSubMsgs(businessUser), search);
     }
 
@@ -347,6 +351,26 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Transactional(readOnly = true)
     public long getClientOfferedDemandsCount(BusinessUser businessUser) {
         return getDao().getClientOfferedDemandsCount(businessUser);
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void incrementDemandCount(Demand demand) {
+        getDao().incrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
+        getDao().incrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void decrementDemandCount(Demand demand) {
+        getDao().decrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
+        getDao().decrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
@@ -358,10 +382,48 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         this.registerService = registerService;
     }
 
-
     //---------------------------------------------- HELPER METHODS ----------------------------------------------------
     private boolean isNewClient(Demand demand) {
         return demand.getClient().getId() == null;
     }
 
+    /**
+     * Get list of given categories and its parents ids.
+     * For each category from given categories, its parents are retrieved. Given categories are included.
+     *
+     * @param categories for which hierarchy is retrieved
+     * @return categories and its parents ids
+     */
+    private Set<Long> getCategoriesAndItsParentsIds(List<Category> categories) {
+        Set<Long> set = new HashSet<Long>();
+        for (Category category : categories) {
+            //add category itself
+            set.add(category.getId());
+            //add category parents
+            while (category.getParent() != null) {
+                set.add(category.getParent().getId());
+            }
+        }
+        return set;
+    }
+
+    /**
+     * Get list of given localities and its parents ids.
+     * For each locality from given localities, its parents are retrieved. Given localities are included.
+     *
+     * @param localities for which hierarchy is retrieved
+     * @return localities and its parents ids
+     */
+    private Set<Long> getLocalitiesAndItsParentsIds(List<Locality> localities) {
+        Set<Long> set = new HashSet<Long>();
+        for (Locality locality : localities) {
+            //add locality itself
+            set.add(locality.getId());
+            //add locality parents
+            while (locality.getParent() != null) {
+                set.add(locality.getParent().getId());
+            }
+        }
+        return set;
+    }
 }

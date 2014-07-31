@@ -641,6 +641,7 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
         }
         demand.setStatus(DemandStatus.ASSIGNED);
         generalService.save(demand);
+        demandService.decrementDemandCount(demand);
     }
 
     /**************************************************************************/

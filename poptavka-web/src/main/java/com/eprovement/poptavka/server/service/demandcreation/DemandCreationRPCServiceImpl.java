@@ -61,7 +61,6 @@ public class DemandCreationRPCServiceImpl extends AutoinjectingRemoteService
         this.demandService = demandService;
     }
 
-
     @Autowired
     public void setLocalityService(LocalityService localityService) {
         this.localityService = localityService;

@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,18 +49,18 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private PotentialDemandService potentialDemandService;
     private SuppliersSelection suppliersSelection;
 
-
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
-            RegisterService registerService, UserVerificationService userVerificationService,
-            NotificationTypeService notificationTypeService) {
+        RegisterService registerService, UserVerificationService userVerificationService,
+        NotificationTypeService notificationTypeService) {
         super(Supplier.class, generalService, registerService, userVerificationService, notificationTypeService);
         Validate.notNull(supplierDao);
+        Validate.notNull(systemPropertiesService);
         setDao(supplierDao);
+        this.systemPropertiesService = systemPropertiesService;
         this.supplierAccessRoles = Arrays.asList(
-                getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class),
-                getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class));
+            getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class),
+            getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class));
     }
-
 
     /**
      * Setter injection is used instead of constructor because {@link SupplierServiceImpl} is used in
@@ -86,7 +87,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     public void setSuppliersSelection(SuppliersSelection suppliersSelection) {
         this.suppliersSelection = suppliersSelection;
     }
-
 
     @Override
     public Supplier create(Supplier businessUserRole) {
@@ -123,7 +123,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         return getSuppliers(ResultCriteria.EMPTY_CRITERIA, localities);
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -139,31 +138,30 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     @Transactional(readOnly = true)
     public Set<Supplier> getSuppliers(ResultCriteria resultCriteria,
-                                      List<Category> categories, List<Locality> localities) {
+        List<Category> categories, List<Locality> localities) {
         return this.getDao().getSuppliers(categories, localities, resultCriteria);
     }
 
     @Override
     public Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
-                                                      ResultCriteria resultCriteria) {
+        ResultCriteria resultCriteria) {
         return getDao().getSuppliersIncludingParentsAndChildren(categories, localities, resultCriteria);
     }
-
 
     /**
      * {@inheritDoc}
      */
     @Transactional(readOnly = true)
     public Map<Locality, Long> getSuppliersCountForAllLocalities() {
-        final List<Map<String, Object>> suppliersCountForAllLocalities =
-                this.getDao().getSuppliersCountForAllLocalities();
+        final List<Map<String, Object>> suppliersCountForAllLocalities
+            = this.getDao().getSuppliersCountForAllLocalities();
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
-        final Map<Locality, Long> suppliersCountForLocalitiesMap =
-                new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_LOCALITIES);
+        final Map<Locality, Long> suppliersCountForLocalitiesMap
+            = new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_LOCALITIES);
         for (Map<String, Object> suppliersCountForLocality : suppliersCountForAllLocalities) {
             suppliersCountForLocalitiesMap.put((Locality) suppliersCountForLocality.get("locality"),
-                    (Long) suppliersCountForLocality.get("suppliersCount"));
+                (Long) suppliersCountForLocality.get("suppliersCount"));
         }
 
         return suppliersCountForLocalitiesMap;
@@ -220,15 +218,15 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      */
     @Transactional(readOnly = true)
     public Map<Category, Long> getSuppliersCountForAllCategories() {
-        final List<Map<String, Object>> suppliersCountForAllCategories =
-                this.getDao().getSuppliersCountForAllCategories();
+        final List<Map<String, Object>> suppliersCountForAllCategories
+            = this.getDao().getSuppliersCountForAllCategories();
 
         // convert to suitable Map: <locality, suppliersCountForLocality>
-        final Map<Category, Long> suppliersCountForCategoriesMap =
-                new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_CATEGORIES);
+        final Map<Category, Long> suppliersCountForCategoriesMap
+            = new HashMap<>(DemandService.ESTIMATED_NUMBER_OF_CATEGORIES);
         for (Map<String, Object> suppliersCountForCategory : suppliersCountForAllCategories) {
             suppliersCountForCategoriesMap.put((Category) suppliersCountForCategory.get("category"),
-                    (Long) suppliersCountForCategory.get("suppliersCount"));
+                (Long) suppliersCountForCategory.get("suppliersCount"));
         }
 
         return suppliersCountForCategoriesMap;
@@ -262,7 +260,6 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         return this.getDao().getSuppliersCount(categories, localities, resultCriteria);
     }
 
-
     /**
      * {@inheritDoc}
      * <p>
@@ -285,8 +282,27 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         return this.getDao().getSuppliersCountWithoutChildren(category);
     }
 
-    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void incrementSupplierCount(Supplier supplier) {
+        getDao().incrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
+        getDao().incrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+    }
 
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void decrementSupplierCount(Supplier supplier) {
+        getDao().decrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
+        getDao().decrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+    }
+
+    //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     /**
      * Existing (potential) demands are sent to the new supplier.
      * @param newSupplier supplier that has just been registered
@@ -296,7 +312,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
         if (newSupplier.getBusinessUser().isUserFromExternalSystem()) {
             LOGGER.info("action=send_potential_demands_to_supplier status=skip reason=external_supplier supplier={} ",
-                    newSupplier);
+                newSupplier);
             return;
         }
         LOGGER.info("action=send_potential_demands_to_supplier status=start supplier={}", newSupplier);
@@ -315,7 +331,7 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     private Set<Demand> getPotentialDemandsCandidates(Supplier newSupplier) {
         return demandService.getDemandsIncludingParents(newSupplier.getCategories(), newSupplier.getLocalities(),
-                EMPTY_CRITERIA);
+            EMPTY_CRITERIA);
     }
 
     /**
@@ -335,11 +351,56 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
             public boolean evaluate(Object object) {
                 if (!(object instanceof PotentialSupplier)) {
                     throw new IllegalStateException("Potential suppliers collection must contain only elements"
-                            + " of type " + PotentialSupplier.class);
+                        + " of type " + PotentialSupplier.class);
                 }
                 return newPotentialSupplier.getSupplier().equals(((PotentialSupplier) object).getSupplier());
             }
         });
     }
 
+    /**
+     * Get list of given categories and its parents ids.
+     * For each category from given categories, its parents are retrieved. Given categories are included.
+     *
+     * @param categories for which hierarchy is retrieved
+     * @return categories and its parents ids
+     */
+    private Set<Long> getCategoriesAndItsParentsIds(List<Category> categories) {
+        Set<Long> set = new HashSet<Long>();
+        Category parent = null;
+        for (Category category : categories) {
+            //add category itself
+            set.add(category.getId());
+            //add category parents
+            parent = category.getParent();
+            while (parent != null) {
+                set.add(parent.getId());
+                parent = parent.getParent();
+            }
+        }
+        return set;
+    }
+
+    /**
+     * Get list of given localities and its parents ids.
+     * For each locality from given localities, its parents are retrieved. Given localities are included.
+     *
+     * @param localities for which hierarchy is retrieved
+     * @return localities and its parents ids
+     */
+    private Set<Long> getLocalitiesAndItsParentsIds(List<Locality> localities) {
+        Set<Long> set = new HashSet<Long>();
+        Locality parent = null;
+        for (Locality locality : localities) {
+            //add locality itself
+            set.add(locality.getId());
+            //add locality parents
+            parent = locality.getParent();
+            while (parent != null) {
+                set.add(parent.getId());
+                parent = parent.getParent();
+            }
+        }
+        return set;
+    }
 }

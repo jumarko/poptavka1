@@ -24,7 +24,7 @@ import java.util.List;
  *         Date: 13.2.11
  */
 @Transactional(readOnly = true)
-public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements  CategoryService {
+public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDao> implements CategoryService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryServiceImpl.class);
     private final RegisterService registerService;
@@ -54,7 +54,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={}", resultCriteria);
         final List<Category> rootCategories = getDao().getRootCategories(resultCriteria);
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={} "
-                + "root_categories_number=", resultCriteria, rootCategories.size());
+            + "root_categories_number=", resultCriteria, rootCategories.size());
         return rootCategories;
     }
 
@@ -76,7 +76,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
         return getDao().getCategoryByExternalId(externalId);
     }
 
-
     @Override
     @Cacheable(cacheName = "categoryCache")
     public List<ExternalCategory> getCategoryMapping(String externalSourceName) {
@@ -88,8 +87,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     }
 
     //----------------------------------  DO NOT MODIFY LOCALITIES USING THIS SERVICE ----------------------------------
-
-
     @Override
     public Category create(Category entity) {
         throw new TreeItemModificationException();
@@ -125,4 +122,5 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     public List<Category> getCategoriesByMinLength(int minLength, String nameSubstring) {
         return getDao().getCategoriesByMinLength(minLength, nameSubstring);
     }
+
 }
