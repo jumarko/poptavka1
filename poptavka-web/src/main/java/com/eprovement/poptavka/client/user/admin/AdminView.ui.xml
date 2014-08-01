@@ -28,6 +28,11 @@
                         <ui:msg key="adminTableClients">Clients</ui:msg>
                     </g:Button>
                 </li>
+                <li>
+                    <g:Button ui:field="systemBtn">
+                        <ui:msg key="menuAdminSystem">System</ui:msg>
+                    </g:Button>
+                </li>
             </ul>
         </g:HTMLPanel>
         <!--Main Content-->

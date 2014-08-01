@@ -49,7 +49,7 @@ import javax.validation.constraints.NotNull;
         query = "UPDATE Category SET supplierCount = supplierCount -  1 WHERE id IN :ids")
 })
 public class Category extends TreeItem {
-    
+
     public static final String INCREMENT_DEMAND_COUNT = "Category.INCREMENT_DEMAND_COUNT";
     public static final String DECREMENT_DEMAND_COUNT = "Category.DECREMENT_DEMAND_COUNT";
     public static final String INCREMENT_SUPPLIER_COUNT = "Category.INCREMENT_SUPPLIER_COUNT";

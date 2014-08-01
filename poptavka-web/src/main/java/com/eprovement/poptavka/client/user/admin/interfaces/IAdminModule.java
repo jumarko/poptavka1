@@ -25,7 +25,8 @@ public interface IAdminModule {
         NEW_DEMANDS,
         ASSIGNED_DEMANDS,
         ACTIVE_DEMANDS,
-        CLIENTS;
+        CLIENTS,
+        SYSTEM;
     }
 
     public interface Gateway {
@@ -55,6 +56,8 @@ public interface IAdminModule {
         Button getActiveDemandsBtn();
 
         Button getClientsBtn();
+
+        Button getSystemBtn();
 
         SimplePanel getContentContainer();
     }

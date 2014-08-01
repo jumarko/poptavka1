@@ -58,6 +58,7 @@
         <constructor-arg ref="demandTypeConverter"/>
     </bean>
     <bean id="preferenceConverter" class="com.eprovement.poptavka.server.converter.PreferenceConverter" />
+    <bean id="propertiesConverter" class="com.eprovement.poptavka.server.converter.admin.PropertiesConverter" />
     <bean id="problemConverter" class="com.eprovement.poptavka.server.converter.ProblemConverter" />
     <bean id="serviceConverter" class="com.eprovement.poptavka.server.converter.ServiceConverter"/>
     <bean id="supplierConverter" class="com.eprovement.poptavka.server.converter.SupplierConverter">

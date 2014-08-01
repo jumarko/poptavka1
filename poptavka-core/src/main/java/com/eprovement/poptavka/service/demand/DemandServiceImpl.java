@@ -14,9 +14,9 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
-import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.service.system.SystemPropertiesService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
@@ -48,18 +48,14 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private final MessageService messageService;
     private ClientService clientService;
     private RegisterService registerService;
-    private CategoryService categoryService;
-    private LocalityService localityService;
+    private SystemPropertiesService systemPropertiesService;
 
     public DemandServiceImpl(DemandDao demandDao, MessageService messageService,
-        CategoryService categoryService, LocalityService localityService) {
+        SystemPropertiesService systemPropertiesService) {
         Validate.notNull(demandDao, "demandDao cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");
-        Validate.notNull(categoryService, "categoryService cannot be null!");
-        Validate.notNull(localityService, "localityService cannot be null!");
         setDao(demandDao);
         this.messageService = messageService;
-        this.systemPropertiesService = systemPropertiesService;
     }
 
     @Override
@@ -359,8 +355,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional
     public void incrementDemandCount(Demand demand) {
-        getDao().incrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
-        getDao().incrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
+        if (systemPropertiesService.isImediateDemandCount()) {
+            getDao().incrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
+            getDao().incrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
+        }
     }
 
     /**
@@ -369,8 +367,10 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     @Transactional
     public void decrementDemandCount(Demand demand) {
-        getDao().decrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
-        getDao().decrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
+        if (systemPropertiesService.isImediateSupplierCount()) {
+            getDao().decrementCategoryDemandCount(getCategoriesAndItsParentsIds(demand.getCategories()));
+            getDao().decrementLocalityDemandCount(getLocalitiesAndItsParentsIds(demand.getLocalities()));
+        }
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------

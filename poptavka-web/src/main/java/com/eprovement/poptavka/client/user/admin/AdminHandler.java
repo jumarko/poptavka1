@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.admin.AdminRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
@@ -227,6 +228,46 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             @Override
             public void onSuccess(Void result) {
                 table.refresh();
+            }
+        });
+    }
+
+    public void onRequestSystemProperties() {
+        adminService.getSystemProperties(new SecuredAsyncCallback<List<PropertiesDetail>>(eventBus) {
+
+            @Override
+            public void onSuccess(List<PropertiesDetail> result) {
+                eventBus.responseSystemProperties(result);
+            }
+        });
+    }
+
+    public void onRequestUpdateSystemProperties(PropertiesDetail properties) {
+        adminService.updateSystemProperties(properties, new SecuredAsyncCallback<Boolean>(eventBus) {
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //nothing by default;
+            }
+        });
+    }
+
+    public void onRequestCalculateDemandCounts() {
+        adminService.calculateDemandCounts(new SecuredAsyncCallback<Void>(eventBus) {
+
+            @Override
+            public void onSuccess(Void result) {
+                //nothing by default
+            }
+        });
+    }
+
+    public void onRequestCalculateSupplierCounts() {
+        adminService.calculateSupplierCounts(new SecuredAsyncCallback<Void>(eventBus) {
+
+            @Override
+            public void onSuccess(Void result) {
+                //nothing by default
             }
         });
     }

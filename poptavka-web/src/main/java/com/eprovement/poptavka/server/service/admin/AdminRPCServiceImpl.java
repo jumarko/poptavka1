@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.settings.SystemProperties;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
@@ -23,6 +24,7 @@ import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
+import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
@@ -90,6 +92,8 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     private Converter<Client, AdminClientDetail> adminClientConverter;
     @Autowired
     private Converter<Origin, OriginDetail> originConverter;
+    @Autowired
+    private Converter<SystemProperties, PropertiesDetail> propertiesConverter;
     @Autowired
     private SearchConverter searchConverter;
 
@@ -315,5 +319,36 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public List<OriginDetail> getOrigins() throws RPCException, ApplicationSecurityException {
         return originConverter.convertToTargetList(generalService.findAll(Origin.class));
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public List<PropertiesDetail> getSystemProperties() throws RPCException, ApplicationSecurityException {
+        List<SystemProperties> domainProperties = generalService.findAll(SystemProperties.class);
+        List<PropertiesDetail> detailProperties = new ArrayList<PropertiesDetail>();
+        for (SystemProperties properties : domainProperties) {
+            detailProperties.add(propertiesConverter.convertToTarget(properties));
+        }
+        return detailProperties;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public Boolean updateSystemProperties(PropertiesDetail properties)
+        throws RPCException, ApplicationSecurityException {
+        generalService.save(propertiesConverter.convertToSource(properties));
+        return true;
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void calculateDemandCounts() throws RPCException, ApplicationSecurityException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public void calculateSupplierCounts() throws RPCException, ApplicationSecurityException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

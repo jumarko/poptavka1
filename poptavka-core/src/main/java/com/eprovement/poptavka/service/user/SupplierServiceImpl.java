@@ -10,6 +10,7 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.Period;
+import com.eprovement.poptavka.service.system.SystemPropertiesService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -48,10 +49,11 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private DemandService demandService;
     private PotentialDemandService potentialDemandService;
     private SuppliersSelection suppliersSelection;
+    private SystemPropertiesService systemPropertiesService;
 
     public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
         RegisterService registerService, UserVerificationService userVerificationService,
-        NotificationTypeService notificationTypeService) {
+        NotificationTypeService notificationTypeService, SystemPropertiesService systemPropertiesService) {
         super(Supplier.class, generalService, registerService, userVerificationService, notificationTypeService);
         Validate.notNull(supplierDao);
         Validate.notNull(systemPropertiesService);
@@ -288,8 +290,10 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     @Transactional
     public void incrementSupplierCount(Supplier supplier) {
-        getDao().incrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
-        getDao().incrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+        if (systemPropertiesService.isImediateDemandCount()) {
+            getDao().incrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
+            getDao().incrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+        }
     }
 
     /**
@@ -298,8 +302,10 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     @Transactional
     public void decrementSupplierCount(Supplier supplier) {
-        getDao().decrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
-        getDao().decrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+        if (systemPropertiesService.isImediateSupplierCount()) {
+            getDao().decrementCategorySupplierCount(getCategoriesAndItsParentsIds(supplier.getCategories()));
+            getDao().decrementLocalitySupplierCount(getLocalitiesAndItsParentsIds(supplier.getLocalities()));
+        }
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------

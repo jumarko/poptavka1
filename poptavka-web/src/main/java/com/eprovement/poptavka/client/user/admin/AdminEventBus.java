@@ -11,8 +11,10 @@ import com.eprovement.poptavka.client.user.admin.clients.AdminClientsPresenter;
 import com.eprovement.poptavka.client.user.admin.interfaces.HandleAdminResizeEvent;
 import com.eprovement.poptavka.client.user.admin.demands.AdminNewDemandsPresenter;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
+import com.eprovement.poptavka.client.user.admin.system.AdminSystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
@@ -106,6 +108,9 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     @Event(handlers = AdminClientsPresenter.class)
     void initClients(SearchModuleDataHolder filter);
 
+    @Event(handlers = AdminSystemSettingsPresenter.class)
+    void initAdminSystemSettings();
+
     /**************************************************************************/
     /* Overriden methods of IEventBusData interface.                          */
     /* Should be called only from UniversalAsyncGrid.                         */
@@ -160,4 +165,25 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
 
     @Event(handlers = AdminHandler.class)
     void requestChangeOrigin(UniversalAsyncGrid table, long clietnId, long originId);
+
+    @Event(handlers = AdminHandler.class)
+    void requestSystemProperties();
+
+    @Event(handlers = AdminSystemSettingsPresenter.class)
+    void responseSystemProperties(List<PropertiesDetail> properties);
+
+    @Event(handlers = AdminHandler.class)
+    void requestUpdateSystemProperties(PropertiesDetail properties);
+
+    @Event(handlers = AdminHandler.class)
+    void requestCalculateDemandCounts();
+
+    @Event(handlers = AdminSystemSettingsPresenter.class)
+    void responseCalculateDemandCounts(Boolean result);
+
+    @Event(handlers = AdminHandler.class)
+    void requestCalculateSupplierCounts();
+
+    @Event(handlers = AdminSystemSettingsPresenter.class)
+    void responseCalculateSupplierCounts(Boolean result);
 }
