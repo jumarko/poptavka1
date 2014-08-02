@@ -544,6 +544,24 @@ public class DemandServiceIntegrationTest extends DBUnitIntegrationTest {
                 1, (Object) clientDemandsWithOffer.get(demand70));
     }
 
+    @Test
+    public void testGetSuppliersCategoriesCountQuick() {
+        Category category = this.generalService.find(Category.class, 11L);
+        Assert.assertEquals("Suppliers count for category is different than expected",
+                6, this.demandService.getDemandsCountQuick(category));
+    }
+
+    @Test
+    public void testGetSuppliersLocalitiesCountQuick() {
+        Locality locality11 = this.generalService.find(Locality.class, 11L);
+        Assert.assertEquals("Suppliers count for locality is different than expected",
+                4, this.demandService.getDemandsCountQuick(locality11));
+        Locality locality21 = this.generalService.find(Locality.class, 21L);
+        Assert.assertEquals("Suppliers count for locality is different than expected",
+                1, this.demandService.getDemandsCountQuick(locality21));
+    }
+
+
     //------------------------------ HELPER METHODS --------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------
     private void checkDemandTypeExists(final String demandTypeCode, final List<DemandType> demandTypes) {

@@ -6,12 +6,14 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.SQLQuery;
 
 /**
  * @author Juraj Martinka
@@ -39,10 +41,13 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
 
     @Override
     public long getSuppliersCountQuick(Category category) {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("leftBound", category.getLeftBound());
-        params.put("rightBound", category.getRightBound());
-        return (Long) runNamedQueryForSingleResult("getSuppliersCountForCategory", params);
+        String sql = "select count(distinct sc.supplier_id) from Category c LEFT JOIN SUPPLIER_CATEGORY sc ON "
+                + "c.id=sc.category_id where c.leftBound between :leftBound and :rightBound "
+                + "and (sc.enabled=1 or sc.enabled is null)";
+        SQLQuery query = getHibernateSession().createSQLQuery(sql);
+        query.setParameter("leftBound", category.getLeftBound());
+        query.setParameter("rightBound", category.getRightBound());
+        return ((BigInteger) query.uniqueResult()).longValue();
     }
 
 
@@ -140,10 +145,14 @@ public class SupplierDaoImpl extends BusinessUserRoleDaoImpl<Supplier> implement
 
     @Override
     public long getSuppliersCountQuick(Locality locality) {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("leftBound", locality.getLeftBound());
-        params.put("rightBound", locality.getRightBound());
-        return (Long) runNamedQueryForSingleResult("getSuppliersCountForLocality", params);
+        String sql = "select count(distinct sl.supplier_id) from Locality loc LEFT JOIN SUPPLIER_LOCALITY sl ON "
+                + "loc.id=sl.locality_id where loc.leftBound between :leftBound and :rightBound "
+                + "and (sl.enabled=1 or sl.enabled is null)";
+        SQLQuery query = getHibernateSession().createSQLQuery(sql);
+        query.setParameter("leftBound", locality.getLeftBound());
+        query.setParameter("rightBound", locality.getRightBound());
+        return ((BigInteger) query.uniqueResult()).longValue();
+
     }
 
 

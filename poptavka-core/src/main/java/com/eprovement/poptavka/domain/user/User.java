@@ -26,6 +26,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
+import javax.persistence.FetchType;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.Email;
@@ -77,12 +78,12 @@ public class User extends DomainObject {
      * Settings of this user. Each user has some settings. If user is removed there is no reason to store his
      * settings anymore.
      */
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotAudited
     @NotNull
     private Settings settings = new Settings();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @NotAudited
     @Cascade(value = org.hibernate.annotations.CascadeType.ALL)
     private ActivationEmail activationEmail;
