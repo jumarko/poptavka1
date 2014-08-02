@@ -174,7 +174,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
             UserService userService = new UserService();
             userService.setService(service);
             userService.setStatus(Status.INACTIVE);
-            userService.setUser(newSupplier.getBusinessUser());
+            userService.setBusinessUser(newSupplier.getBusinessUser());
             us.add(userService);
         }
 

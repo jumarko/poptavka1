@@ -50,7 +50,7 @@ public final class UserServiceConverter extends AbstractConverter<UserService, U
 
         detail.setService(serviceConverter.convertToTarget(userService.getService()));
         detail.setStatus(userService.getStatus().name());
-        detail.setUser(businessUserConverter.convertToTarget(userService.getUser()));
+        detail.setUser(businessUserConverter.convertToTarget(userService.getBusinessUser()));
 
         return detail;
 

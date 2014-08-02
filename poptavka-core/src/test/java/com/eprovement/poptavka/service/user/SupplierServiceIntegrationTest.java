@@ -289,10 +289,10 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
 
 
         final Search userServiceSearch = new Search(UserService.class);
-        userServiceSearch.addFilterEqual("user", createdSupplier.getBusinessUser());
+        userServiceSearch.addFilterEqual("businessUser", createdSupplier.getBusinessUser());
         final List<UserService> serviceAssignedToClient = this.generalService.search(userServiceSearch);
         assertNotNull(serviceAssignedToClient.get(0));
-        assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@supplier.com"));
+        assertThat(serviceAssignedToClient.get(0).getBusinessUser().getEmail(), is("new@supplier.com"));
         assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
 
         // check if new supplier has also all supplier notifications set to the sensible values
@@ -354,6 +354,23 @@ public class SupplierServiceIntegrationTest extends DBUnitIntegrationTest {
         Assert.assertEquals(!isCertified, persistedSupplier.get(0).isCertified());
     }
 
+
+    @Test
+    public void testGetSuppliersCategoriesCountQuick() {
+        Category category = this.generalService.find(Category.class, 11L);
+        Assert.assertEquals("Suppliers count for category is different than expected",
+                2, this.supplierService.getSuppliersCountQuick(category));
+    }
+
+    @Test
+    public void testGetSuppliersLocalitiesCountQuick() {
+        Locality locality12 = this.generalService.find(Locality.class, 12L);
+        Assert.assertEquals("Suppliers count for locality is different than expected",
+                0, this.supplierService.getSuppliersCountQuick(locality12));
+        Locality locality21 = this.generalService.find(Locality.class, 21L);
+        Assert.assertEquals("Suppliers count for locality is different than expected",
+                2, this.supplierService.getSuppliersCountQuick(locality21));
+    }
 
     //----------------------------------------- HELPER METHODS ---------------------------------------------------------
     private void checkSuppliersForLocalities(int expectedCount, Long... localitiesCodes) {

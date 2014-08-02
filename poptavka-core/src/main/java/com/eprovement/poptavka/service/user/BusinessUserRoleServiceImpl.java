@@ -114,7 +114,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
         if (businessUserRole.getBusinessUser().getUserServices() == null
             || businessUserRole.getBusinessUser().getUserServices().isEmpty()) {
             final UserService classicClient = new UserService();
-            classicClient.setUser(businessUserRole.getBusinessUser());
+            classicClient.setBusinessUser(businessUserRole.getBusinessUser());
             classicClient.setService(this.registerService.getValue(Registers.Service.CLASSIC, Service.class));
             classicClient.setStatus(Status.INACTIVE);
             // no services have been assigned to the business user, it is safe to set completely new list

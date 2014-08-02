@@ -21,6 +21,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
+import javax.persistence.FetchType;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -62,7 +63,7 @@ public class BusinessUser extends User {
     private List<Address> addresses;
 
     @NotAudited
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "businessUser")
     @Cascade(value = CascadeType.ALL)
     private List<UserService> userServices;
 
@@ -73,7 +74,7 @@ public class BusinessUser extends User {
     /**
      * Origin of user in case of user imported from external system. Should be null for plain old internal users.
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @NotAudited
     private Origin origin;
 

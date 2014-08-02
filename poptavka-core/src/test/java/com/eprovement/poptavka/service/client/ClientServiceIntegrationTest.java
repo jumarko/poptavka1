@@ -164,10 +164,10 @@ public class ClientServiceIntegrationTest extends DBUnitIntegrationTest {
 
         // check if new client has automatically assigned service "classic client" with status unverified
         final Search userServiceSearch = new Search(UserService.class);
-        userServiceSearch.addFilterEqual("user", createdClient.getBusinessUser());
+        userServiceSearch.addFilterEqual("businessUser", createdClient.getBusinessUser());
         final List<UserService> serviceAssignedToClient = this.generalService.search(userServiceSearch);
         Assert.assertNotNull(serviceAssignedToClient.get(0));
-        Assert.assertThat(serviceAssignedToClient.get(0).getUser().getEmail(), is("new@client.com"));
+        Assert.assertThat(serviceAssignedToClient.get(0).getBusinessUser().getEmail(), is("new@client.com"));
         Assert.assertThat(serviceAssignedToClient.get(0).getService().getCode(), is(Registers.Service.CLASSIC));
 
         // check if new client has also all client notifications set to the sensible values

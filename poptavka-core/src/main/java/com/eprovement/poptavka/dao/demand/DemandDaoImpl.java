@@ -15,6 +15,7 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.util.collection.CollectionsHelper;
+import java.math.BigInteger;
 
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.SQLQuery;
 
 /**
  *
@@ -66,10 +68,13 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
      /** {@inheritDoc} */
     @Override
     public long getDemandsCountQuick(Locality locality) {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("leftBound", locality.getLeftBound());
-        params.put("rightBound", locality.getRightBound());
-        return (Long) runNamedQueryForSingleResult("getDemandsCountForLocality", params);
+        String sql = "select count(distinct dl.demand_id) from Locality loc LEFT JOIN DEMAND_LOCALITY dl ON "
+                + "loc.id=dl.locality_id where loc.leftBound between :leftBound and :rightBound "
+                + "and (dl.enabled=1 or dl.enabled is null)";
+        SQLQuery query = getHibernateSession().createSQLQuery(sql);
+        query.setParameter("leftBound", locality.getLeftBound());
+        query.setParameter("rightBound", locality.getRightBound());
+        return ((BigInteger) query.uniqueResult()).longValue();
     }
 
     /** {@inheritDoc} */
@@ -119,10 +124,13 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
      /** {@inheritDoc} */
     @Override
     public long getDemandsCountQuick(Category category) {
-        final Map<String, Object> params = new HashMap<String, Object>();
-        params.put("leftBound", category.getLeftBound());
-        params.put("rightBound", category.getRightBound());
-        return (Long) runNamedQueryForSingleResult("getDemandsCountForCategory", params);
+        String sql = "select count(distinct dc.demand_id) from Category c LEFT JOIN DEMAND_CATEGORY dc ON "
+                + "c.id=dc.category_id where c.leftBound between :leftBound and :rightBound "
+                + "and (dc.enabled=1 or dc.enabled is null)";
+        SQLQuery query = getHibernateSession().createSQLQuery(sql);
+        query.setParameter("leftBound", category.getLeftBound());
+        query.setParameter("rightBound", category.getRightBound());
+        return ((BigInteger) query.uniqueResult()).longValue();
     }
 
 

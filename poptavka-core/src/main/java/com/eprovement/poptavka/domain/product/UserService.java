@@ -28,7 +28,7 @@ public class UserService extends DomainObject {
     private Service service;
 
     @ManyToOne
-    private BusinessUser user;
+    private BusinessUser businessUser;
 
     @Enumerated(value = EnumType.STRING)
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
@@ -43,12 +43,12 @@ public class UserService extends DomainObject {
         this.service = service;
     }
 
-    public BusinessUser getUser() {
-        return user;
+    public BusinessUser getBusinessUser() {
+        return businessUser;
     }
 
-    public void setUser(BusinessUser user) {
-        this.user = user;
+    public void setBusinessUser(BusinessUser businessUser) {
+        this.businessUser = businessUser;
     }
 
     public Status getStatus() {
@@ -64,7 +64,7 @@ public class UserService extends DomainObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("UserService");
         sb.append("{service=").append(service);
-        sb.append(", user=").append(user);
+        sb.append(", businessUser=").append(businessUser);
         sb.append(", status=").append(status);
         sb.append('}');
         return sb.toString();
