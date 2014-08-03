@@ -75,6 +75,9 @@ public interface CommonStyles extends CssResource {
     @ClassName("button-right-large")
     String buttonRightLarge(); //DemandCreation, SupplierCreation
 
+    @ClassName("button-right-brown-small")
+    String buttonRightBrownSmall(); //CreditAnouncer
+
     @ClassName("button-left-small")
     String buttonLeftSmall(); //not used
 

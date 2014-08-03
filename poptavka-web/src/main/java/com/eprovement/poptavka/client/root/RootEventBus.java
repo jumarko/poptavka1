@@ -35,6 +35,7 @@ import com.eprovement.poptavka.client.user.clientdemands.ClientDemandsModule;
 import com.eprovement.poptavka.client.user.messages.MessagesModule;
 import com.eprovement.poptavka.client.user.settings.SettingsModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
+import com.eprovement.poptavka.client.user.widget.creditAnnouncer.CreditStatusAnnouncerPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
@@ -156,6 +157,9 @@ public interface RootEventBus extends EventBusWithLookup,
 
     @Event(handlers = FooterPresenter.class)
     void setFooter(SimplePanel footerPanel);
+
+    @Event(handlers = CreditStatusAnnouncerPresenter.class)
+    void setCreditAnnouncer(SimplePanel creditAnnouncerPanel);
 
     @Event(broadcastTo = HandleResizeEvent.class, passive = true)
     void resize(int actualWidth);
