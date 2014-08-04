@@ -5,9 +5,12 @@ package com.eprovement.poptavka.client.user.admin.system;
 
 import com.eprovement.poptavka.client.user.admin.AdminEventBus;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminSystemSettings;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Timer;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import java.util.List;
@@ -25,12 +28,30 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
+    /** Constants. **/
+    private static final int REFRESH_DELAY = 3000;
+    private static final int REFRESH_INTERVAL = 120000;
+    /** Class Attribtutes. **/
     private ClickHandler changeHandler = new ClickHandler() {
 
         @Override
         public void onClick(ClickEvent event) {
             PropertyItemView propertyView = (PropertyItemView) event.getSource();
             eventBus.requestUpdateSystemProperties(propertyView.getPropertiesDetail());
+        }
+    };
+    private Timer demandCountsRefresher = new Timer() {
+
+        @Override
+        public void run() {
+            eventBus.requestJobProgress(LogType.DEMAND_COUNTS);
+        }
+    };
+    private Timer supplierCountsRefresher = new Timer() {
+
+        @Override
+        public void run() {
+            eventBus.requestJobProgress(LogType.SUPPLIER_COUNTS);
         }
     };
 
@@ -43,6 +64,8 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
     @Override
     public void onInitAdminSystemSettings() {
         eventBus.requestSystemProperties();
+        demandCountsRefresher.scheduleRepeating(REFRESH_INTERVAL);
+        supplierCountsRefresher.scheduleRepeating(REFRESH_INTERVAL);
         eventBus.displayView(view);
     }
 
@@ -51,18 +74,22 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
      */
     @Override
     public void bindView() {
-        view.getCalcDemandCountsBtn().addClickHandler(new ClickHandler() {
+        view.getDemandCountsBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
+                view.getDemandCountsBtn().setEnabled(false);
                 eventBus.requestCalculateDemandCounts();
+                demandCountsRefresher.schedule(REFRESH_DELAY);
             }
         });
-        view.getCalcSupplierCountsBtn().addClickHandler(new ClickHandler() {
+        view.getSupplierCountsBtn().addClickHandler(new ClickHandler() {
 
             @Override
             public void onClick(ClickEvent event) {
+                view.getSupplierCountsBtn().setEnabled(false);
                 eventBus.requestCalculateSupplierCounts();
+                supplierCountsRefresher.schedule(REFRESH_DELAY);
             }
         });
     }
@@ -70,6 +97,7 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
     /**************************************************************************/
     /* Business events                                                        */
     /**************************************************************************/
+    @Override
     public void onResponseSystemProperties(List<PropertiesDetail> properties) {
         view.getPropertiesPanel().clear();
         for (PropertiesDetail property : properties) {
@@ -79,11 +107,17 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
         }
     }
 
-    public void onResponseCalculateDemandCounts(Boolean result) {
-        //cancel loading
-    }
-
-    public void onResponseCalculateSupplierCounts(Boolean result) {
-        ////cancel loading
+    @Override
+    public void onResponseJobProgress(LogType job, LogDetail result) {
+        switch (job) {
+            case DEMAND_COUNTS:
+                view.setDemandCountsProgress(result);
+                break;
+            case SUPPLIER_COUNTS:
+                view.setSupplierCountsProgress(result);
+                break;
+            default:
+                break;
+        }
     }
 }

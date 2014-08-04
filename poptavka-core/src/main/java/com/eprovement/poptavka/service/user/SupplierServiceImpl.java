@@ -9,10 +9,12 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.domain.enums.Period;
 import com.eprovement.poptavka.service.system.SystemPropertiesService;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
+import com.eprovement.poptavka.domain.system.Log;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.rights.AccessRole;
 import com.eprovement.poptavka.service.GeneralService;
@@ -21,6 +23,7 @@ import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.demand.SuppliersSelection;
 import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.service.system.LogService;
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -43,6 +46,7 @@ import java.util.Set;
 public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, SupplierDao> implements SupplierService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SupplierServiceImpl.class);
+    private static final int CALCULTATE_COUNT_PROGRESS_FRAGMENT = 100;
 
     private final List<AccessRole> supplierAccessRoles;
 
@@ -50,15 +54,18 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private PotentialDemandService potentialDemandService;
     private SuppliersSelection suppliersSelection;
     private SystemPropertiesService systemPropertiesService;
+    private LogService logService;
 
-    public SupplierServiceImpl(GeneralService generalService, SupplierDao supplierDao,
+    public SupplierServiceImpl(SupplierDao supplierDao, GeneralService generalService, LogService logService,
         RegisterService registerService, UserVerificationService userVerificationService,
         NotificationTypeService notificationTypeService, SystemPropertiesService systemPropertiesService) {
         super(Supplier.class, generalService, registerService, userVerificationService, notificationTypeService);
         Validate.notNull(supplierDao);
         Validate.notNull(systemPropertiesService);
+        Validate.notNull(logService);
         setDao(supplierDao);
         this.systemPropertiesService = systemPropertiesService;
+        this.logService = logService;
         this.supplierAccessRoles = Arrays.asList(
             getRegisterService().getValue(CommonAccessRoles.SUPPLIER_ACCESS_ROLE_CODE, AccessRole.class),
             getRegisterService().getValue(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE, AccessRole.class));
@@ -314,13 +321,38 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     @Override
     public void calculateCounts() {
         List<Category> allCategories = generalService.findAll(Category.class);
-        for (Category category : allCategories) {
-            calculateAndUpdatedCountForCategory(category);
-        }
         List<Locality> allLocalities = generalService.findAll(Locality.class);
-        for (Locality locality : allLocalities) {
-            calculateAndUpdatedCountForLocality(locality);
+        Log log = logService.createLog(LogType.SUPPLIER_COUNTS,
+            allCategories.size() + allLocalities.size(),
+            "Calculating demand counts for categories and localities.");
+        int frangmentCounter = 0;
+        for (Category category : allCategories) {
+            try {
+                calculateAndUpdatedCountForCategory(category);
+                frangmentCounter++;
+                if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
+                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
+                    logService.updateLog(log);
+                    frangmentCounter = 0;
+                }
+            } catch (Exception ex) {
+                logService.logError(log, ex);
+            }
         }
+        for (Locality locality : allLocalities) {
+            try {
+                calculateAndUpdatedCountForLocality(locality);
+                frangmentCounter++;
+                if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
+                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
+                    logService.updateLog(log);
+                    frangmentCounter = 0;
+                }
+            } catch (Exception ex) {
+                logService.logError(log, ex);
+            }
+        }
+        logService.finnishLog(log);
     }
 
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------

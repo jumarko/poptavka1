@@ -4,12 +4,15 @@
 package com.eprovement.poptavka.client.user.admin.system;
 
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminSystemSettings;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
+import com.github.gwtbootstrap.client.ui.Icon;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -32,7 +35,9 @@ public class AdminSystemSettingsView extends Composite implements IAdminSystemSe
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField FlowPanel properties;
-    @UiField Button calcDemandCountsBtn, calcSupplierCountsBtn;
+    @UiField Button demandCountsBtn, supplierCountsBtn;
+    @UiField Icon demandCountsProgressSpinner, supplierCountsProgressSpinner;
+    @UiField Label demandCountsProgressLabel, supplierCountsProgressLabel;
 
     /**************************************************************************/
     /* INITIALIZATION                                                         */
@@ -56,6 +61,48 @@ public class AdminSystemSettingsView extends Composite implements IAdminSystemSe
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void setDemandCountsProgress(LogDetail detail) {
+        demandCountsBtn.setVisible(detail == null);
+        demandCountsBtn.setEnabled(detail == null);
+        demandCountsProgressSpinner.setVisible(detail != null);
+        demandCountsProgressLabel.setVisible(detail != null);
+        if (detail != null) {
+            demandCountsProgressLabel.setText(new StringBuilder()
+                .append(detail.getPercentageProgress().toString())
+                .append("% (")
+                .append(detail.getProcessedItems())
+                .append("/")
+                .append(detail.getTotalItems())
+                .append(")").toString()
+            );
+        }
+    }
+
+    /**
+     * @{inheritDoc}
+     */
+    @Override
+    public void setSupplierCountsProgress(LogDetail detail) {
+        supplierCountsBtn.setVisible(detail == null);
+        supplierCountsBtn.setEnabled(detail == null);
+        supplierCountsProgressSpinner.setVisible(detail != null);
+        supplierCountsProgressLabel.setVisible(detail != null);
+        if (detail != null) {
+            supplierCountsProgressLabel.setText(new StringBuilder()
+                .append(detail.getPercentageProgress().toString())
+                .append("% (")
+                .append(detail.getProcessedItems())
+                .append("/")
+                .append(detail.getTotalItems())
+                .append(")").toString()
+            );
+        }
+    }
+
     /**************************************************************************/
     /* GETTERS                                                                */
     /**************************************************************************/
@@ -71,16 +118,16 @@ public class AdminSystemSettingsView extends Composite implements IAdminSystemSe
      * @{inheritDoc}
      */
     @Override
-    public Button getCalcDemandCountsBtn() {
-        return calcDemandCountsBtn;
+    public Button getDemandCountsBtn() {
+        return demandCountsBtn;
     }
 
     /**
      * @{inheritDoc}
      */
     @Override
-    public Button getCalcSupplierCountsBtn() {
-        return calcSupplierCountsBtn;
+    public Button getSupplierCountsBtn() {
+        return supplierCountsBtn;
     }
 
     /**

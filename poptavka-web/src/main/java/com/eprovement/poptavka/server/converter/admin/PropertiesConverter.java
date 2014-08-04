@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.server.converter.admin;
 
-import com.eprovement.poptavka.domain.settings.SystemProperties;
+import com.eprovement.poptavka.domain.system.SystemProperties;
 import com.eprovement.poptavka.server.converter.AbstractConverter;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;

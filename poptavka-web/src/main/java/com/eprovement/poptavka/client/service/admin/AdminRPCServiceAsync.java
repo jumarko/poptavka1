@@ -1,9 +1,11 @@
 package com.eprovement.poptavka.client.service.admin;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -71,4 +73,9 @@ public interface AdminRPCServiceAsync {
 
     void calculateDemandCounts(AsyncCallback<Void> callback);
     void calculateSupplierCounts(AsyncCallback<Void> callback);
+
+    /**
+     * @see com.eprovement.poptavka.client.service.admin.AdminRPCService#getJobProgress
+     */
+    void getJobProgress(LogType type, AsyncCallback<LogDetail> callback);
 }

@@ -5,7 +5,9 @@ package com.eprovement.poptavka.client.user.admin.interfaces;
 
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.user.admin.system.AdminSystemSettingsPresenter;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -62,17 +64,19 @@ public interface IAdminSystemSettings {
 
         void onResponseSystemProperties(List<PropertiesDetail> properties);
 
-        void onResponseCalculateDemandCounts(Boolean result);
-
-        void onResponseCalculateSupplierCounts(Boolean result);
+        void onResponseJobProgress(LogType job, LogDetail result);
     }
 
     public interface View extends LazyView, ProvidesValidate, IsWidget {
 
+        void setDemandCountsProgress(LogDetail detail);
+
+        void setSupplierCountsProgress(LogDetail detail);
+
         FlowPanel getPropertiesPanel();
 
-        Button getCalcDemandCountsBtn();
+        Button getDemandCountsBtn();
 
-        Button getCalcSupplierCountsBtn();
+        Button getSupplierCountsBtn();
     }
 }

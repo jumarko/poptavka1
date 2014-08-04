@@ -9,10 +9,12 @@ import com.eprovement.poptavka.domain.common.Origin;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.domain.enums.MessageState;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
-import com.eprovement.poptavka.domain.settings.SystemProperties;
+import com.eprovement.poptavka.domain.system.Log;
+import com.eprovement.poptavka.domain.system.SystemProperties;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
@@ -29,6 +31,7 @@ import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -354,5 +357,24 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void calculateSupplierCounts() throws RPCException, ApplicationSecurityException {
         supplierService.calculateCounts();
+    }
+
+    @Override
+    @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
+    public LogDetail getJobProgress(LogType type) throws RPCException, ApplicationSecurityException {
+        Search search = new Search(Log.class)
+            .addFilterEqual("logType", type)
+            .addFilterNull("endDate")
+            .addSort("startDate", false);
+        List<Log> log = generalService.search(search);
+        if (log.isEmpty()) {
+            return null;
+        } else {
+            LogDetail detail = new LogDetail();
+            detail.setStartDate(log.get(0).getStartDate());
+            detail.setTotalItems(log.get(0).getTotalItems());
+            detail.setProcessedItems(log.get(0).getProcessedItems());
+            return detail;
+        }
     }
 }

@@ -6,6 +6,12 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
     <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:style>
+        .spinner-ws {
+            margin: 5px 0 0 15px;
+            float: left;
+        }
+    </ui:style>
 
     <b:FluidContainer>
         <b:FluidRow>
@@ -36,26 +42,32 @@
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Label>
+                            <g:Label addStyleNames="pull-right">
                                 <ui:msg key='adminSystemCalcDemandCountsLabel'>Calculate Demand Counts</ui:msg>
                             </g:Label>
+                            <b:Icon ui:field="demandCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
+                                    type="SPINNER" spin="true" size="TWO_TIMES" visible="false"/>
                         </b:Column>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Button ui:field='calcDemandCountsBtn' styleName='{res.common.buttonGrey}'>
+                            <g:Button ui:field='demandCountsBtn' styleName='{res.common.buttonGrey}'>
                                 <ui:msg key='commonBtnRun'>Run</ui:msg>
                             </g:Button>
+                            <g:Label ui:field="demandCountsProgressLabel"/>
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Label>
+                            <g:Label addStyleNames="pull-right">
                                 <ui:msg key='adminSystemCalcSupplierCountsLabel'>Calculate Supplier Counts</ui:msg>
                             </g:Label>
+                            <b:Icon ui:field="supplierCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
+                                    type="SPINNER" spin="true" size="TWO_TIMES" visible="false"/>
                         </b:Column>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Button ui:field='calcSupplierCountsBtn' styleName='{res.common.buttonGrey}'>
+                            <g:Button ui:field='supplierCountsBtn' styleName='{res.common.buttonGrey}'>
                                 <ui:msg key='commonBtnRun'>Run</ui:msg>
                             </g:Button>
+                            <g:Label ui:field="supplierCountsProgressLabel"/>
                         </b:Column>
                     </b:FluidRow>
                 </b:FluidContainer>

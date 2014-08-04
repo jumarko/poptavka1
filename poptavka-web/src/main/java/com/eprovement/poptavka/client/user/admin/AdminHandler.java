@@ -11,9 +11,11 @@ import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.service.admin.AdminRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -268,6 +270,16 @@ public class AdminHandler extends BaseEventHandler<AdminEventBus> {
             @Override
             public void onSuccess(Void result) {
                 //nothing by default
+            }
+        });
+    }
+
+    public void onRequestJobProgress(final LogType job) {
+        adminService.getJobProgress(job, new SecuredAsyncCallback<LogDetail>(eventBus) {
+
+            @Override
+            public void onSuccess(LogDetail result) {
+                eventBus.responseJobProgress(job, result);
             }
         });
     }

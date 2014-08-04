@@ -14,8 +14,10 @@ import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.client.user.admin.system.AdminSystemSettingsPresenter;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -178,12 +180,12 @@ public interface AdminEventBus extends EventBusWithLookup, IEventBusData,
     @Event(handlers = AdminHandler.class)
     void requestCalculateDemandCounts();
 
-    @Event(handlers = AdminSystemSettingsPresenter.class)
-    void responseCalculateDemandCounts(Boolean result);
-
     @Event(handlers = AdminHandler.class)
     void requestCalculateSupplierCounts();
 
+    @Event(handlers = AdminHandler.class)
+    void requestJobProgress(LogType job);
+
     @Event(handlers = AdminSystemSettingsPresenter.class)
-    void responseCalculateSupplierCounts(Boolean result);
+    void responseJobProgress(LogType job, LogDetail result);
 }

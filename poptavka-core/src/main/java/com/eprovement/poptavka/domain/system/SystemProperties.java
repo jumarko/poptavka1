@@ -1,4 +1,4 @@
-package com.eprovement.poptavka.domain.settings;
+package com.eprovement.poptavka.domain.system;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import java.util.Objects;

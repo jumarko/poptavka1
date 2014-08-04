@@ -8,8 +8,10 @@ import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.demand.DemandType;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
+import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
+import com.eprovement.poptavka.domain.system.Log;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.service.GeneralService;
@@ -17,6 +19,7 @@ import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.service.system.LogService;
 import com.eprovement.poptavka.service.system.SystemPropertiesService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.util.search.Searcher;
@@ -45,21 +48,25 @@ import java.util.Set;
 public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> implements DemandService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandServiceImpl.class);
+    private static final int CALCULTATE_COUNT_PROGRESS_FRAGMENT = 100;
 
     private final MessageService messageService;
     private GeneralService generalService;
     private ClientService clientService;
     private RegisterService registerService;
     private SystemPropertiesService systemPropertiesService;
+    private LogService logService;
 
-    public DemandServiceImpl(DemandDao demandDao, GeneralService generalService,
+    public DemandServiceImpl(DemandDao demandDao, GeneralService generalService, LogService logService,
         MessageService messageService, SystemPropertiesService systemPropertiesService) {
         Validate.notNull(demandDao, "demandDao cannot be null!");
         Validate.notNull(generalService, "generalService cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");
+        Validate.notNull(logService, "logService cannot be null!");
         setDao(demandDao);
         this.messageService = messageService;
         this.generalService = generalService;
+        this.logService = logService;
     }
 
     @Override
@@ -383,13 +390,40 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     @Override
     public void calculateCounts() {
         List<Category> allCategories = generalService.findAll(Category.class);
-        for (Category category : allCategories) {
-            calculateAndUpdatedCountForCategory(category);
-        }
         List<Locality> allLocalities = generalService.findAll(Locality.class);
-        for (Locality locality : allLocalities) {
-            calculateAndUpdatedCountForLocality(locality);
+        Log log = logService.createLog(LogType.DEMAND_COUNTS,
+            allCategories.size() + allLocalities.size(),
+            "Calculating demand counts for categories and localities.");
+        int frangmentCounter = 0;
+
+        for (Category category : allCategories) {
+            try {
+                calculateAndUpdatedCountForCategory(category);
+                frangmentCounter++;
+                if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
+                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
+                    logService.updateLog(log);
+                    frangmentCounter = 0;
+                }
+            } catch (Exception ex) {
+                logService.logError(log, ex);
+            }
         }
+        for (Locality locality : allLocalities) {
+            try {
+                calculateAndUpdatedCountForLocality(locality);
+                frangmentCounter++;
+                if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
+                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
+                    logService.updateLog(log);
+                    frangmentCounter = 0;
+                }
+            } catch (Exception ex) {
+                logService.logError(log, ex);
+            }
+        }
+
+        logService.finnishLog(log);
     }
 
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------

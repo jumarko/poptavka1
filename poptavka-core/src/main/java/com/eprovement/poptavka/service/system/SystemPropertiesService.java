@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.service.system;
 
-import com.eprovement.poptavka.domain.settings.SystemProperties;
+import com.eprovement.poptavka.domain.system.SystemProperties;
 import com.eprovement.poptavka.service.GeneralService;
 import com.googlecode.genericdao.search.Search;
 import org.apache.commons.lang.Validate;
