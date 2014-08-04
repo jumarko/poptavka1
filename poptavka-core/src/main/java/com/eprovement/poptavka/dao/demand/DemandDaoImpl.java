@@ -69,8 +69,10 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     @Override
     public long getDemandsCountQuick(Locality locality) {
         String sql = "select count(distinct dl.demand_id) from Locality loc LEFT JOIN DEMAND_LOCALITY dl ON "
-                + "loc.id=dl.locality_id where loc.leftBound between :leftBound and :rightBound "
-                + "and (dl.enabled=1 or dl.enabled is null)";
+                + "loc.id=dl.locality_id LEFT JOIN Demand d on dl.demand_id=d.id where "
+                + "loc.leftBound between :leftBound and :rightBound "
+                + "and (dl.enabled=1 or dl.enabled is null) "
+                + "and dl.demand_id=d.id and (d.status LIKE 'ACTIVE' OR d.status LIKE 'OFFERED')";
         SQLQuery query = getHibernateSession().createSQLQuery(sql);
         query.setParameter("leftBound", locality.getLeftBound());
         query.setParameter("rightBound", locality.getRightBound());
@@ -124,9 +126,11 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
      /** {@inheritDoc} */
     @Override
     public long getDemandsCountQuick(Category category) {
-        String sql = "select count(distinct dc.demand_id) from Category c LEFT JOIN DEMAND_CATEGORY dc ON "
-                + "c.id=dc.category_id where c.leftBound between :leftBound and :rightBound "
-                + "and (dc.enabled=1 or dc.enabled is null)";
+        String sql = "select count(distinct dc.demand_id) from Demand d, Category c LEFT JOIN DEMAND_CATEGORY dc ON "
+                + "c.id=dc.category_id where "
+                + "c.leftBound between :leftBound and :rightBound "
+                + "and (dc.enabled=1 or dc.enabled is null) "
+                + "and dc.demand_id=d.id and (d.status LIKE 'ACTIVE' OR d.status LIKE 'OFFERED')";
         SQLQuery query = getHibernateSession().createSQLQuery(sql);
         query.setParameter("leftBound", category.getLeftBound());
         query.setParameter("rightBound", category.getRightBound());

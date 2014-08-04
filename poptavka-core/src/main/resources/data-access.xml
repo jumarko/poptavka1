@@ -50,7 +50,7 @@
                 <entry key="hibernate.connection.useUnicode" value="true"/>
                 <entry key="hibernate.connection.characterEncoding" value="UTF-8"/>
                 <entry key="hibernate.max_fetch_depth" value="1"/>
-                <entry key="hibernate.default_batch_fetch_size" value="100"/>
+                <entry key="hibernate.default_batch_fetch_size" value="30"/>
 
                 <!-- Hibernate Search
              -       see http://docs.jboss.org/hibernate/stable/search/reference/en-US/html_single/#search-configuration-directory -->
