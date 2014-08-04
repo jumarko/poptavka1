@@ -224,7 +224,7 @@ public class SupplierCreationView extends OverflowComposite
         buttonsPanel1.getNextBtn().addClickHandler(nextClickHandler);
         buttonsPanel2.getNextBtn().addClickHandler(nextClickHandler);
         buttonsPanel3.getNextBtn().addClickHandler(nextClickHandler);
-        buttonsPanel4.getNextBtn().addClickHandler(nextClickHandler);
+        //buttonsPanel4 don't add nextClickHandler, cause it is last tab
     }
 
     /**
