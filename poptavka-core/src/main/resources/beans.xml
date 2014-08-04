@@ -71,6 +71,7 @@
 
     <bean id="demandService" class="com.eprovement.poptavka.service.demand.DemandServiceImpl">
         <constructor-arg ref="demandDao" />
+        <constructor-arg ref="generalService" />
         <constructor-arg ref="messageService" />
         <constructor-arg ref="systemPropertiesService" />
         <property name="clientService" ref="clientService" />

@@ -159,28 +159,20 @@ public class Locality extends TreeItem {
         this.children = children;
     }
 
-    public void incrementDemandCount() {
-        demandCount += 1;
-    }
-
-    public void decrementDemandCount() {
-        demandCount -= 1;
-    }
-
     public Integer getDemandCount() {
         return demandCount;
     }
 
-    public void incrementSupplierCount() {
-        supplierCount += 1;
-    }
-
-    public void decrementSupplierCount() {
-        supplierCount -= 1;
+    public void setDemandCount(Integer demandCount) {
+        this.demandCount = demandCount;
     }
 
     public Integer getSupplierCount() {
         return supplierCount;
+    }
+
+    public void setSupplierCount(Integer supplierCount) {
+        this.supplierCount = supplierCount;
     }
 
     /**************************************************************************/

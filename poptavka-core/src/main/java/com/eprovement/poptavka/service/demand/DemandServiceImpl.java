@@ -12,6 +12,7 @@ import com.eprovement.poptavka.domain.message.Message;
 import com.eprovement.poptavka.domain.message.UserMessage;
 import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.domain.user.Client;
+import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
 import com.eprovement.poptavka.service.message.MessageService;
@@ -46,16 +47,19 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private static final Logger LOGGER = LoggerFactory.getLogger(DemandServiceImpl.class);
 
     private final MessageService messageService;
+    private GeneralService generalService;
     private ClientService clientService;
     private RegisterService registerService;
     private SystemPropertiesService systemPropertiesService;
 
-    public DemandServiceImpl(DemandDao demandDao, MessageService messageService,
-        SystemPropertiesService systemPropertiesService) {
+    public DemandServiceImpl(DemandDao demandDao, GeneralService generalService,
+        MessageService messageService, SystemPropertiesService systemPropertiesService) {
         Validate.notNull(demandDao, "demandDao cannot be null!");
+        Validate.notNull(generalService, "generalService cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");
         setDao(demandDao);
         this.messageService = messageService;
+        this.generalService = generalService;
     }
 
     @Override
@@ -373,6 +377,21 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         }
     }
 
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void calculateCounts() {
+        List<Category> allCategories = generalService.findAll(Category.class);
+        for (Category category : allCategories) {
+            calculateAndUpdatedCountForCategory(category);
+        }
+        List<Locality> allLocalities = generalService.findAll(Locality.class);
+        for (Locality locality : allLocalities) {
+            calculateAndUpdatedCountForLocality(locality);
+        }
+    }
+
     //---------------------------------- GETTERS AND SETTERS -----------------------------------------------------------
     public void setClientService(ClientService clientService) {
         this.clientService = clientService;
@@ -425,5 +444,25 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
             }
         }
         return set;
+    }
+
+    /**
+     * Calculates and updates supplier count for given category.
+     * @param category to be updated
+     */
+    @Transactional
+    private void calculateAndUpdatedCountForCategory(Category category) {
+        category.setDemandCount(Long.valueOf(getDemandsCountQuick(category)).intValue());
+        generalService.save(category);
+    }
+
+    /**
+     * Calculates and updates supplier count for given locality.
+     * @param locality to be updated
+     */
+    @Transactional
+    private void calculateAndUpdatedCountForLocality(Locality locality) {
+        locality.setDemandCount(Long.valueOf(getDemandsCountQuick(locality)).intValue());
+        generalService.save(locality);
     }
 }

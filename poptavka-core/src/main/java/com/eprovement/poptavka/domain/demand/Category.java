@@ -131,8 +131,16 @@ public class Category extends TreeItem {
         return demandCount;
     }
 
+    public void setDemandCount(Integer demandCount) {
+        this.demandCount = demandCount;
+    }
+
     public Integer getSupplierCount() {
         return supplierCount;
+    }
+
+    public void setSupplierCount(Integer supplierCount) {
+        this.supplierCount = supplierCount;
     }
 
     /**************************************************************************/

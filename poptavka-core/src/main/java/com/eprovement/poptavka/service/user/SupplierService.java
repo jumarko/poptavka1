@@ -182,4 +182,8 @@ public interface SupplierService extends BusinessUserRoleService<Supplier, Suppl
      */
     void decrementSupplierCount(Supplier supplier);
 
+    /**
+     * Calculate supplier count for all categories and all localities.
+     */
+    void calculateCounts();
 }

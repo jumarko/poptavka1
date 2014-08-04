@@ -317,4 +317,8 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     void decrementDemandCount(Demand demand);
 
+    /**
+     * Calculate demand count for all categories and all localities.
+     */
+    void calculateCounts();
 }

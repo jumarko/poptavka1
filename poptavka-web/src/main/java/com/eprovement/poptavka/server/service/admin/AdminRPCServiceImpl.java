@@ -23,6 +23,7 @@ import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.user.ClientService;
+import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.service.usermessage.UserMessageService;
 import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
@@ -62,8 +63,11 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     /** Services. **/
     private DemandService demandService;
     private PotentialDemandService potentialDemandService;
+
     @Autowired
     private GeneralService generalService;
+    @Autowired
+    private SupplierService supplierService;
     @Autowired
     private ClientService clientService;
     @Autowired
@@ -343,12 +347,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void calculateDemandCounts() throws RPCException, ApplicationSecurityException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        demandService.calculateCounts();
     }
 
     @Override
     @Secured(CommonAccessRoles.ADMIN_ACCESS_ROLE_CODE)
     public void calculateSupplierCounts() throws RPCException, ApplicationSecurityException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        supplierService.calculateCounts();
     }
 }

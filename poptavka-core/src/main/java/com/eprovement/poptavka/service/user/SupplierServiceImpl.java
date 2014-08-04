@@ -308,6 +308,21 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         }
     }
 
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void calculateCounts() {
+        List<Category> allCategories = generalService.findAll(Category.class);
+        for (Category category : allCategories) {
+            calculateAndUpdatedCountForCategory(category);
+        }
+        List<Locality> allLocalities = generalService.findAll(Locality.class);
+        for (Locality locality : allLocalities) {
+            calculateAndUpdatedCountForLocality(locality);
+        }
+    }
+
     //--------------------------------------------------- HELPER METHODS -----------------------------------------------
     /**
      * Existing (potential) demands are sent to the new supplier.
@@ -408,5 +423,25 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
             }
         }
         return set;
+    }
+
+    /**
+     * Calculates and updates supplier count for given category.
+     * @param category to be updated
+     */
+    @Transactional
+    private void calculateAndUpdatedCountForCategory(Category category) {
+        category.setSupplierCount(Long.valueOf(getSuppliersCountQuick(category)).intValue());
+        generalService.save(category);
+    }
+
+    /**
+     * Calculates and updates supplier count for given locality.
+     * @param locality to be updated
+     */
+    @Transactional
+    private void calculateAndUpdatedCountForLocality(Locality locality) {
+        locality.setSupplierCount(Long.valueOf(getSuppliersCountQuick(locality)).intValue());
+        generalService.save(locality);
     }
 }
