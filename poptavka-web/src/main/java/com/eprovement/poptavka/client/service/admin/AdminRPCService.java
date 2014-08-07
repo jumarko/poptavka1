@@ -1,8 +1,11 @@
 package com.eprovement.poptavka.client.service.admin;
 
 import com.eprovement.poptavka.domain.enums.DemandStatus;
+import com.eprovement.poptavka.domain.enums.LogType;
+import com.eprovement.poptavka.shared.domain.PropertiesDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminDemandDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.AdminClientDetail;
+import com.eprovement.poptavka.shared.domain.adminModule.LogDetail;
 import com.eprovement.poptavka.shared.domain.demand.OriginDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.exceptions.ApplicationSecurityException;
@@ -19,7 +22,6 @@ public interface AdminRPCService extends RemoteService {
     String URL = "service/admin";
 
     //---------------------- NEW DEMANDS --------------------------------------------
-
     Integer getAdminNewDemandsCount() throws RPCException, ApplicationSecurityException;
 
     List<AdminDemandDetail> getAdminNewDemands(SearchDefinition searchDefinition)
@@ -93,4 +95,17 @@ public interface AdminRPCService extends RemoteService {
      * @throws ApplicationSecurityException
      */
     void setUserOrigin(long clietnId, long originId) throws RPCException, ApplicationSecurityException;
+
+    List<PropertiesDetail> getSystemProperties() throws RPCException, ApplicationSecurityException;
+
+    Boolean updateSystemProperties(PropertiesDetail properties) throws RPCException, ApplicationSecurityException;
+
+    void calculateDemandCounts() throws RPCException, ApplicationSecurityException;
+    void calculateSupplierCounts() throws RPCException, ApplicationSecurityException;
+
+    /**
+     * @param type defines job type to check
+     * @return job progress detail if such job is running, null otherwise.
+     */
+    LogDetail getJobProgress(LogType type) throws RPCException, ApplicationSecurityException;
 }

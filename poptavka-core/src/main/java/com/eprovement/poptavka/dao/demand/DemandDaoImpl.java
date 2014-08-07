@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.eprovement.poptavka.dao.demand;
 
 import com.eprovement.poptavka.dao.GenericHibernateDao;
@@ -19,6 +18,7 @@ import java.math.BigInteger;
 
 import javax.persistence.Query;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +35,10 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
 
     private TreeItemDao treeItemDao;
 
-
     /** {@inheritDoc} */
     public List<Map<String, Object>> getDemandsCountForAllLocalities() {
-        return  runNamedQuery("getDemandsCountForAllLocalities", Collections.EMPTY_MAP);
+        return runNamedQuery("getDemandsCountForAllLocalities", Collections.EMPTY_MAP);
     }
-
 
     /** {@inheritDoc} */
     @Override
@@ -51,7 +49,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
 
         Query query = getEntityManager().createNamedQuery("getDemandsForLocalities");
         query.setParameter("localitiesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class));
+            this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities), Locality.class));
 
         return toSet(applyResultCriteria(query, resultCriteria).getResultList());
     }
@@ -61,11 +59,11 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     public long getDemandsCount(Locality... localities) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localitiesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(localities),
-                Locality.class));
+            Locality.class));
         return (Long) runNamedQueryForSingleResult("getDemandsCountForLocalities", params);
     }
 
-     /** {@inheritDoc} */
+    /** {@inheritDoc} */
     @Override
     public long getDemandsCountQuick(Locality locality) {
         String sql = "select count(distinct dl.demand_id) from Locality loc LEFT JOIN DEMAND_LOCALITY dl ON "
@@ -93,11 +91,9 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
     }
 
     //------------------------------------- Categories -----------------------------------------------------------------
-
-
     @Override
     public List<Map<String, Object>> getDemandsCountForAllCategories() {
-        return  runNamedQuery("getDemandsCountForAllCategories", Collections.EMPTY_MAP);
+        return runNamedQuery("getDemandsCountForAllCategories", Collections.EMPTY_MAP);
     }
 
     /** {@inheritDoc} */
@@ -109,21 +105,21 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
 
         Query query = getEntityManager().createNamedQuery("getDemandsForCategories");
         query.setParameter("categoriesIds",
-                this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class));
+            this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories), Category.class));
 
         return toSet(applyResultCriteria(query, resultCriteria).getResultList());
     }
 
-     /** {@inheritDoc} */
+    /** {@inheritDoc} */
     @Override
     public long getDemandsCount(Category... categories) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("categoriesIds", this.treeItemDao.getAllChildItemsIdsRecursively(Arrays.asList(categories),
-                Category.class));
+            Category.class));
         return (Long) runNamedQueryForSingleResult("getDemandsCountForCategories", params);
     }
 
-     /** {@inheritDoc} */
+    /** {@inheritDoc} */
     @Override
     public long getDemandsCountQuick(Category category) {
         String sql = "select count(distinct dc.demand_id) from Demand d, Category c LEFT JOIN DEMAND_CATEGORY dc ON "
@@ -137,7 +133,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return ((BigInteger) query.uniqueResult()).longValue();
     }
 
-
     /** {@inheritDoc} */
     @Override
     public long getDemandsCountWithoutChildren(Category category) {
@@ -145,7 +140,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         params.put("category", category);
         return (Long) runNamedQueryForSingleResult("getDemandsCountForCategoryWithoutChildren", params);
     }
-
 
     @Override
     public Set<Demand> getDemands(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
@@ -162,20 +156,19 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return toSet(runNamedQuery("getDemandsForCategoriesAndLocalities", params, resultCriteria));
     }
 
-
     @Override
     public long getDemandsCount(List<Category> categories, List<Locality> localities, ResultCriteria resultCriteria) {
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("localityIds", this.treeItemDao.getAllChildItemsIdsRecursively(localities, Locality.class));
         params.put("categoryIds", this.treeItemDao.getAllChildItemsIdsRecursively(categories, Category.class));
         return (Long) runNamedQueryForSingleResult(
-                "getDemandsCountForCategoriesAndLocalities", params,
-                resultCriteria);
+            "getDemandsCountForCategoriesAndLocalities", params,
+            resultCriteria);
     }
 
     @Override
     public Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
-                                                  ResultCriteria resultCriteria) {
+        ResultCriteria resultCriteria) {
         if (CollectionsHelper.containsOnlyNulls(categories)) {
             return Collections.emptySet();
         }
@@ -190,7 +183,6 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         return toSet(runNamedQuery("getDemandsForCategoriesAndLocalitiesIncludingParents", params, resultCriteria));
     }
 
-
     @Override
     public long getClientDemandsWithOfferCount(Client client) {
         final Map<String, Object> params = new HashMap<String, Object>();
@@ -204,7 +196,7 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("client", client);
         params.put("status", DemandStatus.OFFERED);
-        return  runNamedQuery("getClientDemandsWithOffer", params);
+        return runNamedQuery("getClientDemandsWithOffer", params);
     }
 
     @Override
@@ -220,14 +212,14 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         queryParams.put("user", businessUser);
 
         return ((Long) runNamedQueryForSingleResult(
-                "getClientDemandsCount",
-                queryParams));
+            "getClientDemandsCount",
+            queryParams));
     }
 
     @Override
     public Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser) {
         return getUnreadSubMessagesForDemandMessageHelper(businessUser,
-                "getClientOfferedDemandsWithUnreadOfferSubMsgs");
+            "getClientOfferedDemandsWithUnreadOfferSubMsgs");
     }
 
     /** {@inheritDoc} */
@@ -237,8 +229,48 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
         queryParams.put("user", businessUser);
 
         return ((Long) runNamedQueryForSingleResult(
-                "getClientOfferedDemands",
-                queryParams));
+            "getClientOfferedDemands",
+            queryParams));
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void incrementCategoryDemandCount(Collection<Long> categoryIds) {
+        getEntityManager().createNamedQuery(Category.INCREMENT_DEMAND_COUNT)
+            .setParameter("ids", categoryIds)
+            .executeUpdate();
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void decrementCategoryDemandCount(Collection<Long> categoryIds) {
+        getEntityManager().createNamedQuery(Category.DECREMENT_DEMAND_COUNT)
+            .setParameter("ids", categoryIds)
+            .executeUpdate();
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void incrementLocalityDemandCount(Collection<Long> localityIds) {
+        getEntityManager().createNamedQuery(Locality.INCREMENT_DEMAND_COUNT)
+            .setParameter("ids", localityIds)
+            .executeUpdate();
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public void decrementLocalityDemandCount(Collection<Long> localityIds) {
+        getEntityManager().createNamedQuery(Locality.DECREMENT_DEMAND_COUNT)
+            .setParameter("ids", localityIds)
+            .executeUpdate();
     }
 
     //-------------------------- GETTERS AND SETTERS -------------------------------------------------------------------
@@ -256,13 +288,13 @@ public class DemandDaoImpl extends GenericHibernateDao<Demand> implements Demand
      * @return map of thread demands number of their corresponding unread sub-messages
      */
     private Map<Demand, Integer> getUnreadSubMessagesForDemandMessageHelper(BusinessUser businessUser,
-            String queryName) {
+        String queryName) {
         final HashMap<String, Object> queryParams = new HashMap<String, Object>();
         queryParams.put("user", businessUser);
 
         List<Object[]> unread = runNamedQuery(
-                queryName,
-                queryParams);
+            queryName,
+            queryParams);
         Map<Demand, Integer> unreadMap = new HashMap();
         for (Object[] entry : unread) {
             unreadMap.put((Demand) entry[0], ((Long) entry[1]).intValue());

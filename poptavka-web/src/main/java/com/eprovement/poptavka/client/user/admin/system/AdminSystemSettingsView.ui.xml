@@ -1,0 +1,77 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:n="urn:import:com.eprovement.poptavka.client.user.settings.widget">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    <ui:style>
+        .spinner-ws {
+            margin: 5px 0 0 15px;
+            float: left;
+        }
+    </ui:style>
+
+    <b:FluidContainer>
+        <b:FluidRow>
+            <b:Column size="6">
+                <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='adminSystemProperties'>System properties:</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="12" addStyleNames='well-padding'>
+                            <g:FlowPanel ui:field="properties"/>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </b:Column>
+            <b:Column size="6">
+                <b:FluidContainer addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
+                    <b:FluidRow addStyleNames='well-header'>
+                        <b:Column size="12">
+                            <b:Heading size="4">
+                                <ui:msg key='adminSystemJobs'>System jobs:</ui:msg>
+                            </b:Heading>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="6" addStyleNames='well-padding'>
+                            <g:Label addStyleNames="pull-right">
+                                <ui:msg key='adminSystemCalcDemandCountsLabel'>Calculate Demand Counts</ui:msg>
+                            </g:Label>
+                            <b:Icon ui:field="demandCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
+                                    type="SPINNER" spin="true" size="TWO_TIMES" visible="false"/>
+                        </b:Column>
+                        <b:Column size="6" addStyleNames='well-padding'>
+                            <g:Button ui:field='demandCountsBtn' styleName='{res.common.buttonGrey}'>
+                                <ui:msg key='commonBtnRun'>Run</ui:msg>
+                            </g:Button>
+                            <g:Label ui:field="demandCountsProgressLabel"/>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='well-content'>
+                        <b:Column size="6" addStyleNames='well-padding'>
+                            <g:Label addStyleNames="pull-right">
+                                <ui:msg key='adminSystemCalcSupplierCountsLabel'>Calculate Supplier Counts</ui:msg>
+                            </g:Label>
+                            <b:Icon ui:field="supplierCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
+                                    type="SPINNER" spin="true" size="TWO_TIMES" visible="false"/>
+                        </b:Column>
+                        <b:Column size="6" addStyleNames='well-padding'>
+                            <g:Button ui:field='supplierCountsBtn' styleName='{res.common.buttonGrey}'>
+                                <ui:msg key='commonBtnRun'>Run</ui:msg>
+                            </g:Button>
+                            <g:Label ui:field="supplierCountsProgressLabel"/>
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

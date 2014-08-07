@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.eprovement.poptavka.service.demand;
 
 import com.eprovement.poptavka.dao.demand.DemandDao;
@@ -81,14 +80,12 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     Set<Demand> getDemands(ResultCriteria resultCriteria, Locality... localities);
 
-
     /**
      * Highly optimized method for getting number of demands for all localities.
      *
      * @return map which contains pairs <locality, demandsCountForLocality>
      */
     Map<Locality, Long> getDemandsCountForAllLocalities();
-
 
     /**
      * Evaluate the number of demands associated to the given <code>locality</code>(-ies).
@@ -102,7 +99,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getDemandsCount(Locality... localities);
 
-
     /**
      * Similar to the {@link #getDemandsCount(com.eprovement.poptavka.domain.address.Locality...)}
      * but with better performance.
@@ -115,7 +111,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
 
     /** @see DemandDao#getDemandsCountWithoutChildren(com.eprovement.poptavka.domain.address.Locality)  */
     long getDemandsCountWithoutChildren(Locality locality);
-
 
     /**
      * Load all demands associated to the given category (-ies).
@@ -136,7 +131,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(ResultCriteria resultCriteria, Category... categories);
-
 
     /**
      * Highly optimized method for getting number of demands for all categories.
@@ -167,7 +161,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getDemandsCountQuick(Category category);
 
-
     /** @see DemandDao#getDemandsCountWithoutChildren(com.eprovement.poptavka.domain.demand.Category) */
     long getDemandsCountWithoutChildren(Category category);
 
@@ -184,7 +177,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     long getOfferCount(Demand demand);
 
-
     /**
      * Gets all the demands from given categories (including their
      * subcategories) which are also associated to the given localities
@@ -196,7 +188,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return
      */
     Set<Demand> getDemands(ResultCriteria resultCriteria,
-                           List<Category> categories, List<Locality> localities);
+        List<Category> categories, List<Locality> localities);
 
     /**
      * Evaluate the number of demands associated to the given
@@ -213,7 +205,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      *                                            com.eprovement.poptavka.domain.common.ResultCriteria)
      */
     Set<Demand> getDemandsIncludingParents(List<Category> categories, List<Locality> localities,
-                                           ResultCriteria resultCriteria);
+        ResultCriteria resultCriteria);
 
     /**
      * Get number of all client demands that have at least one offer and are not assigned yet i.e. demands are in status
@@ -242,7 +234,6 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      */
     void activateDemand(Demand demand) throws IllegalArgumentException;
 
-
     /**
      * Gets all the demands of the given user along with the number of
      * UNREAD messages that span from the demand message (including the demand
@@ -267,7 +258,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * demand message itself)
      */
     Map<Demand, Integer> getClientDemandsWithUnreadSubMsgs(BusinessUser businessUser,
-            Search search);
+        Search search);
 
     /**
      * Gets the count of all ACTIVE, OFFERED, NEW, INACTIVE or INVALID demands of the given business user
@@ -289,6 +280,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * demand message itself)
      */
     Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser);
+
     /**
      * Gets all the demands with offer of the given user along with the number of
      * UNREAD messages that span from the demand message (including the demand
@@ -301,8 +293,7 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * demand message itself)
      */
     Map<Demand, Integer> getClientOfferedDemandsWithUnreadOfferSubMsgs(BusinessUser businessUser,
-            Search search);
-
+        Search search);
 
     /**
      * Gets the count of all OFFERED demands of the given business user
@@ -311,4 +302,23 @@ public interface DemandService extends GenericService<Demand, DemandDao> {
      * @return count of user's demands
      */
     long getClientOfferedDemandsCount(BusinessUser businessUser);
+
+    /**
+     * Increment demand counts for given demand.
+     * For each demand category and locality and its parents demand count is incremented by 1.
+     * @param demand refering to categories and localities that have to be updated
+     */
+    void incrementDemandCount(Demand demand);
+
+    /**
+     * Decrement demand counts for given demand.
+     * For each demand category and locality and its parents demand count is decremented by 1.
+     * @param demand refering to categories and localities that have to be updated
+     */
+    void decrementDemandCount(Demand demand);
+
+    /**
+     * Calculate demand count for all categories and all localities.
+     */
+    void calculateCounts();
 }

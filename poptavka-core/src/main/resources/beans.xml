@@ -42,6 +42,14 @@
     <bean id="generalService" class="com.eprovement.poptavka.service.GeneralServiceImpl">
         <constructor-arg ref="generalDao" />
     </bean>
+    
+    <bean id="systemPropertiesService" class="com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl">
+        <constructor-arg ref="generalService" />
+    </bean>
+    
+    <bean id="logService" class="com.eprovement.poptavka.service.system.LogServiceImpl">
+        <constructor-arg ref="generalService" />
+    </bean>
 
     <bean id="fulltextSearchService" class="com.eprovement.poptavka.service.fulltext.HibernateFulltextSearchService" />
 
@@ -67,7 +75,10 @@
 
     <bean id="demandService" class="com.eprovement.poptavka.service.demand.DemandServiceImpl">
         <constructor-arg ref="demandDao" />
+        <constructor-arg ref="generalService" />
+        <constructor-arg ref="logService" />
         <constructor-arg ref="messageService" />
+        <constructor-arg ref="systemPropertiesService" />
         <property name="clientService" ref="clientService" />
         <property name="registerService" ref="registerService" />
     </bean>
@@ -91,11 +102,13 @@
     </bean>
 
     <bean id="supplierService" class="com.eprovement.poptavka.service.user.SupplierServiceImpl">
-        <constructor-arg ref="generalService" />
         <constructor-arg ref="supplierDao" />
+        <constructor-arg ref="generalService" />
+        <constructor-arg ref="logService" />
         <constructor-arg ref="registerService" />
         <constructor-arg ref="userVerificationService" />
         <constructor-arg ref="notificationTypeService" />
+        <constructor-arg ref="systemPropertiesService" />
         <property name="demandService" ref="demandService" />
         <property name="potentialDemandService" ref="potentialDemandsService" />
         <property name="suppliersSelection" ref="supplierSelection" />

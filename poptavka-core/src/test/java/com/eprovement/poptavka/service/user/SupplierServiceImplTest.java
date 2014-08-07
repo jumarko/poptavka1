@@ -13,6 +13,8 @@ import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.demand.SuppliersSelection;
 import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
+import com.eprovement.poptavka.service.system.LogServiceImpl;
+import com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -37,9 +39,10 @@ public class SupplierServiceImplTest {
 
     @Before
     public void setUp() {
-        final SupplierServiceImpl supplierService = new SupplierServiceImpl(mock(GeneralService.class),
-                mock(SupplierDao.class), mock(RegisterService.class), mock(UserVerificationService.class),
-                mock(NotificationTypeService.class));
+        final SupplierServiceImpl supplierService = new SupplierServiceImpl(mock(SupplierDao.class),
+            mock(GeneralService.class), mock(LogServiceImpl.class), mock(RegisterService.class),
+            mock(UserVerificationService.class), mock(NotificationTypeService.class),
+            mock(SystemPropertiesServiceImpl.class));
 
         this.demandServiceMock = mock(DemandService.class);
         supplierService.setDemandService(demandServiceMock);
@@ -70,14 +73,14 @@ public class SupplierServiceImplTest {
 
         // verify
         verify(potentialDemandServiceMock).sendDemandToPotentialSupplier(
-                eq(potentialDemand),
-                argThat(new ArgumentMatcher<PotentialSupplier>() {
-                    @Override
-                    public boolean matches(Object argument) {
-                        return argument instanceof PotentialSupplier
-                                && myNewSupplier.equals(((PotentialSupplier) argument).getSupplier());
-                    }
-                }));
+            eq(potentialDemand),
+            argThat(new ArgumentMatcher<PotentialSupplier>() {
+                @Override
+                public boolean matches(Object argument) {
+                    return argument instanceof PotentialSupplier
+                        && myNewSupplier.equals(((PotentialSupplier) argument).getSupplier());
+                }
+            }));
     }
 
     private Category createCategory(long categoryId) {

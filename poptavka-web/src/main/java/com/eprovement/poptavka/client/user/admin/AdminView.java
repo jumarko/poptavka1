@@ -40,7 +40,7 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField SimplePanel contentContainer;
-    @UiField Button newDemandsBtn, assigendDemandsBtn, activeDemandsBtn, clientsBtn;
+    @UiField Button newDemandsBtn, assigendDemandsBtn, activeDemandsBtn, clientsBtn, systemBtn;
     /** Class attributes. **/
     @Inject
     private AdminToolbarView toolbar;
@@ -132,6 +132,13 @@ public class AdminView extends OverflowComposite implements IAdminModule.View {
     @Override
     public Button getClientsBtn() {
         return clientsBtn;
+    }
+
+    /**
+     * @return the system button
+     */
+    public Button getSystemBtn() {
+        return systemBtn;
     }
 
     /**

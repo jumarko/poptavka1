@@ -1,0 +1,46 @@
+<!DOCTYPE ui:UiBinder SYSTEM 'http://dl.google.com/gwt/DTD/xhtml.ent'>
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:d='urn:import:com.google.gwt.user.datepicker.client'
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui"
+             xmlns:cmn="urn:import:com.eprovement.poptavka.client.common.ui">
+
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='text' type='com.google.gwt.i18n.client.LocalizableMessages' />
+    
+    <ui:style>
+        .noteLabel {
+        padding: 0 10px;
+        }
+    </ui:style>
+
+    <b:FluidContainer addStyleNames='{res.layout.notificationPanel}'>
+        <b:FluidRow>
+            <b:Column size="12">
+                <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
+                    <g:Label ui:field="name" />
+                </b:Column>
+                <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
+                    <b:FluidRow>
+                        <g:HTMLPanel styleName="pull-left label-on">
+                            <g:Label addStyleNames="choice-Label">
+                                <ui:msg key="on">On</ui:msg>
+                            </g:Label>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName="pull-left buttons">
+                            <g:HTMLPanel ui:field="notificationChoicePanel" addStyleNames='{res.common.switchLeft}'>
+                                <g:Button ui:field="onBtn"></g:Button>
+                                <g:Button ui:field="offBtn"></g:Button>
+                            </g:HTMLPanel>
+                        </g:HTMLPanel>
+                        <g:HTMLPanel styleName="pull-left label-off">
+                            <g:Label addStyleNames="choice-Label">
+                                <ui:msg key="off">Off</ui:msg>
+                            </g:Label>
+                        </g:HTMLPanel>
+                    </b:FluidRow>
+                </b:Column>
+            </b:Column>
+        </b:FluidRow>
+    </b:FluidContainer>
+</ui:UiBinder>

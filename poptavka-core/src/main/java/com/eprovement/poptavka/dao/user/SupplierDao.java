@@ -4,6 +4,7 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.user.Supplier;
+import java.util.Collection;
 
 import java.util.List;
 import java.util.Map;
@@ -29,11 +30,11 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      */
     Set<Supplier> getSuppliers(Locality[] localities, ResultCriteria resultCriteria);
 
-     /**
+    /**
      * Optmized method for loading suppliers count for all localities in one query!
      *
      * @return list of maps, each map containing only 2 items
-      *         ("locality" => locality, "suppliersCount" => suppliersCount)
+     *         ("locality" => locality, "suppliersCount" => suppliersCount)
      */
     List<Map<String, Object>> getSuppliersCountForAllLocalities();
 
@@ -66,10 +67,8 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * @param localities
      * @return number of suppliers related to the <code>locality</code>(-ies).
      */
-
     long getSuppliersCount(List<Category> categories, List<Locality> localities,
-            ResultCriteria resultCriteria);
-
+        ResultCriteria resultCriteria);
 
     long getSuppliersCountQuick(Locality locality);
 
@@ -78,7 +77,6 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * any sublocality are included!
      */
     long getSuppliersCountWithoutChildren(Locality locality);
-
 
     /**
      * Load all suppliers associated to the given category (-ies) while applying additional criteria
@@ -139,8 +137,7 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * @throws IllegalStateException if <code>resultCriteria</code> specifies order by columns
      */
     Set<Supplier> getSuppliersIncludingParentsAndChildren(List<Category> categories, List<Locality> localities,
-                                               ResultCriteria resultCriteria);
-
+        ResultCriteria resultCriteria);
 
     /**
      * Optmized method for loading suppliers count for all categories in one query!
@@ -166,7 +163,6 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      */
     long getSuppliersCount(Category... categories);
 
-
     long getSuppliersCountQuick(Category category);
 
     /**
@@ -174,4 +170,28 @@ public interface SupplierDao extends BusinessUserRoleDao<Supplier> {
      * any subcategory are included!
      */
     long getSuppliersCountWithoutChildren(Category category);
+
+    /**
+     * Increments supplier counts for given categories.
+     * @param categoryIds list of category ids to be updated
+     */
+    void incrementCategorySupplierCount(Collection<Long> categoryIds);
+
+    /**
+     * Decrements supplier counts for given categories.
+     * @param categoryIds list of category ids to be updated
+     */
+    void decrementCategorySupplierCount(Collection<Long> categoryIds);
+
+    /**
+     * Increments supplier counts for given localities.
+     * @param localityIds list of category ids to be updated
+     */
+    void incrementLocalitySupplierCount(Collection<Long> localityIds);
+
+    /**
+     * Decrements supplier counts for given localities.
+     * @param localityIds list of category ids to be updated
+     */
+    void decrementLocalitySupplierCount(Collection<Long> localityIds);
 }

@@ -56,7 +56,7 @@ public abstract class BusinessUserRoleServiceImpl<BUR extends BusinessUserRole, 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessUserRoleServiceImpl.class);
 
-    private final GeneralService generalService;
+    protected final GeneralService generalService;
     private final RegisterService registerService;
     private final NotificationUtils notificationUtils;
     protected final NotificationTypeService notificationTypeService;

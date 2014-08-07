@@ -118,7 +118,7 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
      * @return a <code>List<code> of localities satisfying criteria
      */
     List<Locality> getLocalitiesByMaxLengthExcl(int maxLengthExcl, String nameSubstring,
-            LocalityType type);
+        LocalityType type);
 
     /**
      * Gets a list of localities whose name is the same length or longer than <code>minLength</code> and
@@ -129,12 +129,11 @@ public interface LocalityService extends GenericService<Locality, LocalityDao> {
      * @return a <code>List<code> of localities satisfying criteria
      */
     List<Locality> getLocalitiesByMinLength(int minLength, String nameSubstring,
-            LocalityType type);
+        LocalityType type);
 
     /**
      * Loads children of locality identified by LOCALITY_ID.
      * @return all direct children of given locality
      */
     List<Locality> getSubLocalities(long localityId);
-
 }

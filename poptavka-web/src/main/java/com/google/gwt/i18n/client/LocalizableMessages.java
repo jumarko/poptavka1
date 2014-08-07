@@ -47,6 +47,7 @@ public interface LocalizableMessages extends Messages {
     String commonBtnRefresh();
     String commonBtnReport();
     String commonBtnRevert();
+    String commonBtnRun();
     String commonBtnSend();
     String commonBtnSignUp();
     String commonBtnSubmit();
@@ -219,6 +220,8 @@ public interface LocalizableMessages extends Messages {
     String menuSettingsSystem();
     String menuSettingsSupplier();
     String menuMessagesInbox();
+
+    String menuAdminSystem();
 
     /*** ATTRIBUTES ***********************************************************/
     /** HeaderView.ui. **/
@@ -796,6 +799,12 @@ public interface LocalizableMessages extends Messages {
     String adminFormTimeout();
     String adminFormType();
     String adminFormValue();
+
+    /* Admin System Properties */
+    String adminSystemProperties();
+    String adminSystemJobs();
+    String adminSystemCalcDemandCountsLabel();
+    String adminSystemCalcSupplierCountsLabel();
 
     /* Feedback popup info */
     String feedbackToClientMessage();

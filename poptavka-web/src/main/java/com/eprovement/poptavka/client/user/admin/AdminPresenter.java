@@ -69,6 +69,14 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
                 commonSubMenuHandler(AdminWidget.CLIENTS);
             }
         });
+        view.getSystemBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                eventBus.closeSubMenu();
+                commonSubMenuHandler(AdminWidget.SYSTEM);
+            }
+        });
     }
 
     /**
@@ -136,6 +144,10 @@ public class AdminPresenter extends LazyPresenter<IAdminModule.View, AdminEventB
             case CLIENTS:
                 Storage.setCurrentlyLoadedView(Constants.ADMIN_CLIENTS);
                 eventBus.initClients(filter);
+                break;
+            case SYSTEM:
+                Storage.setCurrentlyLoadedView(Constants.ADMIN_SUPPLIERS);
+                eventBus.initAdminSystemSettings();
                 break;
             default: //welcome
                 Storage.setCurrentlyLoadedView(Constants.NONE);
