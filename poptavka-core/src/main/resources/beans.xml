@@ -43,11 +43,11 @@
         <constructor-arg ref="generalDao" />
     </bean>
     
-    <bean id="systemPropertiesService" class="com.eprovement.poptavka.service.system.SystemPropertiesService">
+    <bean id="systemPropertiesService" class="com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl">
         <constructor-arg ref="generalService" />
     </bean>
     
-    <bean id="logService" class="com.eprovement.poptavka.service.system.LogService">
+    <bean id="logService" class="com.eprovement.poptavka.service.system.LogServiceImpl">
         <constructor-arg ref="generalService" />
     </bean>
 

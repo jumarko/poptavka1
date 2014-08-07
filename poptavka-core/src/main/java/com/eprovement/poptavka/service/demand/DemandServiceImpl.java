@@ -19,8 +19,8 @@ import com.eprovement.poptavka.service.GenericServiceImpl;
 import com.eprovement.poptavka.service.ResultProvider;
 import com.eprovement.poptavka.service.message.MessageService;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.eprovement.poptavka.service.system.LogService;
-import com.eprovement.poptavka.service.system.SystemPropertiesService;
+import com.eprovement.poptavka.service.system.LogServiceImpl;
+import com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
@@ -54,11 +54,11 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     private GeneralService generalService;
     private ClientService clientService;
     private RegisterService registerService;
-    private SystemPropertiesService systemPropertiesService;
-    private LogService logService;
+    private SystemPropertiesServiceImpl systemPropertiesService;
+    private LogServiceImpl logService;
 
-    public DemandServiceImpl(DemandDao demandDao, GeneralService generalService, LogService logService,
-        MessageService messageService, SystemPropertiesService systemPropertiesService) {
+    public DemandServiceImpl(DemandDao demandDao, GeneralService generalService, LogServiceImpl logService,
+        MessageService messageService, SystemPropertiesServiceImpl systemPropertiesService) {
         Validate.notNull(demandDao, "demandDao cannot be null!");
         Validate.notNull(generalService, "generalService cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");

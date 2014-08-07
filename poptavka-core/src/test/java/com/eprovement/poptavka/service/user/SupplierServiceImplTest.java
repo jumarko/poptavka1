@@ -13,8 +13,8 @@ import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.demand.SuppliersSelection;
 import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.eprovement.poptavka.service.system.LogService;
-import com.eprovement.poptavka.service.system.SystemPropertiesService;
+import com.eprovement.poptavka.service.system.LogServiceImpl;
+import com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -40,9 +40,9 @@ public class SupplierServiceImplTest {
     @Before
     public void setUp() {
         final SupplierServiceImpl supplierService = new SupplierServiceImpl(mock(SupplierDao.class),
-            mock(GeneralService.class), mock(LogService.class), mock(RegisterService.class),
+            mock(GeneralService.class), mock(LogServiceImpl.class), mock(RegisterService.class),
             mock(UserVerificationService.class), mock(NotificationTypeService.class),
-            mock(SystemPropertiesService.class));
+            mock(SystemPropertiesServiceImpl.class));
 
         this.demandServiceMock = mock(DemandService.class);
         supplierService.setDemandService(demandServiceMock);

@@ -1,50 +1,24 @@
+/*
+ * Copyright (C) 2014, eProvement s.r.o. All rights reserved.
+ */
 package com.eprovement.poptavka.service.system;
-
-import com.eprovement.poptavka.domain.system.SystemProperties;
-import com.eprovement.poptavka.service.GeneralService;
-import com.googlecode.genericdao.search.Search;
-import org.apache.commons.lang.Validate;
 
 /**
  * @author Martin Slavkovsky
+ * @since 4.8.2014
  */
-public final class SystemPropertiesService {
+public interface SystemPropertiesService {
 
-    private static final String IMMEDIATE_DEMAND_COUNTS = "immediateIncrementalDemandCounts";
-    private static final String IMMEDIATE_SUPPLIER_COUNTS = "immediateIncrementalSupplierCounts";
-
-    private GeneralService generalService;
-
-    public SystemPropertiesService(GeneralService generalService) {
-        this.generalService = generalService;
-    }
+    String IMMEDIATE_DEMAND_COUNTS = "immediateIncrementalDemandCounts";
+    String IMMEDIATE_SUPPLIER_COUNTS = "immediateIncrementalSupplierCounts";
 
     /**
      * @return get <code>{@value SystemProperties#IMEDIATE_DEMANDS_COUNTS}</code> property
      */
-    public boolean isImediateDemandCount() {
-        return Boolean.parseBoolean(getProperties(IMMEDIATE_DEMAND_COUNTS).getValue());
-    }
+    boolean isImediateDemandCount();
 
     /**
      * @return get <code>{@value SystemProperties#IMMEDIATE_SUPPLIER_COUNTS}</code> property
      */
-    public boolean isImediateSupplierCount() {
-        return Boolean.parseBoolean(getProperties(IMMEDIATE_SUPPLIER_COUNTS).getValue());
-    }
-
-    /**
-     * Retireve property from db by given key.
-     * If no property found, expection is throwed.
-     *
-     * @param key unique indentifier for property
-     * @return found property
-     */
-    private SystemProperties getProperties(String key) {
-        Search search = new Search(SystemProperties.class)
-            .addFilterEqual("key", key);
-        SystemProperties properties = (SystemProperties) generalService.searchUnique(search);
-        Validate.notNull(properties, "Property '" + key + "' is not set");
-        return properties;
-    }
+    boolean isImediateSupplierCount();
 }

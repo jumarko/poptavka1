@@ -11,7 +11,7 @@ import com.eprovement.poptavka.domain.demand.PotentialSupplier;
 import com.eprovement.poptavka.domain.enums.CommonAccessRoles;
 import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.domain.enums.Period;
-import com.eprovement.poptavka.service.system.SystemPropertiesService;
+import com.eprovement.poptavka.service.system.SystemPropertiesServiceImpl;
 import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.domain.settings.Notification;
 import com.eprovement.poptavka.domain.system.Log;
@@ -23,7 +23,7 @@ import com.eprovement.poptavka.service.demand.PotentialDemandService;
 import com.eprovement.poptavka.service.demand.SuppliersSelection;
 import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.eprovement.poptavka.service.system.LogService;
+import com.eprovement.poptavka.service.system.LogServiceImpl;
 import com.googlecode.ehcache.annotations.Cacheable;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -53,12 +53,12 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     private DemandService demandService;
     private PotentialDemandService potentialDemandService;
     private SuppliersSelection suppliersSelection;
-    private SystemPropertiesService systemPropertiesService;
-    private LogService logService;
+    private SystemPropertiesServiceImpl systemPropertiesService;
+    private LogServiceImpl logService;
 
-    public SupplierServiceImpl(SupplierDao supplierDao, GeneralService generalService, LogService logService,
+    public SupplierServiceImpl(SupplierDao supplierDao, GeneralService generalService, LogServiceImpl logService,
         RegisterService registerService, UserVerificationService userVerificationService,
-        NotificationTypeService notificationTypeService, SystemPropertiesService systemPropertiesService) {
+        NotificationTypeService notificationTypeService, SystemPropertiesServiceImpl systemPropertiesService) {
         super(Supplier.class, generalService, registerService, userVerificationService, notificationTypeService);
         Validate.notNull(supplierDao);
         Validate.notNull(systemPropertiesService);

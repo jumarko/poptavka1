@@ -5,7 +5,9 @@ package com.eprovement.poptavka.domain.system;
 
 import com.eprovement.poptavka.domain.common.DomainObject;
 import com.eprovement.poptavka.domain.enums.LogType;
+import com.eprovement.poptavka.util.orm.OrmConstants;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,6 +27,7 @@ public class Log extends DomainObject {
     /**************************************************************************/
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private LogType logType;
 
     @Temporal(TemporalType.TIMESTAMP)

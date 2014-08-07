@@ -5,48 +5,44 @@ package com.eprovement.poptavka.service.system;
 
 import com.eprovement.poptavka.domain.enums.LogType;
 import com.eprovement.poptavka.domain.system.Log;
-import com.eprovement.poptavka.service.GeneralService;
-import java.util.Date;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * For storing and updating log informations.
  * @author Martin Slavkovsky
+ * @since 4.8.2014
  */
-public final class LogService {
+public interface LogService {
 
-    private GeneralService generalService;
+    /**
+     * Create and return log object according to given attributes.
+     * The operation is transactional.
+     * @param logType
+     * @param totalItems
+     * @param description
+     * @return created enity
+     */
+    Log createLog(LogType logType, Integer totalItems, String description);
 
-    public LogService(GeneralService generalService) {
-        this.generalService = generalService;
-    }
+    /**
+     * Updates given log object.
+     * The operation is transactional.
+     * @param log to be updated
+     */
+    void updateLog(Log log);
 
-    @Transactional
-    public Log createLog(LogType logType, Integer totalItems, String description) {
-        Log log = new Log();
-        log.setLogType(logType);
-        log.setTotalItems(totalItems);
-        log.setDescription(description);
-        generalService.save(log);;
-        return log;
-    }
+    /**
+     * Logs error. Sets end date to current date and description according to given exeption message.
+     * The operation is transactional.
+     * @param log
+     * @param ex
+     */
+    void logError(Log log, Exception ex);
 
-    @Transactional
-    public void updateLog(Log log) {
-        generalService.save(log);;
-    }
-
-    @Transactional
-    public void logError(Log log, Exception ex) {
-        log.setEndDate(new Date());
-        log.setDescription(ex.getMessage());
-        generalService.save(log);;
-    }
-
-    @Transactional
-    public void finnishLog(Log log) {
-        log.setEndDate(new Date());
-        log.setProcessedItems(log.getTotalItems());
-        generalService.save(log);;
-    }
+    /**
+     * Logs job end. Sets end date to current date and sets process items value to total items value.
+     * The operation is transactional.
+     * @param log
+     * @param ex
+     */
+    void finnishLog(Log log);
 }

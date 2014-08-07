@@ -10,6 +10,7 @@ import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.security.PoptavkaAuthenticationProvider;
 import com.eprovement.poptavka.server.service.clientdemands.ClientDemandsModuleRPCServiceImpl;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.offer.OfferService;
 import com.eprovement.poptavka.service.user.ClientService;
 import com.eprovement.poptavka.service.user.LoginService;
@@ -30,6 +31,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -149,6 +151,7 @@ public class ClientDemandsRPCServiceImplIntegrationTest extends DBUnitIntegratio
             Assert.assertThat("Unexpected offer state for offer.id=" + offer.getId(),
                     OfferStateType.PENDING.getValue(), is(offer.getState().getCode()));
         }
+        clientDemandsRPCService.setDemandService(mock(DemandService.class));
         clientDemandsRPCService.acceptOffer(offerToBeAccepted);
 
         for (Offer offer : demand.getOffers()) {
