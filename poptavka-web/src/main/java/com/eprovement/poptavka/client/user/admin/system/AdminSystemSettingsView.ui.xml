@@ -42,7 +42,7 @@
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Label addStyleNames="pull-right">
+                            <g:Label addStyleNames="pull-left">
                                 <ui:msg key='adminSystemCalcDemandCountsLabel'>Calculate Demand Counts</ui:msg>
                             </g:Label>
                             <b:Icon ui:field="demandCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
@@ -52,12 +52,12 @@
                             <g:Button ui:field='demandCountsBtn' styleName='{res.common.buttonGrey}'>
                                 <ui:msg key='commonBtnRun'>Run</ui:msg>
                             </g:Button>
-                            <g:Label ui:field="demandCountsProgressLabel"/>
+                            <g:Label ui:field="demandCountsProgressLabel" addStyleNames="pull-right"/>
                         </b:Column>
                     </b:FluidRow>
                     <b:FluidRow addStyleNames='well-content'>
                         <b:Column size="6" addStyleNames='well-padding'>
-                            <g:Label addStyleNames="pull-right">
+                            <g:Label addStyleNames="pull-left">
                                 <ui:msg key='adminSystemCalcSupplierCountsLabel'>Calculate Supplier Counts</ui:msg>
                             </g:Label>
                             <b:Icon ui:field="supplierCountsProgressSpinner" addStyleNames="{style.spinner-ws}"
@@ -67,7 +67,7 @@
                             <g:Button ui:field='supplierCountsBtn' styleName='{res.common.buttonGrey}'>
                                 <ui:msg key='commonBtnRun'>Run</ui:msg>
                             </g:Button>
-                            <g:Label ui:field="supplierCountsProgressLabel"/>
+                            <g:Label ui:field="supplierCountsProgressLabel" addStyleNames="pull-right"/>
                         </b:Column>
                     </b:FluidRow>
                 </b:FluidContainer>
