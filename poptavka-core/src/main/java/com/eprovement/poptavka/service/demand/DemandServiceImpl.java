@@ -62,11 +62,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         Validate.notNull(demandDao, "demandDao cannot be null!");
         Validate.notNull(generalService, "generalService cannot be null!");
         Validate.notNull(messageService, "messageService cannot be null!");
+        Validate.notNull(systemPropertiesService, "systemPropertiesService cannot be null!");
         Validate.notNull(logService, "logService cannot be null!");
         setDao(demandDao);
         this.messageService = messageService;
         this.generalService = generalService;
         this.logService = logService;
+        this.systemPropertiesService = systemPropertiesService;
     }
 
     @Override
@@ -449,12 +451,15 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      */
     private Set<Long> getCategoriesAndItsParentsIds(List<Category> categories) {
         Set<Long> set = new HashSet<Long>();
+        Category parent = null;
         for (Category category : categories) {
             //add category itself
             set.add(category.getId());
             //add category parents
-            while (category.getParent() != null) {
-                set.add(category.getParent().getId());
+            parent = category.getParent();
+            while (parent != null) {
+                set.add(parent.getId());
+                parent = parent.getParent();
             }
         }
         return set;
@@ -469,12 +474,15 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      */
     private Set<Long> getLocalitiesAndItsParentsIds(List<Locality> localities) {
         Set<Long> set = new HashSet<Long>();
+        Locality parent = null;
         for (Locality locality : localities) {
             //add locality itself
             set.add(locality.getId());
             //add locality parents
-            while (locality.getParent() != null) {
-                set.add(locality.getParent().getId());
+            parent = locality.getParent();
+            while (parent != null) {
+                set.add(parent.getId());
+                parent = parent.getParent();
             }
         }
         return set;

@@ -29,7 +29,6 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
     /* Attributes                                                             */
     /**************************************************************************/
     /** Constants. **/
-    private static final int REFRESH_DELAY = 3000;
     private static final int REFRESH_INTERVAL = 120000;
     /** Class Attribtutes. **/
     private ClickHandler changeHandler = new ClickHandler() {
@@ -80,7 +79,7 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
             public void onClick(ClickEvent event) {
                 view.getDemandCountsBtn().setEnabled(false);
                 eventBus.requestCalculateDemandCounts();
-                demandCountsRefresher.schedule(REFRESH_DELAY);
+                demandCountsRefresher.run();
             }
         });
         view.getSupplierCountsBtn().addClickHandler(new ClickHandler() {
@@ -89,7 +88,7 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
             public void onClick(ClickEvent event) {
                 view.getSupplierCountsBtn().setEnabled(false);
                 eventBus.requestCalculateSupplierCounts();
-                supplierCountsRefresher.schedule(REFRESH_DELAY);
+                supplierCountsRefresher.run();
             }
         });
     }

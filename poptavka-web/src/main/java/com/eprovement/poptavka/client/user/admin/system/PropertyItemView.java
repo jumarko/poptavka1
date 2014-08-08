@@ -44,14 +44,10 @@ public class PropertyItemView extends Composite implements HasClickHandlers {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField
-    Label name;
-    @UiField
-    HTMLPanel notificationChoicePanel;
-    @UiField
-    Button onBtn;
-    @UiField
-    Button offBtn;
+    @UiField Label name;
+    @UiField HTMLPanel notificationChoicePanel;
+    @UiField Button onBtn;
+    @UiField Button offBtn;
     /** Class attributes. **/
     private PropertiesDetail propertiesDetail;
     private boolean isEnabled;
@@ -81,6 +77,7 @@ public class PropertyItemView extends Composite implements HasClickHandlers {
     @UiHandler("onBtn")
     public void onBtnClickHandler(ClickEvent e) {
         setOnOffStyles(true);
+        fireEvent(e);
     }
 
     /**
