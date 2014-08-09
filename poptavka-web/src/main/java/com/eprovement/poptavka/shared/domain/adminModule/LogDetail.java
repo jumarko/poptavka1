@@ -80,6 +80,7 @@ public class LogDetail implements IsSerializable {
      * @return percentage progress value as bigdecimal rounded by 3 scale UP.
      */
     public BigDecimal getPercentageProgress() {
-        return BigDecimal.valueOf((double) (processedItems / totalItems)).setScale(3, RoundingMode.UP);
+        return BigDecimal.valueOf((double) (processedItems * 100 / totalItems))
+            .setScale(2, RoundingMode.UP);
     }
 }
