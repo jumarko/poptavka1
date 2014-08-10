@@ -358,6 +358,10 @@
     width: 50%;
 }
 
+.dashboard .recharge-container .recharge-content .text .gwt-Label:first-child {
+    margin-bottom: 10px;
+}
+
 .dashboard .recharge-container .recharge-content .text .gwt-Label {
     color: #6F6B59;
     font-size: 18px;

@@ -18,7 +18,8 @@
             <b:Column size="12" addStyleNames='recharge-content'>
                 <g:HTMLPanel ui:field="rechargeBattery" addStyleNames="recharge-battery green"></g:HTMLPanel>
                 <g:HTMLPanel addStyleNames="text">
-                    <g:Label ui:field="rechargeLabel">Please recharge your credit.</g:Label>
+                    <g:Label ui:field="currentCredits"></g:Label>
+                    <g:Label ui:field="creditStatusLabel"></g:Label>
                 </g:HTMLPanel>
             </b:Column>
             <b:Column size="12" addStyleNames="recharge-button-area">

@@ -515,7 +515,7 @@ public interface RootEventBus extends EventBusWithLookup,
     void requestCreditCount(long userId);
 
     @Event(handlers = CreditStatusAnnouncerPresenter.class)
-    void responseCreditCount(int credit);
+    void responseCreditCount(Integer credit);
 
     /**
      * Create professional and create project user registration tab height

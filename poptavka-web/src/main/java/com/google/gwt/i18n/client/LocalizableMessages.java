@@ -487,6 +487,12 @@ public interface LocalizableMessages extends Messages {
     String addressStreet();
     String addressZipCode();
 
+    /** CreditAnnouncer messages **/
+    String credits();
+    String redCreditStatus();
+    String orangeCreditStatus();
+    String greenCreditStatus();
+
     /*** 1 - Home Welcome module view *********************************** 1 ***/
     String iamProfessional();
     String iamProfessionalNext();

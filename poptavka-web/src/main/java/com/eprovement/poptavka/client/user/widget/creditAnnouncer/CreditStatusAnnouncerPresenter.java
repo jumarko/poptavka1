@@ -67,7 +67,11 @@ public class CreditStatusAnnouncerPresenter extends
      * Sets credit widget status
      * @param credit - user's current credits.
      */
-    public void onResponseCreditCount(int credit) {
-        view.setCreditStatus(credit);
+    public void onResponseCreditCount(Integer credit) {
+        if (credit == null) {
+            view.setCreditStatus(0);
+        } else {
+            view.setCreditStatus(credit);
+        }
     }
 }
