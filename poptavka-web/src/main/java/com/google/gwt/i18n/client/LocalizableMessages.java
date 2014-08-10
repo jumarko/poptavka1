@@ -68,6 +68,7 @@ public interface LocalizableMessages extends Messages {
     String tooltipFinish();
     String tooltipInvalidFields();
     String tooltipNotifications();
+    String tooltipCreditCount();
     String tooltipNoCategories();
     String tooltipNoLocalities();
     String tooltipOffer();
