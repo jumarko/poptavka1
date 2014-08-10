@@ -47,4 +47,9 @@ public class RootRPCServiceImpl extends AutoinjectingRemoteService implements Ro
         return true;
     }
 
+    @Override
+    public int getCreditCount(long userId) throws RPCException {
+        BusinessUser user = generalService.find(BusinessUser.class, userId);
+        return user.getBusinessUserData().getCurrentCredits();
+    }
 }

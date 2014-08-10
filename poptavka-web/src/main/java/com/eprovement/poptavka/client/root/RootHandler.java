@@ -30,4 +30,15 @@ public class RootHandler extends BaseEventHandler<RootEventBus> implements IRoot
             }
         });
     }
+
+    @Override
+    public void onRequestCreditCount(long userId) {
+        rootService.getCreditCount(userId, new SecuredAsyncCallback<Integer>(eventBus) {
+
+            @Override
+            public void onSuccess(Integer count) {
+                eventBus.responseCreditCount(count);
+            }
+        });
+    }
 }

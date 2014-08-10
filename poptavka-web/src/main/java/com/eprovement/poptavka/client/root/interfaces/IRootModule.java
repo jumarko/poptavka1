@@ -13,6 +13,8 @@ public interface IRootModule {
     public interface Handler {
 
         void onUnsubscribeUser(String password);
+
+        void onRequestCreditCount(long userId);
     }
 
     public interface Presenter extends HandleResizeEvent {

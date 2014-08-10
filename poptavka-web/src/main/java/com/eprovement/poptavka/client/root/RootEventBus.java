@@ -508,6 +508,15 @@ public interface RootEventBus extends EventBusWithLookup,
     @Event(forwardToModules = DetailModule.class)
     void registerQuestionSubmitHandler(ClickHandler handler);
 
+    /**************************************************************************/
+    /* Detail module business events.                                         */
+    /**************************************************************************/
+    @Event(handlers = RootHandler.class)
+    void requestCreditCount(long userId);
+
+    @Event(handlers = CreditStatusAnnouncerPresenter.class)
+    void responseCreditCount(int credit);
+
     /**
      * Create professional and create project user registration tab height
      * handlers.

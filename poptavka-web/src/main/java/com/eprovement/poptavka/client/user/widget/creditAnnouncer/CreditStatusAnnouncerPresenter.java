@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.creditAnnouncer;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.creditAnnouncer.
         CreditStatusAnnouncerPresenter.ICreditStatusAnnouncerView;
@@ -47,9 +48,6 @@ public class CreditStatusAnnouncerPresenter extends
             @Override
             public void onClick(ClickEvent event) {
                 // TODO: eventbus call of the modal for credit charge
-
-                // TODO: this is just a test call to see how the widget changes
-                onSetCreditStatus(10);
             }
         });
     }
@@ -63,12 +61,13 @@ public class CreditStatusAnnouncerPresenter extends
      */
     public void onSetCreditAnnouncer(SimplePanel creditAnnouncerPanel) {
         creditAnnouncerPanel.setWidget(view.getWidgetView());
+        eventBus.requestCreditCount(Storage.getUser().getUserId());
     }
     /**
      * Sets credit widget status
      * @param credit - user's current credits.
      */
-    public void onSetCreditStatus(int credit) {
+    public void onResponseCreditCount(int credit) {
         view.setCreditStatus(credit);
     }
 }

@@ -12,4 +12,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface RootRPCServiceAsync {
 
     void unsubscribe(String password, AsyncCallback<Boolean> callback);
+
+    void getCreditCount(long userID, AsyncCallback<Integer> callback);
 }
