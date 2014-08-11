@@ -79,7 +79,7 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
             public void onClick(ClickEvent event) {
                 view.getDemandCountsBtn().setEnabled(false);
                 eventBus.requestCalculateDemandCounts();
-                demandCountsRefresher.run();
+                eventBus.responseJobProgress(LogType.DEMAND_COUNTS, new LogDetail());
             }
         });
         view.getSupplierCountsBtn().addClickHandler(new ClickHandler() {
@@ -88,7 +88,7 @@ public class AdminSystemSettingsPresenter extends LazyPresenter<IAdminSystemSett
             public void onClick(ClickEvent event) {
                 view.getSupplierCountsBtn().setEnabled(false);
                 eventBus.requestCalculateSupplierCounts();
-                supplierCountsRefresher.run();
+                eventBus.responseJobProgress(LogType.SUPPLIER_COUNTS, new LogDetail());
             }
         });
     }

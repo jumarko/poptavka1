@@ -74,9 +74,9 @@ public class AdminSystemSettingsView extends Composite implements IAdminSystemSe
             demandCountsProgressLabel.setText(new StringBuilder()
                 .append(detail.getPercentageProgress().toString())
                 .append("% (")
-                .append(detail.getProcessedItems())
+                .append(detail.getProcessedItems() == null ? "0" : detail.getProcessedItems())
                 .append("/")
-                .append(detail.getTotalItems())
+                .append(detail.getTotalItems() == null ? "?" : detail.getTotalItems())
                 .append(")").toString()
             );
         }
@@ -95,9 +95,9 @@ public class AdminSystemSettingsView extends Composite implements IAdminSystemSe
             supplierCountsProgressLabel.setText(new StringBuilder()
                 .append(detail.getPercentageProgress().toString())
                 .append("% (")
-                .append(detail.getProcessedItems())
+                .append(detail.getProcessedItems() == null ? "0" : detail.getProcessedItems())
                 .append("/")
-                .append(detail.getTotalItems())
+                .append(detail.getTotalItems() == null ? "?" : detail.getTotalItems())
                 .append(")").toString()
             );
         }

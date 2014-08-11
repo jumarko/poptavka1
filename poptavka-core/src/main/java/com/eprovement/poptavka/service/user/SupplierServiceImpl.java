@@ -25,6 +25,7 @@ import com.eprovement.poptavka.service.notification.NotificationTypeService;
 import com.eprovement.poptavka.service.register.RegisterService;
 import com.eprovement.poptavka.service.system.LogServiceImpl;
 import com.googlecode.ehcache.annotations.Cacheable;
+import java.util.ArrayList;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.Validate;
@@ -322,18 +323,21 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
     public void calculateCounts() {
         List<Category> allCategories = generalService.findAll(Category.class);
         List<Locality> allLocalities = generalService.findAll(Locality.class);
+        List<Category> categoriesPerTransaction = new ArrayList<Category>();
+        List<Locality> localitiesPerTransaction = new ArrayList<Locality>();
+
         Log log = logService.createLog(LogType.SUPPLIER_COUNTS,
             allCategories.size() + allLocalities.size(),
             "Calculating demand counts for categories and localities.");
         int frangmentCounter = 0;
         for (Category category : allCategories) {
             try {
-                calculateAndUpdatedCountForCategory(category);
                 frangmentCounter++;
+                categoriesPerTransaction.add(category);
                 if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
-                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
-                    logService.updateLog(log);
+                    calculateAndUpdatedCountForCategory(categoriesPerTransaction, log);
                     frangmentCounter = 0;
+                    categoriesPerTransaction.clear();
                 }
             } catch (Exception ex) {
                 logService.logError(log, ex);
@@ -341,12 +345,12 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
         }
         for (Locality locality : allLocalities) {
             try {
-                calculateAndUpdatedCountForLocality(locality);
                 frangmentCounter++;
+                localitiesPerTransaction.add(locality);
                 if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
-                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
-                    logService.updateLog(log);
+                    calculateAndUpdatedCountForLocality(localitiesPerTransaction, log);
                     frangmentCounter = 0;
+                    localitiesPerTransaction.clear();
                 }
             } catch (Exception ex) {
                 logService.logError(log, ex);
@@ -459,12 +463,18 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
 
     /**
      * Calculates and updates supplier count for given category.
-     * @param category to be updated
+     * @param categoriesPerTransaction to be updated
      */
     @Transactional
-    private void calculateAndUpdatedCountForCategory(Category category) {
-        category.setSupplierCount(Long.valueOf(getSuppliersCountQuick(category)).intValue());
-        generalService.save(category);
+    private void calculateAndUpdatedCountForCategory(List<Category> categoriesPerTransaction, Log log) {
+        //process transaction batch
+        for (Category category : categoriesPerTransaction) {
+            category.setSupplierCount(Long.valueOf(getSuppliersCount(category)).intValue());
+            generalService.save(category);
+        }
+        //log
+        log.setProcessedItems(log.getProcessedItems() + CALCULTATE_COUNT_PROGRESS_FRAGMENT);
+        logService.updateLog(log);
     }
 
     /**
@@ -472,8 +482,13 @@ public class SupplierServiceImpl extends BusinessUserRoleServiceImpl<Supplier, S
      * @param locality to be updated
      */
     @Transactional
-    private void calculateAndUpdatedCountForLocality(Locality locality) {
-        locality.setSupplierCount(Long.valueOf(getSuppliersCountQuick(locality)).intValue());
-        generalService.save(locality);
+    private void calculateAndUpdatedCountForLocality(List<Locality> localitiesPerTransaction, Log log) {
+        for (Locality locality : localitiesPerTransaction) {
+            locality.setSupplierCount(Long.valueOf(getSuppliersCount(locality)).intValue());
+            generalService.save(locality);
+        }
+        //log
+        log.setProcessedItems(log.getProcessedItems() + CALCULTATE_COUNT_PROGRESS_FRAGMENT);
+        logService.updateLog(log);
     }
 }

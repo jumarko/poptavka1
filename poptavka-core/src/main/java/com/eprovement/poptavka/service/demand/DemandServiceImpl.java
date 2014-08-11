@@ -26,6 +26,7 @@ import com.eprovement.poptavka.util.search.Searcher;
 import com.google.common.base.Preconditions;
 import com.googlecode.ehcache.annotations.Cacheable;
 import com.googlecode.genericdao.search.Search;
+import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
@@ -393,6 +394,9 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
     public void calculateCounts() {
         List<Category> allCategories = generalService.findAll(Category.class);
         List<Locality> allLocalities = generalService.findAll(Locality.class);
+        List<Category> categoriesPerTransaction = new ArrayList<Category>();
+        List<Locality> localitiesPerTransaction = new ArrayList<Locality>();
+
         Log log = logService.createLog(LogType.DEMAND_COUNTS,
             allCategories.size() + allLocalities.size(),
             "Calculating demand counts for categories and localities.");
@@ -400,12 +404,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
         for (Category category : allCategories) {
             try {
-                calculateAndUpdatedCountForCategory(category);
                 frangmentCounter++;
+                categoriesPerTransaction.add(category);
                 if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
-                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
-                    logService.updateLog(log);
+                    //process transaction batch
+                    calculateAndUpdatedCountForCategory(categoriesPerTransaction, log);
                     frangmentCounter = 0;
+                    categoriesPerTransaction.clear();
                 }
             } catch (Exception ex) {
                 logService.logError(log, ex);
@@ -413,12 +418,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
         }
         for (Locality locality : allLocalities) {
             try {
-                calculateAndUpdatedCountForLocality(locality);
                 frangmentCounter++;
+                localitiesPerTransaction.add(locality);
                 if (frangmentCounter == CALCULTATE_COUNT_PROGRESS_FRAGMENT) {
-                    log.setProcessedItems(log.getProcessedItems() + frangmentCounter);
-                    logService.updateLog(log);
+                    //process transaction batch
+                    calculateAndUpdatedCountForLocality(localitiesPerTransaction, log);
                     frangmentCounter = 0;
+                    localitiesPerTransaction.clear();
                 }
             } catch (Exception ex) {
                 logService.logError(log, ex);
@@ -490,12 +496,18 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
 
     /**
      * Calculates and updates supplier count for given category.
-     * @param category to be updated
+     * @param categoriesPerTransaction to be updated
      */
     @Transactional
-    private void calculateAndUpdatedCountForCategory(Category category) {
-        category.setDemandCount(Long.valueOf(getDemandsCountQuick(category)).intValue());
-        generalService.save(category);
+    private void calculateAndUpdatedCountForCategory(List<Category> categoriesPerTransaction, Log log) {
+        //process transaction batch
+        for (Category category : categoriesPerTransaction) {
+            category.setDemandCount(Long.valueOf(getDemandsCountQuick(category)).intValue());
+            generalService.save(category);
+        }
+        //log
+        log.setProcessedItems(log.getProcessedItems() + CALCULTATE_COUNT_PROGRESS_FRAGMENT);
+        logService.updateLog(log);
     }
 
     /**
@@ -503,8 +515,13 @@ public class DemandServiceImpl extends GenericServiceImpl<Demand, DemandDao> imp
      * @param locality to be updated
      */
     @Transactional
-    private void calculateAndUpdatedCountForLocality(Locality locality) {
-        locality.setDemandCount(Long.valueOf(getDemandsCountQuick(locality)).intValue());
-        generalService.save(locality);
+    private void calculateAndUpdatedCountForLocality(List<Locality> localitiesPerTransaction, Log log) {
+        for (Locality locality : localitiesPerTransaction) {
+            locality.setDemandCount(Long.valueOf(getDemandsCountQuick(locality)).intValue());
+            generalService.save(locality);
+        }
+        //log
+        log.setProcessedItems(log.getProcessedItems() + CALCULTATE_COUNT_PROGRESS_FRAGMENT);
+        logService.updateLog(log);
     }
 }
