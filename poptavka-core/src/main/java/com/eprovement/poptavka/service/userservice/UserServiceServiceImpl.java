@@ -43,6 +43,11 @@ public class UserServiceServiceImpl extends GenericServiceImpl<UserService, User
     }
 
     @Override
+    public UserService getUserServiceByOrderNumber(final long orderNumber) {
+        return getDao().getUserServiceByOrderNumber(orderNumber);
+    }
+
+    @Override
     public List<UserService> getUsersServices(BusinessUser businessUser) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

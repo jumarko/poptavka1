@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
+
 /**
  * The controller, which handles the paypal payment notification.
  *
@@ -44,6 +46,7 @@ public class PaypalIPN {
     private static final String PARAM_RECEIVER_EMAIL = "receiver_email";
     private static final String PARAM_TXN_ID = "txn_id";
     private static final String PARAM_PAYMENT_STATUS = "payment_status";
+    private static final String PARAM_CUSTOM = "custom";
     private static final Logger LOGGER = LoggerFactory.getLogger(PaypalIPN.class);
     private static final NameValuePair CMD_NOTIFY_VALIDATE = new BasicNameValuePair("cmd", "_notify-validate");
 
@@ -65,14 +68,14 @@ public class PaypalIPN {
         try {
             PaymentInfo paymentInfo = getPaymentInfo(request);
             if (paymentValidator.isPaymentValid(paymentInfo)) {
-                String responseContent;
-                responseContent = getResponseContent(request).trim();
+                String responseContent = getResponseContent(request).trim();
                 LOGGER.info("Paypal verification response = {}", responseContent);
                 if (paymentValidator.isResponseValid(responseContent)) {
                     String txID = paymentInfo.getTransactionID();
-                    long userServiceID = paymentInfo.getItemNumber();
+                    long orderNumber = paymentInfo.getOrderNumber();
                     float amount = paymentInfo.getAmount();
-                    paymentService.saveCredits(txID, userServiceID, amount);
+                    PaypalTransactionStatus status = paymentInfo.getStatus();
+                    paymentService.saveCredits(txID, orderNumber, amount, status);
                 } else {
                     LOGGER.error("Invalid Paypal IPN :: {}", paymentInfo);
                 }
@@ -97,6 +100,7 @@ public class PaypalIPN {
         String amount = request.getParameter(PARAM_MC_GROSS);
         String currency = request.getParameter(PARAM_MC_CURRENCY);
         String itemNumber = request.getParameter(PARAM_ITEM_NUMBER);
+        String orderNumber = request.getParameter(PARAM_CUSTOM);
         float amountValue = numberFormat.parse(amount).floatValue();
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setStatus(status);
@@ -105,6 +109,7 @@ public class PaypalIPN {
         paymentInfo.setAmount(amountValue);
         paymentInfo.setCurrency(currency);
         paymentInfo.setItemNumber(Long.parseLong(itemNumber));
+        paymentInfo.setOrderNumber(Long.parseLong(orderNumber));
         return paymentInfo;
     }
 

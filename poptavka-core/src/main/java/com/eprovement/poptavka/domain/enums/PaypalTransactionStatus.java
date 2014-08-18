@@ -21,7 +21,7 @@ public enum PaypalTransactionStatus {
     /**
      * The payment has been completed, and the funds have been added successfully to your account balance.
      */
-    COMPPLETED,
+    COMPLETED,
     /**
      * The payment was denied.
      * This happens only if the payment was previously pending because of
