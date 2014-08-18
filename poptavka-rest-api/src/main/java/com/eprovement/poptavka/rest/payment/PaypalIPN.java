@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +47,7 @@ public class PaypalIPN {
     private static final String PARAM_RECEIVER_EMAIL = "receiver_email";
     private static final String PARAM_TXN_ID = "txn_id";
     private static final String PARAM_PAYMENT_STATUS = "payment_status";
+    private static final String PARAM_PAYMENT_DATE = "payment_date";
     private static final String PARAM_CUSTOM = "custom";
     private static final Logger LOGGER = LoggerFactory.getLogger(PaypalIPN.class);
     private static final NameValuePair CMD_NOTIFY_VALIDATE = new BasicNameValuePair("cmd", "_notify-validate");
@@ -75,7 +77,8 @@ public class PaypalIPN {
                     long orderNumber = paymentInfo.getOrderNumber();
                     float amount = paymentInfo.getAmount();
                     PaypalTransactionStatus status = paymentInfo.getStatus();
-                    paymentService.saveCredits(txID, orderNumber, amount, status);
+                    Date paymentDate = paymentInfo.getPaymentDate();
+                    paymentService.saveCredits(txID, orderNumber, amount, status, paymentDate);
                 } else {
                     LOGGER.error("Invalid Paypal IPN :: {}", paymentInfo);
                 }
@@ -95,6 +98,7 @@ public class PaypalIPN {
     private PaymentInfo getPaymentInfo(HttpServletRequest request) throws ParseException {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
         String status = request.getParameter(PARAM_PAYMENT_STATUS);
+        String paymentDateText = request.getParameter(PARAM_PAYMENT_DATE);
         String transactionID = request.getParameter(PARAM_TXN_ID);
         String receiverEmail = request.getParameter(PARAM_RECEIVER_EMAIL);
         String amount = request.getParameter(PARAM_MC_GROSS);
@@ -104,6 +108,7 @@ public class PaypalIPN {
         float amountValue = numberFormat.parse(amount).floatValue();
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setStatus(status);
+        paymentInfo.setPaymentDate(paymentDateText);
         paymentInfo.setTransactionID(transactionID);
         paymentInfo.setReceiverEmail(receiverEmail);
         paymentInfo.setAmount(amountValue);

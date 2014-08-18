@@ -21,36 +21,36 @@ public class PaymentService {
     private UserServiceService userServiceService;
 
     @Transactional(readOnly = false)
-    public void saveCredits(String transactionNumber, long orderNumber, float amount, PaypalTransactionStatus status) {
+    public void saveCredits(String transactionNumber, long orderNumber,
+            float amount, PaypalTransactionStatus status, Date paymentDate) {
         Validate.notNull(transactionNumber);
         Validate.notNull(orderNumber);
-        UserService userService = userServiceService.getUserServiceByOrderNumber(orderNumber);
+        UserService userService = userServiceService
+                .getUserServiceByOrderNumber(orderNumber);
         if (status == PaypalTransactionStatus.COMPLETED) {
             if (!transactionNumber.equals(userService.getTransactionNumber())) {
                 int credits = Float.valueOf(amount).intValue();
-                updateUserService(transactionNumber, credits, userService, Status.ACTIVE, status);
+                updateUserService(transactionNumber, credits, userService,
+                        Status.ACTIVE, status, paymentDate);
             } else {
-                LOGGER.warn(
-                        "It is only allowed once recharged credits to the transaction !");
+                LOGGER.warn("It is only allowed once recharged credits to the transaction !");
                 LOGGER.warn(
                         "[transactionNumber={}, orderNumber={}, amount={}]",
                         transactionNumber, orderNumber, amount);
             }
         } else {
-            updateUserService(transactionNumber, null, userService, null, status);
+            updateUserService(transactionNumber, null, userService, null,
+                    status, paymentDate);
         }
     }
 
     private void updateUserService(String transactionNumber, Integer amount,
-            UserService userService, Status status, PaypalTransactionStatus paypalStatus) {
-        if (amount != null) {
-            userService.getBusinessUser().getBusinessUserData().addCredits(amount);
-        }
-        if (status != null) {
-            userService.setStatus(status);
-        }
+            UserService userService, Status status, PaypalTransactionStatus paypalStatus, Date paymentDate) {
+        userService.getBusinessUser().getBusinessUserData().addCredits(amount);
+        userService.setStatus(status);
         userService.setTransactionNumber(transactionNumber);
         userService.setResponse(new Date());
+        userService.setRequest(paymentDate);
         userService.setTransactionStatus(paypalStatus);
         userServiceService.update(userService);
     }
