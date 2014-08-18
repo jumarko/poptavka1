@@ -7,6 +7,7 @@ import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
 import com.eprovement.poptavka.domain.enums.Status;
@@ -19,6 +20,7 @@ public class PaymentService {
     @Autowired
     private UserServiceService userServiceService;
 
+    @Transactional(readOnly = false)
     public void saveCredits(String transactionNumber, long orderNumber, float amount, PaypalTransactionStatus status) {
         Validate.notNull(transactionNumber);
         Validate.notNull(orderNumber);
@@ -42,7 +44,7 @@ public class PaymentService {
     private void updateUserService(String transactionNumber, Integer amount,
             UserService userService, Status status, PaypalTransactionStatus paypalStatus) {
         if (amount != null) {
-            userService.getUser().getBusinessUserData().addCredits(amount);
+            userService.getBusinessUser().getBusinessUserData().addCredits(amount);
         }
         if (status != null) {
             userService.setStatus(status);

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PaymentValidator {
-    private static final String USD = "USD";
+    private static final String CURRENCY_USD = "USD";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentValidator.class);
 
@@ -28,10 +28,10 @@ public class PaymentValidator {
     }
 
     private boolean isCurrencyValid(String currency) {
-        if (USD.equals(currency)) {
+        if (CURRENCY_USD.equals(currency)) {
             return true;
         }
-        LOGGER.error("Only {} currency is valid :: not {}", USD, currency);
+        LOGGER.error("Only {} currency is valid :: not {}", CURRENCY_USD, currency);
         return false;
     }
 

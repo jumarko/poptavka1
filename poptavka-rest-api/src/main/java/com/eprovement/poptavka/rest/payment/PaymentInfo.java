@@ -48,7 +48,7 @@ public class PaymentInfo {
     }
 
     public void setStatus(String status) {
-        this.status = PaypalTransactionStatus.valueOf(status);
+        this.status = PaypalTransactionStatus.valueOf(status.toUpperCase());
     }
 
     public String getTransactionID() {
