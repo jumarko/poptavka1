@@ -16,5 +16,5 @@ public interface ServiceSelectorRPCService extends RemoteService {
 
     String URL = "service/serviceSelector";
 
-    ArrayList<ServiceDetail> getSupplierServices(ServiceType serviceType) throws RPCException;
+    ArrayList<ServiceDetail> getSupplierServices(ServiceType...serviceTypes) throws RPCException;
 }

@@ -21,6 +21,7 @@ import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierDashboardDe
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -108,6 +109,9 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
 
     @Event(forwardToParent = true)
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
+
+    @Event(forwardToParent = true)
+    void setCreditAnnouncer(SimplePanel creditAnouncerContainer);
 
     /**************************************************************************/
     /* Common event                                                           */

@@ -32,6 +32,8 @@ public class NotificationsElement extends Composite {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder Attributes. **/
+    @UiField PushButton creditButton;
+    @UiField Label creditCount;
     @UiField PushButton pushButton;
     @UiField Label newMessagesCount;
     @UiField PushButton pushSystemButton;

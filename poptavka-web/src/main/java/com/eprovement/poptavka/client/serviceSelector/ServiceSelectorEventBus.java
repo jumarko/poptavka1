@@ -45,7 +45,7 @@ public interface ServiceSelectorEventBus extends EventBusWithLookup {
     /* Business events handled by Presenter.                                  */
     /**************************************************************************/
     @Event(handlers = ServiceSelectorPresenter.class)
-    void initServicesWidget(ServiceType serviceType, SimplePanel embedToWidget);
+    void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(handlers = ServiceSelectorPresenter.class)
     void displayServices(ArrayList<ServiceDetail> services);
@@ -60,5 +60,5 @@ public interface ServiceSelectorEventBus extends EventBusWithLookup {
     /* Business events handled by Handler.                                    */
     /**************************************************************************/
     @Event(handlers = ServiceSelectorHandler.class)
-    void requestServices(ServiceType serviceType);
+    void requestServices(ServiceType...serviceTypes);
 }

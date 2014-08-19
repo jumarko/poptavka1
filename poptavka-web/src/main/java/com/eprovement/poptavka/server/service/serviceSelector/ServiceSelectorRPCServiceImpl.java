@@ -56,15 +56,15 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /**
      * Request supplier services
-     * @param serviceType
+     * @param serviceTypes
      * @return list of service details
      * @throws RPCException
      */
     @Override
-    public ArrayList<ServiceDetail> getSupplierServices(ServiceType serviceType) throws RPCException {
+    public ArrayList<ServiceDetail> getSupplierServices(ServiceType...serviceTypes) throws RPCException {
         Search supplierServicesSearch = new Search(Service.class);
         supplierServicesSearch.addFilterEqual("valid", true);
-        supplierServicesSearch.addFilterEqual("serviceType", serviceType);
+        supplierServicesSearch.addFilterIn("serviceType", serviceTypes);
         List<Service> services = this.generalService.search(supplierServicesSearch);
         return serviceConverter.convertToTargetList(services);
     }

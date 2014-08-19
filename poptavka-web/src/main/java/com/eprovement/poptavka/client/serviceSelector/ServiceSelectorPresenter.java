@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
+import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
@@ -55,19 +56,13 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     /**************************************************************************/
     /**
      * Initialize ServiceSelector widget.
-     * @param serviceType - the ServiceType
      * @param embedToWidget - holder panel
      */
-    public void onInitServicesWidget(ServiceType serviceType, SimplePanel embedToWidget) {
-        switch (serviceType) {
-            case CLIENT:
-                eventBus.requestServices(ServiceType.CLIENT);
-                break;
-            case SUPPLIER:
-                eventBus.requestServices(ServiceType.SUPPLIER);
-                break;
-            default:
-                break;
+    public void onInitServicesWidget(SimplePanel embedToWidget) {
+        if (Storage.getUser() == null) {
+            eventBus.requestServices(ServiceType.PROMOTION, ServiceType.RECHARGE);
+        } else {
+            eventBus.requestServices(ServiceType.RECHARGE);
         }
         embedToWidget.setWidget(view);
     }

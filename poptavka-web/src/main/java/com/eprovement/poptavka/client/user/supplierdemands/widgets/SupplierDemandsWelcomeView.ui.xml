@@ -17,7 +17,7 @@
         <b:FluidContainer>
             <g:HTMLPanel addStyleNames='{res.common.wellContainer} {res.common.formFields} {res.layout.dashboard}'>
                 <b:FluidRow>
-                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
+                    <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
                         <b:FluidRow addStyleNames='well-header'>
                             <b:Column size="12">
                                 <b:Heading size="4">
@@ -55,7 +55,33 @@
                             </b:Column>
                         </b:FluidRow>
                     </b:Column>
-
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall} recharge-container'>
+                        <g:SimplePanel ui:field="creditAnnouncerContainer"></g:SimplePanel>
+                    </b:Column>
+                    <!--
+                    <b:Column size="4" addStyleNames='{res.initial.expandOnSmall} recharge-container'>
+                        <b:FluidRow addStyleNames='well-header'>
+                            <b:Column size="12">
+                                <b:Heading size="4">
+                                    Credit status
+                                </b:Heading>
+                            </b:Column>
+                        </b:FluidRow>
+                        
+                        <b:FluidRow addStyleNames='well-content'>
+                            <b:Column size="12" addStyleNames='recharge-content'>
+                                <g:HTMLPanel addStyleNames="recharge-battery green"></g:HTMLPanel>
+                                <g:HTMLPanel addStyleNames="text">
+                                    Please recharge your credit.
+                                </g:HTMLPanel>
+                            </b:Column>
+                            <b:Column size="12" addStyleNames="recharge-button-area">
+                                <g:Button addStyleNames="{res.common.buttonRightBrownSmall}">Recharge</g:Button>
+                            </b:Column>                            
+                        </b:FluidRow>                        
+                    </b:Column>
+                    -->
+                    <!--
                     <b:Column size="8" addStyleNames='{res.initial.expandOnSmall}'>
                         <b:FluidRow addStyleNames='well-header'>
                             <b:Column size="12">
@@ -124,7 +150,8 @@
                             </b:Column>
                         </b:FluidRow>
                     </b:Column>
-                </b:FluidRow>
+                    -->
+                </b:FluidRow>                
             </g:HTMLPanel>
             <b:FluidRow>
                 <b:Column size='12'>

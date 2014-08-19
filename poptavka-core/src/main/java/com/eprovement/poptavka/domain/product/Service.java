@@ -28,6 +28,9 @@ import java.math.BigDecimal;
 @Entity
 public class Service extends Register {
 
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
     @Column(length = 64)
     private String title;
 
@@ -39,12 +42,7 @@ public class Service extends Register {
     @Column(columnDefinition = "BIT")
     private boolean valid;
 
-    /**
-     * Number of months during which the particular service is active. After
-     * expiration the system will notify user to re-new the service which means
-     * that new UserService object will be created.
-     */
-    private Integer prepaidMonths;
+    private Integer credits;
 
     /**
      * Service type that indicates which role has ordered this system. It can be
@@ -54,6 +52,9 @@ public class Service extends Register {
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private ServiceType serviceType;
 
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
     public String getTitle() {
         return title;
     }
@@ -86,12 +87,12 @@ public class Service extends Register {
         this.valid = valid;
     }
 
-    public Integer getPrepaidMonths() {
-        return prepaidMonths;
+    public Integer getCredits() {
+        return credits;
     }
 
-    public void setPrepaidMonths(Integer prepaidMonths) {
-        this.prepaidMonths = prepaidMonths;
+    public void setCredits(Integer credits) {
+        this.credits = credits;
     }
 
     public ServiceType getServiceType() {
@@ -102,6 +103,9 @@ public class Service extends Register {
         this.serviceType = serviceType;
     }
 
+    /**************************************************************************/
+    /*  Override methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -110,7 +114,7 @@ public class Service extends Register {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", valid=").append(valid);
-        sb.append(", prepaidMonths=").append(prepaidMonths);
+        sb.append(", credits=").append(credits);
         sb.append(", serviceType=").append(serviceType);
         sb.append('}');
         return sb.toString();

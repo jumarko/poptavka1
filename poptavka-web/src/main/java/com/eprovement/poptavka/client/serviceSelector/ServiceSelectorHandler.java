@@ -29,7 +29,7 @@ public class ServiceSelectorHandler extends BaseEventHandler<ServiceSelectorEven
     /**************************************************************************/
     /* Get Suppliers data                                                     */
     /**************************************************************************/
-    public void onRequestServices(ServiceType serviceType) {
+    public void onRequestServices(ServiceType...serviceType) {
         serviceSelectorService.getSupplierServices(serviceType,
             new SecuredAsyncCallback<ArrayList<ServiceDetail>>(eventBus) {
                 @Override

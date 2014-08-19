@@ -24,4 +24,6 @@ public interface UserServiceDao extends GenericDao<UserService> {
      */
     List<UserService> getUsersServices(BusinessUser businessUser);
 
+    UserService getUserServiceByOrderNumber(Long orderNumber);
+
 }

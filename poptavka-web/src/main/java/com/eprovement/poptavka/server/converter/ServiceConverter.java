@@ -35,12 +35,12 @@ public final class ServiceConverter extends AbstractConverter<Service, ServiceDe
         }
         ServiceDetail detail = new ServiceDetail();
         detail.setId(service.getId());
+        detail.setCode(service.getCode());
         detail.setTitle(service.getTitle());
         detail.setDescription(service.getDescription());
         detail.setPrice(service.getPrice());
-        // TODO ivlcek - prepaidMonths to be removed when payment module will be merged
-        detail.setPrepaidMonths(1);
-        detail.setType(service.getServiceType().getValue());
+        detail.setCredits(service.getCredits());
+        detail.setServiceType(service.getServiceType());
         return detail;
     }
 

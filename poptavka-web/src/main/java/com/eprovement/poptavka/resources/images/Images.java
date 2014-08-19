@@ -163,6 +163,15 @@ public interface Images extends ClientBundle {
     @Source("envelope-hover.png")
     ImageResource envelopeHoverImage();
 
+    @Source("credit-card.png")
+    ImageResource creditCardImage();
+
+    @Source("credit-card-empty.png")
+    ImageResource creditCardImageEmpty();
+
+    @Source("credit-card-hover.png")
+    ImageResource creditCardHoverImage();
+
     @Source("flag.png")
     ImageResource flagImage();
 

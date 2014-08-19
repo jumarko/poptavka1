@@ -46,7 +46,7 @@
                 <!-- basic properties -->
                 <entry key="hibernate.archive.autodetection" value="class, hbm"/>
                 <entry key="hibernate.hbm2ddl.auto" value="${db.hbm2ddl.auto}"/>
-                <entry key="hibernate.format_sql" value="false"/>
+                <entry key="hibernate.format_sql" value="${db.formatSql}"/>
                 <entry key="hibernate.connection.useUnicode" value="true"/>
                 <entry key="hibernate.connection.characterEncoding" value="UTF-8"/>
                 <entry key="hibernate.max_fetch_depth" value="1"/>

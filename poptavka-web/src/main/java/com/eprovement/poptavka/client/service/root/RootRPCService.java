@@ -21,4 +21,5 @@ public interface RootRPCService extends RemoteService {
     /**************************************************************************/
     Boolean unsubscribe(String password) throws RPCException;
 
+    Integer getCreditCount(long userID) throws RPCException;
 }

@@ -37,6 +37,8 @@
 
     <bean id="offerDao" class="com.eprovement.poptavka.dao.offer.OfferDaoImpl" />
 
+    <bean id="userServiceDao" class="com.eprovement.poptavka.dao.userservice.UserServiceDaoImpl" />
+
 
     <!-- Service -->
     <bean id="generalService" class="com.eprovement.poptavka.service.GeneralServiceImpl">
@@ -169,6 +171,11 @@
         <constructor-arg value="${deployment.url}"/>
     </bean>
 
+    <bean id="userServiceService" class="com.eprovement.poptavka.service.userservice.UserServiceServiceImpl">
+        <constructor-arg ref="userServiceDao"/>
+        <constructor-arg ref="generalService"/>
+    </bean>
+
     <!-- Jobs -->
 
     <!--Jobs for notifications-->
@@ -215,7 +222,7 @@
     <bean id="jmxAssembler" class="org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler">
         <property name="managedInterfaces" value="com.eprovement.poptavka.application.PoptavkaManagedOperations" />
     </bean>
-    
+
     <!--Security-->
         <!--  Set up string digester here so we can configure it for more pools if it's a problem -->
         <!-- same settings as StrongPasswordGenerator -->

@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.shared.domain;
 
+import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -7,12 +8,16 @@ import java.math.BigDecimal;
 
 public class ServiceDetail implements IsSerializable {
 
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
     private long id;
+    private String code;
     private String title;
     private String description;
     private BigDecimal price;
-    private int prepaidMonths;
-    private String type;
+    private int credits;
+    private ServiceType serviceType;
 
     public static final ProvidesKey<ServiceDetail> KEY_PROVIDER = new ProvidesKey<ServiceDetail>() {
         @Override
@@ -21,16 +26,30 @@ public class ServiceDetail implements IsSerializable {
         }
     };
 
+    /**************************************************************************/
+    /*  Initialization                                                        */
+    /**************************************************************************/
     public ServiceDetail() {
         //for serialization
     }
 
-    public ServiceDetail(long id, String title, String desc, BigDecimal price, int months) {
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
         this.id = id;
-        this.title = title;
-        this.description = desc;
-        this.price = price;
-        this.prepaidMonths = months;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTitle() {
@@ -57,28 +76,20 @@ public class ServiceDetail implements IsSerializable {
         this.price = price;
     }
 
-    public int getPrepaidMonths() {
-        return prepaidMonths;
+    public int getCredits() {
+        return credits;
     }
 
-    public void setPrepaidMonths(int prepaidMonths) {
-        this.prepaidMonths = prepaidMonths;
+    public void setCredits(int credits) {
+        this.credits = credits;
     }
 
-    public long getId() {
-        return id;
+    public ServiceType getServiceType() {
+        return serviceType;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
     }
 
     /**************************************************************************/
@@ -86,7 +97,13 @@ public class ServiceDetail implements IsSerializable {
     /**************************************************************************/
     @Override
     public String toString() {
-        return title + " (" + price + "/" + prepaidMonths + ")";
+        return "ServiceDetail{" + "id=" + id
+            + ", code=" + code
+            + ", title=" + title
+            + ", description=" + description
+            + ", price=" + price
+            + ", credits=" + credits
+            + ", serviceType=" + serviceType + '}';
     }
 
     @Override

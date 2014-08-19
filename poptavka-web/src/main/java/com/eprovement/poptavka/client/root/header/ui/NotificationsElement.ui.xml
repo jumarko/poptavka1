@@ -49,7 +49,7 @@
     </ui:style>
 
     <!--<g:HTMLPanel styleName='{res.header.loginBar}'>-->
-    <g:HTMLPanel>
+    <g:HTMLPanel>        
         <g:HTMLPanel styleName='{style.newMessageContainer}'>
             <g:Label ui:field="newMessagesCount" styleName='{style.newMessageCount}'></g:Label>
             <b:Tooltip text="{msgs.tooltipNotifications}" placement="BOTTOM">
@@ -71,6 +71,18 @@
                     <g:upHoveringFace image='{res.images.flagImageEmpty}' />
                     <g:downFace image='{res.images.flagImage}' />
                     <g:downHoveringFace image='{res.images.flagImage}' />
+                </g:PushButton>
+            </b:Tooltip>
+        </g:HTMLPanel>
+        <g:HTMLPanel styleName='{style.newMessageContainer}'>
+            <g:Label ui:field="creditCount" styleName='{style.newMessageCount}'></g:Label>
+            <b:Tooltip text="{msgs.tooltipCreditCount}" placement="BOTTOM">
+                <g:PushButton ui:field='creditButton' enabled='true'
+                                  styleName='{style.pushButton}'>
+                    <g:upFace image='{res.images.creditCardImageEmpty}' />
+                    <g:upHoveringFace image='{res.images.creditCardImageEmpty}' />
+                    <g:downFace image='{res.images.creditCardImage}' />
+                    <g:downHoveringFace image='{res.images.creditCardHoverImage}' />
                 </g:PushButton>
             </b:Tooltip>
         </g:HTMLPanel>

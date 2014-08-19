@@ -68,6 +68,7 @@ public interface LocalizableMessages extends Messages {
     String tooltipFinish();
     String tooltipInvalidFields();
     String tooltipNotifications();
+    String tooltipCreditCount();
     String tooltipNoCategories();
     String tooltipNoLocalities();
     String tooltipOffer();
@@ -332,11 +333,11 @@ public interface LocalizableMessages extends Messages {
     String columnCode();
     String columnCompany();
     String columnCreatedDate();
+    String columnCredits();
     String columnDate();
     String columnDeliveryDate();
     String columnDemandTitle();
     String columnDID();
-    String columnDuration();
     String columnEndDate();
     String columnExpiration();
     String columnEmail();
@@ -486,6 +487,12 @@ public interface LocalizableMessages extends Messages {
     String addressState();
     String addressStreet();
     String addressZipCode();
+
+    /** CreditAnnouncer messages **/
+    String credits();
+    String redCreditStatus();
+    String orangeCreditStatus();
+    String greenCreditStatus();
 
     /*** 1 - Home Welcome module view *********************************** 1 ***/
     String iamProfessional();

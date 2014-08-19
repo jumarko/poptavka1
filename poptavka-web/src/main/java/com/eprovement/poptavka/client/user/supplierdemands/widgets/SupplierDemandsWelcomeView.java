@@ -35,6 +35,7 @@ public class SupplierDemandsWelcomeView extends Composite
     @UiField HTML assignedDemandsUnreadMessages, closedDemandsUnreadMessages;
     @UiField FluidRow potentialDemandsRow, offeredDemandsRow, assignedDemandsRow, closedDemandsRow;
     @UiField SimplePanel footerContainer;
+    @UiField SimplePanel creditAnnouncerContainer;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -123,6 +124,14 @@ public class SupplierDemandsWelcomeView extends Composite
     @Override
     public SimplePanel getFooterContainer() {
         return footerContainer;
+    }
+
+    /**
+     * @return credit recharge container
+     */
+    @Override
+    public SimplePanel getCreditAnnouncerContainer() {
+        return creditAnnouncerContainer;
     }
 
     /**

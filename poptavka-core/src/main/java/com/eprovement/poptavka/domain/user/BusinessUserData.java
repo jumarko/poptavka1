@@ -27,10 +27,14 @@ import org.hibernate.validator.constraints.NotBlank;
 @Audited
 public class BusinessUserData extends DomainObject {
 
-    /** Fields that are available for full-text search. */
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
+    /** Constants - Fields that are available for full-text search. */
     public static final String[] USER_FULLTEXT_FIELDS = new String[]{
         "companyName", "personFirstName", "personLastName", "description"};
 
+    /** Attributes. **/
     @Field
     // companyName is most important - boost twice as much as other fields
     @Boost(2)
@@ -57,9 +61,18 @@ public class BusinessUserData extends DomainObject {
     /** user's web site. */
     private String website;
 
+    @NotAudited
+    @Column(nullable = false)
+    private Integer currentCredits = 0;
+
+    /**************************************************************************/
+    /*  Initialization                                                        */
+    /**************************************************************************/
     public BusinessUserData() {
     }
 
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
     public BusinessUserData(String companyName) {
         this.companyName = companyName;
     }
@@ -128,6 +141,22 @@ public class BusinessUserData extends DomainObject {
         this.website = website;
     }
 
+    public int getCurrentCredits() {
+        return currentCredits;
+    }
+
+    public void setCurrentCredits(int currentCredits) {
+        this.currentCredits = currentCredits;
+    }
+
+    public void addCredits(int creditsToAdd) {
+        this.currentCredits += creditsToAdd;
+    }
+
+    public void substractCredits(int creditsToRemove) {
+        this.currentCredits -= creditsToRemove;
+    }
+
     /**
      * Display company name if available, if not, display person's name as
      * concatenated string of first and last name.
@@ -149,6 +178,9 @@ public class BusinessUserData extends DomainObject {
         return result;
     }
 
+    /**************************************************************************/
+    /*  Override methods                                                      */
+    /**************************************************************************/
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -164,6 +196,9 @@ public class BusinessUserData extends DomainObject {
         return sb.toString();
     }
 
+    /**************************************************************************/
+    /*  Builder                                                               */
+    /**************************************************************************/
     public static class Builder {
 
         private String companyName;

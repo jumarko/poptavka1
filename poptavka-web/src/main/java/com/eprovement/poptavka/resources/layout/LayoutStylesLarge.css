@@ -325,4 +325,57 @@
     -webkit-border-radius: 5px;
 }
 
+.dashboard .recharge-container {}
+
+.dashboard .recharge-container .recharge-content {
+    border-bottom: 1px solid #e9e5d7;
+}
+
+.dashboard .recharge-container .recharge-content .recharge-battery {    
+    float: left;
+    height: 70px;
+    margin: 25px 5% 20px 12%;
+    width: 20%;
+}
+
+.dashboard .recharge-container .recharge-content .recharge-battery.green {
+    background: url("images/payment-status-battery.png") no-repeat scroll 0 0;
+}
+
+.dashboard .recharge-container .recharge-content .recharge-battery.orange {
+    background: url("images/payment-status-battery.png") no-repeat scroll 0 -70px;
+}
+
+.dashboard .recharge-container .recharge-content .recharge-battery.red {
+    background: url("images/payment-status-battery.png") no-repeat scroll 0 -140px;
+}
+
+.dashboard .recharge-container .recharge-content .text {
+    float: left;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 31px 0 0;
+    width: 50%;
+}
+
+.dashboard .recharge-container .recharge-content .text .gwt-Label:first-child {
+    margin-bottom: 10px;
+}
+
+.dashboard .recharge-container .recharge-content .text .gwt-Label {
+    color: #6F6B59;
+    font-size: 18px;
+    line-height: 22px;
+}
+    
+.dashboard .recharge-container .recharge-button-area {
+    border-top: 1px solid #fefdfa;
+    margin: 0;
+    text-align: center;
+}
+
+.dashboard .recharge-container .recharge-button-area button {
+    margin: 15px auto;
+}
+
 .notification-panel {}
