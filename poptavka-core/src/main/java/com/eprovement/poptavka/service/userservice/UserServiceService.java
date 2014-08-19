@@ -48,4 +48,5 @@ public interface UserServiceService extends GenericService<UserService, UserServ
      * @return list of user services with type promotion
      */
     List<UserService> getPromotionUserServices(final BusinessUser businessUser);
+    UserService getUserServiceByOrderNumber(long orderNumber);
 }

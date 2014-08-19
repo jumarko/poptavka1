@@ -1,13 +1,22 @@
 package com.eprovement.poptavka.rest.payment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
+
 /**
  * The payment information sent by Paypal.
  */
 public class PaymentInfo {
+    private static final String PAYMENT_DATE_PATTERN = "HH:mm:ss MMM dd, yyyy z";
+
     /**
      * The status of the payment.
      */
-    private String status;
+    private PaypalTransactionStatus status;
 
     /**
      * The merchant's original transaction identification number for the payment
@@ -32,16 +41,26 @@ public class PaymentInfo {
     private String currency;
 
     /**
-     * The user's service ID.
+     * The service ID.
      */
     private long itemNumber;
 
-    public String getStatus() {
+    /**
+     * The user's service ID.
+     */
+    private long orderNumber;
+
+    /**
+     * The date when the user paid for credits.
+     */
+    private Date paymentDate;
+
+    public PaypalTransactionStatus getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = PaypalTransactionStatus.valueOf(status.toUpperCase());
     }
 
     public String getTransactionID() {
@@ -82,5 +101,24 @@ public class PaymentInfo {
 
     public void setItemNumber(long itemNumber) {
         this.itemNumber = itemNumber;
+    }
+
+    public long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(long orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDateText) throws ParseException {
+        if (paymentDateText != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(PAYMENT_DATE_PATTERN, Locale.ENGLISH);
+            this.paymentDate = sdf.parse(paymentDateText);
+        }
     }
 }

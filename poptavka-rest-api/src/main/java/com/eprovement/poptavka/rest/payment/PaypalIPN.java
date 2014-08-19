@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
+
 /**
  * The controller, which handles the paypal payment notification.
  *
@@ -44,6 +47,8 @@ public class PaypalIPN {
     private static final String PARAM_RECEIVER_EMAIL = "receiver_email";
     private static final String PARAM_TXN_ID = "txn_id";
     private static final String PARAM_PAYMENT_STATUS = "payment_status";
+    private static final String PARAM_PAYMENT_DATE = "payment_date";
+    private static final String PARAM_CUSTOM = "custom";
     private static final Logger LOGGER = LoggerFactory.getLogger(PaypalIPN.class);
     private static final NameValuePair CMD_NOTIFY_VALIDATE = new BasicNameValuePair("cmd", "_notify-validate");
 
@@ -65,14 +70,15 @@ public class PaypalIPN {
         try {
             PaymentInfo paymentInfo = getPaymentInfo(request);
             if (paymentValidator.isPaymentValid(paymentInfo)) {
-                String responseContent;
-                responseContent = getResponseContent(request).trim();
+                String responseContent = getResponseContent(request).trim();
                 LOGGER.info("Paypal verification response = {}", responseContent);
                 if (paymentValidator.isResponseValid(responseContent)) {
                     String txID = paymentInfo.getTransactionID();
-                    long userServiceID = paymentInfo.getItemNumber();
+                    long orderNumber = paymentInfo.getOrderNumber();
                     float amount = paymentInfo.getAmount();
-                    paymentService.saveCredits(txID, userServiceID, amount);
+                    PaypalTransactionStatus status = paymentInfo.getStatus();
+                    Date paymentDate = paymentInfo.getPaymentDate();
+                    paymentService.saveCredits(txID, orderNumber, amount, status, paymentDate);
                 } else {
                     LOGGER.error("Invalid Paypal IPN :: {}", paymentInfo);
                 }
@@ -92,19 +98,23 @@ public class PaypalIPN {
     private PaymentInfo getPaymentInfo(HttpServletRequest request) throws ParseException {
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.US);
         String status = request.getParameter(PARAM_PAYMENT_STATUS);
+        String paymentDateText = request.getParameter(PARAM_PAYMENT_DATE);
         String transactionID = request.getParameter(PARAM_TXN_ID);
         String receiverEmail = request.getParameter(PARAM_RECEIVER_EMAIL);
         String amount = request.getParameter(PARAM_MC_GROSS);
         String currency = request.getParameter(PARAM_MC_CURRENCY);
         String itemNumber = request.getParameter(PARAM_ITEM_NUMBER);
+        String orderNumber = request.getParameter(PARAM_CUSTOM);
         float amountValue = numberFormat.parse(amount).floatValue();
         PaymentInfo paymentInfo = new PaymentInfo();
         paymentInfo.setStatus(status);
+        paymentInfo.setPaymentDate(paymentDateText);
         paymentInfo.setTransactionID(transactionID);
         paymentInfo.setReceiverEmail(receiverEmail);
         paymentInfo.setAmount(amountValue);
         paymentInfo.setCurrency(currency);
         paymentInfo.setItemNumber(Long.parseLong(itemNumber));
+        paymentInfo.setOrderNumber(Long.parseLong(orderNumber));
         return paymentInfo;
     }
 
