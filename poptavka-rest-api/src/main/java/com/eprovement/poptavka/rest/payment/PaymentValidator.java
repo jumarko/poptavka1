@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PaymentValidator {
+    private static final String CURRENCY_USD = "USD";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PaymentValidator.class);
 
     @Autowired
@@ -22,10 +24,14 @@ public class PaymentValidator {
     }
 
     public boolean isPaymentValid(PaymentInfo paymentInfo) {
-        if (isStatusValid(paymentInfo.getStatus()) && isTransactionIDValid(paymentInfo.getTransactionID())
-                && isReceiverEmailValid(paymentInfo.getReceiverEmail())) {
+        return isCurrencyValid(paymentInfo.getCurrency()) && isReceiverEmailValid(paymentInfo.getReceiverEmail());
+    }
+
+    private boolean isCurrencyValid(String currency) {
+        if (CURRENCY_USD.equals(currency)) {
             return true;
         }
+        LOGGER.error("Only {} currency is valid :: not {}", CURRENCY_USD, currency);
         return false;
     }
 
@@ -35,22 +41,6 @@ public class PaymentValidator {
             return true;
         }
         LOGGER.error("Unknown business email :: {}", receiverEmail);
-        return false;
-    }
-
-    private boolean isTransactionIDValid(String transactionID) {
-        if (!paymentService.containsTransaction(transactionID)) {
-            return true;
-        }
-        LOGGER.error("Duplicate transaction :: {}", transactionID);
-        return false;
-    }
-
-    private boolean isStatusValid(String status) {
-        if (PaymentSetting.COMPLETED_STATUS_VALUE.equals(status)) {
-            return true;
-        }
-        LOGGER.error("Not completed status :: {}", status);
         return false;
     }
 
