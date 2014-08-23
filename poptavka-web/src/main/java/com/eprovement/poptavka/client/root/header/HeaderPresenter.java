@@ -293,7 +293,8 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
                 new Image(Storage.RSCS.images().creditCardImageEmpty()), false, null);
         } else {
             view.getNotifications().getCreditCount().setText(String.valueOf(credit));
-            setButton(view.getNotifications().getCreditButton(), new Image(Storage.RSCS.images().creditCardImage()), true,
+            setButton(view.getNotifications().getCreditButton(),
+                new Image(Storage.RSCS.images().creditCardImage()), true,
                 new Image(Storage.RSCS.images().creditCardHoverImage()));
         }
     }
