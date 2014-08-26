@@ -118,8 +118,8 @@ public class ServiceSelectorView extends Composite implements ServiceSelectorPre
         table.setColumnWidth(0, "35px");
         table.setColumnWidth(1, "30%");
         table.setColumnWidth(2, "70%");
-        table.setColumnWidth(3, "55px");
-        table.setColumnWidth(4, "55px");
+        table.setColumnWidth(3, "70px");
+        table.setColumnWidth(4, "70px");
     }
 
     /**************************************************************************/

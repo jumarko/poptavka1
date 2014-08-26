@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.user.widget.creditAnnouncer;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
 import com.eprovement.poptavka.client.user.widget.creditAnnouncer.
         CreditStatusAnnouncerPresenter.ICreditStatusAnnouncerView;
@@ -23,6 +24,8 @@ import com.mvp4g.client.view.LazyView;
 @Presenter(view = CreditStatusAnnouncerView.class)
 public class CreditStatusAnnouncerPresenter extends
         LazyPresenter<ICreditStatusAnnouncerView, RootEventBus> {
+
+    private SimpleConfirmPopup popup = new SimpleConfirmPopup();
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -47,7 +50,15 @@ public class CreditStatusAnnouncerPresenter extends
         view.getRechargeButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO: eventbus call of the modal for credit charge
+                eventBus.initServicesWidget(popup.getSelectorPanel());
+                popup.show();
+            }
+        });
+        popup.getSubmitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                //TODO init payment
             }
         });
     }
@@ -63,6 +74,7 @@ public class CreditStatusAnnouncerPresenter extends
         creditAnnouncerPanel.setWidget(view.getWidgetView());
         eventBus.requestCreditCount(Storage.getUser().getUserId());
     }
+
     /**
      * Sets credit widget status
      * @param credit - user's current credits.

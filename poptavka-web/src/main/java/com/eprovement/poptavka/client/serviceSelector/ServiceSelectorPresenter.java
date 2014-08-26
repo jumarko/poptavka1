@@ -78,7 +78,9 @@ public class ServiceSelectorPresenter extends LazyPresenter<
     public void onDisplayServices(ArrayList<ServiceDetail> services) {
         view.getDataProvider().setList(services);
         //set default selected value
-        this.onSelectService(services.get(0));
+        if (!services.isEmpty()) {
+            this.onSelectService(services.get(0));
+        }
         view.getTable().setHeight((services.size() * 45 + 50) + "px");
     }
 

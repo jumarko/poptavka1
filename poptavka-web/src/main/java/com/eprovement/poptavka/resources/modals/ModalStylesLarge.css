@@ -431,7 +431,7 @@
     border-radius: 6px;
 }
 .cell-browser-selection-modal .modal-body .content-row {
-    height: 530px;
+    max-height: 530px;
 }
 .cell-browser-selection-modal .modal-body .content-span {
     background: #e2ddca;
