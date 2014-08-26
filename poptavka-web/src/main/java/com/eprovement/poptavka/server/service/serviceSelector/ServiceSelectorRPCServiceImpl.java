@@ -6,6 +6,7 @@ package com.eprovement.poptavka.server.service.serviceSelector;
 import com.eprovement.poptavka.client.service.demand.ServiceSelectorRPCService;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.domain.product.Service;
+import com.eprovement.poptavka.domain.register.Registers;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
@@ -65,6 +66,8 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
         Search supplierServicesSearch = new Search(Service.class);
         supplierServicesSearch.addFilterEqual("valid", true);
         supplierServicesSearch.addFilterIn("serviceType", serviceTypes);
+        // TODO LATER ivlcek - for now we work with Supplier services only. CLASSIC service will be added later
+        supplierServicesSearch.addFilterNotEqual("code", Registers.Service.CLASSIC);
         List<Service> services = this.generalService.search(supplierServicesSearch);
         return serviceConverter.convertToTargetList(services);
     }
