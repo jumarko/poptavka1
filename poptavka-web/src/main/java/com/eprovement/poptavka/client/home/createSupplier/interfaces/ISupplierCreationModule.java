@@ -44,7 +44,7 @@ public interface ISupplierCreationModule {
          * Method registers new supplier.
          * @param newSupplier newly created supplier
          */
-        void onRegisterSupplier(final FullSupplierDetail newSupplier);
+        void onRequestRegisterSupplier(final FullSupplierDetail newSupplier);
     }
 
     public interface Presenter extends NavigationConfirmationInterface {
@@ -53,6 +53,8 @@ public interface ISupplierCreationModule {
          * Initialize SupplierCreation module.
          */
         void onGoToCreateSupplierModule();
+
+        void onResponseRegisterSupplier(FullSupplierDetail newSupplier);
     }
 
     public interface View extends LazyView, IsWidget, ProvidesValidate {

@@ -2,42 +2,35 @@ package com.eprovement.poptavka.shared.domain;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-
 /**
- * Represents full detail of AccessRole. Serves for creating new
- * AccessRole or for call of detail, that supports editing.
- *
- * @author Beho
- *
+ * Detail representation of domain object UserService.
+ * @author Martin Slavkovsky
  */
 public class UserServiceDetail implements IsSerializable {
 
+    /**************************************************************************/
+    /*  Attributes                                                            */
+    /**************************************************************************/
+    private Long id;
     private ServiceDetail service;
-    private UserDetail user;
     private String status;
 
-    /** for serialization. **/
+    /**************************************************************************/
+    /*  Initialization                                                        */
+    /**************************************************************************/
     public UserServiceDetail() {
+        //for serialization
     }
 
-    public UserServiceDetail(UserServiceDetail role) {
-        this.updateWholeUserService(role);
+    /**************************************************************************/
+    /*  Getters & Setters                                                     */
+    /**************************************************************************/
+    public Long getId() {
+        return id;
     }
 
-
-    //---------------------------- GETTERS AND SETTERS --------------------
-    public void updateWholeUserService(UserServiceDetail detail) {
-        service = detail.getService();
-        user = detail.getUser();
-        status = detail.getStatus();
-    }
-
-    public ServiceDetail getService() {
-        return service;
-    }
-
-    public void setService(ServiceDetail service) {
-        this.service = service;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStatus() {
@@ -48,21 +41,11 @@ public class UserServiceDetail implements IsSerializable {
         this.status = status;
     }
 
-    public UserDetail getUser() {
-        return user;
+    public ServiceDetail getService() {
+        return service;
     }
 
-    public void setUser(UserDetail user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-
-        return "\nGlobal UserService Detail Info:"
-                + "\n   Service="
-                + service.toString() + "\n     User="
-                + user.toString() + "\n    Status="
-                + status;
+    public void setService(ServiceDetail service) {
+        this.service = service;
     }
 }

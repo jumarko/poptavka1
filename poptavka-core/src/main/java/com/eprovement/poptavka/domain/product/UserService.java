@@ -57,7 +57,7 @@ public class UserService extends DomainObject {
     private PaypalTransactionStatus transactionStatus;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date request;
+    private Date request = new Date();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date response;

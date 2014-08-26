@@ -2,6 +2,7 @@ package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -16,5 +17,7 @@ public interface ServiceSelectorRPCService extends RemoteService {
 
     String URL = "service/serviceSelector";
 
-    ArrayList<ServiceDetail> getSupplierServices(ServiceType...serviceTypes) throws RPCException;
+    ArrayList<ServiceDetail> getSupplierServices(ServiceType... serviceTypes) throws RPCException;
+
+    UserServiceDetail createUserService(long userId, ServiceDetail serviceDetail) throws RPCException;
 }

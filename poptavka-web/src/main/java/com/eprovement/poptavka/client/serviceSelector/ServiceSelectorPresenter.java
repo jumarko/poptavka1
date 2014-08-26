@@ -4,17 +4,13 @@
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.session.Storage;
-import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
+import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
-import com.google.gwt.user.cellview.client.DataGrid;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
-import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,21 +20,8 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 @Presenter(view = ServiceSelectorView.class)
-public class ServiceSelectorPresenter extends LazyPresenter<
-        ServiceSelectorPresenter.SupplierServiceInterface, ServiceSelectorEventBus> {
-
-    /**************************************************************************/
-    /* View interface                                                         */
-    /**************************************************************************/
-    public interface SupplierServiceInterface extends LazyView, ProvidesValidate, IsWidget {
-
-        DataGrid getTable();
-
-        SingleSelectionModel<ServiceDetail> getSelectionModel();
-
-        ListDataProvider<ServiceDetail> getDataProvider();
-
-    }
+public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModule.View, ServiceSelectorEventBus>
+    implements IServiceSelectorModule.Presenter {
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -58,6 +41,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * Initialize ServiceSelector widget.
      * @param embedToWidget - holder panel
      */
+    @Override
     public void onInitServicesWidget(SimplePanel embedToWidget) {
         if (Storage.getUser() == null) {
             eventBus.requestServices(ServiceType.PROMOTION, ServiceType.RECHARGE);
@@ -65,6 +49,14 @@ public class ServiceSelectorPresenter extends LazyPresenter<
             eventBus.requestServices(ServiceType.RECHARGE);
         }
         embedToWidget.setWidget(view);
+    }
+
+    @Override
+    public void onResponseCreateUserService(UserServiceDetail userServiceDetail) {
+        view.setPaymentDetails("https://devel.want-something.com:8443", userServiceDetail);
+        eventBus.loadingHide();
+        eventBus.loadingShow("Forwarding to paypal");
+        view.getPaymentForm().submit();
     }
 
     /**************************************************************************/
@@ -75,6 +67,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      *
      * @param services
      */
+    @Override
     public void onDisplayServices(ArrayList<ServiceDetail> services) {
         view.getDataProvider().setList(services);
         //set default selected value
@@ -88,6 +81,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * Select service by updating fieldUpdater
      * @param service
      */
+    @Override
     public void onSelectService(ServiceDetail service) {
         view.getSelectionModel().setSelected(service, true);
     }
@@ -97,6 +91,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<
      * If given list null, initialize it first.
      * @param services
      */
+    @Override
     public void onFillServices(List<ServiceDetail> services) {
         if (services == null) {
             services = new ArrayList<ServiceDetail>();

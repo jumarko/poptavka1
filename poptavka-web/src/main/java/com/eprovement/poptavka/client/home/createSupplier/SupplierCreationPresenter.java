@@ -9,6 +9,7 @@ import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.resources.StyleResource;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -23,6 +24,8 @@ import com.google.gwt.user.client.Window;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.history.NavigationEventCommand;
 import com.mvp4g.client.presenter.LazyPresenter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -32,8 +35,8 @@ import java.util.logging.Logger;
  */
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
-        extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
-        implements ISupplierCreationModule.Presenter {
+    extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
+    implements ISupplierCreationModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -147,12 +150,12 @@ public class SupplierCreationPresenter
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_CATEGORY);
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
-                                .initCategorySelector()
-                                .initSelectorManager()
-                                .withCheckboxesOnLeafsAndLeafsParent()
-                                .displayCountOfSuppliers()
-                                .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                .build();
+                        .initCategorySelector()
+                        .initSelectorManager()
+                        .withCheckboxesOnLeafsAndLeafsParent()
+                        .displayCountOfSuppliers()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                        .build();
                     instaceIdCategories = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(SECOND_TAB_CATEGORY), builder);
                 }
@@ -163,12 +166,12 @@ public class SupplierCreationPresenter
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_LOCALITY);
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
-                                .initLocalitySelector()
-                                .initSelectorManager()
-                                .withCheckboxes()
-                                .displayCountOfSuppliers()
-                                .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                .build();
+                        .initLocalitySelector()
+                        .initSelectorManager()
+                        .withCheckboxes()
+                        .displayCountOfSuppliers()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                        .build();
                     instaceIdLocalities = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_LOCALITY), builder);
                 }
@@ -244,6 +247,14 @@ public class SupplierCreationPresenter
         }
     }
 
+    @Override
+    public void onResponseRegisterSupplier(FullSupplierDetail newSupplier) {
+        List<ServiceDetail> serviceDetail = new ArrayList<ServiceDetail>();
+        eventBus.fillServices(serviceDetail);
+        eventBus.requestCreateUserService(newSupplier.getUserData().getUserId(),
+            serviceDetail.isEmpty() ? null : serviceDetail.get(0));
+    }
+
     /**************************************************************************/
     /* Helper methods                                                         */
     /**************************************************************************/
@@ -253,16 +264,14 @@ public class SupplierCreationPresenter
      * each step.
      */
     private void registerSupplier() {
-        FullSupplierDetail newSupplier = new FullSupplierDetail();
+        eventBus.loadingShow(MSGS.progressRegisterSupplier());
 
+        FullSupplierDetail newSupplier = new FullSupplierDetail();
         eventBus.fillBusinessUserDetail(newSupplier.getUserData());
         eventBus.fillCatLocs(newSupplier.getCategories(), instaceIdCategories);
         eventBus.fillCatLocs(newSupplier.getLocalities(), instaceIdLocalities);
-        eventBus.fillServices(newSupplier.getServices());
 
-        eventBus.registerSupplier(newSupplier);
-        //signal event
-        eventBus.loadingShow(MSGS.progressRegisterSupplier());
+        eventBus.requestRegisterSupplier(newSupplier);
     }
 
     /**

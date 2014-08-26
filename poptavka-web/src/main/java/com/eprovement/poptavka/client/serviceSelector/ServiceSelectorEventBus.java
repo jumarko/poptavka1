@@ -3,8 +3,10 @@
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
+import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -22,7 +24,7 @@ import java.util.List;
  */
 @Events(startPresenter = ServiceSelectorPresenter.class, module = ServiceSelectorModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface ServiceSelectorEventBus extends EventBusWithLookup {
+public interface ServiceSelectorEventBus extends EventBusWithLookup, BaseChildEventBus {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -60,5 +62,16 @@ public interface ServiceSelectorEventBus extends EventBusWithLookup {
     /* Business events handled by Handler.                                    */
     /**************************************************************************/
     @Event(handlers = ServiceSelectorHandler.class)
-    void requestServices(ServiceType...serviceTypes);
+    void requestServices(ServiceType... serviceTypes);
+
+    /**
+     * Request/Response pair for creating user services.
+     * @param userId
+     * @param serviceDetail
+     */
+    @Event(handlers = ServiceSelectorHandler.class)
+    void requestCreateUserService(long userId, ServiceDetail serviceDetail);
+
+    @Event(handlers = ServiceSelectorPresenter.class)
+    void responseCreateUserService(UserServiceDetail userServiceDetail);
 }

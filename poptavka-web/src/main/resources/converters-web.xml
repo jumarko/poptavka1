@@ -65,16 +65,13 @@
         <constructor-arg index="0" ref="categoryConverter"/>
         <constructor-arg index="1" ref="localityConverter"/>
         <constructor-arg index="2" ref="businessUserConverter"/>
-        <constructor-arg index="3" ref="serviceConverter"/>
     </bean>
     <bean id="userConverter" class="com.eprovement.poptavka.server.converter.UserConverter">
         <constructor-arg index="0" ref="accessRoleConverter"/>
     </bean>
     <bean id="userMessageConverter" class="com.eprovement.poptavka.server.converter.UserMessageConverter" />
-    <bean id="userServiceConverter"
-          class="com.eprovement.poptavka.server.converter.UserServiceConverter">
+    <bean id="userServiceConverter" class="com.eprovement.poptavka.server.converter.UserServiceConverter">
         <constructor-arg index="0" ref="serviceConverter"/>
-        <constructor-arg index="1" ref="businessUserConverter"/>
     </bean>
     <bean id="sortConverter" class="com.eprovement.poptavka.server.converter.SortConverter" />
 

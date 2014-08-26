@@ -5,14 +5,10 @@ package com.eprovement.poptavka.server.service.suppliercreation;
 
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.demand.Category;
-import com.eprovement.poptavka.domain.product.Service;
-import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -110,7 +106,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierAddresses(supplier.getUserData(), newSupplier);
         setNewSupplierLocalities(supplier, newSupplier);
         setNewSupplierCategories(supplier, newSupplier);
-        setNewSupplierUserServices(supplier, newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
         newSupplier.setOveralRating(0);
         /** registration process **/
@@ -160,26 +155,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
-    }
-
-    /**
-     * Fills supplier's services with given supplier detail.
-     * @param supplier
-     * @param newSupplier
-     */
-    private void setNewSupplierUserServices(FullSupplierDetail supplier, Supplier newSupplier) {
-        final List<UserService> us = new ArrayList<UserService>();
-
-        for (ServiceDetail serviceDetail : supplier.getServices()) {
-            Service service = generalService.find(Service.class, serviceDetail.getId());
-            UserService userService = new UserService();
-            userService.setService(service);
-            userService.setStatus(Status.INACTIVE);
-            userService.setBusinessUser(newSupplier.getBusinessUser());
-            us.add(userService);
-        }
-
-        newSupplier.getBusinessUser().setUserServices(us);
     }
 
     /**

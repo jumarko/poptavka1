@@ -4,17 +4,22 @@
 package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.google.gwt.cell.client.NumberCell;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.FormElement;
+import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -24,7 +29,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
  *
  * @author Martin Slavkovsky
  */
-public class ServiceSelectorView extends Composite implements ServiceSelectorPresenter.SupplierServiceInterface {
+public class ServiceSelectorView extends Composite implements IServiceSelectorModule.View {
 
     /**************************************************************************/
     /* UiBinder                                                               */
@@ -39,6 +44,9 @@ public class ServiceSelectorView extends Composite implements ServiceSelectorPre
     /**************************************************************************/
     /** UiBinder attributes. **/
     @UiField(provided = true) DataGrid table;
+    @UiField Label infoLabel;
+    @UiField FormElement form;
+    @UiField InputElement formReturnUrl, formItemName, formItemNumber, formItemId, formAmount;
     /** Class attributes. **/
     private ListDataProvider<ServiceDetail> dataProvider;
     private SingleSelectionModel<ServiceDetail> selectionModel;
@@ -125,6 +133,25 @@ public class ServiceSelectorView extends Composite implements ServiceSelectorPre
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    public void setPaymentDetails(String returnRul, UserServiceDetail userServiceDetail) {
+        formReturnUrl.setValue(returnRul);
+        formItemName.setValue("Buy now");
+        formItemNumber.setValue(userServiceDetail.getService().getTitle());
+        formItemId.setValue(Long.toOctalString(userServiceDetail.getService().getId()));
+        formAmount.setValue(userServiceDetail.getService().getPrice().toString());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void reset() {
+        selectionModel.clear();
+    }
+
+    /**************************************************************************/
+    /* Getters                                                                */
+    /**************************************************************************/
     /**
      * {@inheritDoc}
      */
@@ -152,13 +179,10 @@ public class ServiceSelectorView extends Composite implements ServiceSelectorPre
      * {@inheritDoc}
      */
     @Override
-    public void reset() {
-        selectionModel.clear();
+    public FormElement getPaymentForm() {
+        return form;
     }
 
-    /**************************************************************************/
-    /* Getters                                                                */
-    /**************************************************************************/
     /**
      * Validates view's components.
      * @return true if valid, false otherwise

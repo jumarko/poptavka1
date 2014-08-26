@@ -5,12 +5,16 @@ package com.eprovement.poptavka.server.service.serviceSelector;
 
 import com.eprovement.poptavka.client.service.demand.ServiceSelectorRPCService;
 import com.eprovement.poptavka.domain.enums.ServiceType;
+import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.register.Registers;
+import com.eprovement.poptavka.domain.product.UserService;
+import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 @Configurable
 public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
-        implements ServiceSelectorRPCService {
+    implements ServiceSelectorRPCService {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -35,6 +39,7 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     private GeneralService generalService;
     /** Converters. **/
     private Converter<Service, ServiceDetail> serviceConverter;
+    private Converter<UserService, UserServiceDetail> userServiceConverter;
 
     /**************************************************************************/
     /* Autowire services and converters                                       */
@@ -47,10 +52,15 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     //Converters
     @Autowired
     public void setServiceConverter(
-            @Qualifier("serviceConverter") Converter<Service, ServiceDetail> serviceConverter) {
+        @Qualifier("serviceConverter") Converter<Service, ServiceDetail> serviceConverter) {
         this.serviceConverter = serviceConverter;
     }
 
+    @Autowired
+    public void setUserServiceConverter(
+        @Qualifier("userServiceConverter") Converter<UserService, UserServiceDetail> userServiceConverter) {
+        this.userServiceConverter = userServiceConverter;
+    }
 
     /**************************************************************************/
     /* Supplier Service methods                                               */
@@ -62,7 +72,7 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
      * @throws RPCException
      */
     @Override
-    public ArrayList<ServiceDetail> getSupplierServices(ServiceType...serviceTypes) throws RPCException {
+    public ArrayList<ServiceDetail> getSupplierServices(ServiceType... serviceTypes) throws RPCException {
         Search supplierServicesSearch = new Search(Service.class);
         supplierServicesSearch.addFilterEqual("valid", true);
         supplierServicesSearch.addFilterIn("serviceType", serviceTypes);
@@ -70,5 +80,25 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
         supplierServicesSearch.addFilterNotEqual("code", Registers.Service.CLASSIC);
         List<Service> services = this.generalService.search(supplierServicesSearch);
         return serviceConverter.convertToTargetList(services);
+    }
+
+    /**
+     * Creates UserService object to bind service to user.
+     * @param userId
+     * @param serviceDetail
+     */
+    @Override
+    public UserServiceDetail createUserService(long userId, ServiceDetail serviceDetail) throws RPCException {
+        //find given user and service
+        final BusinessUser user = generalService.find(BusinessUser.class, userId);
+        final Service service = generalService.find(Service.class, serviceDetail.getId());
+        //create user service to bind service to user
+        UserService userService = new UserService();
+        userService.setService(service);
+        userService.setStatus(Status.INACTIVE);
+        userService.setBusinessUser(user);
+
+        generalService.save(userService);
+        return userServiceConverter.convertToTarget(userService);
     }
 }
