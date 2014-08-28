@@ -37,11 +37,9 @@ public final class Registers {
 
 
     public static final class Service {
-        public static final String VALIDITY_1MONTH = "validity.1month";
-        public static final String VALIDITY_3MONTH = "validity.3month";
-        public static final String VALIDITY_1YEAR = "validity.1year";
+        /* CLASSIC service is intended for Client role only. */
         public static final String CLASSIC = "CLASSIC";
-        public static final String PARTNER_3MONTH = "partner.3month";
+        /* FREE, BASIC, PROFI services are intended for Supplier. */
         public static final String FREE = "FREE";
         public static final String BASIC = "BASIC";
         public static final String PROFI = "PROFI";
