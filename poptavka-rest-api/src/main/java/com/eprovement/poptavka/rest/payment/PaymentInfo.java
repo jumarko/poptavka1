@@ -43,7 +43,7 @@ public class PaymentInfo {
     /**
      * The service ID.
      */
-    private long itemNumber;
+    private String itemNumber;
 
     /**
      * The user's service ID.
@@ -95,11 +95,11 @@ public class PaymentInfo {
         this.currency = currency;
     }
 
-    public long getItemNumber() {
+    public String getItemNumber() {
         return itemNumber;
     }
 
-    public void setItemNumber(long itemNumber) {
+    public void setItemNumber(String itemNumber) {
         this.itemNumber = itemNumber;
     }
 
