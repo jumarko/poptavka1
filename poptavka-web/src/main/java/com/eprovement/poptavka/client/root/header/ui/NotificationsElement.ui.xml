@@ -27,7 +27,7 @@
         color: #FFFFFF;
         margin: 0;
         position: absolute;
-        right: 9px;
+        right: 8px;
         text-align: center;
         top: 2px;
         width: 19px;

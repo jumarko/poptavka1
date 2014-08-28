@@ -514,7 +514,7 @@ public interface RootEventBus extends EventBusWithLookup,
     @Event(handlers = RootHandler.class)
     void requestCreditCount(long userId);
 
-    @Event(handlers = CreditStatusAnnouncerPresenter.class)
+    @Event(handlers = {CreditStatusAnnouncerPresenter.class, HeaderPresenter.class })
     void responseCreditCount(Integer credit);
 
     /**

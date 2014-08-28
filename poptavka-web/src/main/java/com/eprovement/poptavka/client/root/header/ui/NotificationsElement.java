@@ -67,6 +67,13 @@ public class NotificationsElement extends Composite {
     }
 
     /**
+     * @return the creditCount label
+     */
+    public Label getCreditCount() {
+        return creditCount;
+    }
+
+    /**
      * @return the pushButton push button
      */
     public PushButton getPushButton() {
@@ -78,5 +85,12 @@ public class NotificationsElement extends Composite {
      */
     public PushButton getPushSystemButton() {
         return pushSystemButton;
+    }
+
+    /**
+     * @return the creditButton push button
+     */
+    public PushButton getCreditButton() {
+        return creditButton;
     }
 }

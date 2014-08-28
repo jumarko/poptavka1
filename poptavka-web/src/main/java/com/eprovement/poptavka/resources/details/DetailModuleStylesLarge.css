@@ -4,8 +4,8 @@
 /*  Detail Tab Panel Styles                                                   */
 /******************************************************************************/
 .detailTabPanel {
-    margin-top: 20px;
-    margin-right: 20px;
+    overflow: hidden;
+    width: 100%;
 }
 .detailTabPanel .gwt-TabLayoutPanelTab {
     background: none;

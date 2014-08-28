@@ -75,6 +75,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
             view.getSearch().getSearchPanel().addStyleName(ADMIN);
             view.getSearch().getSearchButton().addStyleName(ADMIN);
         } else {
+            eventBus.requestCreditCount(Storage.getUser().getUserId());
             view.getMenu().addStyleName(USER);
             view.getSearch().getSearchPanel().addStyleName(USER);
             view.getSearch().getSearchButton().addStyleName(USER);
@@ -279,5 +280,22 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         button.getUpFace().setImage(image);
         button.getDownFace().setImage(image);
         button.getDownHoveringFace().setImage(image);
+    }
+
+    /**
+     * Sets credit widget status
+     * @param credit - user's current credits.
+     */
+    public void onResponseCreditCount(Integer credit) {
+        if (credit == 0) {
+            view.getNotifications().getCreditCount().setText("");
+            setButton(view.getNotifications().getCreditButton(),
+                new Image(Storage.RSCS.images().creditCardImageEmpty()), false, null);
+        } else {
+            view.getNotifications().getCreditCount().setText(String.valueOf(credit));
+            setButton(view.getNotifications().getCreditButton(),
+                new Image(Storage.RSCS.images().creditCardImage()), true,
+                new Image(Storage.RSCS.images().creditCardHoverImage()));
+        }
     }
 }
