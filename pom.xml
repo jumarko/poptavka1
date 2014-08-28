@@ -927,7 +927,7 @@
             <properties>
                 <!--Extra jvm args have to be on one line!-->
                 <gwt.args>
-                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx512m -XX:MaxPermSize=256m
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx1536m -XX:PermSize=256m -XX:MaxPermSize=512m
                 </gwt.args>
                 <gwt.user.agent>gecko1_8</gwt.user.agent>
             </properties>
@@ -947,7 +947,7 @@
             <properties>
                 <!--Extra jvm args have to be on one line!-->
                 <gwt.args>
-                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx768m -XX:MaxPermSize=256m
+                    -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar" -Xmx1536m -XX:PermSize=256m -XX:MaxPermSize=512m
                 </gwt.args>
                 <gwt.user.agent>ie8,ie9,gecko1_8,safari</gwt.user.agent>
             </properties>
