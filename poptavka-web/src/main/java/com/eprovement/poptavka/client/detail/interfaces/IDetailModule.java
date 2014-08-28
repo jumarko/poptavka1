@@ -51,9 +51,16 @@ public interface IDetailModule {
         void registerQuestionSubmitHandler(ClickHandler handler);
     }
 
+    public interface Handler {
+
+        void onRequestSubstractCredit(long userId, int credits);
+    }
+
     public interface Presenter extends HandleResizeEvent {
 
         void onRegisterQuestionSubmitHandler(ClickHandler handler);
+
+        void onResponseSubstractCredit(Boolean result);
     }
 
     public interface View extends LazyView {

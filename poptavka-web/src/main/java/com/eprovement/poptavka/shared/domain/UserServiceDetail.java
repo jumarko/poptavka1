@@ -12,6 +12,7 @@ public class UserServiceDetail implements IsSerializable {
     /*  Attributes                                                            */
     /**************************************************************************/
     private Long id;
+    private Long orderNumber;
     private ServiceDetail service;
     private String status;
 
@@ -31,6 +32,14 @@ public class UserServiceDetail implements IsSerializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(Long orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getStatus() {

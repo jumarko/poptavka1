@@ -358,4 +358,15 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
         messageDetail.setStarred(replyMessage.userMessage.isStarred());
         return messageDetail;
     }
+
+    @Override
+    public Boolean substractCredit(long userId, int credits) throws RPCException {
+        BusinessUser businessUser = generalService.find(BusinessUser.class, userId);
+        if (businessUser.getBusinessUserData().getCurrentCredits() - credits < 0) {
+            return false;
+        } else {
+            businessUser.getBusinessUserData().substractCredits(credits);
+            return true;
+        }
+    }
 }

@@ -35,6 +35,15 @@ public class UserServiceServiceImpl extends GenericServiceImpl<UserService, User
     }
 
     @Override
+    @Transactional
+    public UserService create(UserService entity) {
+        super.create(entity); //To change body of generated methods, choose Tools | Templates.
+        getDao().setUniqueOrderNumber(entity.getId()); //set unique order number
+        refresh(entity); //refresh to load order number to returning entity
+        return entity;
+    }
+
+    @Override
     @Transactional(readOnly = false)
     public void addCredits(final long userServiceId, final int newCredits) {
         final UserService userService = getDao().findById(userServiceId);

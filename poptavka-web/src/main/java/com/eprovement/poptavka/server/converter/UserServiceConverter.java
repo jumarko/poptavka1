@@ -43,6 +43,7 @@ public final class UserServiceConverter extends AbstractConverter<UserService, U
         final UserServiceDetail detail = new UserServiceDetail();
 
         detail.setId(userService.getId());
+        detail.setOrderNumber(userService.getOrderNumber());
         if (userService.getStatus() != null) {
             detail.setStatus(userService.getStatus().name());
         }

@@ -51,6 +51,17 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
         embedToWidget.setWidget(view);
     }
 
+    /**
+     * Initialize ServiceSelector widget.
+     * @param embedToWidget - holder panel
+     * @param infoLabel text displayed above the widget
+     */
+    @Override
+    public void onInitServicesWidget2(SimplePanel embedToWidget, String infoLabel) {
+        view.setInfoLabel(infoLabel);
+        eventBus.initServicesWidget(embedToWidget);
+    }
+
     @Override
     public void onResponseCreateUserService(UserServiceDetail userServiceDetail) {
         view.setPaymentDetails("https://devel.want-something.com:8443", userServiceDetail);

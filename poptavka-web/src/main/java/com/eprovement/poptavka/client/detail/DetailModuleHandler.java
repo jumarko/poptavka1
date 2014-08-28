@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
+import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.service.demand.DetailRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
@@ -23,7 +24,8 @@ import java.util.List;
  * @author Martin Slavkovsky
  */
 @EventHandler
-public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> {
+public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus>
+    implements IDetailModule.Handler {
 
     /**************************************************************************/
     /* Inject RPC services                                                    */
@@ -94,12 +96,12 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
      */
     public void onRequestConversation(long threadRootId, long loggedUserId, long counterPartyUserId) {
         service.getConversation(threadRootId, loggedUserId, counterPartyUserId,
-                new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
-                    @Override
-                    public void onSuccess(List<MessageDetail> result) {
-                        eventBus.responseConversation(result);
-                    }
-                });
+            new SecuredAsyncCallback<List<MessageDetail>>(eventBus) {
+                @Override
+                public void onSuccess(List<MessageDetail> result) {
+                    eventBus.responseConversation(result);
+                }
+            });
     }
 
     /**
@@ -110,12 +112,12 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
      */
     public void onUpdateUserMessagesReadStatus(Long userId, List<MessageDetail> messages) {
         service.updateUserMessagesReadStatus(userId, messages,
-                new SecuredAsyncCallback<Void>(eventBus) {
-                    @Override
-                    public void onSuccess(Void result) {
-                        // userMessages in DB are updated thus there is no need to invoke other methods.
-                    }
-                });
+            new SecuredAsyncCallback<Void>(eventBus) {
+                @Override
+                public void onSuccess(Void result) {
+                    // userMessages in DB are updated thus there is no need to invoke other methods.
+                }
+            });
     }
 
     /**
@@ -140,9 +142,20 @@ public class DetailModuleHandler extends BaseEventHandler<DetailModuleEventBus> 
             @Override
             public void onSuccess(MessageDetail sentMessage) {
                 GWT.log("Offer message [messageId=" + sentMessage.getMessageId()
-                        + "]  has been successfully sent to client");
+                    + "]  has been successfully sent to client");
                 eventBus.addConversationMessage(sentMessage);
                 eventBus.responseSendOfferMessage();
+            }
+        });
+    }
+
+    @Override
+    public void onRequestSubstractCredit(long userId, int credits) {
+        service.substractCredit(userId, credits, new SecuredAsyncCallback<Boolean>(eventBus) {
+
+            @Override
+            public void onSuccess(Boolean result) {
+                eventBus.responseSubstractCredit(result);
             }
         });
     }
