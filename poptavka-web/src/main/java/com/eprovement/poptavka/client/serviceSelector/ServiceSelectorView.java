@@ -133,15 +133,17 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    @Override
     public void setInfoLabel(String text) {
         infoLabel.setText(text);
     }
 
+    @Override
     public void setPaymentDetails(String returnRul, UserServiceDetail userServiceDetail) {
         formReturnUrl.setValue(returnRul);
         formItemName.setValue("Buy now");
         formItemNumber.setValue(userServiceDetail.getService().getTitle());
-        formItemId.setValue(Long.toOctalString(userServiceDetail.getService().getId()));
+        formItemId.setValue(Long.toOctalString(userServiceDetail.getOrderNumber()));
         formAmount.setValue(userServiceDetail.getService().getPrice().toString());
     }
 
