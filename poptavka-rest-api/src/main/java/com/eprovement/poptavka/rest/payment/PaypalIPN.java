@@ -113,7 +113,7 @@ public class PaypalIPN {
         paymentInfo.setReceiverEmail(receiverEmail);
         paymentInfo.setAmount(amountValue);
         paymentInfo.setCurrency(currency);
-        paymentInfo.setItemNumber(Long.parseLong(itemNumber));
+        paymentInfo.setItemNumber(itemNumber);
         paymentInfo.setOrderNumber(Long.parseLong(orderNumber));
         return paymentInfo;
     }
