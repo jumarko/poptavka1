@@ -30,9 +30,16 @@ public interface CreateTabPanelStyles extends CssResource {
     @ClassName("createTabPanel")
     String createTabPanel();
 
-    @ClassName("fourStepTabPanel")
-    String fourStepTabPanel();
+    @ClassName("treeStepTabPanel")
+    String treeStepTabPanel();
 
     @ClassName("buttons-panel")
     String buttonsPanel();
+
+    @ClassName("required-label")
+    String requiredLabel();
+
+    @ClassName("condition-panel")
+    String conditionPanel();
+
 }

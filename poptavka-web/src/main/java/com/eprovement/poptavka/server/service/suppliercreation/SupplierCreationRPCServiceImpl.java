@@ -8,7 +8,11 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.client.service.demand.SupplierCreationRPCService;
 import com.eprovement.poptavka.domain.address.Address;
 import com.eprovement.poptavka.domain.address.Locality;
+import com.eprovement.poptavka.domain.enums.Status;
 import com.eprovement.poptavka.domain.demand.Category;
+import com.eprovement.poptavka.domain.enums.ServiceType;
+import com.eprovement.poptavka.domain.product.Service;
+import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.domain.user.BusinessUserData;
 import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
@@ -20,8 +24,10 @@ import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
+import com.googlecode.genericdao.search.Search;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -66,19 +72,19 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
 
     @Autowired
     public void setBusinessUserConverter(
-            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
         this.supplierConverter = supplierConverter;
     }
 
     @Autowired
     public void setCategoryConverter(
-            @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
+        @Qualifier("categoryConverter") Converter<Category, ICatLocDetail> categoryConverter) {
         this.categoryConverter = categoryConverter;
     }
 
     @Autowired
     public void setLocalityConverter(
-            @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
+        @Qualifier("localityConverter") Converter<Locality, ICatLocDetail> localityConverter) {
         this.localityConverter = localityConverter;
     }
 
@@ -106,6 +112,7 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         setNewSupplierAddresses(supplier.getUserData(), newSupplier);
         setNewSupplierLocalities(supplier, newSupplier);
         setNewSupplierCategories(supplier, newSupplier);
+        setNewSupplierUserServices(newSupplier);
         assignBusinessRoleToNewSupplier(newSupplier);
         newSupplier.setOveralRating(0);
         /** registration process **/
@@ -134,15 +141,15 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
      */
     private void setNewSupplierBusinessUserData(BusinessUserDetail supplier, Supplier newSupplier) {
         final BusinessUserData businessUserData = new BusinessUserData.Builder()
-                .companyName(supplier.getCompanyName())
-                .description(supplier.getDescription())
-                .personFirstName(supplier.getPersonFirstName())
-                .personLastName(supplier.getPersonLastName())
-                .phone(supplier.getPhone())
-                .identificationNumber(supplier.getIdentificationNumber())
-                .taxId(supplier.getTaxId())
-                .website(supplier.getWebsite())
-                .build();
+            .companyName(supplier.getCompanyName())
+            .description(supplier.getDescription())
+            .personFirstName(supplier.getPersonFirstName())
+            .personLastName(supplier.getPersonLastName())
+            .phone(supplier.getPhone())
+            .identificationNumber(supplier.getIdentificationNumber())
+            .taxId(supplier.getTaxId())
+            .website(supplier.getWebsite())
+            .build();
         newSupplier.getBusinessUser().setBusinessUserData(businessUserData);
     }
 
@@ -155,6 +162,30 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
         final List<Address> addresses = getAddressesFromSupplierCityName(supplier);
 
         newSupplier.getBusinessUser().setAddresses(addresses);
+    }
+
+    /**
+     * Fills supplier's services with given supplier detail.
+     * @param newSupplier
+     */
+    private void setNewSupplierUserServices(Supplier newSupplier) {
+        final List<Service> promotionServices = generalService.search(
+            new Search(Service.class)
+                .addFilterEqual("serviceType", ServiceType.PROMOTION));
+
+        for (Service service : promotionServices) {
+            //create active promotion user service
+            UserService userService = new UserService();
+            userService.setService(service);
+            userService.setStatus(Status.ACTIVE);
+            userService.setBusinessUser(newSupplier.getBusinessUser());
+            userService.setResponse(new Date());
+
+            //during registration add promotion services by default
+            newSupplier.getBusinessUser().addUserService(userService);
+            //add promotion credits immediatelly as well
+            newSupplier.getBusinessUser().getBusinessUserData().addCredits(service.getCredits());
+        }
     }
 
     /**
@@ -174,7 +205,6 @@ public class SupplierCreationRPCServiceImpl extends AutoinjectingRemoteService i
     private void setNewSupplierLocalities(FullSupplierDetail supplier, Supplier newSupplier) {
         newSupplier.setLocalities(localityConverter.convertToSourceList(supplier.getLocalities()));
     }
-
 
     /**
      * Assigns business role to new supplier.

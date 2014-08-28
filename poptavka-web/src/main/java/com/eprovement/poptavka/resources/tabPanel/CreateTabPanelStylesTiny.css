@@ -1,8 +1,8 @@
 .height-registration-extended {
-    height: 1180px;
+    height: 1185px;
 }
 .height-registration {
-    height: 985px;
+    height: 990px;
 }
 .height-selector {
     height: 485px;
@@ -19,7 +19,7 @@
     font-size: 20px;
     line-height: 20px;
 }
-.fourStepTabPanel {}
+.treeStepTabPanel {}
 
 .buttons-panel.middle {
     width: 266px;
@@ -58,3 +58,5 @@
     height: 90px;
     margin: 0 25px;
 }
+.required-label {}
+.condition-panel {}

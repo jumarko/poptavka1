@@ -126,6 +126,17 @@ public class BusinessUser extends User {
         this.userServices = userServices;
     }
 
+    /**
+     * Add user service to user services. If current list is null, new instance will be created.
+     * @param userService to be added
+     */
+    public void addUserService(UserService userService) {
+        if (this.userServices == null) {
+            this.userServices = new ArrayList<UserService>();
+        }
+        this.userServices.add(userService);
+    }
+
     public List<Invoice> getInvoices() {
         return invoices;
     }

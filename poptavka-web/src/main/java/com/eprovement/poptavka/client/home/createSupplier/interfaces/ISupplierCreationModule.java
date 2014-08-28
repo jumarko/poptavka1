@@ -26,7 +26,6 @@ public interface ISupplierCreationModule {
     String GA_EVENT_USER = "supplierCreation_User";
     String GA_EVENT_CATEGORY = "supplierCreation_Category";
     String GA_EVENT_LOCALITY = "supplierCreation_Locality";
-    String GA_EVENT_SERVICES = "supplierCreation_Services";
     String GA_EVENT_NEW_SUPPLIER = "supplierCreation_NewSupplier";
 
     public interface Gateway {
@@ -54,7 +53,6 @@ public interface ISupplierCreationModule {
          */
         void onGoToCreateSupplierModule();
 
-        void onResponseRegisterSupplier(FullSupplierDetail newSupplier);
     }
 
     public interface View extends LazyView, IsWidget, ProvidesValidate {
