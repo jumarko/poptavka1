@@ -6,7 +6,6 @@ package com.eprovement.poptavka.client.home.createSupplier;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
-import com.eprovement.poptavka.client.root.gateways.ServiceSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.UserRegistrationGateway;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import com.mvp4g.client.annotation.Debug;
@@ -26,7 +25,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Debug(logLevel = Debug.LogLevel.DETAILED)
 public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildEventBus,
     ISupplierCreationModule.Gateway,
-    CatLocSelectorGateway, UserRegistrationGateway, ServiceSelectorGateway {
+    CatLocSelectorGateway, UserRegistrationGateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -69,7 +68,7 @@ public interface SupplierCreationEventBus extends EventBusWithLookup, BaseChildE
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/
     @Event(handlers = SupplierCreationHandler.class)
-    void registerSupplier(FullSupplierDetail newSupplier);
+    void requestRegisterSupplier(FullSupplierDetail newSupplier);
 
     /**************************************************************************/
     /* Business events handled by Presenter.                                  */

@@ -1,6 +1,24 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 
-    <c:DataGrid ui:field="table" />
+    <g:HTMLPanel>
+        <g:Label ui:field="infoLabel"/>
+        <c:DataGrid ui:field="table" />
+        <g:HTMLPanel>
+            <form ui:field="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_xclick"/>
+                <input type="hidden" ui:field="formReturnUrl" name="return" value="https://devel.want-something.com:8443"/>
+                <input type="hidden" name="cancel_return" value="https://devel.want-something.com:8443"/>
+                <input type="hidden" name="notify_url" value="https://devel.want-something.com:8443/api/ipn"/>
+                <input type="hidden" name="business" value="boss@eprovement.com"/>
+                <input type="hidden" ui:field="formItemName" name="item_name"/>
+                <input type="hidden" ui:field="formItemNumber" name="item_number"/>
+                <input type="hidden" ui:field="formItemId" name="custom"/>
+                <input type="hidden" ui:field="formAmount" name="amount"/>
+                <input type="hidden" name="currency_code" value="USD"/>
+            </form>
+        </g:HTMLPanel>
+    </g:HTMLPanel>
 </ui:UiBinder>

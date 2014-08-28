@@ -5,9 +5,9 @@ package com.eprovement.poptavka.client.user.settings;
 
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
-import com.eprovement.poptavka.client.root.gateways.ServiceSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.AddressSelectorGateway;
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
 import com.eprovement.poptavka.client.user.settings.interfaces.IClientSettings;
 import com.eprovement.poptavka.client.user.settings.interfaces.ISecuritySettings;
 import com.eprovement.poptavka.client.user.settings.interfaces.ISupplierSettings;
@@ -31,7 +31,7 @@ import com.mvp4g.client.event.EventBusWithLookup;
 @Debug(logLevel = LogLevel.DETAILED)
 @Events(startPresenter = SettingsPresenter.class, module = SettingsModule.class)
 public interface SettingsEventBus extends EventBusWithLookup, BaseChildEventBus,
-    CatLocSelectorGateway, ServiceSelectorGateway, AddressSelectorGateway, InfoWidgetsGateway,
+    CatLocSelectorGateway, IServiceSelectorModule.Gateway, AddressSelectorGateway, InfoWidgetsGateway,
     IUserSettings.Gateway, IClientSettings.Gateway, ISupplierSettings.Gateway, ISystemSettings.Gateway,
     ISecuritySettings.Gateway {
 

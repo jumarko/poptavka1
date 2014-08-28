@@ -864,22 +864,6 @@ button.button-green {
     padding: 0 12px;
 }
 
-.condition-panel {
-    float: left;
-}
-.condition-panel .gwt-Checkbox {
-    margin: -3px 10px 0 13px;
-    float: left;
-}
-.condition-panel .link {
-    margin-right: 10px;
-    color: #237E00;
-    float: left;
-}
-.condition-panel .color-red {
-    color: #ff0b0b !important;
-}
-
 /******************************************************************************/
 /*  Unsubscribe styles                                                        */
 /******************************************************************************/

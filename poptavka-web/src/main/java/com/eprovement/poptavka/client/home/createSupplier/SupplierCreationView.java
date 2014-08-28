@@ -55,10 +55,10 @@ public class SupplierCreationView extends OverflowComposite
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3, contentHolder4;
+    @UiField SimplePanel contentHolder1, contentHolder2, contentHolder3;
     @UiField SimplePanel footerPanel;
     @UiField TabLayoutPanel mainPanel;
-    @UiField ButtonsPanel buttonsPanel1, buttonsPanel2, buttonsPanel3, buttonsPanel4;
+    @UiField ButtonsPanel buttonsPanel1, buttonsPanel2, buttonsPanel3;
     @UiField CheckBox conditionCheck;
     @UiField Anchor conditionLink;
     @UiField Icon conditionValidationImage;
@@ -93,9 +93,14 @@ public class SupplierCreationView extends OverflowComposite
         bindHandlers();
 
         /** filling panels list **/
-        holderPanels = Arrays.asList(contentHolder1, contentHolder2, contentHolder3, contentHolder4);
-        tooltips = Arrays.asList(buttonsPanel1.getNextBtnTooltip(), buttonsPanel2.getNextBtnTooltip(),
-            buttonsPanel3.getNextBtnTooltip(), buttonsPanel4.getNextBtnTooltip());
+        holderPanels = Arrays.asList(
+            contentHolder1,
+            contentHolder2,
+            contentHolder3);
+        tooltips = Arrays.asList(
+            buttonsPanel1.getNextBtnTooltip(),
+            buttonsPanel2.getNextBtnTooltip(),
+            buttonsPanel3.getNextBtnTooltip());
 
         for (SimplePanel panel : holderPanels) {
             setParentOverflow(panel, Overflow.AUTO);
@@ -140,7 +145,7 @@ public class SupplierCreationView extends OverflowComposite
      */
     @Override
     public Button getRegisterButton() {
-        return buttonsPanel4.getNextBtn();
+        return buttonsPanel3.getNextBtn();
     }
 
     @Override
@@ -219,12 +224,10 @@ public class SupplierCreationView extends OverflowComposite
         buttonsPanel1.getBackBtn().addClickHandler(backClickHandler);
         buttonsPanel2.getBackBtn().addClickHandler(backClickHandler);
         buttonsPanel3.getBackBtn().addClickHandler(backClickHandler);
-        buttonsPanel4.getBackBtn().addClickHandler(backClickHandler);
         //next click handler
         buttonsPanel1.getNextBtn().addClickHandler(nextClickHandler);
         buttonsPanel2.getNextBtn().addClickHandler(nextClickHandler);
-        buttonsPanel3.getNextBtn().addClickHandler(nextClickHandler);
-        //buttonsPanel4 don't add nextClickHandler, cause it is last tab
+        //buttonsPanel3 don't add nextClickHandler, cause it is last tab
     }
 
     /**

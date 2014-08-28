@@ -137,9 +137,6 @@ public interface CommonStyles extends CssResource {
     @ClassName("catLocManager")
     String catLocManager();
 
-    @ClassName("condition-panel")
-    String conditionPanel();
-
     @ClassName("unsubscribe-container")
     String unsubscribeContainer();
 }

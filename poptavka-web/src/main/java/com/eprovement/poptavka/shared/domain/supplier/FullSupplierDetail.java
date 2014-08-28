@@ -7,7 +7,6 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.Tabl
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
@@ -53,9 +52,6 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
     @Valid
     @Size(min = 1)
     private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
-    @Valid
-    @Size(min = 1)
-    private ArrayList<ServiceDetail> services = new ArrayList<ServiceDetail>();
     /** Others. **/
     private boolean certified = false;
     @Min(value = 0, message = "{ratingMin}", groups = SearchGroup.class)
@@ -103,14 +99,6 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
         this.categories = new ArrayList<ICatLocDetail>(categories);
     }
 
-    public ArrayList<ServiceDetail> getServices() {
-        return services;
-    }
-
-    public void setServices(Collection<ServiceDetail> services) {
-        this.services = new ArrayList<ServiceDetail>(services);
-    }
-
     public boolean isCertified() {
         return certified;
     }
@@ -150,7 +138,6 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
         str.append("supplierId=" + supplierId);
         str.append(", localities=" + localities);
         str.append(", categories=" + categories);
-        str.append(", services=" + services);
         str.append(", certified=" + certified);
         str.append(", certified=" + certified);
         str.append(", businessData=" + userData.toString());

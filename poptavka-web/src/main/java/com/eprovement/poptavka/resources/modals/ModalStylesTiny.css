@@ -79,7 +79,7 @@
     margin: 0;
 }
 .cell-browser-selection-modal .modal-body .content-row {
-    height: 360px;
+    max-height: 360px;
 }
 /* Activation Code Modal Styles */
 .activation-code .well {

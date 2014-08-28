@@ -313,12 +313,12 @@ public class DemandCreationPresenter
         if (Storage.getUser() != null) {
             view.setFirstTabVisibility(false);
             view.getMainPanel().selectTab(SECONT_TAB_DEMAND_BASIC_FORM, false);
-            view.getMainPanel().addStyleName(Storage.RSCS.createTabPanel().fourStepTabPanel());
+            view.getMainPanel().addStyleName(Storage.RSCS.createTabPanel().treeStepTabPanel());
             if (view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM).getWidget() == null) {
                 eventBus.initDemandBasicForm(view.getHolderPanel(SECONT_TAB_DEMAND_BASIC_FORM));
             }
         } else {
-            view.getMainPanel().removeStyleName(Storage.RSCS.createTabPanel().fourStepTabPanel());
+            view.getMainPanel().removeStyleName(Storage.RSCS.createTabPanel().treeStepTabPanel());
             view.setFirstTabVisibility(true);
             //remove widgets to force widget to init them again
             onRestoreDefaultFirstTab();

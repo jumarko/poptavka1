@@ -1,8 +1,8 @@
 .height-registration-extended {
-    height: 1560px;
+    height: 1565px;
 }
 .height-registration {
-    height: 1290px;
+    height: 1295px;
 }
 .height-selector {
     height: 595px;
@@ -17,7 +17,7 @@
     background: none;
     padding: 0;
 }
-.fourStepTabPanel {}
+.treeStepTabPanel {}
 
 .buttons-panel.large {
     width: 435px;
@@ -40,6 +40,8 @@
 }
 
 .createTabPanel .customHeader {
-    width:90%;
+    width: 96%;
     padding-left: 10%;
 }
+.required-label {}
+.condition-panel {}

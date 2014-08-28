@@ -32,8 +32,8 @@ import java.util.logging.Logger;
  */
 @Presenter(view = SupplierCreationView.class)
 public class SupplierCreationPresenter
-        extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
-        implements ISupplierCreationModule.Presenter {
+    extends LazyPresenter<ISupplierCreationModule.View, SupplierCreationEventBus>
+    implements ISupplierCreationModule.Presenter {
 
     /**************************************************************************/
     /* Attributes                                                             */
@@ -41,8 +41,7 @@ public class SupplierCreationPresenter
     private static final int FIRST_TAB_USER_REGISTRATION = 0;
     private static final int SECOND_TAB_CATEGORY = 1;
     private static final int THIRD_TAB_LOCALITY = 2;
-    private static final int FOURTH_TAB_SERVICES = 3;
-    private final static Logger LOGGER = Logger.getLogger("SupplierCreationPresenter");
+    private final static Logger LOGGER = Logger.getLogger(ISupplierCreationModule.NAME);
     private static final LocalizableMessages MSGS = GWT.create(LocalizableMessages.class);
     private int maxSelectedTab = 1;
     private int instaceIdCategories;
@@ -147,12 +146,12 @@ public class SupplierCreationPresenter
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_CATEGORY);
                 if (view.getHolderPanel(SECOND_TAB_CATEGORY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
-                                .initCategorySelector()
-                                .initSelectorManager()
-                                .withCheckboxesOnLeafsAndLeafsParent()
-                                .displayCountOfSuppliers()
-                                .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
-                                .build();
+                        .initCategorySelector()
+                        .initSelectorManager()
+                        .withCheckboxesOnLeafsAndLeafsParent()
+                        .displayCountOfSuppliers()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_CATEGORIES)
+                        .build();
                     instaceIdCategories = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(SECOND_TAB_CATEGORY), builder);
                 }
@@ -163,24 +162,16 @@ public class SupplierCreationPresenter
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_LOCALITY);
                 if (view.getHolderPanel(THIRD_TAB_LOCALITY).getWidget() == null) {
                     CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(Constants.CREATE_SUPPLIER)
-                                .initLocalitySelector()
-                                .initSelectorManager()
-                                .withCheckboxes()
-                                .displayCountOfSuppliers()
-                                .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
-                                .build();
+                        .initLocalitySelector()
+                        .initSelectorManager()
+                        .withCheckboxes()
+                        .displayCountOfSuppliers()
+                        .setSelectionRestriction(Constants.REGISTER_MAX_LOCALITIES)
+                        .build();
                     instaceIdLocalities = builder.getInstanceId();
                     eventBus.initCatLocSelector(view.getHolderPanel(THIRD_TAB_LOCALITY), builder);
                 }
                 setHeightSelector();
-                break;
-            case FOURTH_TAB_SERVICES:
-                LOGGER.info(" -> init Service Form supplierService");
-                GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_SERVICES);
-                if (view.getHolderPanel(FOURTH_TAB_SERVICES).getWidget() == null) {
-                    eventBus.initServicesWidget(view.getHolderPanel(FOURTH_TAB_SERVICES));
-                }
-                setHeightServices();
                 break;
             default:
                 break;
@@ -195,7 +186,7 @@ public class SupplierCreationPresenter
             @Override
             public void onClick(ClickEvent event) {
                 GATracker.trackEvent(ISupplierCreationModule.NAME, ISupplierCreationModule.GA_EVENT_NEW_SUPPLIER);
-                if (canContinue(FOURTH_TAB_SERVICES)) {
+                if (canContinue(THIRD_TAB_LOCALITY)) {
                     LOGGER.fine("register him!");
                     view.getRegisterButton().setEnabled(false);
                     registerSupplier();
@@ -258,10 +249,9 @@ public class SupplierCreationPresenter
         eventBus.fillBusinessUserDetail(newSupplier.getUserData());
         eventBus.fillCatLocs(newSupplier.getCategories(), instaceIdCategories);
         eventBus.fillCatLocs(newSupplier.getLocalities(), instaceIdLocalities);
-        eventBus.fillServices(newSupplier.getServices());
 
-        eventBus.registerSupplier(newSupplier);
-        //signal event
+        eventBus.requestRegisterSupplier(newSupplier);
+
         eventBus.loadingShow(MSGS.progressRegisterSupplier());
     }
 
@@ -272,7 +262,8 @@ public class SupplierCreationPresenter
      */
     private boolean canContinue(int step) {
         boolean valid = true;
-        if (step == FOURTH_TAB_SERVICES) {
+        //If firt tab, check if condition checked?
+        if (step == FIRST_TAB_USER_REGISTRATION) {
             valid = view.isValid();
         }
 
@@ -293,14 +284,6 @@ public class SupplierCreationPresenter
             }
         };
         timer.schedule(Constants.VALIDATION_TOOLTIP_DISPLAY_TIME);
-    }
-
-    /**
-     * Sets <b>services</b> tab layout height.
-     */
-    private void setHeightServices() {
-        clearHeight();
-        view.getMainPanel().addStyleName(StyleResource.INSTANCE.createTabPanel().heightBasic());
     }
 
     /**

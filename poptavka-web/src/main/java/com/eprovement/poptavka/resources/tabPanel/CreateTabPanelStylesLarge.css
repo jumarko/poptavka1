@@ -1,10 +1,10 @@
 @CHARSET "UTF-8";
 
 .height-registration-extended {
-    height: 1045px;
+    height: 1050px;
 }
 .height-registration {
-    height: 780px;
+    height: 785px;
 }
 .height-selector {
     height: 590px;
@@ -152,8 +152,8 @@
     -webkit-border-radius: 5px 0 0 5px;
 }
 
-.fourStepTabPanel .customHeader  {
-    width: 305px;    
+.treeStepTabPanel .customHeader  {
+    width: 405px;    
 }
 
 
@@ -218,4 +218,24 @@
     top: -27px;
     margin: 0 70px;
     float: right;
+}
+
+.required-label {
+    margin: 0 0 10px 13px;
+}
+
+.condition-panel {
+    float: left;
+}
+.condition-panel .gwt-Checkbox {
+    margin: -3px 10px 0 13px;
+    float: left;
+}
+.condition-panel .link {
+    margin-right: 10px;
+    color: #237E00;
+    float: left;
+}
+.condition-panel .color-red {
+    color: #ff0b0b !important;
 }

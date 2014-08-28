@@ -19,7 +19,7 @@
 
     <g:ScrollPanel styleName='{res.layout.fullSize}'>
         <g:FlowPanel>
-            <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.fourStepTabPanel}'
+            <g:TabLayoutPanel ui:field='mainPanel' styleName='{res.createTabPanel.createTabPanel} {res.createTabPanel.treeStepTabPanel}'
                               barUnit='PX' barHeight='70' animationDuration="1000">
                 <!--1-->
                 <g:tab>
@@ -32,9 +32,19 @@
                     <g:HTMLPanel styleName='contentContainer'>
                         <g:SimplePanel ui:field="contentHolder1" debugId="userRegistrationHolder" />
                         <g:HorizontalPanel styleName='{style.buttons-panel}'>
-                            <g:Label>
-                                <ui:msg key="formRequiredFields">* fields are required</ui:msg>
-                            </g:Label>
+                            <g:VerticalPanel>
+                                <g:Label addStyleNames='{res.createTabPanel.requiredLabel}'>
+                                    <ui:msg key="formRequiredFields">* fields are required</ui:msg>
+                                </g:Label>
+                                <g:FlowPanel styleName='{res.createTabPanel.conditionPanel}'>
+                                    <g:CheckBox ui:field="conditionCheck" debugId="agreeCheckbox"/>
+                                    <g:Anchor ui:field="conditionLink" addStyleNames='link'>
+                                        <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
+                                    </g:Anchor>
+                                    <b:Icon ui:field='conditionValidationImage' type="EXCLAMATION" size="LARGE" visible='false'
+                                        addStyleNames='pull-left color-red'/>
+                                </g:FlowPanel>
+                            </g:VerticalPanel>
                             <btns:ButtonsPanel ui:field='buttonsPanel1'
                                                backBtn='{msgs.commonBtnBack}'
                                                nextBtn='{msgs.commonBtnNext}'
@@ -72,38 +82,10 @@
                         <g:SimplePanel ui:field="contentHolder3" debugId="localityContentHolder" />
                         <btns:ButtonsPanel ui:field='buttonsPanel3'
                                            backBtn='{msgs.commonBtnBack}'
-                                           nextBtn='{msgs.commonBtnNext}'
+                                           nextBtn='{msgs.supplierCreationRegisterBtn}'
                                            nextBtnTooltip='{msgs.tooltipInvalidFields}'
                                            size='SMALL'/>
                     </g:HTMLPanel>
-                </g:tab>
-                <!--4-->
-                <g:tab>
-                    <g:customHeader size="30">
-                        <g:HTML addStyleNames="{style.tabIndex2} customHeader">
-                            4.
-                            <ui:msg key="supplierCreationTab4">Service Selection</ui:msg>
-                        </g:HTML>
-                    </g:customHeader>
-                    <g:FlowPanel>
-                    <g:HTMLPanel styleName='contentContainer'>
-                        <g:SimplePanel ui:field="contentHolder4" debugId="serviceContentHolder"/>
-                        <!--<g:HTMLPanel styleName='formFooter formFooter2'>-->
-                        <g:FlowPanel styleName='{res.common.conditionPanel}'>
-                            <g:CheckBox ui:field="conditionCheck" debugId="agreeCheckbox"/>
-                            <g:Anchor ui:field="conditionLink" addStyleNames='link'>
-                                <ui:msg key='footerTermsConditions'>Terms &amp; Conditions</ui:msg>
-                            </g:Anchor>
-                            <b:Icon ui:field='conditionValidationImage' type="EXCLAMATION" size="LARGE" visible='false'
-                                    addStyleNames='pull-left collor-red'/>                            
-                        </g:FlowPanel>
-                        </g:HTMLPanel>
-                        <btns:ButtonsPanel ui:field='buttonsPanel4'
-                                           backBtn='{msgs.commonBtnBack}'
-                                           nextBtn='{msgs.supplierCreationRegisterBtn}'
-                                           nextBtnTooltip='{msgs.tooltipInvalidFields}'
-                                           size='LARGE'/>                    
-                    </g:FlowPanel>
                 </g:tab>
             </g:TabLayoutPanel>
             <!--Footer-->

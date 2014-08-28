@@ -430,6 +430,9 @@ public interface RootEventBus extends EventBusWithLookup,
     @Event(forwardToModules = ServiceSelectorModule.class)
     void selectService(ServiceDetail service);
 
+    @Event(forwardToModules = ServiceSelectorModule.class)
+    void requestCreateUserService(long userId, ServiceDetail serviceDetail);
+
     /**************************************************************************/
     /* Business events handled by Handlers.                                   */
     /**************************************************************************/

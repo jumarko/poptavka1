@@ -4,9 +4,9 @@
 package com.eprovement.poptavka.client.user.widget.creditAnnouncer;
 
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
-import com.eprovement.poptavka.client.user.widget.creditAnnouncer.
-        CreditStatusAnnouncerPresenter.ICreditStatusAnnouncerView;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -15,6 +15,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
 import com.mvp4g.client.view.LazyView;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -22,7 +24,9 @@ import com.mvp4g.client.view.LazyView;
  */
 @Presenter(view = CreditStatusAnnouncerView.class)
 public class CreditStatusAnnouncerPresenter extends
-        LazyPresenter<ICreditStatusAnnouncerView, RootEventBus> {
+    LazyPresenter<CreditStatusAnnouncerPresenter.ICreditStatusAnnouncerView, RootEventBus> {
+
+    private SimpleConfirmPopup popup = new SimpleConfirmPopup();
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -47,7 +51,18 @@ public class CreditStatusAnnouncerPresenter extends
         view.getRechargeButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                // TODO: eventbus call of the modal for credit charge
+                eventBus.initServicesWidget(popup.getSelectorPanel());
+                popup.show();
+            }
+        });
+        popup.getSubmitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<ServiceDetail> serviceDetail = new ArrayList<ServiceDetail>();
+                eventBus.fillServices(serviceDetail);
+                eventBus.requestCreateUserService(Storage.getUser().getUserId(),
+                    serviceDetail.isEmpty() ? null : serviceDetail.get(0));
             }
         });
     }
@@ -63,6 +78,7 @@ public class CreditStatusAnnouncerPresenter extends
         creditAnnouncerPanel.setWidget(view.getWidgetView());
         eventBus.requestCreditCount(Storage.getUser().getUserId());
     }
+
     /**
      * Sets credit widget status
      * @param credit - user's current credits.

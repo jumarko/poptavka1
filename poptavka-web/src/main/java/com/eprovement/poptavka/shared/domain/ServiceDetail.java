@@ -33,6 +33,16 @@ public class ServiceDetail implements IsSerializable {
         //for serialization
     }
 
+    public ServiceDetail(ServiceDetail detail) {
+        this.id = detail.getId();
+        this.code = detail.getCode();
+        this.title = detail.getTitle();
+        this.description = detail.getDescription();
+        this.price = detail.getPrice();
+        this.credits = detail.getCredits();
+        this.serviceType = detail.getServiceType();
+    }
+
     /**************************************************************************/
     /*  Getters & Setters                                                     */
     /**************************************************************************/

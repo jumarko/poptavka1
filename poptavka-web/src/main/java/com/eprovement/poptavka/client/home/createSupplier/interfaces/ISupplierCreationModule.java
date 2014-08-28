@@ -26,7 +26,6 @@ public interface ISupplierCreationModule {
     String GA_EVENT_USER = "supplierCreation_User";
     String GA_EVENT_CATEGORY = "supplierCreation_Category";
     String GA_EVENT_LOCALITY = "supplierCreation_Locality";
-    String GA_EVENT_SERVICES = "supplierCreation_Services";
     String GA_EVENT_NEW_SUPPLIER = "supplierCreation_NewSupplier";
 
     public interface Gateway {
@@ -44,7 +43,7 @@ public interface ISupplierCreationModule {
          * Method registers new supplier.
          * @param newSupplier newly created supplier
          */
-        void onRegisterSupplier(final FullSupplierDetail newSupplier);
+        void onRequestRegisterSupplier(final FullSupplierDetail newSupplier);
     }
 
     public interface Presenter extends NavigationConfirmationInterface {
@@ -53,6 +52,7 @@ public interface ISupplierCreationModule {
          * Initialize SupplierCreation module.
          */
         void onGoToCreateSupplierModule();
+
     }
 
     public interface View extends LazyView, IsWidget, ProvidesValidate {
