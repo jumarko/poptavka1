@@ -9,7 +9,6 @@ import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.enums.LocalityType;
 import com.eprovement.poptavka.exception.TreeItemModificationException;
 import com.eprovement.poptavka.service.GenericServiceImpl;
-import com.googlecode.ehcache.annotations.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +34,11 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public Locality getLocality(Long id) {
         return getDao().getLocality(id);
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public Locality findCityByZipCode(String cityName, String zipCode) {
         notEmpty(cityName, "cityName should not be empty!");
         notEmpty(zipCode, "zipCode should not be empty!");
@@ -59,7 +56,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public Locality findCityByName(String region, String district, String city) {
         notEmpty(region, "region cannot be empty!");
         notEmpty(district, "district cannot be empty!");
@@ -78,7 +74,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public Locality findDistrictByName(String region, String district) {
         notEmpty(region, "region cannot be empty!");
         notEmpty(district, "district cannot be empty!");
@@ -95,7 +90,6 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "regionCache")
     public Locality findRegion(String region) {
         notEmpty(region, "region cannot be empty!");
         final Locality regionByAbbr = getDao().findRegionByAbbreviation(region);
@@ -111,19 +105,16 @@ public class LocalityServiceImpl extends GenericServiceImpl<Locality, LocalityDa
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public List<Locality> getLocalities(LocalityType localityType) {
         return getDao().getLocalities(localityType, ResultCriteria.EMPTY_CRITERIA);
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public List<Locality> getLocalities(LocalityType localityType, ResultCriteria resultCriteria) {
         return getDao().getLocalities(localityType, resultCriteria);
     }
 
     @Override
-    @Cacheable(cacheName = "localityCache")
     public List<Locality> getSubLocalities(long localityId) {
         final Locality locality = getLocality(localityId);
         isTrue(locality != null, "No locality with id=" + localityId + " has been found!");
