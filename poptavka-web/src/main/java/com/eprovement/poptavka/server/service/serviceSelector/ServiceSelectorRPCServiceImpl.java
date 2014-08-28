@@ -13,6 +13,7 @@ import com.eprovement.poptavka.domain.user.BusinessUser;
 import com.eprovement.poptavka.server.converter.Converter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
+import com.eprovement.poptavka.service.userservice.UserServiceService;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
@@ -37,6 +38,7 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     /**************************************************************************/
     /** Services. **/
     private GeneralService generalService;
+    private UserServiceService userServiceService;
     /** Converters. **/
     private Converter<Service, ServiceDetail> serviceConverter;
     private Converter<UserService, UserServiceDetail> userServiceConverter;
@@ -47,6 +49,11 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
     @Autowired
     public void setGeneralService(GeneralService generalService) {
         this.generalService = generalService;
+    }
+
+    @Autowired
+    public void setUserServiceService(UserServiceService userServiceService) {
+        this.userServiceService = userServiceService;
     }
 
     //Converters
@@ -98,7 +105,6 @@ public class ServiceSelectorRPCServiceImpl extends AutoinjectingRemoteService
         userService.setStatus(Status.INACTIVE);
         userService.setBusinessUser(user);
 
-        generalService.save(userService);
-        return userServiceConverter.convertToTarget(userService);
+        return userServiceConverter.convertToTarget(userServiceService.create(userService));
     }
 }

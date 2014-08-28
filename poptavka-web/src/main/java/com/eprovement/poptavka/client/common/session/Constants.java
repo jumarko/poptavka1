@@ -231,4 +231,6 @@ public final class Constants {
     public static final int TABLE_MARGINS_TINY = 10; //0top_margin+0top_padding+10bottom_margin
 
     public static final String ADMIN_CLIENTS_FILTER_EMAIL = "mailinator.com";
+
+    public static final int OFFER_CREDIT_PRICE = 1;
 }

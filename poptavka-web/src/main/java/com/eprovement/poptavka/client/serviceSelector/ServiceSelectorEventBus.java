@@ -50,6 +50,9 @@ public interface ServiceSelectorEventBus extends EventBusWithLookup, BaseChildEv
     void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(handlers = ServiceSelectorPresenter.class)
+    void initServicesWidget2(SimplePanel embedToWidget, String infoLabel);
+
+    @Event(handlers = ServiceSelectorPresenter.class)
     void displayServices(ArrayList<ServiceDetail> services);
 
     @Event(handlers = ServiceSelectorPresenter.class)

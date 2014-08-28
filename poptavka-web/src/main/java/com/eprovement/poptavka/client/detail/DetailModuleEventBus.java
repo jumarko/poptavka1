@@ -4,6 +4,7 @@
 package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.root.gateways.InfoWidgetsGateway;
+import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
 import com.eprovement.poptavka.client.user.supplierdemands.SupplierDemandsModule;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
@@ -31,7 +32,8 @@ import java.util.List;
  */
 @Events(startPresenter = DetailModulePresenter.class, module = DetailModule.class)
 @Debug(logLevel = Debug.LogLevel.DETAILED)
-public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGateway {
+public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGateway,
+    IServiceSelectorModule.Gateway {
 
     /**
      * Start event is called only when module is instantiated first time.
@@ -72,7 +74,7 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
     void buildDetailSectionTabs(DetailModuleBuilder builder);
 
     /**************************************************************************/
-    /* Business events handled by DevelDetailWrapperPresenter.                */
+    /* Business events handled by DetailModulePresenter.                      */
     /**************************************************************************/
     @Event(handlers = DetailModulePresenter.class)
     void setCustomWidget(int tabIndex, Widget customWidget);
@@ -157,4 +159,13 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
      */
     @Event(handlers = DetailModulePresenter.class, passive = true)
     void sendStatusMessage(String statusMessageBody);
+
+    /**
+     * Request/Response pair for substracting credits.
+     */
+    @Event(handlers = DetailModuleHandler.class)
+    void requestSubstractCredit(long userId, int credits);
+
+    @Event(handlers = DetailModulePresenter.class)
+    void responseSubstractCredit(Boolean result);
 }

@@ -32,4 +32,5 @@ public interface DetailRPCServiceAsync {
 
     void sendOfferMessage(OfferMessageDetail offerMessageToSend, AsyncCallback<MessageDetail> callback);
 
+    void substractCredit(long userId, int credits, AsyncCallback<Boolean> callback);
 }

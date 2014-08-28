@@ -7,7 +7,6 @@ import com.eprovement.poptavka.domain.common.ExternalSource;
 import com.eprovement.poptavka.domain.common.UnknownSourceException;
 import com.eprovement.poptavka.domain.demand.ExternalCategory;
 import com.eprovement.poptavka.service.register.RegisterService;
-import com.googlecode.ehcache.annotations.Cacheable;
 import com.eprovement.poptavka.dao.demand.CategoryDao;
 import com.eprovement.poptavka.domain.common.ResultCriteria;
 import com.eprovement.poptavka.domain.demand.Category;
@@ -39,7 +38,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "categoryCache")
     public List<Category> getRootCategories() {
         LOGGER.debug("action=get_root_categories status=start");
         final List<Category> rootCategories = getRootCategories(null);
@@ -49,7 +47,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "categoryCache")
     public List<Category> getRootCategories(ResultCriteria resultCriteria) {
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={}", resultCriteria);
         final List<Category> rootCategories = getDao().getRootCategories(resultCriteria);
@@ -60,7 +57,6 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
 
     /** {@inheritDoc} */
     @Override
-    @Cacheable(cacheName = "categoryCache")
     public Category getCategory(Long id) {
         if (id == null) {
             return null;
@@ -70,14 +66,12 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     }
 
     @Override
-    @Cacheable(cacheName = "categoryCache")
     public ExternalCategory getExternalCategory(String externalId) {
         notEmpty(externalId, "externalId cannot be empty");
         return getDao().getCategoryByExternalId(externalId);
     }
 
     @Override
-    @Cacheable(cacheName = "categoryCache")
     public List<ExternalCategory> getCategoryMapping(String externalSourceName) {
         final ExternalSource source = registerService.getValue(externalSourceName, ExternalSource.class);
         if (source == null) {

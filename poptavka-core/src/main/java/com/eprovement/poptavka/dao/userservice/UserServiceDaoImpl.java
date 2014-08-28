@@ -36,4 +36,17 @@ public class UserServiceDaoImpl extends GenericHibernateDao<UserService> impleme
                 .add(Restrictions.eq("orderNumber", orderNumber))
                 .uniqueResult();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUniqueOrderNumber(long userServiceId) {
+        em().createNativeQuery("UPDATE UserService as us1 \n"
+            + " INNER JOIN (SELECT IFNULL(MAX(orderNumber), 0) + 1 max FROM UserService) as us3 \n"
+            + " SET us1.orderNumber = us3.max \n"
+            + " WHERE us1.id = :id")
+            .setParameter("id", userServiceId).
+            executeUpdate();
+    }
 }

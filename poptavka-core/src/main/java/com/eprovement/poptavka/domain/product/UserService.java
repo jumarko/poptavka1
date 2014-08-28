@@ -13,8 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,7 +45,6 @@ public class UserService extends DomainObject {
     @Column(length = OrmConstants.ENUM_FIELD_LENGTH)
     private Status status;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long orderNumber;
 
     private String transactionNumber;

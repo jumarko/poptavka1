@@ -26,4 +26,9 @@ public interface UserServiceDao extends GenericDao<UserService> {
 
     UserService getUserServiceByOrderNumber(Long orderNumber);
 
+    /**
+     * Sets new unique order number as max + 1 value from existing order numbers.
+     * @param userServiceId to be updated
+     */
+    void setUniqueOrderNumber(long userServiceId);
 }
