@@ -133,6 +133,10 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
     /**************************************************************************/
     /* Setters                                                                */
     /**************************************************************************/
+    public void setInfoLabel(String text) {
+        infoLabel.setText(text);
+    }
+
     public void setPaymentDetails(String returnRul, UserServiceDetail userServiceDetail) {
         formReturnUrl.setValue(returnRul);
         formItemName.setValue("Buy now");

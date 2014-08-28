@@ -5,11 +5,13 @@ package com.eprovement.poptavka.client.detail;
 
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.detail.interfaces.IDetailModule;
 import com.eprovement.poptavka.client.detail.views.OfferQuestionWindow;
 import com.eprovement.poptavka.client.detail.views.DemandDetailView;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.FullRatingDetail;
+import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -20,11 +22,13 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class DetailModulePresenter
     /**************************************************************************/
     /** Class Attributes. **/
     private DetailModuleBuilder builder;
+    private SimpleConfirmPopup popup = new SimpleConfirmPopup();
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -92,7 +97,9 @@ public class DetailModulePresenter
                             eventBus.sendQuestionMessage(view.getReplyHolder().getCreatedMessage());
                             break;
                         case OfferQuestionWindow.RESPONSE_OFFER:
-                            eventBus.sendOfferMessage(view.getReplyHolder().getCreatedOfferMessage());
+                            eventBus.requestSubstractCredit(
+                                Storage.getUser().getUserId(),
+                                Constants.OFFER_CREDIT_PRICE);
                             break;
                         default:
                             break;
@@ -111,6 +118,16 @@ public class DetailModulePresenter
             @Override
             public void onCellPreview(CellPreviewEvent event) {
                 eventBus.resize(DetailModuleBuilder.CONVERSATION_TAB);
+            }
+        });
+        popup.getSubmitBtn().addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                List<ServiceDetail> serviceDetail = new ArrayList<ServiceDetail>();
+                eventBus.fillServices(serviceDetail);
+                eventBus.requestCreateUserService(Storage.getUser().getUserId(),
+                    serviceDetail.isEmpty() ? null : serviceDetail.get(0));
             }
         });
     }
@@ -518,6 +535,19 @@ public class DetailModulePresenter
         MessageDetail questionMessageToSend = view.getReplyHolder().updateSendingMessage(statusMessage);
         questionMessageToSend.setSenderId(Storage.getUser().getUserId());
         eventBus.sendQuestionMessage(questionMessageToSend);
+    }
+
+    /**************************************************************************/
+    /* Payment Methods                                                        */
+    /**************************************************************************/
+    @Override
+    public void onResponseSubstractCredit(Boolean result) {
+        if (result) {
+            eventBus.sendOfferMessage(view.getReplyHolder().getCreatedOfferMessage());
+        } else {
+            eventBus.initServicesWidget2(popup.getSelectorPanel(), "You don't have enought credits, please recharge.");
+            popup.show();
+        }
     }
 
     /**************************************************************************/

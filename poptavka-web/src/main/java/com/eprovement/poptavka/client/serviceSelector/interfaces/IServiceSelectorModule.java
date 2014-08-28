@@ -35,6 +35,9 @@ public interface IServiceSelectorModule {
         void initServicesWidget(SimplePanel embedToWidget);
 
         @Event(forwardToParent = true)
+        void initServicesWidget2(SimplePanel embedToWidget, String infoLabel);
+
+        @Event(forwardToParent = true)
         void selectService(ServiceDetail service);
 
         @Event(forwardToParent = true)
@@ -55,6 +58,8 @@ public interface IServiceSelectorModule {
 
         void onInitServicesWidget(SimplePanel embedToWidget);
 
+        void onInitServicesWidget2(SimplePanel embedToWidget, String infoLabel);
+
         void onResponseCreateUserService(UserServiceDetail userServiceDetail);
 
         void onDisplayServices(ArrayList<ServiceDetail> services);
@@ -65,6 +70,8 @@ public interface IServiceSelectorModule {
     }
 
     public interface View extends LazyView, ProvidesValidate, IsWidget {
+
+        void setInfoLabel(String text);
 
         void setPaymentDetails(String returnRul, UserServiceDetail userServiceDetail);
 

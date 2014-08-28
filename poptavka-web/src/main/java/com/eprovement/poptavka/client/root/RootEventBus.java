@@ -425,6 +425,9 @@ public interface RootEventBus extends EventBusWithLookup,
     void initServicesWidget(SimplePanel embedToWidget);
 
     @Event(forwardToModules = ServiceSelectorModule.class)
+    void initServicesWidget2(SimplePanel embedToWidget, String infoLabel);
+
+    @Event(forwardToModules = ServiceSelectorModule.class)
     void fillServices(List<ServiceDetail> services);
 
     @Event(forwardToModules = ServiceSelectorModule.class)
