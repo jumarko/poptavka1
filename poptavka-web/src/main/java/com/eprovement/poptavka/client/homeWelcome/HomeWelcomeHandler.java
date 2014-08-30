@@ -5,6 +5,7 @@ package com.eprovement.poptavka.client.homeWelcome;
 
 import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeWelcomeRPCServiceAsync;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.EventHandler;
@@ -38,10 +39,26 @@ public class HomeWelcomeHandler extends BaseEventHandler<HomeWelcomeEventBus> {
      * @return list of root categories
      */
     public void onGetRootCategories() {
-        welcomeService.getRootCategories(new SecuredAsyncCallback<ArrayList<ICatLocDetail>>(eventBus) {
+        welcomeService.getRootCategories(new SecuredAsyncCallback<ArrayList<ILesserCatLocDetail>>(eventBus) {
             @Override
-            public void onSuccess(ArrayList<ICatLocDetail> result) {
+            public void onSuccess(ArrayList<ILesserCatLocDetail> result) {
                 eventBus.displayCategories(result);
+            }
+        });
+    }
+
+    /**
+     * Get full ICatLocDetail object for given root category and forward to HomeDemands.
+     *
+     * @param categoryId
+     * @param index of selected displayed category
+     * @return corresponding iCatLocDetail
+     */
+    public void onGetICatLocDetail(long categoryId, final int index) {
+        welcomeService.getICatLocDetail(categoryId, new SecuredAsyncCallback<ICatLocDetail>(eventBus) {
+            @Override
+            public void onSuccess(ICatLocDetail result) {
+                eventBus.goToHomeDemandsModuleFromWelcome(index, result);
             }
         });
     }

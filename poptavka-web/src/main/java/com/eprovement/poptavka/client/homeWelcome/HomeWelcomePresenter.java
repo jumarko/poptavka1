@@ -8,7 +8,7 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks;
 import com.eprovement.poptavka.client.homeWelcome.texts.HowItWorks.HowItWorksViews;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -143,11 +143,12 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
         view.getCategorySelectionModel().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
-                ICatLocDetail selected = (ICatLocDetail) view.getCategorySelectionModel().getSelectedObject();
+                ILesserCatLocDetail selected =
+                        (ILesserCatLocDetail) view.getCategorySelectionModel().getSelectedObject();
 
                 if (selected != null) {
                     int idx = view.getDataProvider().getList().indexOf(selected);
-                    eventBus.goToHomeDemandsModuleFromWelcome(idx, selected);
+                    eventBus.getICatLocDetail(selected.getId(), idx);
                 }
             }
         });
@@ -170,7 +171,7 @@ public class HomeWelcomePresenter extends LazyPresenter<IHomeWelcomeView, HomeWe
      * where number of columns depends on constant: COLUMNS.
      * @param rootCategories - root categories to be displayed
      */
-    public void onDisplayCategories(ArrayList<ICatLocDetail> rootCategories) {
+    public void onDisplayCategories(ArrayList<ILesserCatLocDetail> rootCategories) {
         view.displayCategories(rootCategories);
     }
 

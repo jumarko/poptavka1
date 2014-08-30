@@ -7,8 +7,8 @@ import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView;
 import com.eprovement.poptavka.client.homeWelcome.interfaces.IHomeWelcomeView.IHomeWelcomePresenter;
 import com.eprovement.poptavka.client.common.ReverseCompositeView;
 import com.eprovement.poptavka.client.user.widget.grid.cell.RootCategoryCell;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.LesserCatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -39,15 +39,15 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) CellList<ICatLocDetail> categoryList;
+    @UiField(provided = true) CellList<ILesserCatLocDetail> categoryList;
     @UiField SimplePanel footerContainer;
     @UiField Button suppliersBtn, demandsBtn;
     @UiField Button howItWorksSupplierBtn, howItWorksDemandBtn;
     @UiField Button registerSupplierBtn, registerDemandBtn;
     /** Class attributes. **/
     private ListDataProvider dataProvider = new ListDataProvider();
-    private final SingleSelectionModel<ICatLocDetail> selectionRootModel =
-            new SingleSelectionModel<ICatLocDetail>(CatLocDetail.KEY_PROVIDER);
+    private final SingleSelectionModel<ILesserCatLocDetail> selectionRootModel =
+            new SingleSelectionModel<ILesserCatLocDetail>(LesserCatLocDetail.KEY_PROVIDER);
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -66,7 +66,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
      */
     @Override
     public void createView() {
-        categoryList = new CellList<ICatLocDetail>(new RootCategoryCell());
+        categoryList = new CellList<ILesserCatLocDetail>(new RootCategoryCell());
         categoryList.setSelectionModel(selectionRootModel);
         dataProvider.addDataDisplay(categoryList);
         initWidget(uiBinder.createAndBindUi(this));
@@ -80,7 +80,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
      * @param rootCategories list of categories
      */
     @Override
-    public void displayCategories(ArrayList<ICatLocDetail> rootCategories) {
+    public void displayCategories(ArrayList<ILesserCatLocDetail> rootCategories) {
         dataProvider.setList(rootCategories);
     }
 
@@ -91,7 +91,7 @@ public class HomeWelcomeView extends ReverseCompositeView<IHomeWelcomePresenter>
      * @return the category selection model
      */
     @Override
-    public SingleSelectionModel<ICatLocDetail> getCategorySelectionModel() {
+    public SingleSelectionModel<ILesserCatLocDetail> getCategorySelectionModel() {
         return selectionRootModel;
     }
 

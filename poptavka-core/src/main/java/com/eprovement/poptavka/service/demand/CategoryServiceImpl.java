@@ -41,7 +41,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
     public List<Category> getRootCategories() {
         LOGGER.debug("action=get_root_categories status=start");
         final List<Category> rootCategories = getRootCategories(null);
-        LOGGER.debug("action=get_root_categories status=finish root_categories_number=", rootCategories.size());
+        LOGGER.debug("action=get_root_categories status=finish root_categories_number={}", rootCategories.size());
         return rootCategories;
     }
 
@@ -51,7 +51,7 @@ public class CategoryServiceImpl extends GenericServiceImpl<Category, CategoryDa
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={}", resultCriteria);
         final List<Category> rootCategories = getDao().getRootCategories(resultCriteria);
         LOGGER.debug("action=get_root_categories_critiera status=start result_criteria={} "
-            + "root_categories_number=", resultCriteria, rootCategories.size());
+            + "root_categories_number={}", resultCriteria, rootCategories.size());
         return rootCategories;
     }
 

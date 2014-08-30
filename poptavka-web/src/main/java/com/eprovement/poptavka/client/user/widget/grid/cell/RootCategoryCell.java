@@ -3,7 +3,7 @@
  */
 package com.eprovement.poptavka.client.user.widget.grid.cell;
 
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
@@ -14,7 +14,7 @@ import com.google.gwt.uibinder.client.UiRenderer;
  * Cell for rendering root categories.
  * @author Martin Slavkovsky
  */
-public class RootCategoryCell extends AbstractCell<ICatLocDetail> {
+public class RootCategoryCell extends AbstractCell<ILesserCatLocDetail> {
 
     /**************************************************************************/
     /* UiRenderer                                                             */
@@ -33,7 +33,7 @@ public class RootCategoryCell extends AbstractCell<ICatLocDetail> {
      * @{inheritDoc}
      */
     @Override
-    public void render(Cell.Context context, ICatLocDetail value, SafeHtmlBuilder sb) {
+    public void render(Cell.Context context, ILesserCatLocDetail value, SafeHtmlBuilder sb) {
         if (value != null) {
             renderer.render(sb,
                     value.toString(),
