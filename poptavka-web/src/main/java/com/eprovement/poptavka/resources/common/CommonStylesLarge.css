@@ -603,6 +603,10 @@ button.button-green {
     background: url(images/advanced-search-percent-icon.png) no-repeat scroll right 7px #F8F4E4
 }
 
+.form-fields input.append-search {
+    background: url(images/advanced-search-icon.png) no-repeat scroll right 7px #F8F4E4
+}
+
 .form-fields .tooltip-icon {
     float: left;
     margin: 9px 0 0 12px;

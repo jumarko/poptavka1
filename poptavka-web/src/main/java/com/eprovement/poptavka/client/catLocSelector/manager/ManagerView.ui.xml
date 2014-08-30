@@ -25,8 +25,8 @@
         <b:FluidRow addStyleNames='well-content'>
             <b:Column size="12" addStyleNames='well-padding'>
                 <b:FluidRow>
-                    <g:Label ui:field='selectItemByLabel' addStyleNames="{style.or-separator} {res.initial.hideOnSmall} pull-left hide"/>
-                    <g:SuggestBox ui:field="searchBox" addStyleNames="pull-left" debugId="catLocSuggestBox" />
+                    <g:Label ui:field='selectItemByLabel' addStyleNames="{style.or-separator} {res.initial.hideOnSmall} pull-left hide append-search"/>
+                    <g:SuggestBox ui:field="searchBox" addStyleNames="pull-left append-search" debugId="catLocSuggestBox" />
                     <g:Label addStyleNames="{style.or-separator} {res.initial.hideOnSmall} pull-left">or</g:Label>
                     <g:Button ui:field="browseBtn" styleName="browse-button pull-left"/>
                 </b:FluidRow>
