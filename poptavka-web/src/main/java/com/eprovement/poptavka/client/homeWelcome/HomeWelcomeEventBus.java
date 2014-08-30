@@ -6,8 +6,9 @@ package com.eprovement.poptavka.client.homeWelcome;
 import com.eprovement.poptavka.client.common.BaseChildEventBus;
 import com.eprovement.poptavka.client.home.createDemand.interfaces.IDemandCreationModule;
 import com.eprovement.poptavka.client.home.createSupplier.interfaces.ISupplierCreationModule;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.annotation.Events;
@@ -79,7 +80,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     /* Business events handled by Presenters.                                 */
     /**************************************************************************/
     @Event(handlers = HomeWelcomePresenter.class)
-    void displayCategories(ArrayList<ICatLocDetail> list);
+    void displayCategories(ArrayList<ILesserCatLocDetail> list);
 
     @Event(handlers = HomeWelcomePresenter.class)
     void displayHowItWorkdsDemands();
@@ -92,4 +93,7 @@ public interface HomeWelcomeEventBus extends EventBusWithLookup, BaseChildEventB
     /**************************************************************************/
     @Event(handlers = HomeWelcomeHandler.class)
     void getRootCategories();
+
+    @Event(handlers = HomeWelcomeHandler.class)
+    void getICatLocDetail(long categoryId, int index);
 }

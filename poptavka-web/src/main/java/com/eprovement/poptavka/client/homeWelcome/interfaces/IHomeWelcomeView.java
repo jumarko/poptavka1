@@ -1,6 +1,6 @@
 package com.eprovement.poptavka.client.homeWelcome.interfaces;
 
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import com.eprovement.poptavka.shared.selectors.catLocSelector.ILesserCatLocDetail;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -22,11 +22,11 @@ public interface IHomeWelcomeView extends IsWidget, LazyView {
     public interface IHomeWelcomePresenter {
     }
 
-    SingleSelectionModel<ICatLocDetail> getCategorySelectionModel();
+    SingleSelectionModel<ILesserCatLocDetail> getCategorySelectionModel();
 
     ListDataProvider getDataProvider();
 
-    void displayCategories(ArrayList<ICatLocDetail> categories);
+    void displayCategories(ArrayList<ILesserCatLocDetail> categories);
 
     SimplePanel getFooterContainer();
 
