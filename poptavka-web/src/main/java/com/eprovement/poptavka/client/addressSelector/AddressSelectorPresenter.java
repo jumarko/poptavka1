@@ -10,10 +10,16 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.service.demand.AddressSelectorRPCServiceAsync;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
 import com.eprovement.poptavka.shared.selectors.addressSelector.AddressSuggestionDetail;
+import com.github.gwtbootstrap.client.ui.constants.ControlGroupType;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.LocalizableMessages;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -106,11 +112,31 @@ public class AddressSelectorPresenter
                 view.getCitySuggestBox().showSuggestionList();
             }
         }, FocusEvent.getType());
+        view.getCitySuggestBox().addValueChangeHandler(new ValueChangeHandler<String>() {
+
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                addressSuggestion = null;
+            }
+        });
+        view.getCitySuggestBox().addHandler(new BlurHandler() {
+
+            @Override
+            public void onBlur(BlurEvent event) {
+                if (addressSuggestion == null && !((String) view.getCityMonitor().getValue()).isEmpty()) {
+                    view.getCityMonitor().setExternalValidation(ControlGroupType.ERROR,
+                        LocalizableMessages.INSTANCE.addressSelectCityFromSuggestedList());
+                } else {
+                    view.getCityMonitor().setExternalValidation(ControlGroupType.NONE, "");
+                }
+            }
+        }, BlurEvent.getType());
         /** SELECTION. **/
         view.getCitySuggestBox().addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<Suggestion> event) {
                 addressSuggestion = (AddressSuggestionDetail) event.getSelectedItem();
+                view.getCityMonitor().setExternalValidation(ControlGroupType.NONE, "");
             }
         });
     }

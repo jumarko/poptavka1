@@ -262,13 +262,12 @@ public class SupplierCreationPresenter
      */
     private boolean canContinue(int step) {
         boolean valid = true;
+        valid = ((ProvidesValidate) view.getHolderPanel(step).getWidget()).isValid();
         //If firt tab, check if condition checked?
         if (step == FIRST_TAB_USER_REGISTRATION) {
             valid = view.isValid();
         }
-
-        ProvidesValidate widget = (ProvidesValidate) view.getHolderPanel(step).getWidget();
-        return valid && widget.isValid();
+        return valid;
     }
 
     /**
