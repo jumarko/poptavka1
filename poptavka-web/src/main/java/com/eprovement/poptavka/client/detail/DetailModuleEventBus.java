@@ -53,6 +53,12 @@ public interface DetailModuleEventBus extends EventBusWithLookup, InfoWidgetsGat
     void forward();
 
     /**************************************************************************/
+    /* Parent events.                                                         */
+    /**************************************************************************/
+    @Event(forwardToParent = true)
+    void requestCreditCount(long userId);
+
+    /**************************************************************************/
     /* Navigation events.                                                     */
     /**************************************************************************/
     @Event(forwardToModules = SupplierDemandsModule.class)

@@ -543,6 +543,7 @@ public class DetailModulePresenter
     public void onResponseSubstractCredit(Boolean result) {
         if (result) {
             eventBus.sendOfferMessage(view.getReplyHolder().getCreatedOfferMessage());
+            eventBus.requestCreditCount(Storage.getUser().getUserId());
         } else {
             eventBus.initServicesWidget2(popup.getSelectorPanel(), "You don't have enought credits, please recharge.");
             popup.show();

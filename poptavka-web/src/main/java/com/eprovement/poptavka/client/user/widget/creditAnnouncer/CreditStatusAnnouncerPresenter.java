@@ -74,7 +74,7 @@ public class CreditStatusAnnouncerPresenter extends
      * Sets credit announcer view to given panel.
      * @param creditAnnouncerPanel - holder panel
      */
-    public void onSetCreditAnnouncer(SimplePanel creditAnnouncerPanel) {
+    public void onInitCreditAnnouncer(SimplePanel creditAnnouncerPanel) {
         creditAnnouncerPanel.setWidget(view.getWidgetView());
         eventBus.requestCreditCount(Storage.getUser().getUserId());
     }

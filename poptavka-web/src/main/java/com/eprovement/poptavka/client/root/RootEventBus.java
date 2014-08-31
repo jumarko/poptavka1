@@ -159,7 +159,7 @@ public interface RootEventBus extends EventBusWithLookup,
     void setFooter(SimplePanel footerPanel);
 
     @Event(handlers = CreditStatusAnnouncerPresenter.class)
-    void setCreditAnnouncer(SimplePanel creditAnnouncerPanel);
+    void initCreditAnnouncer(SimplePanel creditAnnouncerPanel);
 
     @Event(broadcastTo = HandleResizeEvent.class, passive = true)
     void resize(int actualWidth);

@@ -366,6 +366,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
             return false;
         } else {
             businessUser.getBusinessUserData().substractCredits(credits);
+            generalService.save(businessUser);
             return true;
         }
     }
