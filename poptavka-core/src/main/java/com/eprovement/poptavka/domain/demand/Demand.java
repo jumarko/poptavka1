@@ -197,7 +197,7 @@ public class Demand extends DomainObject {
     @NotNull
     private DemandType type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.ALL)
     private Client client;
 

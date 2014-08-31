@@ -49,7 +49,7 @@ public class BusinessUser extends User {
     private BusinessType businessType;
 
     /** Business user data about company and contact person. */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @Cascade(value = CascadeType.ALL)
     @NotNull
     private BusinessUserData businessUserData;

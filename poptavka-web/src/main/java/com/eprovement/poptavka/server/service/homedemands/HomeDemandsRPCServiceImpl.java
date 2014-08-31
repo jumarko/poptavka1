@@ -389,6 +389,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //filters
         List<Category> allSubCategories = new ArrayList<Category>();
         for (ICatLocDetail cat : definition.getFilter().getCategories()) {
+            // TODO RELEASE ivlcek - this seems to be reassigning different list at each iteration
             allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
         }
         categorySearch.addFilterIn("category", allSubCategories);
