@@ -111,7 +111,7 @@ public interface SupplierDemandsModuleEventBus extends EventBusWithLookup, IEven
     void setUpdatedUnreadMessagesCount(UnreadMessagesDetail numberOfMessages);
 
     @Event(forwardToParent = true)
-    void setCreditAnnouncer(SimplePanel creditAnouncerContainer);
+    void initCreditAnnouncer(SimplePanel creditAnouncerContainer);
 
     /**************************************************************************/
     /* Common event                                                           */

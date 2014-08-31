@@ -103,7 +103,9 @@ public class SupplierDemandsWelcomePresenter extends LazyPresenter<
         eventBus.supplierMenuStyleChange(Constants.SUPPLIER_DEMANDS_WELCOME);
         eventBus.displayView(view.getWidgetView());
         eventBus.setFooter(view.getFooterContainer());
-        eventBus.setCreditAnnouncer(view.getCreditAnnouncerContainer());
+        if (view.getCreditAnnouncerContainer().getWidget() == null) {
+            eventBus.initCreditAnnouncer(view.getCreditAnnouncerContainer());
+        }
         eventBus.createTokenForHistory();
     }
 
