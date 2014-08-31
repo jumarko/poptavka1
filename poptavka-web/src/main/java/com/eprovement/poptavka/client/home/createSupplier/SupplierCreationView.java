@@ -181,6 +181,8 @@ public class SupplierCreationView extends OverflowComposite
                 ((ProvidesValidate) holder.getWidget()).reset();
             }
         }
+        conditionValidationImage.setVisible(false);
+        conditionLink.removeStyleName("color-red");
     }
 
     /**
