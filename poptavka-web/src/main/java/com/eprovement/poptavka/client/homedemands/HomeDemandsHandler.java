@@ -9,7 +9,6 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -44,9 +43,9 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
      * @param demandID
      */
     public void onGetDemand(long demandID) {
-        homeDemandsService.getDemand(demandID, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+        homeDemandsService.getDemand(demandID, new SecuredAsyncCallback<LesserDemandDetail>(eventBus) {
             @Override
-            public void onSuccess(FullDemandDetail result) {
+            public void onSuccess(LesserDemandDetail result) {
                 eventBus.displayDemandDetail(result);
             }
         });

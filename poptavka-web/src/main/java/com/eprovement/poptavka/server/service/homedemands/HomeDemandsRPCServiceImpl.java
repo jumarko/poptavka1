@@ -21,7 +21,7 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+//import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
@@ -65,7 +65,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private CategoryService categoryService;
     private LocalityService localityService;
     private TreeItemService treeItemService;
-    private Converter<Demand, FullDemandDetail> demandConverter;
     private Converter<Demand, LesserDemandDetail> lesserDemandConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
     private FulltextSearchService fulltextSearchService;
@@ -105,11 +104,6 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         this.fulltextSearchService = fulltextSearchService;
     }
 
-    @Autowired
-    public void setDemandConverter(
-            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
-        this.demandConverter = demandConverter;
-    }
 
     @Autowired
     public void setLesserDemandConverter(
@@ -157,8 +151,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @throws RPCException
      */
     @Override
-    public FullDemandDetail getDemand(long demandID) throws RPCException {
-        return demandConverter.convertToTarget(demandService.getById(demandID));
+    public LesserDemandDetail getDemand(long demandID) throws RPCException {
+        return lesserDemandConverter.convertToTarget(demandService.getById(demandID));
     }
 
     /**************************************************************************/
@@ -397,8 +391,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //filters
         List<Category> allSubCategories = new ArrayList<Category>();
         for (ICatLocDetail cat : definition.getFilter().getCategories()) {
-            // TODO RELEASE ivlcek - this seems to be reassigning different list at each iteration
-            allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
+            allSubCategories.addAll(Arrays.asList(getAllSubCategories(cat.getId())));
         }
         categorySearch.addFilterIn("category", allSubCategories);
 
@@ -409,7 +402,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         //sorts
         categorySearch.addSorts(sortConverter.convertToSourceList(
-                categorySearch.getSearchClass(), definition.getSortOrder()));
+                DemandCategory.class, definition.getSortOrder()));
         return categorySearch;
     }
 
@@ -438,9 +431,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //filters
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (ICatLocDetail loc : definition.getFilter().getLocalities()) {
-            // TODO RELEASE ivlcek - allSubLocalities seems to have assigned only values from last iteration
-            allSubLocalities = Arrays.asList(
-                    this.getAllSublocalities(loc.getId()));
+            allSubLocalities.addAll(Arrays.asList(this.getAllSublocalities(loc.getId())));
         }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
@@ -451,7 +442,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         //sorts
         localitySearch.addSorts(sortConverter.convertToSourceList(
-                localitySearch.getSearchClass(), definition.getSortOrder()));
+                DemandLocality.class, definition.getSortOrder()));
         return localitySearch;
     }
 

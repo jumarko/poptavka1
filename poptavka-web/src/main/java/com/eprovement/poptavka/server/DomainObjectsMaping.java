@@ -16,7 +16,7 @@ import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserField;
 import com.eprovement.poptavka.shared.domain.FullClientDetail.ClientField;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail.UserMessageField;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;

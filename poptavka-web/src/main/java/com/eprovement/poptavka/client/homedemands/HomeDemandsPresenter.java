@@ -11,7 +11,6 @@ import com.eprovement.poptavka.client.homedemands.HomeDemandsPresenter.HomeDeman
 import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 //import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
@@ -402,10 +401,8 @@ public class HomeDemandsPresenter
      * object is retrieved and then selected.
      * @param demandDetail
      */
-    public void onDisplayDemandDetail(FullDemandDetail demandDetail) {
-        LesserDemandDetail ldd = new LesserDemandDetail();
-        // TODO ivlcek - dokoncit 
-        view.getDataGrid().getSelectionModel().setSelected(ldd, true);
+    public void onDisplayDemandDetail(LesserDemandDetail lesserDemandDetail) {
+        view.getDataGrid().getSelectionModel().setSelected(lesserDemandDetail, true);
     }
 
     /**

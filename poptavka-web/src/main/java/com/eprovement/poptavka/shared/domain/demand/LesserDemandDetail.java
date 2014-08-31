@@ -10,7 +10,6 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.LocalityColumn.Ta
 import com.eprovement.poptavka.client.user.widget.grid.columns.UrgencyColumn.TableDisplayValidTo;
 import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.search.ISortField;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
 
@@ -26,40 +25,6 @@ import java.util.Date;
  */
 public class LesserDemandDetail implements IsSerializable, TableDisplayCreatedDate,
     TableDisplayValidTo, TableDisplayDemandTitle, TableDisplayDemandStatus, TableDisplayLocality {
-
-    /**************************************************************************/
-    /* Enums                                                                  */
-    /**************************************************************************/
-    //Only fields that can be updated
-    public enum DemandField implements ISortField {
-
-        TITLE("title"),
-        END_DATE("endDate"),
-        VALID_TO("validTo"),
-        LOCALITIES("localities"),
-        DEMAND_STATUS("status"),
-        CREATED("createdDate");
-
-        private String value;
-
-        private DemandField(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String getValue() {
-            return value;
-        }
-
-        public static DemandField toDemandField(String value) {
-            for (DemandField field : DemandField.values()) {
-                if (field.getValue().equals(value)) {
-                    return field;
-                }
-            }
-            return null;
-        }
-    }
 
     public enum DemandType {
 
