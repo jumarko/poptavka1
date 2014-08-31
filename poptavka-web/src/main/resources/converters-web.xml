@@ -45,6 +45,9 @@
         <constructor-arg ref="localityConverter"/>
         <constructor-arg ref="categoryConverter"/>
     </bean>
+    <bean id="lesserDemandConverter" class="com.eprovement.poptavka.server.converter.LesserDemandConverter">
+        <constructor-arg ref="localityConverter"/>
+    </bean>
     <bean id="invoiceConverter" class="com.eprovement.poptavka.server.converter.InvoiceConverter">
         <constructor-arg index="0" ref="paymentMethodConverter"/>
         <constructor-arg index="1" ref="userServiceConverter"/>

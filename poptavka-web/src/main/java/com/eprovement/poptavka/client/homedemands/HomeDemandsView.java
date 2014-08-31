@@ -9,8 +9,8 @@ import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalPagerWidget;
 import com.eprovement.poptavka.resources.StyleResource;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail.DemandField;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -51,7 +51,7 @@ public class HomeDemandsView extends OverflowComposite
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) UniversalAsyncGrid<FullDemandDetail> dataGrid;
+    @UiField(provided = true) UniversalAsyncGrid<LesserDemandDetail> dataGrid;
     @UiField SimplePanel detailPanel, footerPanel, categoryTreePanel;
     @UiField Label filterLabel;
     @UiField Button filterClearBtn;
@@ -75,12 +75,12 @@ public class HomeDemandsView extends OverflowComposite
      * Initialize UniversalAsyncGrid through UniversalGridFactory.
      */
     private void initTable() {
-        dataGrid = new UniversalAsyncGridBuilder<FullDemandDetail>()
+        dataGrid = new UniversalAsyncGridBuilder<LesserDemandDetail>()
             .addColumnDemandCreated(null)
             .addColumnDemandTitle(null)
             .addColumnLocality(null)
             .addColumnUrgency()
-            .addSelectionModel(new SingleSelectionModel(), FullDemandDetail.KEY_PROVIDER)
+            .addSelectionModel(new SingleSelectionModel(), LesserDemandDetail.KEY_PROVIDER)
             .addDefaultSort(Arrays.asList(SortPair.desc(DemandField.CREATED)))
             .build();
     }
@@ -102,7 +102,7 @@ public class HomeDemandsView extends OverflowComposite
      * @return the universal asynchronous grid.
      */
     @Override
-    public UniversalAsyncGrid<FullDemandDetail> getDataGrid() {
+    public UniversalAsyncGrid<LesserDemandDetail> getDataGrid() {
         return dataGrid;
     }
 

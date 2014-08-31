@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.mvp4g.client.annotation.Debug;
 import com.mvp4g.client.annotation.Event;
@@ -75,7 +76,7 @@ public interface HomeDemandsEventBus extends EventBusWithLookup, IEventBusData,
     /**************************************************************************/
     @Event(historyConverter = HomeDemandsHistoryConverter.class, name = "token")
     String createTokenForHistory(SearchModuleDataHolder filterHolder,
-            ICatLocDetail categoryDetail, int page, FullDemandDetail demandDetail);
+            ICatLocDetail categoryDetail, int page, LesserDemandDetail demandDetail);
 
     /**************************************************************************/
     /* Business events handled by Presenter.                                  */
