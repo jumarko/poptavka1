@@ -21,7 +21,8 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.demand.DemandService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+//import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.util.search.Searcher;
@@ -64,7 +65,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     private CategoryService categoryService;
     private LocalityService localityService;
     private TreeItemService treeItemService;
-    private Converter<Demand, FullDemandDetail> demandConverter;
+    private Converter<Demand, LesserDemandDetail> lesserDemandConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
     private FulltextSearchService fulltextSearchService;
     private FilterConverter filterConverter; //TODO MARTIN LATER - why not searchConverter used
@@ -103,10 +104,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         this.fulltextSearchService = fulltextSearchService;
     }
 
+
     @Autowired
-    public void setDemandConverter(
-            @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
-        this.demandConverter = demandConverter;
+    public void setLesserDemandConverter(
+            @Qualifier("lesserDemandConverter") Converter<Demand, LesserDemandDetail> lesserDemandConverter) {
+        this.lesserDemandConverter = lesserDemandConverter;
     }
 
     @Autowired
@@ -149,8 +151,8 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @throws RPCException
      */
     @Override
-    public FullDemandDetail getDemand(long demandID) throws RPCException {
-        return demandConverter.convertToTarget(demandService.getById(demandID));
+    public LesserDemandDetail getDemand(long demandID) throws RPCException {
+        return lesserDemandConverter.convertToTarget(demandService.getById(demandID));
     }
 
     /**************************************************************************/
@@ -195,9 +197,9 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @throws RPCException
      */
     @Override
-    public List<FullDemandDetail> getDemands(SearchDefinition definition) throws RPCException {
+    public List<LesserDemandDetail> getDemands(SearchDefinition definition) throws RPCException {
         if (definition == null || definition.getFilter() == null) {
-            //genera;
+            //general
             return getDemandsGeneral(definition);
         } else {
             //fulltext
@@ -228,11 +230,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @param definition holder for FirstResult and MaxResult attributes
      * @return demands
      */
-    private List<FullDemandDetail> getDemandsGeneral(SearchDefinition definition) {
+    private List<LesserDemandDetail> getDemandsGeneral(SearchDefinition definition) {
         final Search search = getDemandFilter(definition);
         search.setFirstResult(definition.getFirstResult());
         search.setMaxResults(definition.getMaxResult());
-        return demandConverter.convertToTargetList(generalService.search(search));
+        return lesserDemandConverter.convertToTargetList(generalService.search(search));
     }
 
     /**************************************************************************/
@@ -258,11 +260,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
     /**
      * Get demands by full text search.
      *
-     * @param searchText - text to be search
-     * @return demands
+     * @param searchText - text to be searched for in all Demands
+     * @return list of LesserDemandDetail objects
      * @throws RPCException
      */
-    public List<FullDemandDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
+    public List<LesserDemandDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
         final List<Demand> foundDemands = this.fulltextSearchService.search(
                 Demand.class, Demand.DEMAND_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
 
@@ -270,11 +272,11 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         final List<Demand> foundDemandsFilteredByStatus = Searcher.searchCollection(foundDemands, search);
 
         if (foundDemandsFilteredByStatus.size() <= definition.getFirstResult() + definition.getMaxResult()) {
-            return demandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
+            return lesserDemandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
                 definition.getFirstResult(),
                 foundDemandsFilteredByStatus.size()));
         } else {
-            return demandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
+            return lesserDemandConverter.convertToTargetList(foundDemandsFilteredByStatus.subList(
                 definition.getFirstResult(),
                 definition.getFirstResult() + definition.getMaxResult()));
         }
@@ -323,14 +325,14 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * @param definition define filtering criteria
      * @return demands
      */
-    private List<FullDemandDetail> filterWithAttributes(SearchDefinition definition) {
+    private List<LesserDemandDetail> filterWithAttributes(SearchDefinition definition) {
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
             Search search = this.getDemandFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.demandConverter.convertToTargetList(this.generalService.search(search));
+            return this.lesserDemandConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
         if (!definition.getFilter().getCategories().isEmpty()
@@ -338,7 +340,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             Search search = this.getCategoryFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.demandConverter.convertToTargetList(generalService.search(search));
+            return this.lesserDemandConverter.convertToTargetList(generalService.search(search));
         }
         //0 1
         if (definition.getFilter().getCategories().isEmpty()
@@ -346,18 +348,18 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             Search search = this.getLocalityFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.demandConverter.convertToTargetList(this.generalService.search(search));
+            return this.lesserDemandConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 1  --> perform join if filtering by category and locality was used
         if (!definition.getFilter().getCategories().isEmpty()
                 && !definition.getFilter().getLocalities().isEmpty()) {
             //TODO LATER : Martin 16.4.2013, thing about better solution due to performance
-            List<FullDemandDetail> catLocDemands = getCategoryLocality(definition);
+            List<LesserDemandDetail> catLocDemands = getCategoryLocality(definition);
             int upperBound = definition.getFirstResult() + definition.getMaxResult();
             if (upperBound > catLocDemands.size()) {
                 upperBound = catLocDemands.size();
             }
-            return new ArrayList<FullDemandDetail>(catLocDemands.subList(definition.getFirstResult(), upperBound));
+            return new ArrayList<LesserDemandDetail>(catLocDemands.subList(definition.getFirstResult(), upperBound));
         }
         return null;
     }
@@ -389,7 +391,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //filters
         List<Category> allSubCategories = new ArrayList<Category>();
         for (ICatLocDetail cat : definition.getFilter().getCategories()) {
-            allSubCategories = Arrays.asList(getAllSubCategories(cat.getId()));
+            allSubCategories.addAll(Arrays.asList(getAllSubCategories(cat.getId())));
         }
         categorySearch.addFilterIn("category", allSubCategories);
 
@@ -400,7 +402,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         //sorts
         categorySearch.addSorts(sortConverter.convertToSourceList(
-                categorySearch.getSearchClass(), definition.getSortOrder()));
+                DemandCategory.class, definition.getSortOrder()));
         return categorySearch;
     }
 
@@ -429,8 +431,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         //filters
         List<Locality> allSubLocalities = new ArrayList<Locality>();
         for (ICatLocDetail loc : definition.getFilter().getLocalities()) {
-            allSubLocalities = Arrays.asList(
-                    this.getAllSublocalities(loc.getId()));
+            allSubLocalities.addAll(Arrays.asList(this.getAllSublocalities(loc.getId())));
         }
         localitySearch.addFilterIn("locality", allSubLocalities);
 
@@ -441,7 +442,7 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         //sorts
         localitySearch.addSorts(sortConverter.convertToSourceList(
-                localitySearch.getSearchClass(), definition.getSortOrder()));
+                DemandLocality.class, definition.getSortOrder()));
         return localitySearch;
     }
 
@@ -449,21 +450,21 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
      * Create Search object for searching in categories and localities and demands attributes.
      *
      * @param definition - represents searching criteria
-     * @return
+     * @return list of <code>LesserDemandDetail</code> objects
      */
-    private List<FullDemandDetail> getCategoryLocality(SearchDefinition definition) {
-        List<FullDemandDetail> demandsCat = this.demandConverter.convertToTargetList(
+    private List<LesserDemandDetail> getCategoryLocality(SearchDefinition definition) {
+        List<LesserDemandDetail> demandsCat = this.lesserDemandConverter.convertToTargetList(
                 this.generalService.searchAndCount(
                 this.getCategoryFilter(definition))
                 .getResult());
 
-        List<FullDemandDetail> demandsLoc = this.demandConverter.convertToTargetList(
+        List<LesserDemandDetail> demandsLoc = this.lesserDemandConverter.convertToTargetList(
                 this.generalService.searchAndCount(
                 this.getLocalityFilter(definition))
                 .getResult());
 
-        List<FullDemandDetail> demands = new ArrayList<FullDemandDetail>();
-        for (FullDemandDetail demandCat : demandsCat) {
+        List<LesserDemandDetail> demands = new ArrayList<LesserDemandDetail>();
+        for (LesserDemandDetail demandCat : demandsCat) {
             if (demandsLoc.contains(demandCat)) {
                 demands.add(demandCat);
             }

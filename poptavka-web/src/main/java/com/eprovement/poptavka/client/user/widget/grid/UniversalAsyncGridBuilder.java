@@ -30,7 +30,7 @@ import com.eprovement.poptavka.domain.enums.DemandStatus;
 import com.eprovement.poptavka.resources.datagrid.DataGridResources;
 import com.eprovement.poptavka.shared.domain.FullClientDetail;
 import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
@@ -171,7 +171,7 @@ public class UniversalAsyncGridBuilder<T> {
     }
 
     public UniversalAsyncGridBuilder addColumnDemandTitle(FieldUpdater fieldUpdater) {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.TITLE));
+        sortColumns.add(SortPair.asc(DemandField.TITLE));
         table.addColumn(MSGS.columnTitle(), GRSCS.dataGridStyle().colWidthTitle(),
             new DemandTitleColumn(fieldUpdater));
         return this;
@@ -221,7 +221,7 @@ public class UniversalAsyncGridBuilder<T> {
     }
 
     public UniversalAsyncGridBuilder addColumnPrice(FieldUpdater fieldUpdater) {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.PRICE));
+        sortColumns.add(SortPair.asc(DemandField.PRICE));
         table.addColumn(MSGS.columnPrice(), GRSCS.dataGridStyle().colWidthPrice(),
             new PriceColumn(fieldUpdater));
         return this;
@@ -243,7 +243,7 @@ public class UniversalAsyncGridBuilder<T> {
     }
 
     public UniversalAsyncGridBuilder addColumnEndDate(FieldUpdater fieldUpdater) {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.END_DATE));
+        sortColumns.add(SortPair.asc(DemandField.END_DATE));
         table.addColumn(MSGS.columnEndDate(), GRSCS.dataGridStyle().colWidthDate(),
             new EndDateColumn(fieldUpdater));
         return this;
@@ -264,7 +264,7 @@ public class UniversalAsyncGridBuilder<T> {
     }
 
     public UniversalAsyncGridBuilder addColumnDemandCreated(FieldUpdater fieldUpdater) {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.CREATED));
+        sortColumns.add(SortPair.asc(DemandField.CREATED));
         table.addColumn(MSGS.columnCreatedDate(), GRSCS.dataGridStyle().colWidthCreatedDate(),
             new CreatedDateColumn(fieldUpdater));
         return this;
@@ -336,7 +336,7 @@ public class UniversalAsyncGridBuilder<T> {
      * @return created demands status image column
      */
     public UniversalAsyncGridBuilder addColumnDemandStatus() {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.DEMAND_STATUS));
+        sortColumns.add(SortPair.asc(DemandField.DEMAND_STATUS));
         //create header represented by urgency's image
         Header demandStatusHeader = new Header<DemandStatus>(new DemandStatusImageCell()) {
             @Override
@@ -361,7 +361,7 @@ public class UniversalAsyncGridBuilder<T> {
      * @return urgencyColumn
      */
     public UniversalAsyncGridBuilder addColumnUrgency() {
-        sortColumns.add(SortPair.asc(FullDemandDetail.DemandField.VALID_TO));
+        sortColumns.add(SortPair.asc(DemandField.VALID_TO));
         //create urgency's header represented by urgency's image
         Header urgencyHeader = new Header<Date>(new UrgentImageCell()) {
             @Override

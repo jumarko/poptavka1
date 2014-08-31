@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.home.createDemand.widget;
 import com.eprovement.poptavka.client.common.monitors.ValidationMonitor;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;

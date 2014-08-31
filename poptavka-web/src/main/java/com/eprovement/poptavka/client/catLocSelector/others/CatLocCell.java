@@ -102,7 +102,11 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
                 }
                 break;
             case CatLocSelectorBuilder.CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT:
-                if (value.isLeafsParent() || value.isLeaf()) {
+                // TODO LATER ivlcek - since we decided to have checkboxes on all categories/localities
+                // in CellBrowser we don't need the information about category.isLeafsParent(). Maybe in
+                // future we can use it but I don't think so. In that case uncomment following line:
+//                if (value.isLeafsParent() || value.isLeaf()) {
+                if (value.isLeaf()) {
                     manageSelectedItems(value);
                 }
                 break;
@@ -190,7 +194,11 @@ public class CatLocCell extends AbstractCell<ICatLocDetail> {
                 }
                 return "";
             case CatLocSelectorBuilder.CHECKBOXES_ON_LEAF_AND_LEAFS_PARENT:
-                if (!category.isLeafsParent() && !category.isLeaf()) {
+                // TODO LATER ivlcek - since we decided to have checkboxes on all categories/localities
+                // in CellBrowser we don't need the information about category.isLeafsParent(). Maybe in
+                // future we can use it but I don't think so. In that case uncomment following line:
+//                if (!category.isLeafsParent() && !category.isLeaf()) {
+                if (!category.isLeaf()) {
                     return "hidden";
                 }
                 return "";

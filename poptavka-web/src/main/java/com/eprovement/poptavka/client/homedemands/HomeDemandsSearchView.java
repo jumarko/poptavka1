@@ -14,7 +14,7 @@ import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.homedemands.HomeDemandsSearchView.SearchModulViewUiBinder;
 import com.eprovement.poptavka.domain.enums.DemandTypeType;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.google.gwt.core.client.GWT;

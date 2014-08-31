@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.user.supplierdemands.widgets;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGridBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.domain.supplierdemands.SupplierPotentialDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;

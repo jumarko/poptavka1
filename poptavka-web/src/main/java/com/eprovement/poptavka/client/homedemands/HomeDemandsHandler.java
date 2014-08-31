@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeDemandsRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
@@ -43,9 +43,9 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
      * @param demandID
      */
     public void onGetDemand(long demandID) {
-        homeDemandsService.getDemand(demandID, new SecuredAsyncCallback<FullDemandDetail>(eventBus) {
+        homeDemandsService.getDemand(demandID, new SecuredAsyncCallback<LesserDemandDetail>(eventBus) {
             @Override
-            public void onSuccess(FullDemandDetail result) {
+            public void onSuccess(LesserDemandDetail result) {
                 eventBus.displayDemandDetail(result);
             }
         });
@@ -66,9 +66,9 @@ public class HomeDemandsHandler extends BaseEventHandler<HomeDemandsEventBus> {
      */
     public void onGetData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId) {
         homeDemandsService.getDemands(searchDefinition,
-            new GetDataCallback<FullDemandDetail>(eventBus, grid, requestId) {
+            new GetDataCallback<LesserDemandDetail>(eventBus, grid, requestId) {
                 @Override
-                public void onSuccess(List<FullDemandDetail> result) {
+                public void onSuccess(List<LesserDemandDetail> result) {
                     super.onSuccess(result);
                     eventBus.responseGetData();
                 }

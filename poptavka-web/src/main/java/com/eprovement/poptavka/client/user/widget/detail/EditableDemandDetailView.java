@@ -13,7 +13,7 @@ import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail.DemandField;
+import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.FluidRow;
 import com.github.gwtbootstrap.client.ui.Tooltip;

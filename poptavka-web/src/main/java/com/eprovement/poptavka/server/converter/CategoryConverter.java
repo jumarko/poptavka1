@@ -49,7 +49,11 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
         detail.setSuppliersCount(category.getSupplierCount());
         detail.setLevel(category.getLevel());
         detail.setLeaf(category.isLeaf());
-        detail.setLeafsParent(isLeafsParent(category.getId()));
+        // TODO LATER ivlcek - since we decided to have checkboxes on all categories/localities
+        // in CellBrowser we don't need the information about category.isLeafsParent(). Maybe in
+        // future we can use it but I don't think so. In that case uncomment following line:
+//        detail.setLeafsParent(isLeafsParent(category.getId()));
+        detail.setLeafsParent(true);
         Category categoryParent = category.getParent();
         if (categoryParent != null) {
             detail.setParentName(categoryParent.getName());

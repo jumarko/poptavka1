@@ -12,7 +12,8 @@ import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+//import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
+import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -53,7 +54,7 @@ public class HomeDemandsPresenter
     public interface HomeDemandsViewInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         //Table
-        UniversalAsyncGrid<FullDemandDetail> getDataGrid();
+        UniversalAsyncGrid<LesserDemandDetail> getDataGrid();
 
         SimplePager getPager();
 
@@ -372,8 +373,8 @@ public class HomeDemandsPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected demand
-                FullDemandDetail selected =
-                    (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                LesserDemandDetail selected =
+                    (LesserDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
                     .getSelectedObject();
 
                 if (selected != null) {
@@ -400,8 +401,8 @@ public class HomeDemandsPresenter
      * object is retrieved and then selected.
      * @param demandDetail
      */
-    public void onDisplayDemandDetail(FullDemandDetail demandDetail) {
-        view.getDataGrid().getSelectionModel().setSelected(demandDetail, true);
+    public void onDisplayDemandDetail(LesserDemandDetail lesserDemandDetail) {
+        view.getDataGrid().getSelectionModel().setSelected(lesserDemandDetail, true);
     }
 
     /**
@@ -434,9 +435,9 @@ public class HomeDemandsPresenter
      */
     private void deselectGridSelection() {
         SingleSelectionModel selectionModel = (SingleSelectionModel) view.getDataGrid().getSelectionModel();
-        FullDemandDetail supplier = (FullDemandDetail) (selectionModel).getSelectedObject();
-        if (supplier != null) {
-            selectionModel.setSelected(supplier, false);
+        LesserDemandDetail demand = (LesserDemandDetail) (selectionModel).getSelectedObject();
+        if (demand != null) {
+            selectionModel.setSelected(demand, false);
         }
         selectedDemandId = -1L;
         eventBus.displayAdvertisement();
@@ -447,8 +448,8 @@ public class HomeDemandsPresenter
      * @param setStorageHistoryPointerValue
      */
     private void createTokenForHistory() {
-        FullDemandDetail demand =
-            (FullDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+        LesserDemandDetail demand =
+            (LesserDemandDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
             .getSelectedObject();
 
         eventBus.createTokenForHistory(searchDataHolder, selectedCategory, view.getPager().getPage(), demand);
