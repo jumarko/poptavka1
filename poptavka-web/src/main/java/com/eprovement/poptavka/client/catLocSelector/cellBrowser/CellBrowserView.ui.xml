@@ -6,11 +6,16 @@
              xmlns:c='urn:import:com.google.gwt.user.cellview.client'>
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />    
+    <ui:style>
+        .selector-height {
+            height:530px;
+        }
+    </ui:style>
 
-    <b:FluidContainer>
+    <b:FluidContainer styleName="{style.selector-height}">
         <b:FluidRow>
             <b:Column size="12">
-                <g:SimplePanel ui:field="cellBrowserHolder" styleName="{res.initial.scrollContainer}"/>
+                <g:SimplePanel ui:field="cellBrowserHolder"/>
             </b:Column>
         </b:FluidRow>
         <b:FluidRow>
