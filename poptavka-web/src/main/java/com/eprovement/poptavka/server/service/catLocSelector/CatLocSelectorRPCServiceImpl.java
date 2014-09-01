@@ -107,7 +107,7 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
             case CatLocSelectorBuilder.SELECTOR_TYPE_CATEGORIES:
                 return categoryConverter.convertToTargetList(categoryService.getRootCategories());
             case CatLocSelectorBuilder.SELECTOR_TYPE_LOCALITIES:
-                return localityConverter.convertToTargetList(localityService.getLocalities(LocalityType.REGION));
+                return localityConverter.convertToTargetList(localityService.getLocalities(LocalityType.COUNTRY));
             default:
                 return new ArrayList<ICatLocDetail>();
         }
@@ -247,8 +247,6 @@ public class CatLocSelectorRPCServiceImpl extends AutoinjectingRemoteService
             localityHierarchy.addFirst(localityConverter.convertToTarget(locality));
             locality = locality.getParent();
         }
-        //Remove first because COUNTRY is not supported yet.
-        localityHierarchy.removeFirst();
 
         LOGGER.info("Requested hierarchy: " + localityHierarchy.toString());
         return localityHierarchy;
