@@ -25,7 +25,7 @@
                     </b:Column>
                     <b:Column size="8">
                         <cm:ValidationMonitor ui:field='cityMonitor'>
-                            <g:SuggestBox title="suggestBoxCity" ui:field="cityBox" limit="7" debugId="citySuggestBox"/>
+                            <g:SuggestBox title="suggestBoxCity" ui:field="cityBox" limit="7" debugId="citySuggestBox" addStyleNames="append-search"/>
                         </cm:ValidationMonitor>
                     </b:Column>
                 </b:FluidRow>
