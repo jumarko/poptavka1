@@ -5,7 +5,7 @@
 package com.eprovement.poptavka.client.service.demand;
 
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  *
- * @author Praso
+ * @author Ivan Vlcek
  */
 @RemoteServiceRelativePath(HomeSuppliersRPCService.URL)
 public interface HomeSuppliersRPCService extends RemoteService {
@@ -23,9 +23,9 @@ public interface HomeSuppliersRPCService extends RemoteService {
 
     ICatLocDetail getCategory(long categoryID) throws RPCException;
 
-    FullSupplierDetail getSupplier(long supplierID) throws RPCException;
+    LesserSupplierDetail getSupplier(long supplierID) throws RPCException;
 
-    List<FullSupplierDetail> getSuppliers(SearchDefinition searchDefinition) throws RPCException;
+    List<LesserSupplierDetail> getSuppliers(SearchDefinition searchDefinition) throws RPCException;
 
     Integer getSuppliersCount(SearchDefinition searchDefinition) throws RPCException;
 

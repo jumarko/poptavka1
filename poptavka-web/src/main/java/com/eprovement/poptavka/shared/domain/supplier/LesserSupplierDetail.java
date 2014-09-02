@@ -1,11 +1,10 @@
 package com.eprovement.poptavka.shared.domain.supplier;
 
-import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.client.user.widget.grid.columns.AddressColumn.TableDisplayAddress;
 import com.eprovement.poptavka.client.user.widget.grid.columns.LogoColumn.TableDisplayLogo;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn.TableDisplayRating;
 import com.eprovement.poptavka.shared.domain.AddressDetail;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
+import com.eprovement.poptavka.shared.domain.LesserBusinessUserDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.view.client.ProvidesKey;
@@ -13,12 +12,8 @@ import com.google.gwt.view.client.ProvidesKey;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 
-public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
+public class LesserSupplierDetail implements IsSerializable, TableDisplayRating,
     TableDisplayAddress, TableDisplayLogo {
 
     /**************************************************************************/
@@ -26,24 +21,15 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
     /**************************************************************************/
 
     private long supplierId;
-    /** BusinessUserDetail. **/
-    private BusinessUserDetail userData = new BusinessUserDetail();
-    /** Class lists. **/
-    @Valid
-    @Size(min = 1)
-    private ArrayList<ICatLocDetail> localities = new ArrayList<ICatLocDetail>();
-    @Valid
-    @Size(min = 1)
+    private LesserBusinessUserDetail userData = new LesserBusinessUserDetail();
     private ArrayList<ICatLocDetail> categories = new ArrayList<ICatLocDetail>();
-    /** Others. **/
     private boolean certified = false;
-    @Min(value = 0, message = "{ratingMin}", groups = SearchGroup.class)
-    @Max(value = 100, message = "{ratingMax}", groups = SearchGroup.class)
     private Integer overalRating;
+
     /** Key provider **/
-    public static final ProvidesKey<FullSupplierDetail> KEY_PROVIDER = new ProvidesKey<FullSupplierDetail>() {
+    public static final ProvidesKey<LesserSupplierDetail> KEY_PROVIDER = new ProvidesKey<LesserSupplierDetail>() {
         @Override
-        public Object getKey(FullSupplierDetail item) {
+        public Object getKey(LesserSupplierDetail item) {
             return item == null ? null : item.getSupplierId();
         }
     };
@@ -51,7 +37,7 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
     /**************************************************************************/
     /* Constuctors                                                            */
     /**************************************************************************/
-    public FullSupplierDetail() {
+    public LesserSupplierDetail() {
         //for serialization
     }
 
@@ -64,14 +50,6 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
 
     public void setSupplierId(long supplierId) {
         this.supplierId = supplierId;
-    }
-
-    public ArrayList<ICatLocDetail> getLocalities() {
-        return localities;
-    }
-
-    public void setLocalities(Collection<ICatLocDetail> localities) {
-        this.localities = new ArrayList<ICatLocDetail>(localities);
     }
 
     public ArrayList<ICatLocDetail> getCategories() {
@@ -90,11 +68,11 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
         this.certified = certified;
     }
 
-    public BusinessUserDetail getUserData() {
+    public LesserBusinessUserDetail getUserData() {
         return userData;
     }
 
-    public void setUserData(BusinessUserDetail userData) {
+    public void setUserData(LesserBusinessUserDetail userData) {
         this.userData = userData;
     }
 
@@ -117,12 +95,11 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
     /**************************************************************************/
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder("FullSupplierDetail{");
+        StringBuilder str = new StringBuilder("LesserSupplierDetail{");
         str.append("supplierId=" + supplierId);
-        str.append(", localities=" + localities);
         str.append(", categories=" + categories);
         str.append(", certified=" + certified);
-        str.append(", certified=" + certified);
+        str.append(", overalRating=" + overalRating);
         str.append(", businessData=" + userData.toString());
         str.append('}');
         return str.toString();
@@ -136,7 +113,7 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final FullSupplierDetail other = (FullSupplierDetail) obj;
+        final LesserSupplierDetail other = (LesserSupplierDetail) obj;
         if (this.supplierId != other.supplierId) {
             return false;
         }
@@ -145,8 +122,8 @@ public class FullSupplierDetail implements IsSerializable, TableDisplayRating,
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 11 * hash + (int) (this.supplierId ^ (this.supplierId >>> 32));
+        int hash = 17;
+        hash = 13 * hash + (int) (this.supplierId ^ (this.supplierId >>> 32));
         return hash;
     }
 }

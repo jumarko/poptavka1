@@ -14,8 +14,8 @@ import com.eprovement.poptavka.client.user.widget.grid.columns.AddressColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.LogoColumn;
 import com.eprovement.poptavka.client.user.widget.grid.columns.RatingColumn;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.core.client.GWT;
@@ -51,7 +51,7 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
     /* ATTRIBUTES                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) UniversalAsyncGrid<FullSupplierDetail> dataGrid;
+    @UiField(provided = true) UniversalAsyncGrid<LesserSupplierDetail> dataGrid;
     @UiField SimplePanel detailPanel, footerPanel, categoryTreePanel;
     @UiField Label filterLabel;
     @UiField Button filterClearBtn;
@@ -86,11 +86,11 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
         // used to identify contacts when fields (such as the name and address)
         // change.
         CssInjector.INSTANCE.ensureGridStylesInjected(GRSCS);
-        dataGrid = new UniversalAsyncGrid<FullSupplierDetail>(initSort(), pager.getPageSize(), GRSCS);
+        dataGrid = new UniversalAsyncGrid<LesserSupplierDetail>(initSort(), pager.getPageSize(), GRSCS);
         dataGrid.setWidth("100%");
         dataGrid.setHeight("100%");
         // Selection handler
-        dataGrid.setSelectionModel(new SingleSelectionModel<FullSupplierDetail>(FullSupplierDetail.KEY_PROVIDER));
+        dataGrid.setSelectionModel(new SingleSelectionModel<LesserSupplierDetail>(LesserSupplierDetail.KEY_PROVIDER));
 
         // bind pager to grid
         pager.addStyleName("item");
@@ -115,7 +115,7 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
         // Company name.
         /**************************************************************************/
         //IdentityColumn - A passthrough column, useful for giving cells access to the entire row object.
-        Column<FullSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
+        Column<LesserSupplierDetail, SupplierCell> companyNameCol = new IdentityColumn(new SupplierCell());
         companyNameCol.setSortable(false);
         dataGrid.addColumn(
             MSGS.columnSupplierName(),
@@ -161,7 +161,7 @@ public class HomeSuppliersView extends OverflowComposite implements HomeSupplier
      * @return the universal asynchronous grid
      */
     @Override
-    public UniversalAsyncGrid<FullSupplierDetail> getDataGrid() {
+    public UniversalAsyncGrid<LesserSupplierDetail> getDataGrid() {
         return dataGrid;
     }
 

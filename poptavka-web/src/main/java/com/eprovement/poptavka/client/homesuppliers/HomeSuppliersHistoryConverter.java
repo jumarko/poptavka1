@@ -6,7 +6,7 @@ package com.eprovement.poptavka.client.homesuppliers;
 import com.eprovement.poptavka.client.common.session.Constants;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.History;
 import com.mvp4g.client.annotation.History.HistoryConverterType;
@@ -47,7 +47,7 @@ public class HomeSuppliersHistoryConverter implements HistoryConverter<HomeSuppl
      * @return created token as string
      */
     public String onCreateTokenForHistory(SearchModuleDataHolder searchDataHolder,
-        ICatLocDetail category, int page, FullSupplierDetail supplierDetail) {
+        ICatLocDetail category, int page, LesserSupplierDetail supplierDetail) {
         StringBuilder token = new StringBuilder();
         //Location
         token.append(Storage.getUser() == null ? LOCATION_HOME : LOCATION_USER);

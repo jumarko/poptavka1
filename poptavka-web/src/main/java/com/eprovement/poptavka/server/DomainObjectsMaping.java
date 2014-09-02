@@ -19,7 +19,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail.OfferField;
 import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail.MessageField;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail.UserMessageField;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail.SupplierField;
+import com.eprovement.poptavka.shared.domain.supplier.SupplierField;
 import java.util.ArrayList;
 import java.util.Objects;
 
