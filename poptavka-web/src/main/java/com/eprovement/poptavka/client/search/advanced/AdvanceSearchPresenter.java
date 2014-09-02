@@ -11,6 +11,7 @@ import com.eprovement.poptavka.client.common.validation.ProvidesValidate;
 import com.eprovement.poptavka.client.root.interfaces.IRootSelectors;
 import com.eprovement.poptavka.client.user.admin.interfaces.IAdminModule;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
+import com.github.gwtbootstrap.client.ui.Modal;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -18,6 +19,7 @@ import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -32,12 +34,12 @@ import com.mvp4g.client.view.LazyView;
  */
 @Presenter(view = AdvanceSearchView.class, async = SingleSplitter.class)
 public class AdvanceSearchPresenter
-        extends LazyPresenter<AdvanceSearchPresenter.AdvanceSearchInterface, SearchModuleEventBus> {
+    extends LazyPresenter<AdvanceSearchPresenter.AdvanceSearchInterface, SearchModuleEventBus> {
 
     /**************************************************************************/
     /*  View interface                                                        */
     /**************************************************************************/
-    public interface AdvanceSearchInterface extends LazyView {
+    public interface AdvanceSearchInterface extends LazyView, IsWidget {
 
         //Setters
         void setCurrentViewTabName();
@@ -48,6 +50,8 @@ public class AdvanceSearchPresenter
         void fillAttributes(SearchModuleDataHolder searchDataHolder);
 
         void addCustomItemToSearchWhatBox(boolean addOrRemove);
+
+        void showAdvancedSearchPopup();
 
         //Getters
         int getSearchWhat();
@@ -67,8 +71,6 @@ public class AdvanceSearchPresenter
         SimplePanel getCategorySelectorPanel();
 
         SimplePanel getLocalitySelectorPanel();
-
-        AdvanceSearchView getWidgetView();
     }
 
     /**************************************************************************/
@@ -112,8 +114,8 @@ public class AdvanceSearchPresenter
      * Inits adnvace search popup.
      * @param newAttributeSearchWidget - attribute search widget (not supported yet)
      */
-    public void onInitAdvanceSearchPopup(Widget newAttributeSearchWidget) {
-        switch(Storage.getCurrentlyLoadedView()) {
+    public void onShowAdvanceSearchPopup(Widget newAttributeSearchWidget) {
+        switch (Storage.getCurrentlyLoadedView()) {
             case Constants.HOME_DEMANDS_MODULE:
             case Constants.HOME_DEMANDS_BY_DEFAULT:
             case Constants.HOME_DEMANDS_BY_SEARCH:
@@ -135,13 +137,35 @@ public class AdvanceSearchPresenter
                 view.getTabLayoutPanel().selectTab(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
                 break;
         }
+        view.showAdvancedSearchPopup();
     }
 
     /**
-     * Show popup.
+     * Reset advanced search views.
      */
-    public void onShowAdvanceSearchPopup() {
-        view.getWidgetView().show();
+    public void onResetAdvanceSearchTabs() {
+        ProvidesValidate demandTab = (ProvidesValidate) view.getTabLayoutPanel()
+            .getWidget(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
+        if (demandTab != null) {
+            demandTab.reset();
+        }
+        ProvidesValidate supplierTab = (ProvidesValidate) view.getTabLayoutPanel()
+            .getWidget(AdvanceSearchView.SUPPLIER_SELECTOR_WIDGET);
+        if (supplierTab != null) {
+            supplierTab.reset();
+        }
+        SimplePanel categoryWidet = (SimplePanel) view.getTabLayoutPanel()
+            .getWidget(AdvanceSearchView.CATEGORY_SELECTOR_WIDGET);
+        ProvidesValidate categoryTab = (ProvidesValidate) categoryWidet.getWidget();
+        if (categoryTab != null) {
+            categoryTab.reset();
+        }
+        SimplePanel localityWidget = (SimplePanel) view.getTabLayoutPanel()
+            .getWidget(AdvanceSearchView.LOCALITY_SELECTOR_WIDGET);
+        ProvidesValidate localityTab = (ProvidesValidate) localityWidget.getWidget();
+        if (localityTab != null) {
+            localityTab.reset();
+        }
     }
 
     /**************************************************************************/
@@ -166,7 +190,7 @@ public class AdvanceSearchPresenter
             };
             timer.schedule(NO_CRITERIA_INFO_DISPLAY_TIME);
         } else {
-            view.getWidgetView().hide();
+            ((Modal) view).hide();
             forwardAccordingToSearchWhat(filter);
         }
     }
@@ -216,7 +240,7 @@ public class AdvanceSearchPresenter
         view.getCloseBtn().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                view.getWidgetView().hide();
+                ((Modal) view).hide();
             }
         });
     }
@@ -270,12 +294,12 @@ public class AdvanceSearchPresenter
                     case AdvanceSearchView.CATEGORY_SELECTOR_WIDGET:
                         //If not yet initialized, do it
                         if (view.getCategorySelectorPanel().getWidget() == null) {
-                            CatLocSelectorBuilder builder =
-                                new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
-                                        .initCategorySelector()
-                                        .initSelectorManager()
-                                        .withCheckboxes()
-                                        .build();
+                            CatLocSelectorBuilder builder
+                                = new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
+                                .initCategorySelector()
+                                .initSelectorManager()
+                                .withCheckboxes()
+                                .build();
                             instaceIdCategories = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getCategorySelectorPanel(), builder);
                         }
@@ -283,12 +307,12 @@ public class AdvanceSearchPresenter
                     case AdvanceSearchView.LOCALITY_SELECTOR_WIDGET:
                         //If not yet initialized, do it
                         if (view.getLocalitySelectorPanel().getWidget() == null) {
-                            CatLocSelectorBuilder builder =
-                                new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
-                                        .initLocalitySelector()
-                                        .initSelectorManager()
-                                        .withCheckboxes()
-                                        .build();
+                            CatLocSelectorBuilder builder
+                                = new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
+                                .initLocalitySelector()
+                                .initSelectorManager()
+                                .withCheckboxes()
+                                .build();
                             instaceIdLocalities = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getLocalitySelectorPanel(), builder);
                         }

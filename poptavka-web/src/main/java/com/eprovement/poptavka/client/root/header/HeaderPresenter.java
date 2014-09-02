@@ -183,7 +183,7 @@ public class HeaderPresenter extends BasePresenter<IHeaderView, RootEventBus>
         view.getSearch().getSearchButton().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.showAdvancedSearchPopup();
+                eventBus.goToAdvancedSearch();
             }
         });
     }

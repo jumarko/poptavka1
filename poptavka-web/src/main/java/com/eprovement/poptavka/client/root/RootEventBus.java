@@ -385,7 +385,7 @@ public interface RootEventBus extends EventBusWithLookup,
     void goToSearchModule();
 
     @Event(forwardToModules = SearchModule.class)
-    void showAdvancedSearchPopup();
+    void goToAdvancedSearch();
 
     @Event(forwardToModules = SearchModule.class)
     void resetSearchBar(Widget newAttributeSearchWidget);

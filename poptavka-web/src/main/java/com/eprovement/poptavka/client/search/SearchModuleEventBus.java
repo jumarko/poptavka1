@@ -50,6 +50,9 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLo
     @Event(handlers = SearchModulePresenter.class)
     void goToSearchModule();
 
+    @Event(handlers = SearchModulePresenter.class)
+    void goToAdvancedSearch();
+
     @Override
     @Event(handlers = SearchModulePresenter.class)
     void resetSearchBar(Widget newAttributeSearchWidget);
@@ -57,15 +60,12 @@ public interface SearchModuleEventBus extends EventBus, BaseChildEventBus, CatLo
     @Event(handlers = SearchModulePresenter.class)
     void showPopupNoSearchCriteria();
 
-    @Event(handlers = SearchModulePresenter.class)
-    void showAdvancedSearchPopup();
-
     /**************************************************************************/
     /* Business events handled by AdvanceSearchPresenter                      */
     /**************************************************************************/
     @Event(handlers = AdvanceSearchPresenter.class)
-    void initAdvanceSearchPopup(Widget newAttributeSearchWidget);
+    void showAdvanceSearchPopup(Widget newAttributeSearchWidget);
 
     @Event(handlers = AdvanceSearchPresenter.class)
-    void showAdvanceSearchPopup();
+    void resetAdvanceSearchTabs();
 }

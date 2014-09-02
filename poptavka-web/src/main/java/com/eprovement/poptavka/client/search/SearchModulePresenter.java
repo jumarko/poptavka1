@@ -33,7 +33,7 @@ import java.util.ArrayList;
  */
 @Presenter(view = SearchModuleView.class)
 public class SearchModulePresenter
-        extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
+    extends LazyPresenter<SearchModulePresenter.SearchModuleInterface, SearchModuleEventBus> {
 
     /**************************************************************************/
     /* Interfaces                                                             */
@@ -70,7 +70,6 @@ public class SearchModulePresenter
     /**************************************************************************/
     /** Attributes                                                            */
     /**************************************************************************/
-    private boolean resetAdvancePopup = true;
     private Widget newAttributeSearchWidget;
 
     /**************************************************************************/
@@ -119,12 +118,8 @@ public class SearchModulePresenter
     /**
      * Shows advanced search popup.
      */
-    public void onShowAdvancedSearchPopup() {
-        if (resetAdvancePopup) {
-            eventBus.initAdvanceSearchPopup(newAttributeSearchWidget);
-            resetAdvancePopup = false;
-        }
-        eventBus.showAdvanceSearchPopup();
+    public void onGoToAdvancedSearch() {
+        eventBus.showAdvanceSearchPopup(newAttributeSearchWidget);
     }
 
     /**
@@ -148,8 +143,8 @@ public class SearchModulePresenter
      * @param newAttributeSearchWidget - new attribute search widget
      */
     public void onResetSearchBar(Widget newAttributeSearchWidget) {
+        eventBus.resetAdvanceSearchTabs();
         view.getSearchContent().setText(null);
-        this.resetAdvancePopup = true;
         this.newAttributeSearchWidget = newAttributeSearchWidget;
     }
 
@@ -176,7 +171,7 @@ public class SearchModulePresenter
 
             @Override
             public void onClick(ClickEvent event) {
-                eventBus.showAdvancedSearchPopup();
+                eventBus.goToAdvancedSearch();
             }
         });
     }
