@@ -234,6 +234,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                         ++requestId);
                 } else {
                     super.updateRowCount(size, true);
+                    resize(Document.get().getClientWidth());
                 }
             }
 

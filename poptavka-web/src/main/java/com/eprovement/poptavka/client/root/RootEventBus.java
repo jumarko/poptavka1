@@ -406,6 +406,9 @@ public interface RootEventBus extends EventBusWithLookup,
     @Event(forwardToModules = CatLocSelectorModule.class)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
 
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void redrawCatLocSelectorGrid(int instanceId);
+
     /**************************************************************************/
     /* ADDRESS SELECTOR MODULE.                                               */
     /**************************************************************************/

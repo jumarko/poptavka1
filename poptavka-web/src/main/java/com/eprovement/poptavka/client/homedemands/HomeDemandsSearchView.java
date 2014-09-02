@@ -106,12 +106,12 @@ public class HomeDemandsSearchView extends Composite implements
                 DemandField.TITLE,
                 Operation.OPERATION_LIKE, ((String) titleMonitor.getValue()), group++));
         }
-        if (priceMonitorFrom.getValue() != null) {
+        if (!((WSPriceBox) priceMonitorFrom.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
                 DemandField.PRICE,
                 Operation.OPERATION_FROM, priceMonitorFrom.getValue(), group++));
         }
-        if (priceMonitorTo.getValue() != null) {
+        if (!((WSPriceBox) priceMonitorTo.getWidget()).getText().isEmpty()) {
             filters.add(new FilterItem(
                 DemandField.PRICE,
                 Operation.OPERATION_TO, priceMonitorTo.getValue(), group++));

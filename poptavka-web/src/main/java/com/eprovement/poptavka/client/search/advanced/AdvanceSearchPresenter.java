@@ -17,6 +17,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -35,6 +37,8 @@ import com.mvp4g.client.view.LazyView;
 @Presenter(view = AdvanceSearchView.class, async = SingleSplitter.class)
 public class AdvanceSearchPresenter
     extends LazyPresenter<AdvanceSearchPresenter.AdvanceSearchInterface, SearchModuleEventBus> {
+
+    private boolean recentlyReseted = true;
 
     /**************************************************************************/
     /*  View interface                                                        */
@@ -115,27 +119,31 @@ public class AdvanceSearchPresenter
      * @param newAttributeSearchWidget - attribute search widget (not supported yet)
      */
     public void onShowAdvanceSearchPopup(Widget newAttributeSearchWidget) {
-        switch (Storage.getCurrentlyLoadedView()) {
-            case Constants.HOME_DEMANDS_MODULE:
-            case Constants.HOME_DEMANDS_BY_DEFAULT:
-            case Constants.HOME_DEMANDS_BY_SEARCH:
-            case Constants.HOME_DEMANDS_BY_WELCOME:
-                view.setAdvanceContentTabsVisibility(true, false, false);
-                view.getTabLayoutPanel().selectTab(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
-                break;
-            case Constants.HOME_SUPPLIERS_MODULE:
-            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
-            case Constants.HOME_SUPPLIERS_BY_SEARCH:
-                view.setAdvanceContentTabsVisibility(false, true, false);
-                view.getTabLayoutPanel().selectTab(AdvanceSearchView.SUPPLIER_SELECTOR_WIDGET);
-                break;
-            default:
-                //TODO LATER Martin 22.4.2013 - disbaled searching in current view for BETA version
-                //view.getAttributeSelectorPanel().setWidget(newAttributeSearchWidget);
-                //view.addCustomItemToSearchWhatBox(newAttributeSearchWidget != null);
-                view.setAdvanceContentTabsVisibility(true, false, false);
-                view.getTabLayoutPanel().selectTab(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
-                break;
+        //Reset selection only if widget was reseted.
+        if (recentlyReseted) {
+            recentlyReseted = false;
+            switch (Storage.getCurrentlyLoadedView()) {
+                case Constants.HOME_DEMANDS_MODULE:
+                case Constants.HOME_DEMANDS_BY_DEFAULT:
+                case Constants.HOME_DEMANDS_BY_SEARCH:
+                case Constants.HOME_DEMANDS_BY_WELCOME:
+                    view.setAdvanceContentTabsVisibility(true, false, false);
+                    view.getTabLayoutPanel().selectTab(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
+                    break;
+                case Constants.HOME_SUPPLIERS_MODULE:
+                case Constants.HOME_SUPPLIERS_BY_DEFAULT:
+                case Constants.HOME_SUPPLIERS_BY_SEARCH:
+                    view.setAdvanceContentTabsVisibility(false, true, false);
+                    view.getTabLayoutPanel().selectTab(AdvanceSearchView.SUPPLIER_SELECTOR_WIDGET);
+                    break;
+                default:
+                    //TODO LATER Martin 22.4.2013 - disbaled searching in current view for BETA version
+                    //view.getAttributeSelectorPanel().setWidget(newAttributeSearchWidget);
+                    //view.addCustomItemToSearchWhatBox(newAttributeSearchWidget != null);
+                    view.setAdvanceContentTabsVisibility(true, false, false);
+                    view.getTabLayoutPanel().selectTab(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
+                    break;
+            }
         }
         view.showAdvancedSearchPopup();
     }
@@ -144,6 +152,7 @@ public class AdvanceSearchPresenter
      * Reset advanced search views.
      */
     public void onResetAdvanceSearchTabs() {
+        recentlyReseted = true;
         ProvidesValidate demandTab = (ProvidesValidate) view.getTabLayoutPanel()
             .getWidget(AdvanceSearchView.DEMANDS_SELECTOR_WIDGET);
         if (demandTab != null) {
@@ -316,6 +325,22 @@ public class AdvanceSearchPresenter
                             instaceIdLocalities = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getLocalitySelectorPanel(), builder);
                         }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        view.getTabLayoutPanel().addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(SelectionEvent<Integer> event) {
+                hideSearchBtns(1000);
+                switch (event.getSelectedItem()) {
+                    case AdvanceSearchView.CATEGORY_SELECTOR_WIDGET:
+                        eventBus.redrawCatLocSelectorGrid(instaceIdCategories);
+                        break;
+                    case AdvanceSearchView.LOCALITY_SELECTOR_WIDGET:
+                        eventBus.redrawCatLocSelectorGrid(instaceIdLocalities);
                         break;
                     default:
                         break;

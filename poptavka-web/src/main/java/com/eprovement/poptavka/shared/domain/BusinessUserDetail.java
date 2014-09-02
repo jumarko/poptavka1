@@ -51,7 +51,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         LAST_NAME("personLastName"),
         PHONE("phone"),
         DESCRIPTION("description"),
-        OVERALL_RATING("overalRating"),
         TAX_NUMBER("taxId"),
         VAT_NUMBER("identificationNumber"),
         WEBSITE("website");

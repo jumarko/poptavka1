@@ -13,6 +13,8 @@ import com.eprovement.poptavka.client.search.SearchModulePresenter;
 import com.eprovement.poptavka.client.common.validation.SearchGroup;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.BusinessUserDetail.UserDataField;
+import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.SupplierField;
 import com.eprovement.poptavka.shared.search.FilterItem;
 import com.eprovement.poptavka.shared.search.FilterItem.Operation;
 import com.github.gwtbootstrap.client.ui.TextArea;
@@ -92,12 +94,12 @@ public class HomeSuppliersSearchView extends Composite implements
         }
         if (ratingMonitorFrom.getValue() != null) {
             filters.add(new FilterItem(
-                UserDataField.OVERALL_RATING,
+                SupplierField.OVERALL_RATING,
                 Operation.OPERATION_FROM, ratingMonitorFrom.getValue(), group++));
         }
         if (ratingMonitorTo.getValue() != null) {
             filters.add(new FilterItem(
-                UserDataField.OVERALL_RATING,
+                SupplierField.OVERALL_RATING,
                 Operation.OPERATION_TO, ratingMonitorTo.getValue(), group++));
         }
         return filters;
@@ -124,19 +126,29 @@ public class HomeSuppliersSearchView extends Composite implements
      */
     private void initValidationMonitors() {
         Class<?>[] groups = {SearchGroup.class};
-        companyMonitor = createValidationMonitor(BusinessUserDetail.UserDataField.COMPANY_NAME, groups);
-        ratingMonitorFrom = createValidationMonitor(BusinessUserDetail.UserDataField.OVERALL_RATING, groups);
-        ratingMonitorTo = createValidationMonitor(BusinessUserDetail.UserDataField.OVERALL_RATING, groups);
-        descriptionMonitor = createValidationMonitor(BusinessUserDetail.UserDataField.DESCRIPTION, groups);
+        companyMonitor = createUserValidationMonitor(BusinessUserDetail.UserDataField.COMPANY_NAME, groups);
+        descriptionMonitor = createUserValidationMonitor(BusinessUserDetail.UserDataField.DESCRIPTION, groups);
+        ratingMonitorFrom = createSupplierValidationMonitor(SupplierField.OVERALL_RATING, groups);
+        ratingMonitorTo = createSupplierValidationMonitor(SupplierField.OVERALL_RATING, groups);
     }
 
     /**
-     * Creates validation monitors
+     * Creates user validation monitors
      * @param field - validation field
      * @param groups - validation groups
      * @return created validation monitor
      */
-    private ValidationMonitor createValidationMonitor(BusinessUserDetail.UserDataField field, Class<?>[] groups) {
+    private ValidationMonitor createUserValidationMonitor(BusinessUserDetail.UserDataField field, Class<?>[] groups) {
         return new ValidationMonitor<BusinessUserDetail>(BusinessUserDetail.class, groups, field.getValue());
+    }
+
+    /**
+     * Creates supplier validation monitors
+     * @param field - validation field
+     * @param groups - validation groups
+     * @return created validation monitor
+     */
+    private ValidationMonitor createSupplierValidationMonitor(SupplierField field, Class<?>[] groups) {
+        return new ValidationMonitor<FullSupplierDetail>(FullSupplierDetail.class, groups, field.getValue());
     }
 }
