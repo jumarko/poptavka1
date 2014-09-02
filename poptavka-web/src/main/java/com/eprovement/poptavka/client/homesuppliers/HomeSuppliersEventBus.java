@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.root.gateways.CatLocSelectorGateway;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid.IEventBusData;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.mvp4g.client.annotation.Debug;
@@ -68,7 +68,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     /**************************************************************************/
     @Event(historyConverter = HomeSuppliersHistoryConverter.class, name = "token")
     void createTokenForHistory(SearchModuleDataHolder searchDataHolder,
-            ICatLocDetail categoryDetail, int page, FullSupplierDetail supplierDetail);
+            ICatLocDetail categoryDetail, int page, LesserSupplierDetail supplierDetail);
 
 
     /**************************************************************************/
@@ -78,7 +78,7 @@ public interface HomeSuppliersEventBus extends EventBusWithLookup, IEventBusData
     void responseGetData();
 
     @Event(handlers = HomeSuppliersPresenter.class)
-    void displaySupplierDetail(FullSupplierDetail supplierDetail);
+    void displaySupplierDetail(LesserSupplierDetail supplierDetail);
 
     @Event(handlers = HomeSuppliersPresenter.class)
     void resize(int actualWidth);

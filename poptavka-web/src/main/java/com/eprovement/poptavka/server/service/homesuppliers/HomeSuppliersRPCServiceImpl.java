@@ -22,7 +22,7 @@ import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.service.fulltext.FulltextSearchService;
 import com.eprovement.poptavka.service.user.SupplierService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.exceptions.RPCException;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SortPair;
@@ -52,7 +52,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     private CategoryService categoryService;
     private SupplierService supplierService;
     private FulltextSearchService fulltextSearchService;
-    private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private Converter<Supplier, LesserSupplierDetail> lesserSupplierConverter;
     private Converter<Category, ICatLocDetail> categoryConverter;
     private FilterConverter filterConverter;
     private SortConverter sortConverter;
@@ -91,9 +91,9 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
     }
 
     @Autowired
-    public void setSupplierConverter(
-            @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
-        this.supplierConverter = supplierConverter;
+    public void setLesserSupplierConverter(
+            @Qualifier("lesserSupplierConverter") Converter<Supplier, LesserSupplierDetail> lesserSupplierConverter) {
+        this.lesserSupplierConverter = lesserSupplierConverter;
     }
 
     @Autowired
@@ -136,8 +136,8 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @throws RPCException
      */
     @Override
-    public FullSupplierDetail getSupplier(long supplierID) throws RPCException {
-        return supplierConverter.convertToTarget(supplierService.getById(supplierID));
+    public LesserSupplierDetail getSupplier(long supplierID) throws RPCException {
+        return lesserSupplierConverter.convertToTarget(supplierService.getById(supplierID));
     }
 
     /**************************************************************************/
@@ -185,7 +185,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @throws RPCException
      */
     @Override
-    public List<FullSupplierDetail> getSuppliers(SearchDefinition definition) throws RPCException {
+    public List<LesserSupplierDetail> getSuppliers(SearchDefinition definition) throws RPCException {
         if (definition == null || definition.getFilter() == null) {
             //general
             return getSuppliersGeneral(definition);
@@ -218,7 +218,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @param definition holder for FirstResult and MaxResult attributes
      * @return suppliers
      */
-    private List<FullSupplierDetail> getSuppliersGeneral(SearchDefinition definition) {
+    private List<LesserSupplierDetail> getSuppliersGeneral(SearchDefinition definition) {
         Search search = new Search(Supplier.class);
         search.setFirstResult(definition.getFirstResult());
         search.setMaxResults(definition.getMaxResult());
@@ -229,7 +229,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
                 search.addSort(Sort.desc(column.getColumnName()));
             }
         }
-        return supplierConverter.convertToTargetList(generalService.search(search));
+        return lesserSupplierConverter.convertToTargetList(generalService.search(search));
     }
 
     /**************************************************************************/
@@ -259,7 +259,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @return suppliers
      * @throws RPCException
      */
-    public List<FullSupplierDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
+    public List<LesserSupplierDetail> fullTextSearch(SearchDefinition definition) throws RPCException {
         final List<BusinessUserData> foundUsers = this.fulltextSearchService.search(
                 BusinessUserData.class, BusinessUserData.USER_FULLTEXT_FIELDS, definition.getFilter().getSearchText());
 
@@ -268,7 +268,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
         search.setFirstResult(definition.getFirstResult());
         search.setMaxResults(definition.getMaxResult());
 
-        return supplierConverter.convertToTargetList(generalService.search(search));
+        return lesserSupplierConverter.convertToTargetList(generalService.search(search));
     }
 
     /**************************************************************************/
@@ -314,14 +314,14 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @param definition define filtering criteria
      * @return suppliers
      */
-    private List<FullSupplierDetail> filterWithAttributes(SearchDefinition definition) {
+    private List<LesserSupplierDetail> filterWithAttributes(SearchDefinition definition) {
         //0 0
         if (definition.getFilter().getCategories().isEmpty()
                 && definition.getFilter().getLocalities().isEmpty()) {
             Search search = this.getSupplierFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.supplierConverter.convertToTargetList(this.generalService.search(search));
+            return this.lesserSupplierConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 0
         if (!definition.getFilter().getCategories().isEmpty()
@@ -329,7 +329,7 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             Search search = this.getCategoryFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.supplierConverter.convertToTargetList(this.generalService.search(search));
+            return this.lesserSupplierConverter.convertToTargetList(this.generalService.search(search));
         }
         //0 1
         if (definition.getFilter().getCategories().isEmpty()
@@ -337,18 +337,18 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
             Search search = this.getLocalityFilter(definition);
             search.setFirstResult(definition.getFirstResult());
             search.setMaxResults(definition.getMaxResult());
-            return this.supplierConverter.convertToTargetList(this.generalService.search(search));
+            return this.lesserSupplierConverter.convertToTargetList(this.generalService.search(search));
         }
         //1 1  --> perform join if filtering by category and locality was used
         if (!definition.getFilter().getCategories().isEmpty()
                 && !definition.getFilter().getLocalities().isEmpty()) {
             //TODO LATER : Martin 16.4.2013, thing about better solution due to performance
-            List<FullSupplierDetail> catLocDemands = getCategoryLocality(definition);
+            List<LesserSupplierDetail> catLocDemands = getCategoryLocality(definition);
             int upperBound = definition.getFirstResult() + definition.getMaxResult();
             if (upperBound > catLocDemands.size()) {
                 upperBound = catLocDemands.size();
             }
-            return new ArrayList<FullSupplierDetail>(catLocDemands.subList(definition.getFirstResult(), upperBound));
+            return new ArrayList<LesserSupplierDetail>(catLocDemands.subList(definition.getFirstResult(), upperBound));
         }
         return null;
     }
@@ -417,19 +417,19 @@ public class HomeSuppliersRPCServiceImpl extends AutoinjectingRemoteService impl
      * @param definition - represents searching criteria
      * @return
      */
-    private List<FullSupplierDetail> getCategoryLocality(SearchDefinition definition) {
-        List<FullSupplierDetail> demandsCat = supplierConverter.convertToTargetList(
+    private List<LesserSupplierDetail> getCategoryLocality(SearchDefinition definition) {
+        List<LesserSupplierDetail> demandsCat = lesserSupplierConverter.convertToTargetList(
                 this.generalService.searchAndCount(
                 this.getCategoryFilter(definition))
                 .getResult());
 
-        List<FullSupplierDetail> demandsLoc = supplierConverter.convertToTargetList(
+        List<LesserSupplierDetail> demandsLoc = lesserSupplierConverter.convertToTargetList(
                 this.generalService.searchAndCount(
                 this.getLocalityFilter(definition))
                 .getResult());
 
-        List<FullSupplierDetail> demands = new ArrayList<FullSupplierDetail>();
-        for (FullSupplierDetail demandCat : demandsCat) {
+        List<LesserSupplierDetail> demands = new ArrayList<LesserSupplierDetail>();
+        for (LesserSupplierDetail demandCat : demandsCat) {
             if (demandsLoc.contains(demandCat)) {
                 demands.add(demandCat);
             }

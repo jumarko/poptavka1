@@ -12,7 +12,7 @@ import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -58,7 +58,7 @@ public class HomeSuppliersPresenter
     public interface HomeSuppliersViewInterface extends LazyView, IsWidget, ProvidesToolbar {
 
         //Table
-        UniversalAsyncGrid<FullSupplierDetail> getDataGrid();
+        UniversalAsyncGrid<LesserSupplierDetail> getDataGrid();
 
         SimplePager getPager();
 
@@ -353,8 +353,8 @@ public class HomeSuppliersPresenter
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 //get selected supplier
-                FullSupplierDetail selected =
-                    (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+                LesserSupplierDetail selected =
+                    (LesserSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
                     .getSelectedObject();
 
                 if (selected != null) {
@@ -381,7 +381,7 @@ public class HomeSuppliersPresenter
      * When supplier id is parsed from token, supplier object is retrieved and then selected.
      * @param supplierDetail
      */
-    public void onDisplaySupplierDetail(FullSupplierDetail supplierDetail) {
+    public void onDisplaySupplierDetail(LesserSupplierDetail supplierDetail) {
         //display by selecting item in selection model which
         //fires appropiate events to display supplier detail in detail section
         view.getDataGrid().getSelectionModel().setSelected(supplierDetail, true);
@@ -431,8 +431,8 @@ public class HomeSuppliersPresenter
      * @param setStorageHistoryPointerValue
      */
     private void createTokenForHistory() {
-        FullSupplierDetail supplier =
-            (FullSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
+        LesserSupplierDetail supplier =
+            (LesserSupplierDetail) ((SingleSelectionModel) view.getDataGrid().getSelectionModel())
             .getSelectedObject();
 
         eventBus.createTokenForHistory(searchDataHolder, selectedCategory, view.getPager().getPage(), supplier);

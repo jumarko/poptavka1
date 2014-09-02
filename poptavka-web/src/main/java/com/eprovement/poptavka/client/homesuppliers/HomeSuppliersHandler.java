@@ -9,7 +9,7 @@ import com.eprovement.poptavka.client.common.security.SecuredAsyncCallback;
 import com.eprovement.poptavka.client.service.demand.HomeSuppliersRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.LesserSupplierDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
 import com.google.inject.Inject;
@@ -43,9 +43,9 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      * @param supplierID
      */
     public void onGetSupplier(long supplierID) {
-        homeSuppliersService.getSupplier(supplierID, new SecuredAsyncCallback<FullSupplierDetail>(eventBus) {
+        homeSuppliersService.getSupplier(supplierID, new SecuredAsyncCallback<LesserSupplierDetail>(eventBus) {
             @Override
-            public void onSuccess(FullSupplierDetail result) {
+            public void onSuccess(LesserSupplierDetail result) {
                 eventBus.displaySupplierDetail(result);
             }
         });
@@ -66,9 +66,9 @@ public class HomeSuppliersHandler extends BaseEventHandler<HomeSuppliersEventBus
      */
     public void onGetData(final UniversalAsyncGrid grid, SearchDefinition searchDefinition, final int requestId) {
         homeSuppliersService.getSuppliers(searchDefinition,
-            new GetDataCallback<FullSupplierDetail>(eventBus, grid, requestId) {
+            new GetDataCallback<LesserSupplierDetail>(eventBus, grid, requestId) {
                 @Override
-                public void onSuccess(List<FullSupplierDetail> result) {
+                public void onSuccess(List<LesserSupplierDetail> result) {
                     super.onSuccess(result);
                     eventBus.responseGetData();
                 }

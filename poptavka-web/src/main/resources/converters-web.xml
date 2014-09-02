@@ -22,6 +22,9 @@
         <constructor-arg index="0" ref="addressConverter"/>
         <!--<constructor-arg index="1" ref="accessRoleConverter"/>-->
     </bean>
+    <bean id="lesserBusinessUserConverter" class="com.eprovement.poptavka.server.converter.LesserBusinessUserConverter">
+        <constructor-arg index="0" ref="addressConverter"/>
+    </bean>
     <bean id="clientConverter" class="com.eprovement.poptavka.server.converter.ClientConverter" >
         <constructor-arg ref="businessUserConverter"/>
     </bean>
@@ -69,6 +72,10 @@
         <constructor-arg index="0" ref="categoryConverter"/>
         <constructor-arg index="1" ref="localityConverter"/>
         <constructor-arg index="2" ref="businessUserConverter"/>
+    </bean>
+    <bean id="lesserSupplierConverter" class="com.eprovement.poptavka.server.converter.LesserSupplierConverter">
+        <constructor-arg index="0" ref="categoryConverter"/>
+        <constructor-arg index="1" ref="lesserBusinessUserConverter"/>
     </bean>
     <bean id="userConverter" class="com.eprovement.poptavka.server.converter.UserConverter">
         <constructor-arg index="0" ref="accessRoleConverter"/>

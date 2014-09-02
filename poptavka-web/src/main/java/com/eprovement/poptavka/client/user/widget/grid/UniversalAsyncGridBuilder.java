@@ -33,7 +33,7 @@ import com.eprovement.poptavka.shared.domain.adminModule.OfferDetail;
 import com.eprovement.poptavka.shared.domain.demand.DemandField;
 import com.eprovement.poptavka.shared.domain.message.MessageDetail;
 import com.eprovement.poptavka.shared.domain.message.UserMessageDetail;
-import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
+import com.eprovement.poptavka.shared.domain.supplier.SupplierField;
 import com.eprovement.poptavka.shared.search.SortDataHolder;
 import com.eprovement.poptavka.shared.search.SortPair;
 import com.google.gwt.cell.client.CheckboxCell;
@@ -214,7 +214,7 @@ public class UniversalAsyncGridBuilder<T> {
     }
 
     public UniversalAsyncGridBuilder addColumnSupplierRating(FieldUpdater fieldUpdater) {
-        sortColumns.add(SortPair.asc(FullSupplierDetail.SupplierField.OVERALL_RATING));
+        sortColumns.add(SortPair.asc(SupplierField.OVERALL_RATING));
         table.addColumn(MSGS.columnRating(), GRSCS.dataGridStyle().colWidthRatting(),
             new RatingColumn(fieldUpdater));
         return this;
