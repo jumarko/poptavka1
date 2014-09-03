@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
 import com.eprovement.poptavka.domain.enums.Status;
+import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.service.userservice.UserServiceService;
 
@@ -29,12 +30,22 @@ public class PaymentService {
                 .getUserServiceByOrderNumber(orderNumber);
         if (status == PaypalTransactionStatus.COMPLETED) {
             if (!transactionNumber.equals(userService.getTransactionNumber())) {
-                int credits = Float.valueOf(amount).intValue();
-                updateUserService(transactionNumber, credits, userService,
-                        Status.ACTIVE, status, paymentDate);
+                float userAmount = Float.valueOf(amount);
+                Service service = userService.getService();
+                Validate.notNull(service);
+                float servicePrice = service.getPrice().floatValue();
+                if (servicePrice == userAmount) {
+                    updateUserService(transactionNumber, service.getCredits(), userService,
+                            Status.ACTIVE, status, paymentDate);
+                } else {
+                    LOGGER.error("The price of service is different from the amount paid by user !");
+                    LOGGER.error(
+                            "[transactionNumber={}, orderNumber={}, userAmount={}, servicePrice={}]",
+                            transactionNumber, orderNumber, userAmount, servicePrice);
+                }
             } else {
-                LOGGER.warn("It is only allowed once recharged credits to the transaction !");
-                LOGGER.warn(
+                LOGGER.error("It is only allowed once recharged credits to the transaction !");
+                LOGGER.error(
                         "[transactionNumber={}, orderNumber={}, amount={}]",
                         transactionNumber, orderNumber, amount);
             }
@@ -53,9 +64,5 @@ public class PaymentService {
         userService.setRequest(paymentDate);
         userService.setTransactionStatus(paypalStatus);
         userServiceService.update(userService);
-    }
-
-    public boolean containsTransaction(String transactionID) {
-        return false;
     }
 }
