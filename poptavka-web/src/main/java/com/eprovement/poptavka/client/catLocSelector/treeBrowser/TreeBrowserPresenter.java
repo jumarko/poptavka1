@@ -17,7 +17,6 @@ import com.google.gwt.user.cellview.client.LoadingStateChangeEvent;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
 import com.mvp4g.client.annotation.Presenter;
@@ -188,12 +187,6 @@ public class TreeBrowserPresenter
                 lastOpened = lastOpened.getParent();
                 closeAllNodes(lastOpened);
             } else {
-                //if already selected, fire selection event manually
-                if (view.getTreeSelectionModel().isSelected(result.getLast())) {
-                    SelectionChangeEvent.fire(view.getTreeSelectionModel());
-                } else {
-                    view.getTreeSelectionModel().setSelected(result.getLast(), true);
-                }
                 //otherwise open node hierarchy from scrach
                 lastOpened = view.getCellTree().getRootTreeNode();
                 closeAllNodes(lastOpened);
