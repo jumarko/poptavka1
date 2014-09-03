@@ -1,5 +1,6 @@
 package com.eprovement.poptavka.rest.payment;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,7 +34,7 @@ public class PaymentInfo {
      * Full amount of the customer's payment, before transaction fee is
      * subtracted.
      */
-    private float amount;
+    private BigDecimal amount;
 
     /**
      * The currency of the payment.
@@ -79,11 +80,11 @@ public class PaymentInfo {
         this.receiverEmail = receiverEmail;
     }
 
-    public float getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(float amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
