@@ -114,7 +114,7 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
     private String phone;
 
     @NotBlank(message = "{descriptionNotBlank}")
-    @Size(min = 20, max = 1500, message = "{descriptionSize}", groups = {Extended.class, SearchGroup.class })
+    @Size(min = 20, max = 255, message = "{descriptionSize}", groups = {Extended.class, SearchGroup.class })
     private String description;
 
     /**
