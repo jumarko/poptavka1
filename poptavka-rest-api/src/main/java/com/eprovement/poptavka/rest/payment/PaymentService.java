@@ -1,6 +1,7 @@
 package com.eprovement.poptavka.rest.payment;
 
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang.Validate;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eprovement.poptavka.domain.enums.PaypalTransactionStatus;
 import com.eprovement.poptavka.domain.enums.Status;
+import com.eprovement.poptavka.domain.product.Service;
 import com.eprovement.poptavka.domain.product.UserService;
 import com.eprovement.poptavka.service.userservice.UserServiceService;
 
@@ -22,19 +24,28 @@ public class PaymentService {
 
     @Transactional(readOnly = false)
     public void saveCredits(String transactionNumber, long orderNumber,
-            float amount, PaypalTransactionStatus status, Date paymentDate) {
+            BigDecimal amount, PaypalTransactionStatus status, Date paymentDate) {
         Validate.notNull(transactionNumber);
         Validate.notNull(orderNumber);
         UserService userService = userServiceService
                 .getUserServiceByOrderNumber(orderNumber);
         if (status == PaypalTransactionStatus.COMPLETED) {
             if (!transactionNumber.equals(userService.getTransactionNumber())) {
-                int credits = Float.valueOf(amount).intValue();
-                updateUserService(transactionNumber, credits, userService,
-                        Status.ACTIVE, status, paymentDate);
+                Service service = userService.getService();
+                Validate.notNull(service);
+                BigDecimal servicePrice = service.getPrice();
+                if (servicePrice.compareTo(amount) == 0) {
+                    updateUserService(transactionNumber, service.getCredits(), userService,
+                            Status.ACTIVE, status, paymentDate);
+                } else {
+                    LOGGER.error("The price of service is different from the amount paid by user !");
+                    LOGGER.error(
+                            "[transactionNumber={}, orderNumber={}, userAmount={}, servicePrice={}]",
+                            transactionNumber, orderNumber, amount, servicePrice);
+                }
             } else {
-                LOGGER.warn("It is only allowed once recharged credits to the transaction !");
-                LOGGER.warn(
+                LOGGER.error("It is only allowed once recharged credits to the transaction !");
+                LOGGER.error(
                         "[transactionNumber={}, orderNumber={}, amount={}]",
                         transactionNumber, orderNumber, amount);
             }
@@ -53,9 +64,5 @@ public class PaymentService {
         userService.setRequest(paymentDate);
         userService.setTransactionStatus(paypalStatus);
         userServiceService.update(userService);
-    }
-
-    public boolean containsTransaction(String transactionID) {
-        return false;
     }
 }

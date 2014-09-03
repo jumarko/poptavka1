@@ -30,6 +30,9 @@ public class UserServiceDaoImpl extends GenericHibernateDao<UserService> impleme
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserService getUserServiceByOrderNumber(Long orderNumber) {
         return (UserService) getHibernateSession().createCriteria(UserService.class)

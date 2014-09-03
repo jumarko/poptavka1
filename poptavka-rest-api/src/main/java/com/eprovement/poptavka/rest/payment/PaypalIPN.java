@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class PaypalIPN {
                 if (paymentValidator.isResponseValid(responseContent)) {
                     String txID = paymentInfo.getTransactionID();
                     long orderNumber = paymentInfo.getOrderNumber();
-                    float amount = paymentInfo.getAmount();
+                    BigDecimal amount = paymentInfo.getAmount();
                     PaypalTransactionStatus status = paymentInfo.getStatus();
                     Date paymentDate = paymentInfo.getPaymentDate();
                     paymentService.saveCredits(txID, orderNumber, amount, status, paymentDate);
@@ -111,7 +112,7 @@ public class PaypalIPN {
         paymentInfo.setPaymentDate(paymentDateText);
         paymentInfo.setTransactionID(transactionID);
         paymentInfo.setReceiverEmail(receiverEmail);
-        paymentInfo.setAmount(amountValue);
+        paymentInfo.setAmount(new BigDecimal(amountValue));
         paymentInfo.setCurrency(currency);
         paymentInfo.setItemNumber(itemNumber);
         paymentInfo.setOrderNumber(Long.parseLong(orderNumber));

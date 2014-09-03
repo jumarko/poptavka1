@@ -24,6 +24,11 @@ public interface UserServiceDao extends GenericDao<UserService> {
      */
     List<UserService> getUsersServices(BusinessUser businessUser);
 
+    /**
+     * Gets a user's service by the unique order number.
+     * @param orderNumber the unique order number
+     * @return the user's service of given order number
+     */
     UserService getUserServiceByOrderNumber(Long orderNumber);
 
     /**
