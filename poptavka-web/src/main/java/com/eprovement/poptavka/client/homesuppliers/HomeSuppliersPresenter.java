@@ -326,7 +326,6 @@ public class HomeSuppliersPresenter
         if (!sameCategorySelection) {
             if (selected == null) {
                 //Retrieve data
-                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
             } else {
                 //cancel filtering if user selected category from celltree
@@ -335,7 +334,6 @@ public class HomeSuppliersPresenter
                 SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);
                 //Retrieve data
-                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
                     0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
             }

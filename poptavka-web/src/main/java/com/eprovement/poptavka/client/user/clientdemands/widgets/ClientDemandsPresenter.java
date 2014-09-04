@@ -117,7 +117,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
             setChildTableVisible(true);
 
             view.getChildTable().getDataProvider().updateRowData(
-                view.getChildTable().getStart(), data);
+                view.getChildTable().getPageStart(), data);
         }
     }
 
@@ -165,7 +165,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
         //refresh grid
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-            view.getParentTable().getStart(),
+            view.getParentTable().getPageStart(),
             view.getToolbar().getPager().getPageSize(),
             searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
@@ -239,7 +239,7 @@ public class ClientDemandsPresenter extends AbstractClientPresenter {
 
         Storage.setCurrentlyLoadedView(Constants.CLIENT_DEMANDS);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-            view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
+            view.getParentTable().getPageStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
     }
 

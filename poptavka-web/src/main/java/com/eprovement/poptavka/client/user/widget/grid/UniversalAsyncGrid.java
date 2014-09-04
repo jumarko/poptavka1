@@ -19,7 +19,6 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.Range;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
          * SearchModuleDataHolder.
          *
          * @param grid
-         * @param searchDataHolder - define filtering criteria
+         * @param searchDefinition define filtering criteria
          */
         void getDataCount(UniversalAsyncGrid grid, SearchDefinition searchDefinition);
 
@@ -61,10 +60,9 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
          * Gets data that satisfy filtering criteria represented by given
          * SearchModuleDataHolder. Supports pagination and ordering.
          *
-         * @param start - pagination - start
-         * @param maxResult - pagination - page size
-         * @param searchDataHolder - define filtering criteria
-         * @param orderColumns - define ordering
+         * @param grid
+         * @param searchDefinition define filtering criteria
+         * @param requestId
          */
         void getData(UniversalAsyncGrid grid, SearchDefinition searchDefinition, int requestId);
     }
@@ -87,8 +85,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * Asks for new data when user choose different page.
      */
     private AsyncDataProvider<T> dataProvider = null;
-    private int start = 0;
-    private int length = 0;
     /**
      * If new category is selected, pager.setPage(0) must be called to reset table and pager.
      * But it fires RangeChangeEvent on dataset we don't event want to have displayed anymore.
@@ -143,22 +139,15 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     }
 
     /**
-     * Constructs a table with a default page size of 50, and the given key provider
-     * and given sort definition.
-     */
-    public UniversalAsyncGrid(ProvidesKey<T> keyProvider, SortDataHolder sort) {
-        super(keyProvider);
-        this.sort = sort;
-        universalAsyncGridCommonSettings();
-    }
-
-    /**
      * Common method called in all constructors. It sets the no result Label.
      */
     public final void universalAsyncGridCommonSettings() {
+        //Create empty table widget
         Label noResultsLabel = new Label(Storage.MSGS.commonNoData());
         noResultsLabel.addStyleName("no-results-label");
         setEmptyTableWidget(noResultsLabel);
+        //Create async data provider
+        createAsyncDataProvider();
     }
 
     /**************************************************************************/
@@ -170,16 +159,15 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      *
      * @param eventBus - define eventBus to handle <b>getDataCount</b> and
      * <b>getData</b> methods
-     * @param searchDataHolder - define search criteria if any
+     * @param searchDefinition define filtering criteria
      */
     public void getDataCount(IEventBusData eventBus, SearchDefinition searchDefinition) {
         this.eventBus = eventBus;
-        //If eventBus is available and dataProvider is not initialized, do it.
-        if (dataProvider == null) {
-            createAsyncDataProvider();
-        }
+        showLoading();
         if (searchDefinition != null) {
             this.searchDataHolder = searchDefinition.getFilter();
+            searchDefinition.setFirstResult(getPageStart());
+            searchDefinition.setMaxResult(getPageSize());
         }
         eventBus.getDataCount(getGrid(), searchDefinition);
     }
@@ -195,8 +183,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * @param resultCount - count of all data
      */
     public void createAsyncDataProvider() {
-        this.start = 0;
-        this.length = 0;
         //if first called, just create dataProvider, but don't call eventBus.getData
         cancelRangeChangedEvent = true;
         this.dataProvider = new AsyncDataProvider<T>() {
@@ -205,15 +191,17 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
              */
             @Override
             protected void onRangeChanged(HasData<T> display) {
-                start = display.getVisibleRange().getStart();
-                length = display.getVisibleRange().getLength();
                 resize(Document.get().getClientWidth());
                 if (!cancelRangeChangedEvent) {
                     //Aks for new data
                     if (display.getRowCount() > 0) {
                         eventBus.getData(
                             getGrid(),
-                            new SearchDefinition(start, start + length, searchDataHolder, sort.getSortOrder()),
+                            new SearchDefinition(
+                                getPageStart(),
+                                getPageSize(),
+                                searchDataHolder,
+                                sort.getSortOrder()),
                             ++requestId);
                     }
                 }
@@ -230,22 +218,16 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
                     super.updateRowCount(size, exact);
                     eventBus.getData(
                         getGrid(),
-                        new SearchDefinition(start, start + length, searchDataHolder, sort.getSortOrder()),
+                        new SearchDefinition(getPageStart(),
+                                getPageSize(),
+                                searchDataHolder,
+                                sort.getSortOrder()),
                         ++requestId);
                 } else {
                     super.updateRowCount(size, true);
                     resize(Document.get().getClientWidth());
                 }
             }
-
-            /**
-             * Sets requested data to table starting form <b>start</b>.
-             */
-//            @Override
-//            public void updateRowData(int start, List<T> values) {
-//                super.updateRowData(start, values);
-//                resize(Document.get().getClientWidth());
-//            }
         };
         this.dataProvider.addDataDisplay(this);
         this.createAsyncSortHandler();
@@ -257,7 +239,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public void updateRowData(List<T> values, int requestId) {
         if (this.requestId == requestId) {
-            dataProvider.updateRowData(getStart(), values);
+            dataProvider.updateRowData(getPageStart(), values);
             resize(Document.get().getClientWidth());
         }
     }
@@ -287,7 +269,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
 
                 eventBus.getData(
                     getGrid(),
-                    new SearchDefinition(start, getPageSize(), searchDataHolder, sort.getSortOrder()),
+                    new SearchDefinition(getPageStart(), getPageSize(), searchDataHolder, sort.getSortOrder()),
                     ++requestId);
             }
         };
@@ -331,7 +313,7 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      * one method with <Column, String, String> attributes.
      *
      * @param headerText header text
-     * @param width of the column
+     * @param widthStyleName of the column
      * @param column to be added
      * @return added column
      */
@@ -347,20 +329,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
         return column;
     }
 
-//    Martin - commented 10.11.2013 - archived this methods for future needs
-//    public Column<T, ImageResource> addIconColumn(final ImageResource imageResource, String explanationText) {
-//        Column<T, ImageResource> col = new Column<T, ImageResource>(new CustomImageCell(explanationText)) {
-//            @Override
-//            public ImageResource getValue(T object) {
-//                return imageResource;
-//            }
-//        };
-//        //set column style
-//        col.setCellStyleNames(Storage.GRSCS.dataGridStyle().cellTableIconColumn());
-//        addColumn(col);
-//        setColumnWidth(col, Constants.COL_WIDTH_ICON);
-//        return col;
-//    }
     /**************************************************************************/
     /* Setter metods                                                          */
     /**************************************************************************/
@@ -427,14 +395,6 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
     public UniversalAsyncGrid getGrid() {
         return this;
     }
-    /**
-     * Gets start index of pagination.
-     *
-     * @return start index
-     */
-    public int getStart() {
-        return start;
-    }
 
     /**
      * Sets cancelRangeChangedEvent flag to true causes next table rancheChangeEvent to be ignored.
@@ -449,6 +409,14 @@ public class UniversalAsyncGrid<T> extends DataGrid<T> {
      */
     public void setGridColumns(SortDataHolder sort) {
         this.sort = sort;
+    }
+
+    /**
+     * Corrects grid height and shows loading.
+     */
+    public void showLoading() {
+        getDataProvider().updateRowCount(0, false);
+        resize(Document.get().getClientWidth());
     }
 
     /**

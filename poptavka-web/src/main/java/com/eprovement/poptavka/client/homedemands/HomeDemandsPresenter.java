@@ -12,7 +12,6 @@ import com.eprovement.poptavka.client.root.toolbar.ProvidesToolbar;
 import com.eprovement.poptavka.client.service.demand.CatLocSelectorRPCServiceAsync;
 import com.eprovement.poptavka.client.user.widget.grid.UniversalAsyncGrid;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
-//import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.demand.LesserDemandDetail;
 import com.eprovement.poptavka.shared.search.SearchDefinition;
 import com.eprovement.poptavka.shared.search.SearchModuleDataHolder;
@@ -235,6 +234,7 @@ public class HomeDemandsPresenter
             view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
             view.getFilterClearBtn().setVisible(false);
+            eventBus.resetSearchBar(null);
         } else {
             Storage.setCurrentlyLoadedView(Constants.HOME_DEMANDS_BY_SEARCH);
             view.getFilterLabel().setTitle(filterHolder.toString());
@@ -342,7 +342,6 @@ public class HomeDemandsPresenter
         if (!sameCategorySelection) {
             if (selected == null) {
                 //Retrieve data
-                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(searchDataHolder));
             } else {
                 //cancel filtering if user selected category from celltree
@@ -354,7 +353,6 @@ public class HomeDemandsPresenter
                 SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);
                 //Retrieve data
-                view.getPager().startLoading(); //CAUSION, use only before getDataCount, because it resets data provider
                 view.getDataGrid().getDataCount(eventBus, new SearchDefinition(
                     0, view.getPager().getPageSize(), filterHolder, view.getDataGrid().getSort().getSortOrder()));
             }

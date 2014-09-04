@@ -102,7 +102,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
             setChildTableVisible(true);
 
             view.getChildTable().getDataProvider().updateRowData(
-                view.getChildTable().getStart(), data);
+                view.getChildTable().getPageStart(), data);
         }
     }
 
@@ -174,7 +174,7 @@ public class ClientOffersPresenter extends AbstractClientPresenter {
 
         Storage.setCurrentlyLoadedView(Constants.CLIENT_OFFERED_DEMANDS);
         view.getParentTable().getDataCount(eventBus, new SearchDefinition(
-            view.getParentTable().getStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
+            view.getParentTable().getPageStart(), view.getToolbar().getPager().getPageSize(), searchDataHolder,
             view.getParentTable().getSort().getSortOrder()));
     }
 
