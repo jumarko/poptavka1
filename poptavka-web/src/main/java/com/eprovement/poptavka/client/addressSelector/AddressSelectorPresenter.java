@@ -127,7 +127,8 @@ public class AddressSelectorPresenter
                     view.getCityMonitor().setExternalValidation(ControlGroupType.ERROR,
                         LocalizableMessages.INSTANCE.addressSelectCityFromSuggestedList());
                 } else {
-                    view.getCityMonitor().setExternalValidation(ControlGroupType.NONE, "");
+                    view.getCityMonitor().reset();
+                    view.getCityMonitor().validate();
                 }
             }
         }, BlurEvent.getType());
