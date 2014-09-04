@@ -30,10 +30,6 @@ public class BusinessUserData extends DomainObject {
     /**************************************************************************/
     /*  Attributes                                                            */
     /**************************************************************************/
-    /** Constants - Fields that are available for full-text search. */
-    public static final String[] USER_FULLTEXT_FIELDS = new String[]{
-        "companyName", "personFirstName", "personLastName", "description"};
-
     /** Attributes. **/
     @Field
     // companyName is most important - boost twice as much as other fields

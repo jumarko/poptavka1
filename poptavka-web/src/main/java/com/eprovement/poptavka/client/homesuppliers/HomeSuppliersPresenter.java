@@ -217,6 +217,7 @@ public class HomeSuppliersPresenter
             view.getFilterLabel().setTitle("");
             view.getFilterLabel().setVisible(false);
             view.getFilterClearBtn().setVisible(false);
+            eventBus.resetSearchBar(null);
         } else {
             Storage.setCurrentlyLoadedView(Constants.HOME_SUPPLIERS_BY_SEARCH);
             view.getFilterLabel().setTitle(filterHolder.toString());
