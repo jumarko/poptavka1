@@ -19,6 +19,8 @@ import com.eprovement.poptavka.domain.user.Client;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.domain.user.User;
 import com.eprovement.poptavka.server.converter.Converter;
+import com.eprovement.poptavka.server.converter.FullDemandConverter;
+import com.eprovement.poptavka.server.converter.SupplierConverter;
 import com.eprovement.poptavka.server.service.AutoinjectingRemoteService;
 import com.eprovement.poptavka.service.GeneralService;
 import com.eprovement.poptavka.service.message.MessageService;
@@ -63,9 +65,9 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
     private ExternalUserNotificator externalUserNotificator;
 
     //Converters
-    private Converter<Demand, FullDemandDetail> demandConverter;
+    private FullDemandConverter demandConverter;
     private Converter<Client, FullClientDetail> clientConverter;
-    private Converter<Supplier, FullSupplierDetail> supplierConverter;
+    private SupplierConverter supplierConverter;
     private Converter<Message, MessageDetail> messageConverter;
     private Converter<UserMessage, MessageDetail> userMessageConverter;
 
@@ -100,7 +102,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
     //Converters
     @Autowired
     public void setDemandConverter(
-        @Qualifier("fullDemandConverter") Converter<Demand, FullDemandDetail> demandConverter) {
+        @Qualifier("fullDemandConverter") FullDemandConverter demandConverter) {
         this.demandConverter = demandConverter;
     }
 
@@ -112,7 +114,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Autowired
     public void setSupplierConverter(
-        @Qualifier("supplierConverter") Converter<Supplier, FullSupplierDetail> supplierConverter) {
+        @Qualifier("supplierConverter") SupplierConverter supplierConverter) {
         this.supplierConverter = supplierConverter;
     }
 
@@ -133,7 +135,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
     /**************************************************************************/
     @Override
     public FullDemandDetail getFullDemandDetail(long demandId) throws RPCException {
-        return demandConverter.convertToTarget(generalService.find(Demand.class, demandId));
+        return demandConverter.convertToTarget(generalService.find(Demand.class, demandId), true);
     }
 
     @Override
@@ -143,7 +145,7 @@ public class DetailRPCServiceImpl extends AutoinjectingRemoteService implements 
 
     @Override
     public FullSupplierDetail getFullSupplierDetail(long supplierId) throws RPCException {
-        return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId));
+        return supplierConverter.convertToTarget(generalService.find(Supplier.class, supplierId), true);
     }
 
     @Override

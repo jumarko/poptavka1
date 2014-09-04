@@ -88,7 +88,7 @@ public class Locality extends TreeItem {
     private Integer supplierCount = 0;
 
     /** Reference to the parent tree item. */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Locality parent;
 
     /** All children of this tree item in tree structure. */
