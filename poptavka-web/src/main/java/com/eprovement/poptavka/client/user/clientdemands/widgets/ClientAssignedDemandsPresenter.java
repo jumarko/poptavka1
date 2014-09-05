@@ -75,6 +75,7 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
      */
     public void onInitClientClosedDemands(SearchModuleDataHolder filter) {
         initWidget(filter, Constants.CLIENT_CLOSED_DEMANDS);
+        this.assignedDemandsMode = false;
     }
 
     /**
@@ -110,7 +111,6 @@ public class ClientAssignedDemandsPresenter extends AbstractClientPresenter {
         //Set visibility
         setParentTableVisible(false);
         setChildTableVisible(true);
-        view.getToolbar().getCloseBtn().setVisible(assignedDemandsMode);
 
         eventBus.resetSearchBar(new Label("Client's assigned/closed projects attibure's selector will be here."));
 
