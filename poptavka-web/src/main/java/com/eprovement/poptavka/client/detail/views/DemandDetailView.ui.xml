@@ -14,6 +14,10 @@
         .position {
         margin: -7px 0 0 -7px;
         }
+        
+        .description {
+            
+        }
     </ui:style>
 
     <b:FluidContainer addStyleNames='{res.details.demandDetailContent}'>
@@ -93,12 +97,11 @@
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
-            <b:Column size='12'>
-                <g:HTMLPanel>
-                    <pre class='{res.details.conversationDetailContent}'>
-                        <g:Label ui:field="description" />
-                    </pre>
-                </g:HTMLPanel>
+        </b:FluidRow>
+        
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+            <b:Column size='12'>                
+                <g:Label ui:field="description" styleName="description" />
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

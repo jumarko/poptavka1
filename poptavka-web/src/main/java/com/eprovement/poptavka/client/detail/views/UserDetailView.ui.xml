@@ -170,12 +170,11 @@
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
+        </b:FluidRow>
+        
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
             <b:Column size='12'>
-                <g:HTMLPanel>
-                    <pre class='{res.details.conversationDetailContent}'>
-                        <g:Label ui:field="description" />
-                    </pre>
-                </g:HTMLPanel>
+                  <g:Label ui:field="description" styleName="description" />
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>
