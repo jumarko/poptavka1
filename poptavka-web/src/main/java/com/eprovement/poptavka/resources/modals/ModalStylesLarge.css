@@ -419,7 +419,7 @@
 .cell-browser-selection-modal {
     width: 100%;
     max-width: 1115px;
-    margin: -200px 0 0 -557px;
+    margin: -350px 0 0 -557px;
     background: #000000;
     outline: medium none;
     z-index: 1100;
@@ -470,6 +470,17 @@
     color: #6F6B59;
     margin-bottom: 20px;
 }
+
+/******************************************************************************/
+/*  CatLoc Cell Browser popup                                                 */
+/******************************************************************************/
+.service-selector-modal {
+    margin: -200px 0 0 -557px;
+}
+
+/******************************************************************************/
+/*  Terms and Conditions popup                                                */
+/******************************************************************************/
 
 /* IE fixes for login modal */
 /*@if user.agent ie8 ie9 ie10 { 
