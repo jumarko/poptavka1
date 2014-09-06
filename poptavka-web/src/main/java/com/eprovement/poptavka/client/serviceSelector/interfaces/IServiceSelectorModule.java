@@ -8,11 +8,9 @@ import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
 import com.google.gwt.dom.client.FormElement;
-import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.mvp4g.client.annotation.Event;
 import com.mvp4g.client.view.LazyView;
 import java.util.ArrayList;
@@ -75,11 +73,7 @@ public interface IServiceSelectorModule {
 
         void setPaymentDetails(String returnRul, UserServiceDetail userServiceDetail);
 
-        DataGrid getTable();
-
-        SingleSelectionModel<ServiceDetail> getSelectionModel();
-
-        ListDataProvider<ServiceDetail> getDataProvider();
+        HorizontalPanel getServicesHolder();
 
         FormElement getPaymentForm();
     }

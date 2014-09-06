@@ -17,6 +17,7 @@ import com.google.gwt.resources.client.TextResource;
 
 import com.eprovement.poptavka.resources.images.Images;
 import com.eprovement.poptavka.resources.richtext.RichTextStyle;
+import com.eprovement.poptavka.resources.serviceSelector.ServiceSelector;
 
 /**
  *
@@ -136,6 +137,10 @@ public interface StyleResource extends ClientBundle {
     @NotStrict
     @Source("standartStyles.css")
     StandartStyles standartStyles();
+
+    @NotStrict
+    @Source("serviceSelector/ServiceSelector.css")
+    ServiceSelector serviceSelector();
 
     Images images();
 

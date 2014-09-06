@@ -5,9 +5,12 @@ package com.eprovement.poptavka.client.serviceSelector;
 
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
+import com.eprovement.poptavka.client.serviceSelector.serviceItem.ServiceItem;
 import com.eprovement.poptavka.domain.enums.ServiceType;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.mvp4g.client.annotation.Presenter;
 import com.mvp4g.client.presenter.LazyPresenter;
@@ -22,6 +25,18 @@ import java.util.List;
 @Presenter(view = ServiceSelectorView.class)
 public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModule.View, ServiceSelectorEventBus>
     implements IServiceSelectorModule.Presenter {
+
+    private ServiceDetail selectedServiceDetail;
+    private ClickHandler clickHandler = new ClickHandler() {
+
+        @Override
+        public void onClick(ClickEvent event) {
+            view.reset();
+            ServiceItem serviceItem = (ServiceItem) event.getSource();
+            serviceItem.setSelected(true);
+            selectedServiceDetail = serviceItem.getServiceDetail();
+        }
+    };
 
     /**************************************************************************/
     /* General Module events                                                  */
@@ -80,12 +95,14 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
      */
     @Override
     public void onDisplayServices(ArrayList<ServiceDetail> services) {
-        view.getDataProvider().setList(services);
-        //set default selected value
-        if (!services.isEmpty()) {
-            this.onSelectService(services.get(0));
+        boolean selectFirst = true;
+        for (ServiceDetail serviceDetail : services) {
+            ServiceItem serviceItem = new ServiceItem(serviceDetail);
+            serviceItem.addClickHandler(clickHandler);
+            serviceItem.setSelected(selectFirst);
+            selectFirst = false;
+            view.getServicesHolder().add(serviceItem);
         }
-        view.getTable().setHeight((services.size() * 45 + 50) + "px");
     }
 
     /**
@@ -94,7 +111,12 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
      */
     @Override
     public void onSelectService(ServiceDetail service) {
-        view.getSelectionModel().setSelected(service, true);
+        for (int i = 0; i < view.getServicesHolder().getWidgetCount(); i++) {
+            ServiceItem serviceItem = (ServiceItem) view.getServicesHolder().getWidget(i);
+            if (serviceItem.getServiceDetail().equals(service)) {
+                serviceItem.setSelected(true);
+            }
+        }
     }
 
     /**
@@ -109,16 +131,6 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
         } else {
             services.clear();
         }
-        services.add(view.getSelectionModel().getSelectedObject());
-    }
-
-    /**************************************************************************/
-    /* Getter                                                                 */
-    /**************************************************************************/
-    /**
-     * @return the selected service detail
-     */
-    public ServiceDetail getSelected() {
-        return view.getSelectionModel().getSelectedObject();
+        services.add(selectedServiceDetail);
     }
 }

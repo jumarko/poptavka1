@@ -5,7 +5,7 @@
 
     <g:HTMLPanel>
         <g:Label ui:field="infoLabel"/>
-        <c:DataGrid ui:field="table" />
+        <g:HorizontalPanel ui:field='servicesHolder'/>
         <g:HTMLPanel>
             <form ui:field="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_xclick"/>
