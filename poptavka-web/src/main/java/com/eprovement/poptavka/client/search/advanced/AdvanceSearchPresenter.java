@@ -303,12 +303,12 @@ public class AdvanceSearchPresenter
                     case AdvanceSearchView.CATEGORY_SELECTOR_WIDGET:
                         //If not yet initialized, do it
                         if (view.getCategorySelectorPanel().getWidget() == null) {
-                            CatLocSelectorBuilder builder
-                                = new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
-                                .initCategorySelector()
-                                .initSelectorManager()
-                                .withCheckboxes()
-                                .build();
+                            CatLocSelectorBuilder builder = new CatLocSelectorBuilder.Builder(
+                                        Constants.HOME_SEARCH_MODULE)
+                                        .initCategorySelector()
+                                        .initSelectorManager()
+                                        .withCheckboxes()
+                                        .build();
                             instaceIdCategories = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getCategorySelectorPanel(), builder);
                         }
@@ -318,10 +318,10 @@ public class AdvanceSearchPresenter
                         if (view.getLocalitySelectorPanel().getWidget() == null) {
                             CatLocSelectorBuilder builder
                                 = new CatLocSelectorBuilder.Builder(Constants.HOME_SEARCH_MODULE)
-                                .initLocalitySelector()
-                                .initSelectorManager()
-                                .withCheckboxes()
-                                .build();
+                                    .initLocalitySelector()
+                                    .initSelectorManager()
+                                    .withCheckboxes()
+                                    .build();
                             instaceIdLocalities = builder.getInstanceId();
                             eventBus.initCatLocSelector(view.getLocalitySelectorPanel(), builder);
                         }
