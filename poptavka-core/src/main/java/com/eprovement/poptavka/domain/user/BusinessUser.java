@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
 import javax.persistence.FetchType;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -40,6 +41,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Audited
 public class BusinessUser extends User {
+
     @OneToMany(mappedBy = "businessUser")
     @NotEmpty
     private List<BusinessUserRole> businessUserRoles = new ArrayList<>();
@@ -49,6 +51,7 @@ public class BusinessUser extends User {
     private BusinessType businessType;
 
     /** Business user data about company and contact person. */
+    @IndexedEmbedded
     @OneToOne(fetch = FetchType.LAZY)
     @Cascade(value = CascadeType.ALL)
     @NotNull

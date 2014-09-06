@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  * Represents the role of {@link BusinessUser}.
@@ -31,6 +32,7 @@ public abstract class BusinessUserRole extends DomainObject {
      *     {@link BusinessUser} if this role is removed (business user can have other roles, not only this one),
      *     however, we want to persist business user if it is created/modified through this role.
      */
+    @IndexedEmbedded
     @ManyToOne(cascade = CascadeType.PERSIST)
     private BusinessUser businessUser = new BusinessUser();
 

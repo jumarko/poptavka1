@@ -7,6 +7,8 @@ import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.service.demand.CategoryService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +21,7 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
     /**************************************************************************/
     /* RPC Services                                                           */
     /**************************************************************************/
+    private boolean involveParentName;;
     private CategoryService categoryService;
 
     @Autowired
@@ -54,12 +57,23 @@ public final class CategoryConverter extends AbstractConverter<Category, ICatLoc
         // future we can use it but I don't think so. In that case uncomment following line:
 //        detail.setLeafsParent(isLeafsParent(category.getId()));
         detail.setLeafsParent(true);
-        Category categoryParent = category.getParent();
-        if (categoryParent != null) {
-            detail.setParentName(categoryParent.getName());
+        if (involveParentName) {
+            if (category.getParent() != null) {
+                detail.setParentName(category.getParent().getName());
+            }
         }
         return detail;
+    }
 
+    /**
+     * Converts list of domain objects to list of detail objects with possible parent name within detail.
+     * @param domainObjects to be converted
+     * @param involveParentName true to involve parent name in category detail, false otherwise
+     * @return converted list
+     */
+    public ArrayList<ICatLocDetail> convertToTargetList(Collection<Category> domainObjects, boolean involveParentName) {
+        this.involveParentName = involveParentName;
+        return super.convertToTargetList(domainObjects);
     }
 
     /**

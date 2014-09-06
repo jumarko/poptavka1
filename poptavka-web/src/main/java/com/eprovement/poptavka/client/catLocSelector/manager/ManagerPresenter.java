@@ -253,6 +253,15 @@ public class ManagerPresenter
         }
     }
 
+    /**
+     * Redraws datagrid. Needed when displayed in tab layout panel.
+     */
+    public void onRedrawCatLocSelectorGrid(int instanceId) {
+        if (this.instanceId == instanceId) {
+            view.getDataGrid().redraw();
+        }
+    }
+
     /**************************************************************************/
     /* Presenter events                                                       */
     /**************************************************************************/

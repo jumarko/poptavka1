@@ -51,7 +51,6 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
         LAST_NAME("personLastName"),
         PHONE("phone"),
         DESCRIPTION("description"),
-        OVERALL_RATING("overalRating"),
         TAX_NUMBER("taxId"),
         VAT_NUMBER("identificationNumber"),
         WEBSITE("website");
@@ -109,12 +108,12 @@ public class BusinessUserDetail extends UserDetail implements IsSerializable {
 //    Commented this strict regex, but leaving here for furthture usage...maybe
 //    @Pattern(regexp = "^[+]?[01]?[- .]?(\\([2-9]\\d{2}\\)|[2-9]\\d{2})[- .]?\\d{3}[- .]?\\d{4}$",
 //            message = "{patternPhone}")
-    @Pattern(regexp = "[+]?\\d{8,13}", message = "{patternPhone}", groups = Extended.class)
+    @Pattern(regexp = "[+]?[\\d-\\ ]{7,13}", message = "{patternPhone}", groups = Extended.class)
     @NotBlank(message = "{phoneNotBlank}")
     private String phone;
 
     @NotBlank(message = "{descriptionNotBlank}")
-    @Size(min = 20, max = 1500, message = "{descriptionSize}", groups = {Extended.class, SearchGroup.class })
+    @Size(min = 20, max = 255, message = "{descriptionSize}", groups = {Extended.class, SearchGroup.class })
     private String description;
 
     /**

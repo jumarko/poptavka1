@@ -28,4 +28,7 @@ public interface CatLocSelectorGateway {
 
     @Event(forwardToParent = true)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
+
+    @Event(forwardToParent = true)
+    void redrawCatLocSelectorGrid(int instanceId);
 }

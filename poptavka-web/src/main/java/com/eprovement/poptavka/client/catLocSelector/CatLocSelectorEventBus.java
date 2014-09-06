@@ -77,6 +77,9 @@ public interface CatLocSelectorEventBus extends EventBusWithLookup, InfoWidgetsG
     @Event(handlers = ManagerPresenter.class)
     void addCatLocs(List<ICatLocDetail> catLocs, int instanceId);
 
+    @Event(handlers = ManagerPresenter.class)
+    void redrawCatLocSelectorGrid(int instanceId);
+
     /**************************************************************************/
     /* Business events handled by TreeBrowserPresenter                        */
     /**************************************************************************/

@@ -385,7 +385,7 @@ public interface RootEventBus extends EventBusWithLookup,
     void goToSearchModule();
 
     @Event(forwardToModules = SearchModule.class)
-    void showAdvancedSearchPopup();
+    void goToAdvancedSearch();
 
     @Event(forwardToModules = SearchModule.class)
     void resetSearchBar(Widget newAttributeSearchWidget);
@@ -405,6 +405,9 @@ public interface RootEventBus extends EventBusWithLookup,
 
     @Event(forwardToModules = CatLocSelectorModule.class)
     void requestHierarchy(int selectorType, ICatLocDetail category, int instanceId);
+
+    @Event(forwardToModules = CatLocSelectorModule.class)
+    void redrawCatLocSelectorGrid(int instanceId);
 
     /**************************************************************************/
     /* ADDRESS SELECTOR MODULE.                                               */

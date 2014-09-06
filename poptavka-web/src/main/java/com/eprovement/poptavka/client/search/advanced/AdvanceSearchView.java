@@ -257,11 +257,12 @@ public class AdvanceSearchView extends Modal
     }
 
     /**
-     * @return the widget view
-     */
+     * Shows advanced search popup
+    */
     @Override
-    public AdvanceSearchView getWidgetView() {
-        return this;
+    public void showAdvancedSearchPopup() {
+        searchWhatItem.setText(getCurrentViewNameString());
+        super.show();
     }
 
     /**************************************************************************/
@@ -315,6 +316,10 @@ public class AdvanceSearchView extends Modal
      */
     private String getCurrentViewNameString() {
         switch (Storage.getCurrentlyLoadedView()) {
+            case Constants.HOME_SUPPLIERS_BY_DEFAULT:
+            case Constants.HOME_SUPPLIERS_BY_SEARCH:
+            case Constants.HOME_SUPPLIERS_MODULE:
+                return Storage.MSGS.searchInSuppliers();
             case Constants.CLIENT_DEMANDS:
                 return Storage.MSGS.searchInClientDemands();
             case Constants.CLIENT_DEMAND_DISCUSSIONS:
@@ -332,7 +337,7 @@ public class AdvanceSearchView extends Modal
             case Constants.SUPPLIER_ASSIGNED_DEMANDS:
                 return Storage.MSGS.searchInSuppliersAssignedDemands();
             default:
-                return Storage.MSGS.searchInCurrentView();
+                return Storage.MSGS.searchInDemands();
         }
     }
 }

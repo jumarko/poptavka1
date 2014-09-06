@@ -3,12 +3,9 @@
  */
 package com.eprovement.poptavka.server.converter;
 
-import com.eprovement.poptavka.domain.address.Locality;
-import com.eprovement.poptavka.domain.demand.Category;
 import com.eprovement.poptavka.domain.demand.Demand;
 import com.eprovement.poptavka.domain.user.Supplier;
 import com.eprovement.poptavka.service.demand.DemandService;
-import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
 import com.eprovement.poptavka.shared.domain.demand.FullDemandDetail;
 import com.eprovement.poptavka.shared.domain.supplier.FullSupplierDetail;
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     /**************************************************************************/
     /* RPC Services                                                           */
     /**************************************************************************/
+    private boolean involveParentName;
     private DemandService demandService;
 
     @Autowired
@@ -36,8 +34,8 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
     /* Attributes                                                             */
     /**************************************************************************/
     private final Converter<Supplier, FullSupplierDetail> supplierConverter;
-    private final Converter<Locality, ICatLocDetail> localityConverter;
-    private final Converter<Category, ICatLocDetail> categoryConverter;
+    private final LocalityConverter localityConverter;
+    private final CategoryConverter categoryConverter;
 
     /**************************************************************************/
     /* Constructor                                                            */
@@ -46,11 +44,12 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
      * Creates FullDemandConverter.
      */
     private FullDemandConverter(
-            Converter<Supplier, FullSupplierDetail> supplierConverter,
-            Converter<Locality, ICatLocDetail> localityConverter,
-            Converter<Category, ICatLocDetail> categoryConverter) {
+        Converter<Supplier, FullSupplierDetail> supplierConverter,
+        LocalityConverter localityConverter, CategoryConverter categoryConverter) {
         // Spring instantiates converters - see converters.xml
         Validate.notNull(supplierConverter);
+        Validate.notNull(localityConverter);
+        Validate.notNull(categoryConverter);
         this.supplierConverter = supplierConverter;
         this.localityConverter = localityConverter;
         this.categoryConverter = categoryConverter;
@@ -80,9 +79,9 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
             detail.setClientRating(0);
         }
         //categories
-        detail.setCategories(categoryConverter.convertToTargetList(source.getCategories()));
+        detail.setCategories(categoryConverter.convertToTargetList(source.getCategories(), involveParentName));
         //localities
-        detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities()));
+        detail.setLocalities(localityConverter.convertToTargetList(source.getLocalities(), involveParentName));
 
         detail.setDemandStatus(source.getStatus());
 
@@ -96,6 +95,17 @@ public final class FullDemandConverter extends AbstractConverter<Demand, FullDem
 
         return detail;
 
+    }
+
+    /**
+     * Domain object to detail object with parent name within category detail.
+     * @param domain to be converted
+     * @param involveParentName true to involve parent name in category detail, false otherwise
+     * @return converted list
+     */
+    public FullDemandDetail convertToTarget(Demand domain, boolean involveParentName) {
+        this.involveParentName = involveParentName;
+        return convertToTarget(domain);
     }
 
     /**

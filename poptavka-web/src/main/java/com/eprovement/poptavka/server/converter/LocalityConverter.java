@@ -7,6 +7,8 @@ import com.eprovement.poptavka.domain.address.Locality;
 import com.eprovement.poptavka.service.address.LocalityService;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.CatLocDetail;
 import com.eprovement.poptavka.shared.selectors.catLocSelector.ICatLocDetail;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -23,6 +25,7 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
     /**************************************************************************/
     /* RPC Services                                                           */
     /**************************************************************************/
+    private boolean involveParentName;
     private LocalityService localityService;
 
     @Autowired
@@ -53,12 +56,24 @@ public final class LocalityConverter extends AbstractConverter<Locality, ICatLoc
         detail.setSuppliersCount(locality.getSupplierCount());
         detail.setLevel(locality.getLevel());
         detail.setLeaf(locality.isLeaf());
-        Locality localityParent = locality.getParent();
-        if (localityParent != null) {
-            detail.setParentName(localityParent.getName());
+        if (involveParentName) {
+            if (locality.getParent() != null) {
+                detail.setParentName(locality.getParent().getName());
+            }
         }
         return detail;
 
+    }
+
+    /**
+     * Converts list of domain objects to list of detail objects with possible parent name within detail.
+     * @param domainObjects to be converted
+     * @param involveParentName true to involve parent name in category detail, false otherwise
+     * @return converted list
+     */
+    public ArrayList<ICatLocDetail> convertToTargetList(Collection<Locality> domainObjects, boolean involveParentName) {
+        this.involveParentName = involveParentName;
+        return super.convertToTargetList(domainObjects);
     }
 
     /**

@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import java.util.List;
+import org.hibernate.search.annotations.Indexed;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -21,45 +22,51 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Excalibur
  */
 @Entity
+@Indexed
 @NamedQueries({
-        @NamedQuery(name = "getSuppliersForCategoriesAndLocalities",
-                    query = "select supplierCategory.supplier"
-                        + " from SupplierCategory supplierCategory,"
-                        + " SupplierLocality supplierLocality"
-                        + " where supplierCategory.supplier ="
-                        + " supplierLocality.supplier"
-                        + " and supplierCategory.category.id in (:categoryIds)"
-                        + " and supplierLocality.locality.id in (:localityIds)"),
-        @NamedQuery(name = "getSuppliersCountForCategoriesAndLocalities",
-                    query = "select count(supplierCategory.supplier)"
-                        + " from SupplierCategory supplierCategory,"
-                        + " SupplierLocality supplierLocality"
-                        + " where supplierCategory.supplier ="
-                        + " supplierLocality.supplier"
-                        + " and supplierCategory.category.id in (:categoryIds)"
-                        + " and supplierLocality.locality.id in (:localityIds)"),
-        @NamedQuery(name = "getSuppliersForCategoriesAndLocalitiesIncludingParentsAndChildren",
-                query = "select supplierCategory.supplier"
-                        + " from SupplierCategory supplierCategory,"
-                        + " SupplierLocality supplierLocality "
-                        + "where supplierCategory.supplier ="
-                        + " supplierLocality.supplier"
-                        + " and exists (select c.id from Category c "
-                        + "where ((c.leftBound >= supplierCategory.category.leftBound"
-                        + " and c.rightBound <= supplierCategory.category.rightBound)"
-                        + " or (c.leftBound <= supplierCategory.category.leftBound"
-                        + " and c.rightBound >= supplierCategory.category.rightBound)) "
-                        + "and c.id in (:categoryIds))"
-                        + " and exists (select l.id from Locality l "
-                        + "where ((l.leftBound >= supplierLocality.locality.leftBound"
-                        + " and l.rightBound <= supplierLocality.locality.rightBound)"
-                        + " or (l.leftBound <= supplierLocality.locality.leftBound"
-                        + " and l.rightBound >= supplierLocality.locality.rightBound))"
-                        + " and l.id in (:localityIds))"
-        ),
+    @NamedQuery(name = "getSuppliersForCategoriesAndLocalities",
+        query = "select supplierCategory.supplier"
+        + " from SupplierCategory supplierCategory,"
+        + " SupplierLocality supplierLocality"
+        + " where supplierCategory.supplier ="
+        + " supplierLocality.supplier"
+        + " and supplierCategory.category.id in (:categoryIds)"
+        + " and supplierLocality.locality.id in (:localityIds)"),
+    @NamedQuery(name = "getSuppliersCountForCategoriesAndLocalities",
+        query = "select count(supplierCategory.supplier)"
+        + " from SupplierCategory supplierCategory,"
+        + " SupplierLocality supplierLocality"
+        + " where supplierCategory.supplier ="
+        + " supplierLocality.supplier"
+        + " and supplierCategory.category.id in (:categoryIds)"
+        + " and supplierLocality.locality.id in (:localityIds)"),
+    @NamedQuery(name = "getSuppliersForCategoriesAndLocalitiesIncludingParentsAndChildren",
+        query = "select supplierCategory.supplier"
+        + " from SupplierCategory supplierCategory,"
+        + " SupplierLocality supplierLocality "
+        + "where supplierCategory.supplier ="
+        + " supplierLocality.supplier"
+        + " and exists (select c.id from Category c "
+        + "where ((c.leftBound >= supplierCategory.category.leftBound"
+        + " and c.rightBound <= supplierCategory.category.rightBound)"
+        + " or (c.leftBound <= supplierCategory.category.leftBound"
+        + " and c.rightBound >= supplierCategory.category.rightBound)) "
+        + "and c.id in (:categoryIds))"
+        + " and exists (select l.id from Locality l "
+        + "where ((l.leftBound >= supplierLocality.locality.leftBound"
+        + " and l.rightBound <= supplierLocality.locality.rightBound)"
+        + " or (l.leftBound <= supplierLocality.locality.leftBound"
+        + " and l.rightBound >= supplierLocality.locality.rightBound))"
+        + " and l.id in (:localityIds))"
+    ),
 })
 @Audited
 public class Supplier extends BusinessUserRole {
+
+    /** Fields that are available for full-text search. */
+    public static final String[] SUPPLIER_FULLTEXT_FIELDS = new String[]{
+        "businessUser.businessUserData.companyName", "businessUser.businessUserData.personFirstName",
+        "businessUser.businessUserData.personLastName", "businessUser.businessUserData.description"};
 
     @ManyToMany
     @NotAudited
@@ -92,7 +99,6 @@ public class Supplier extends BusinessUserRole {
     /** Total rating of supplier for all his "processed" demands .*/
     private Integer overalRating = Integer.valueOf(0);
 
-
     public List<Locality> getLocalities() {
         return localities;
     }
@@ -124,7 +130,6 @@ public class Supplier extends BusinessUserRole {
     public void setOveralRating(Integer overalRating) {
         this.overalRating = overalRating;
     }
-
 
     @Override
     public String toString() {

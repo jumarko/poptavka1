@@ -419,7 +419,7 @@
 .cell-browser-selection-modal {
     width: 100%;
     max-width: 1115px;
-    margin: -350px 0 0 -557px;
+    margin: -200px 0 0 -557px;
     background: #000000;
     outline: medium none;
     z-index: 1100;
