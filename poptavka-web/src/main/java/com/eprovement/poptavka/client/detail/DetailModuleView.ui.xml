@@ -13,59 +13,55 @@
         }
     </ui:style>
 
-    <g:ScrollPanel styleName='{res.initial.scrollContainer}'>        
-        <g:HTMLPanel styleName="{style.tab-panel-container}">
-            <g:TabLayoutPanel stylePrimaryName='{res.details.detailTabPanel}'
-                          ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
-                <g:tab>
-                    <g:header>
-                        <ui:msg key="detailsWrapperTabDemandDetail">Project</ui:msg>
-                    </g:header>
-                    <g:SimplePanel ui:field="demandDetailHolder">
-                        <w:DemandDetailView ui:field="demandDetail" advancedView="false" />
-                    </g:SimplePanel>
-                </g:tab>
-                <g:tab>
-                    <g:customHeader>
-                        <g:HTML ui:field='userHeaderLabel'/>
-                    </g:customHeader>
-                    <g:SimplePanel ui:field="userDetailHolder">
-                        <w:UserDetailView ui:field="userDetail"/>
-                    </g:SimplePanel>
-                </g:tab>
-                <g:tab>
-                    <g:header>
-                        <ui:msg key="detailsWrapperTabRatingDetail">Ratings</ui:msg>
-                    </g:header>
-                    <g:SimplePanel ui:field="ratingDetailHolder">
-                        <w:RatingDetailView ui:field="ratingDetail" visible="false" />
-                    </g:SimplePanel>
-                </g:tab>
-                <g:tab>
-                    <g:header>
-                        <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
-                    </g:header>
-                    <g:SimplePanel ui:field="conversationDetailHolder">
-                        <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.details.conversationContainer}'>
-                            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-                                <b:Column size='12'>
-                                    <w:OfferQuestionWindow ui:field="replyHolder" styleName='{res.details.conversationBlock}'/>
-                                </b:Column>
-                            </b:FluidRow>
-                            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-                                <b:Column size='12'>
-                                    <c:CellList ui:field="messageList" />
-                                    <!--styleName='{res.details.conversationBlock}'/>-->
-                                </b:Column>
-                            </b:FluidRow>
-                        </b:FluidContainer>
-                    </g:SimplePanel>
-                </g:tab>
-                <g:tab>
-                    <g:header/>
-                    <g:SimplePanel ui:field="advertisementHolder" styleName='{res.details.emptyView}'/>
-                </g:tab>
-            </g:TabLayoutPanel>
-        </g:HTMLPanel>
-    </g:ScrollPanel>
+    <g:TabLayoutPanel stylePrimaryName='{res.details.detailTabPanel}'
+                              ui:field="container" barUnit="PX" barHeight="50" animationDuration="1000">
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabDemandDetail">Project</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="demandDetailHolder">
+                <w:DemandDetailView ui:field="demandDetail" advancedView="false" />
+            </g:SimplePanel>
+        </g:tab>
+        <g:tab>
+            <g:customHeader>
+                <g:HTML ui:field='userHeaderLabel'/>
+            </g:customHeader>
+            <g:SimplePanel ui:field="userDetailHolder">
+                <w:UserDetailView ui:field="userDetail"/>
+            </g:SimplePanel>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabRatingDetail">Ratings</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="ratingDetailHolder">
+                <w:RatingDetailView ui:field="ratingDetail" visible="false" />
+            </g:SimplePanel>
+        </g:tab>
+        <g:tab>
+            <g:header>
+                <ui:msg key="detailsWrapperTabConversationDetail">Conversation</ui:msg>
+            </g:header>
+            <g:SimplePanel ui:field="conversationDetailHolder">
+                <b:FluidContainer ui:field="conversationHolder" addStyleNames='{res.details.conversationContainer}'>
+                    <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                        <b:Column size='12'>
+                            <w:OfferQuestionWindow ui:field="replyHolder" styleName='{res.details.conversationBlock}'/>
+                        </b:Column>
+                    </b:FluidRow>
+                    <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                        <b:Column size='12'>
+                            <c:CellList ui:field="messageList" />
+                            <!--styleName='{res.details.conversationBlock}'/>-->
+                        </b:Column>
+                    </b:FluidRow>
+                </b:FluidContainer>
+            </g:SimplePanel>
+        </g:tab>
+        <g:tab>
+            <g:header/>
+            <g:SimplePanel ui:field="advertisementHolder" styleName='{res.details.emptyView}'/>
+        </g:tab>
+    </g:TabLayoutPanel>
 </ui:UiBinder>

@@ -21,74 +21,78 @@
                 </g:ScrollPanel>
             </b:Column>
             <b:Column size="5" addStyleNames='span-detail'>
-                <g:FlowPanel styleName='{res.details.detailTabPanel}' debugId='rightSlidingPanel'>
-                    <g:SimplePanel ui:field="advertisementContainer" styleName='{res.details.emptyView}'/>
-                    <!--Change email-->
-                    <b:FluidContainer  ui:field='changeEmailContainer' addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
-                        <!--Change email-->
-                        <b:FluidRow addStyleNames='well-header'>
-                            <b:Column size="12">
-                                <b:Heading size="4">
-                                    Change email
-                                </b:Heading>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow addStyleNames='well-content'>
-                            <b:Column size="12" addStyleNames='well-padding'>
-                                <b:FluidRow>
-                                    <b:Column size="4">
-                                        <g:Label>
-                                            <ui:msg key='formEmail'>Email:</ui:msg>
-                                        </g:Label>
-                                    </b:Column>
-                                    <b:Column size="8">
-                                        <cm:ValidationMonitor ui:field='emailMonitor'>
-                                            <g:TextBox/>
-                                        </cm:ValidationMonitor>
-                                    </b:Column>
-                                </b:FluidRow>
-                                <b:FluidRow>
+                <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
+                    <g:HTMLPanel addStyleNames='content-margin'>
+                        <g:FlowPanel styleName='{res.details.detailTabPanel}' debugId='rightSlidingPanel'>
+                            <g:SimplePanel ui:field="advertisementContainer" styleName='{res.details.emptyView}'/>
+                            <!--Change email-->
+                            <b:FluidContainer  ui:field='changeEmailContainer' addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
+                                <!--Change email-->
+                                <b:FluidRow addStyleNames='well-header'>
                                     <b:Column size="12">
-                                        <g:Button ui:field="saveEmailBtn" styleName='{res.common.buttonGreen}'>
-                                            <ui:msg key="commonBtnSave">Save</ui:msg>
-                                        </g:Button>
+                                        <b:Heading size="4">
+                                            Change email
+                                        </b:Heading>
                                     </b:Column>
                                 </b:FluidRow>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:FluidContainer>
+                                <b:FluidRow addStyleNames='well-content'>
+                                    <b:Column size="12" addStyleNames='well-padding'>
+                                        <b:FluidRow>
+                                            <b:Column size="4">
+                                                <g:Label>
+                                                    <ui:msg key='formEmail'>Email:</ui:msg>
+                                                </g:Label>
+                                            </b:Column>
+                                            <b:Column size="8">
+                                                <cm:ValidationMonitor ui:field='emailMonitor'>
+                                                    <g:TextBox/>
+                                                </cm:ValidationMonitor>
+                                            </b:Column>
+                                        </b:FluidRow>
+                                        <b:FluidRow>
+                                            <b:Column size="12">
+                                                <g:Button ui:field="saveEmailBtn" styleName='{res.common.buttonGreen}'>
+                                                    <ui:msg key="commonBtnSave">Save</ui:msg>
+                                                </g:Button>
+                                            </b:Column>
+                                        </b:FluidRow>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
 
-                    <!--Change origin-->
-                    <b:FluidContainer ui:field='changeOriginContainer' addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
-                        <!--Origin-->
-                        <b:FluidRow addStyleNames='well-header'>
-                            <b:Column size="12">
-                                <b:Heading size="4">Origin</b:Heading>
-                            </b:Column>
-                        </b:FluidRow>
-                        <b:FluidRow addStyleNames='well-content'>
-                            <b:Column size="12" addStyleNames='well-padding'>
-                                <b:FluidRow>
-                                    <b:Column size="4">
-                                        <g:Label>
-                                            Origin:
-                                        </g:Label>
-                                    </b:Column>
-                                    <b:Column size="8">
-                                        <g:ListBox ui:field="originListBox" />
-                                    </b:Column>
-                                </b:FluidRow>
-                                <b:FluidRow>
+                            <!--Change origin-->
+                            <b:FluidContainer ui:field='changeOriginContainer' addStyleNames='{res.common.wellContainer} {res.common.formFields}'>
+                                <!--Origin-->
+                                <b:FluidRow addStyleNames='well-header'>
                                     <b:Column size="12">
-                                        <g:Button ui:field="saveOriginBtn" styleName='{res.common.buttonGreen}'>
-                                            <ui:msg key="commonBtnSave">Save</ui:msg>
-                                        </g:Button>
+                                        <b:Heading size="4">Origin</b:Heading>
                                     </b:Column>
                                 </b:FluidRow>
-                            </b:Column>
-                        </b:FluidRow>
-                    </b:FluidContainer>
-                </g:FlowPanel>
+                                <b:FluidRow addStyleNames='well-content'>
+                                    <b:Column size="12" addStyleNames='well-padding'>
+                                        <b:FluidRow>
+                                            <b:Column size="4">
+                                                <g:Label>
+                                                    Origin:
+                                                </g:Label>
+                                            </b:Column>
+                                            <b:Column size="8">
+                                                <g:ListBox ui:field="originListBox" />
+                                            </b:Column>
+                                        </b:FluidRow>
+                                        <b:FluidRow>
+                                            <b:Column size="12">
+                                                <g:Button ui:field="saveOriginBtn" styleName='{res.common.buttonGreen}'>
+                                                    <ui:msg key="commonBtnSave">Save</ui:msg>
+                                                </g:Button>
+                                            </b:Column>
+                                        </b:FluidRow>
+                                    </b:Column>
+                                </b:FluidRow>
+                            </b:FluidContainer>
+                        </g:FlowPanel>
+                    </g:HTMLPanel>
+                </g:ScrollPanel>
             </b:Column>                    
         </b:FluidRow>
     </b:FluidContainer>
