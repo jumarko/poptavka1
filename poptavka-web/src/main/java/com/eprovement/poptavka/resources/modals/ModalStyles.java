@@ -63,4 +63,7 @@ public interface ModalStyles extends CssResource {
     /* Thank You Modal Styles*/
     @ClassName("terms-and-conditions")
     String termsAndConditions();
+
+    @ClassName("service-selector-modal")
+    String serviceSelectorModal();
 }

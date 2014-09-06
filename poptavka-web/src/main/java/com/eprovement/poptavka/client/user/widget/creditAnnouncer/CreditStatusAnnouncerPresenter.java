@@ -6,6 +6,7 @@ package com.eprovement.poptavka.client.user.widget.creditAnnouncer;
 import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.common.smallPopups.SimpleConfirmPopup;
 import com.eprovement.poptavka.client.root.RootEventBus;
+import com.eprovement.poptavka.resources.StyleResource;
 import com.eprovement.poptavka.shared.domain.ServiceDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -77,6 +78,7 @@ public class CreditStatusAnnouncerPresenter extends
     public void onInitCreditAnnouncer(SimplePanel creditAnnouncerPanel) {
         creditAnnouncerPanel.setWidget(view.getWidgetView());
         eventBus.requestCreditCount(Storage.getUser().getUserId());
+        popup.addStyleName(StyleResource.INSTANCE.modal().serviceSelectorModal());
     }
 
     /**
