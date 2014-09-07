@@ -34,6 +34,7 @@ public final class CssInjector {
     private boolean isGridLoaded;
     private boolean isPagerLoaded;
     private boolean isDetailLoaded;
+    private boolean isServiceSelectorLoaded;
 
     /**************************************************************************/
     /* Initialization                                                         */
@@ -166,6 +167,16 @@ public final class CssInjector {
         if (!isPagerLoaded) {
             isPagerLoaded = true;
             injectResponsiveStyle(pagerResources.simplePagerStyleTiny().getText(), 480);
+        }
+    }
+
+    /**
+     * Inject <b>service selector</b> styles.
+     */
+    public void ensureServiceSelectorStylesInjected() {
+        if (!isServiceSelectorLoaded) {
+            isServiceSelectorLoaded = true;
+            StyleResource.INSTANCE.serviceSelector().ensureInjected();
         }
     }
 

@@ -4,13 +4,13 @@
     
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <g:VerticalPanel ui:field='panel' addStyleNames='{res.serviceSelector.serviceItemPanel}'>
+    <g:HTMLPanel ui:field='panel' addStyleNames='{res.serviceSelector.serviceItemPanel}'>
         <g:Label ui:field='title' styleName='text-title'/>
-        <g:Image ui:field='icon' styleName='icon'/>
+        <g:HTMLPanel ui:field='icon' styleName='icon'/>
         <g:Label styleName='text-small'>get</g:Label>
         <g:Label ui:field='credits' styleName='text-large'/>
         <g:Label styleName='text-small'>for</g:Label>
         <g:Label ui:field='price' styleName='text-large'/>
-        <g:Image ui:field='selected' styleName='selected'/>
-    </g:VerticalPanel>
+        <g:HTMLPanel ui:field='selected' styleName='selected'/>
+    </g:HTMLPanel>
 </ui:UiBinder>

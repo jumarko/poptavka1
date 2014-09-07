@@ -12,9 +12,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -35,9 +34,8 @@ public class ServiceItem extends Composite implements HasClickHandlers {
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField VerticalPanel panel;
+    @UiField HTMLPanel panel, icon, selected;
     @UiField Label title, credits, price;
-    @UiField Image icon, selected;
     /** Class attributes. **/
     private ServiceDetail serviceDetail;
     private boolean isSelected;
@@ -52,8 +50,8 @@ public class ServiceItem extends Composite implements HasClickHandlers {
         initWidget(uiBinder.createAndBindUi(this));
         serviceDetail = detail;
         title.setText(detail.getTitle());
-        credits.setText(detail.getCredits() + "credits");
-        price.setText(detail.getPrice() + " dollars");
+        credits.setText(detail.getCredits() + " credits");
+        price.setText(detail.getPrice().intValue() + " dollars");
     }
 
     /**************************************************************************/
@@ -85,6 +83,13 @@ public class ServiceItem extends Composite implements HasClickHandlers {
      */
     public ServiceDetail getServiceDetail() {
         return serviceDetail;
+    }
+
+    /**
+     * @return icon panel
+     */
+    public HTMLPanel getIcon() {
+        return icon;
     }
 
     /**

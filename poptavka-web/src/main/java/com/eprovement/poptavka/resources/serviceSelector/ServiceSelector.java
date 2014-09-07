@@ -10,6 +10,9 @@ import com.google.gwt.resources.client.CssResource;
  */
 public interface ServiceSelector extends CssResource {
 
+    @ClassName("service-info-message")
+    String serviceInfoMessage();
+
     @ClassName("service-item-panel")
     String serviceItemPanel();
 

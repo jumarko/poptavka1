@@ -2,9 +2,14 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+    
+    <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
+    <ui:with field='msgs' type='com.google.gwt.i18n.client.LocalizableMessages' />
 
     <g:HTMLPanel>
-        <g:Label ui:field="infoLabel"/>
+        <g:Label ui:field="infoLabel" addStyleNames="{res.serviceSelector.serviceInfoMessage}">
+            <ui:msg key="serviceMessage">Please, choose how many credits you would like to recharge.</ui:msg>
+        </g:Label>
         <g:HorizontalPanel ui:field='servicesHolder'/>
         <g:HTMLPanel>
             <form ui:field="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">

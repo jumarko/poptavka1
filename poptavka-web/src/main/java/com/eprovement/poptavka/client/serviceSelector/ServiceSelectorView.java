@@ -3,6 +3,7 @@
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
 import com.eprovement.poptavka.client.serviceSelector.serviceItem.ServiceItem;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
@@ -51,6 +52,9 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
     @Override
     public void createView() {
         initWidget(uiBinder.createAndBindUi(this));
+
+        /** style implementation and overflow tweaks **/
+        CssInjector.INSTANCE.ensureServiceSelectorStylesInjected();
     }
 
     /**************************************************************************/

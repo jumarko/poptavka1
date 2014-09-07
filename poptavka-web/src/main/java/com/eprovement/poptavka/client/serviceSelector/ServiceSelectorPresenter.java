@@ -96,11 +96,17 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
     @Override
     public void onDisplayServices(ArrayList<ServiceDetail> services) {
         boolean selectFirst = true;
+        int item = 1;
         for (ServiceDetail serviceDetail : services) {
             ServiceItem serviceItem = new ServiceItem(serviceDetail);
             serviceItem.addClickHandler(clickHandler);
             serviceItem.setSelected(selectFirst);
+            if (selectFirst) {
+                serviceItem.addStyleName("first");
+            }
             selectFirst = false;
+            serviceItem.getIcon().addStyleName("icon" + item);
+            item++;
             view.getServicesHolder().add(serviceItem);
         }
     }
