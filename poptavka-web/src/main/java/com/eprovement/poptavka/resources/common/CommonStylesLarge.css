@@ -574,6 +574,7 @@ button.button-green {
     height: 40px;
     width: 100%;
     max-width: 100%;
+    color: #706C5C;
 }
 .form-fields input[type="checkbox"] {
     margin: 1px 4px 0 0;
