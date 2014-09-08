@@ -58,30 +58,45 @@
 
     <g:ScrollPanel styleName='{res.initial.scrollContainer}'>
         <g:HTMLPanel styleName='{res.common.howItWorksContainer}'>
-            <h1>
-                <ui:msg key="aboutUsAboutWSTitle">About Want-Something.com</ui:msg>
-            </h1>
-            <g:Label>
-                <ui:msg key="aboutUsAboutWS">Want-Someting.com makes it simple to get
-                    things done. The right professionals are matched with the right customers quickly and
-                    effectively so that each Pro can get the jobs that they are best at and each customer
-                    can get the right Pro for the job.</ui:msg>
-            </g:Label>
-            <h3>
-                <ui:msg key="aboutUsVisionTitle">Vision</ui:msg>
-            </h3>
-            <g:Label>
-                <ui:msg key="aboutUsVision">Your whole business depends on connecting with prospects and
-                    customers. We make this happen in an effective and fashionable way so that you can do what
-                    you do best.</ui:msg>
-            </g:Label>
-            <br />
-            <g:Label>
-                <ui:msg key="aboutUsEstablished">Want-Something.com was established in 2013 to making it easy
-                    to get things done.</ui:msg>
-            </g:Label>
-            <b:FluidContainer addStyleNames='{style.members-container}'>
+            <b:FluidContainer>
                 <b:FluidRow>
+                    <b:Column size="10" addStyleNames='{res.initial.expandOnSmall}'>
+                        <b:Heading size='1'>
+                            <ui:msg key="aboutUsAboutWSTitle">About Want-Something.com</ui:msg>
+                        </b:Heading>
+                    </b:Column>
+                    <b:Column size="2" addStyleNames='{res.initial.expandOnSmall}'>
+                        <g:HTMLPanel>
+                            <a href="#" onclick="window.open('https://www.sitelock.com/verify.php?site=want-something.com','SiteLock','width=600,height=600,left=160,top=170');" class='pull-right'>
+                                <img alt="website security" title="SiteLock" src="http://shield.sitelock.com/shield/want-something.com"/>
+                            </a>
+                        </g:HTMLPanel>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow>
+                    <b:Column size="12">
+                        <g:Label>
+                            <ui:msg key="aboutUsAboutWS">Want-Someting.com makes it simple to get
+                                things done. The right professionals are matched with the right customers quickly and
+                                effectively so that each Pro can get the jobs that they are best at and each customer
+                                can get the right Pro for the job.</ui:msg>
+                        </g:Label>
+                        <b:Heading size='3'>
+                            <ui:msg key="aboutUsVisionTitle">Vision</ui:msg>
+                        </b:Heading>
+                        <g:Label>
+                            <ui:msg key="aboutUsVision">Your whole business depends on connecting with prospects and
+                                customers. We make this happen in an effective and fashionable way so that you can do what
+                                you do best.</ui:msg>
+                        </g:Label>
+                        <g:Label>&nbsp;</g:Label>
+                        <g:Label>
+                            <ui:msg key="aboutUsEstablished">Want-Something.com was established in 2013 to making it easy
+                                to get things done.</ui:msg>
+                        </g:Label>
+                    </b:Column>
+                </b:FluidRow>
+                <b:FluidRow addStyleNames='{style.members-container}'>
                     <b:Column size="4" addStyleNames='{res.initial.expandOnSmall}'>
                         <g:HTMLPanel styleName='{style.members-block}'>
                             <g:HTMLPanel styleName='{style.members-inside-block}'>

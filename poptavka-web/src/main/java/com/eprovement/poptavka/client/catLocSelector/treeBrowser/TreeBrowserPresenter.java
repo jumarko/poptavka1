@@ -34,8 +34,8 @@ import java.util.List;
  */
 @Presenter(view = TreeBrowserView.class, multiple = true)
 public class TreeBrowserPresenter
-        extends LazyPresenter<TreeBrowserPresenter.TreeBrowserInterface, CatLocSelectorEventBus>
-        implements PresentersInterface {
+    extends LazyPresenter<TreeBrowserPresenter.TreeBrowserInterface, CatLocSelectorEventBus>
+    implements PresentersInterface {
 
     /**************************************************************************/
     /* View interface                                                         */
@@ -88,7 +88,7 @@ public class TreeBrowserPresenter
             @Override
             public void onLoadingStateChanged(LoadingStateChangeEvent event) {
                 if (todoOpen != null && !todoOpen.isEmpty()
-                        && !lastOpened.isChildLeaf(getIndex(todoOpen.getFirst()))) {
+                    && !lastOpened.isChildLeaf(getIndex(todoOpen.getFirst()))) {
                     cancelNextOpenEvent = true;
                     lastOpened = lastOpened.setChildOpen(getIndex(todoOpen.removeFirst()), true);
                 }
@@ -110,18 +110,15 @@ public class TreeBrowserPresenter
                     //Close previous opened node
                     //Find previous opened node of the same level as the new one
                     ICatLocDetail sameLevelOldItem = getSameLevelOldItem(
-                            openedHierarchy,
-                            ((ICatLocDetail) event.getTarget().getValue()).getLevel());
+                        openedHierarchy, (ICatLocDetail) event.getTarget().getValue());
                     //and close it if needed
                     if (sameLevelOldItem != null) {
-                        manageLastOpenedNode(sameLevelOldItem.getLevel());
+                        manageLastOpenedNode(sameLevelOldItem);
                         cancelNextCloseEvent = true;
                         lastOpened.setChildOpen(getIndex(sameLevelOldItem), false);
                     }
                     //set flags according to new selection
-                    manageOpenedHierarchy(
-                            (ICatLocDetail) event.getTarget().getValue(),
-                            event.getTarget().getIndex());
+                    manageOpenedHierarchy((ICatLocDetail) event.getTarget().getValue());
                     lastOpened = event.getTarget();
                     //set the selection to selection model
                     view.getTreeSelectionModel().setSelected((ICatLocDetail) event.getTarget().getValue(), true);
@@ -133,10 +130,8 @@ public class TreeBrowserPresenter
             @Override
             public void onClose(CloseEvent<TreeNode> event) {
                 if (!cancelNextCloseEvent) {
-                    manageOpenedHierarchy(
-                        (ICatLocDetail) event.getTarget().getValue(),
-                        event.getTarget().getIndex());
-                    manageLastOpenedNode(((ICatLocDetail) event.getTarget().getValue()).getLevel());
+                    manageOpenedHierarchy((ICatLocDetail) event.getTarget().getValue());
+                    lastOpened = event.getTarget();
                 }
                 cancelNextCloseEvent = false;
             }
@@ -181,7 +176,7 @@ public class TreeBrowserPresenter
             openedHierarchy = result;
             //nothing opened yet
             if (lastOpened.getValue() != null
-                    && lastOpened.getValue().equals(result.getLast())) {
+                && lastOpened.getValue().equals(result.getLast())) {
                 //if lastOpen exuals with selected category, it means that its open
                 //and it shoud be closed
                 lastOpened = lastOpened.getParent();
@@ -261,7 +256,7 @@ public class TreeBrowserPresenter
      * @param openedNode
      * @return define if update/correction was made
      */
-    private void manageOpenedHierarchy(ICatLocDetail selectedCatLoc, int index) {
+    private void manageOpenedHierarchy(ICatLocDetail selectedCatLoc) {
         //remove all levels which levels are more or even to selected category
         Iterator<ICatLocDetail> iterator = openedHierarchy.iterator();
         while (iterator.hasNext()) {
@@ -280,10 +275,12 @@ public class TreeBrowserPresenter
      *
      * @param toLevel - level to which we want to find parent of lastOpened node
      */
-    private void manageLastOpenedNode(int toLevel) {
-        int lastOpenedLevel = ((ICatLocDetail) lastOpened.getValue()).getLevel();
-        for (; lastOpenedLevel > 0; lastOpenedLevel--) {
-            if (toLevel <= lastOpenedLevel) {
+    private void manageLastOpenedNode(ICatLocDetail selectedCatLoc) {
+        ICatLocDetail currentOpened = (ICatLocDetail) lastOpened.getValue();
+        for (int level = currentOpened.getLevel(); level == selectedCatLoc.getLevel(); level--) {
+            if (currentOpened.getLevel() == 2) {
+                lastOpened = view.getCellTree().getRootTreeNode();
+            } else {
                 lastOpened = lastOpened.getParent();
             }
         }
@@ -297,9 +294,9 @@ public class TreeBrowserPresenter
      * @param level of which item is returned
      * @return item of given level
      */
-    private ICatLocDetail getSameLevelOldItem(LinkedList<ICatLocDetail> hierarchy, int level) {
+    private ICatLocDetail getSameLevelOldItem(LinkedList<ICatLocDetail> hierarchy, ICatLocDetail selectedCatLoc) {
         for (ICatLocDetail item : hierarchy) {
-            if (item.getLevel() == level) {
+            if (item.getLevel() == selectedCatLoc.getLevel()) {
                 return item;
             }
         }
