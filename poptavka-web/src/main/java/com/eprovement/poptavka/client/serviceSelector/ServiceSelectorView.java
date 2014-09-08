@@ -143,7 +143,7 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
         formReturnUrl.setValue(returnRul);
         formItemName.setValue("Buy now");
         formItemNumber.setValue(userServiceDetail.getService().getTitle());
-        formItemId.setValue(Long.toOctalString(userServiceDetail.getOrderNumber()));
+        formItemId.setValue(Long.toString(userServiceDetail.getOrderNumber()));
         formAmount.setValue(userServiceDetail.getService().getPrice().toString());
     }
 
