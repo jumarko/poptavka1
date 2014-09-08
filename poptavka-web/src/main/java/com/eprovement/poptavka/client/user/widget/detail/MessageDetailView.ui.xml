@@ -5,17 +5,17 @@
 
     <ui:with field='res' type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <b:FluidContainer>
-        <!--Header-->
-        <b:FluidRow>
-            <b:Column size="12">
-                <b:Heading size='4' styleName="{res.details.demandDetailSectionHeader}">
-                    <ui:msg key="formMessageInfo">Message detail</ui:msg>
-                </b:Heading>
-            </b:Column>
-        </b:FluidRow>
-        <!--Content-->
-        <g:HTMLPanel styleName='{res.details.demandDetailContent}'>
+    <g:HTMLPanel addStyleNames='{res.details.demandDetailContent}'>
+        <b:FluidContainer>
+            <!--Header-->
+            <b:FluidRow>
+                <b:Column size="12">
+                    <b:Heading size='4' styleName="{res.details.demandDetailSectionHeader}">
+                        <ui:msg key="formMessageInfo">Message detail</ui:msg>
+                    </b:Heading>
+                </b:Column>
+            </b:FluidRow>
+            <!--Content-->
             <b:FluidRow>
                 <!--<b:FluidRow addStyleNames='{res.details.detailBlock}'>-->
                 <b:Column size='12'>
@@ -38,13 +38,13 @@
                     <b:Heading size='5' styleName='{res.details.detailHeader}'>
                         <ui:msg key="formMessageBody">Body</ui:msg>
                     </b:Heading>
-                    <g:HTMLPanel>
-                        <pre class='{res.details.detailDescriptionContent}'>
-                            <g:Label ui:field="body"/>
-                        </pre>
-                    </g:HTMLPanel>
                 </b:Column>
             </b:FluidRow>
+        </b:FluidContainer>
+        <g:HTMLPanel>
+            <pre class='{res.details.detailDescriptionContent}'>
+                <g:Label ui:field="body"/>
+            </pre>
         </g:HTMLPanel>
-    </b:FluidContainer>
+    </g:HTMLPanel>
 </ui:UiBinder>
