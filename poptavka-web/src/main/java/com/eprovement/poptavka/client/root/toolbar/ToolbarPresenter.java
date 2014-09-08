@@ -8,6 +8,7 @@ import com.eprovement.poptavka.client.root.interfaces.IToolbar;
 import com.eprovement.poptavka.resources.StyleResource;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -100,7 +101,6 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Sets custom toolbar widget.
      * @param title of toolbar
      * @param content - custom toolbar widget
-     * @param leftIconVisibile - has 3-layout-responsive-view that can be animated
      */
     public void onSetToolbarContent(final String title, final Widget content) {
         //Must be in scheduler in case refresh is used
@@ -142,7 +142,7 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Opens right sliding panel.
      */
     public void onOpenDetail() {
-        if (!isDetailPanelOpen) {
+        if (Document.get().getClientWidth() <= 480 && !isDetailPanelOpen) {
             openDetailPanel(true);
         }
     }
@@ -151,7 +151,7 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Close left sliding panel.
      */
     public void onCloseSubMenu() {
-        if (isCategoryPanelOpen) {
+        if (Document.get().getClientWidth() <= 767 && isCategoryPanelOpen) {
             openCategoryTreePanel(false);
         }
     }
