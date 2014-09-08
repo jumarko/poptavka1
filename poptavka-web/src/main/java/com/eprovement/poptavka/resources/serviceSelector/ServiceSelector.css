@@ -1,0 +1,71 @@
+.service-info-message {
+    font-size: 14px;
+    margin: 15px 0;
+}
+
+.service-item-panel {
+    width: 202px;
+    height: 328px;
+    background: #ddd8c5;
+    border: 1px solid #ddd8c5;
+    text-align: center;
+    color: #928a6f;
+    margin-left: 25px;
+    cursor: pointer;
+    margin-left: 25px;
+}
+
+.service-item-panel.first {
+    margin-left: 0px;
+}
+
+.service-item-panel.selected, .service-item-panel:hover {
+    background: url(images/service_selector_act.jpg) no-repeat;
+    border: 1px solid #199204;
+    color: #ffffff;
+}
+.service-item-panel .text-title {
+    color: #000000;
+    font-size: 23px;
+    margin: 30px 0 15px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.service-item-panel.selected .text-title, .service-item-panel:hover .text-title {
+    color: #ffffff;
+}
+.service-item-panel .text-small {
+    text-align: center;
+    font-size: 14px;
+}
+.service-item-panel .text-large {
+    text-align: center;
+    font-size: 24px;
+}
+.service-item-panel .icon {
+    background: url(images/service_credit_cards.png) no-repeat;
+    margin: 0 auto 15px;
+    width: 159px;
+    height: 59px;
+}
+.service-item-panel.selected .icon1, .service-item-panel:hover .icon1 {
+    background-position: 0 -177px;
+}
+.service-item-panel .icon2 {
+    background-position: 0 -59px;
+}
+.service-item-panel.selected .icon2, .service-item-panel:hover .icon2 {
+    background-position: 0 -236px;
+}
+.service-item-panel .icon3 {
+    background-position: 0 -118px;
+}
+.service-item-panel.selected .icon3, .service-item-panel:hover .icon3 {
+    background-position: 0 -295px;
+}
+.service-item-panel .selected {
+    background: url("images/service_selector_check.png") no-repeat;
+    height: 25px;    
+    width: 29px;
+    margin: 20px auto;
+}

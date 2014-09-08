@@ -494,6 +494,11 @@ public interface LocalizableMessages extends Messages {
     String orangeCreditStatus();
     String greenCreditStatus();
 
+    /** Service selector messages **/
+    String serviceHeader();
+    String serviceMessage();
+    String serviceNote();
+
     /*** 1 - Home Welcome module view *********************************** 1 ***/
     String iamProfessional();
     String iamProfessionalNext();

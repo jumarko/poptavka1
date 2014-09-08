@@ -3,26 +3,20 @@
  */
 package com.eprovement.poptavka.client.serviceSelector;
 
-import com.eprovement.poptavka.client.common.session.Storage;
+import com.eprovement.poptavka.client.common.session.CssInjector;
 import com.eprovement.poptavka.client.serviceSelector.interfaces.IServiceSelectorModule;
-import com.eprovement.poptavka.client.user.widget.grid.cell.RadioCell;
-import com.eprovement.poptavka.resources.datagrid.DataGridResources;
-import com.eprovement.poptavka.shared.domain.ServiceDetail;
+import com.eprovement.poptavka.client.serviceSelector.serviceItem.ServiceItem;
 import com.eprovement.poptavka.shared.domain.UserServiceDetail;
-import com.google.gwt.cell.client.NumberCell;
-import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.FormElement;
 import com.google.gwt.dom.client.InputElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
 
 /**
  * View consists of Table.
@@ -43,14 +37,12 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
     /* Attributes                                                             */
     /**************************************************************************/
     /** UiBinder attributes. **/
-    @UiField(provided = true) DataGrid table;
+    @UiField HorizontalPanel servicesHolder;
     @UiField Label infoLabel;
     @UiField FormElement form;
     @UiField InputElement formReturnUrl, formItemName, formItemNumber, formItemId, formAmount;
-    /** Class attributes. **/
-    private ListDataProvider<ServiceDetail> dataProvider;
-    private SingleSelectionModel<ServiceDetail> selectionModel;
 
+    /** Class attributes. **/
     /**************************************************************************/
     /* Initialization                                                         */
     /**************************************************************************/
@@ -59,75 +51,10 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
      */
     @Override
     public void createView() {
-        initTable();
-
         initWidget(uiBinder.createAndBindUi(this));
-    }
 
-    /**
-     * Creates table.
-     */
-    private void initTable() {
-        /** Table initialization. **/
-        DataGrid.Resources resource = GWT.create(DataGridResources.class);
-        table = new DataGrid<ServiceDetail>(10, resource, ServiceDetail.KEY_PROVIDER);
-        dataProvider = new ListDataProvider<ServiceDetail>();
-        dataProvider.addDataDisplay(table);
-        selectionModel = new SingleSelectionModel<ServiceDetail>();
-        table.setSelectionModel(selectionModel);
-
-        initTableColumns();
-    }
-
-    /**
-     * Creates table columns.
-     * @param radioBtnColumn - radio button column.
-     */
-    private void initTableColumns() {
-        /** Column initialization. **/
-        //Radio column
-        table.addColumn(new Column<ServiceDetail, Boolean>(new RadioCell()) {
-            @Override
-            public Boolean getValue(ServiceDetail object) {
-                return selectionModel.isSelected(object);
-            }
-        });
-        //Service title column
-        table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
-            @Override
-            public String getValue(ServiceDetail object) {
-                return object.getTitle();
-            }
-        }, Storage.MSGS.columnService());
-        //Service description column
-        table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
-            @Override
-            public String getValue(ServiceDetail object) {
-                return object.getDescription();
-            }
-        }, Storage.MSGS.columDescription());
-        //Price column
-        table.addColumn(new Column<ServiceDetail, String>(new TextCell()) {
-            @Override
-            public String getValue(ServiceDetail object) {
-                return Storage.CURRENCY_FORMAT.format(object.getPrice());
-            }
-        }, Storage.MSGS.columnPrice());
-        //Credits column
-        table.addColumn(new Column<ServiceDetail, Number>(new NumberCell()) {
-            @Override
-            public Number getValue(ServiceDetail object) {
-                return object.getCredits();
-            }
-        }, Storage.MSGS.columnCredits());
-
-        //Set table and columns sizes
-        table.setSize("100%", "100px");
-        table.setColumnWidth(0, "35px");
-        table.setColumnWidth(1, "30%");
-        table.setColumnWidth(2, "70%");
-        table.setColumnWidth(3, "70px");
-        table.setColumnWidth(4, "70px");
+        /** style implementation and overflow tweaks **/
+        CssInjector.INSTANCE.ensureServiceSelectorStylesInjected();
     }
 
     /**************************************************************************/
@@ -152,37 +79,25 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
      */
     @Override
     public void reset() {
-        selectionModel.clear();
+        for (int i = 0; i < servicesHolder.getWidgetCount(); i++) {
+            ServiceItem item = (ServiceItem) servicesHolder.getWidget(i);
+            item.setSelected(false);
+        }
     }
 
     /**************************************************************************/
     /* Getters                                                                */
     /**************************************************************************/
     /**
-     * {@inheritDoc}
-     */
-    public DataGrid getTable() {
-        return table;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return services holder
      */
     @Override
-    public SingleSelectionModel<ServiceDetail> getSelectionModel() {
-        return selectionModel;
+    public HorizontalPanel getServicesHolder() {
+        return servicesHolder;
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ListDataProvider<ServiceDetail> getDataProvider() {
-        return dataProvider;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @return payment form
      */
     @Override
     public FormElement getPaymentForm() {
@@ -195,6 +110,18 @@ public class ServiceSelectorView extends Composite implements IServiceSelectorMo
      */
     @Override
     public boolean isValid() {
-        return selectionModel.getSelectedObject() != null;
+        int countValid = 0; //only one service should be selected
+        for (int i = 0; i < servicesHolder.getWidgetCount(); i++) {
+            ServiceItem item = (ServiceItem) servicesHolder.getWidget(i);
+            if (item.isIsSelected()) {
+                countValid++;
+            }
+        }
+        if (countValid == 0) {
+            Window.alert("Please select one service.");
+        } else if (countValid > 0) {
+            Window.alert("Only one serivce must be selected.");
+        }
+        return countValid == 1;
     }
 }
