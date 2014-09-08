@@ -156,6 +156,9 @@
     width: 405px;    
 }
 
+.fourStepTabPanel .customHeader {
+    width: 306px;
+}
 
 .buttons-panel.small {
     /*width: 225px;*/

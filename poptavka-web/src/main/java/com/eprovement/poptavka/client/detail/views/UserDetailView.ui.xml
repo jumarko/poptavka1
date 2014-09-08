@@ -7,176 +7,174 @@
     <ui:with field='res'
              type='com.eprovement.poptavka.resources.StyleResource' />
 
-    <b:FluidContainer addStyleNames='{res.details.demandDetailContent}'>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <!-- Common info -->
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formCommonInfo">Common info: </ui:msg>
-                </b:Heading>
-            </b:Column>
-
-            <b:Column size='12' ui:field="companyNameColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formComapanyName">Company name: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="companyName" />
-            </b:Column>
-
-            <b:Column size='12' ui:field="businessTypeColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formBusinessType">Business type: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="businessType" />
-            </b:Column>
-
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formRanking">Overall rating:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="overalRating" />
-            </b:Column>
-
-            <b:Column size='12' ui:field="certifiedColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formCertified">Certified:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="certified" />
-            </b:Column>
-
-            <b:Column size='12' ui:field="websiteColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formWebsite">Website:</ui:msg>
-                </g:Label>                
-                <g:Anchor ui:field="website" />
-            </b:Column>
-        </b:FluidRow>
-
-        <b:FluidRow ui:field='addressBlock' addStyleNames='{res.details.detailBlock}'>
-            <!-- Address info -->
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formAddress">Address: </ui:msg>
-                </b:Heading>
-            </b:Column>
-
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formStreet">Street: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="street" />
-            </b:Column>
-
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formCity">City: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="city" />
-            </b:Column>
-
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formZipCode">Zip code: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="zipCode" />
-            </b:Column>
-        </b:FluidRow>
-
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <g:HTMLPanel ui:field="categoryPanel">
+    <g:HTMLPanel addStyleNames='{res.details.demandDetailContent}'>
+        <b:FluidContainer>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <!-- Common info -->
                 <b:Column size='12'>
                     <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                        <ui:msg key="formCategories">Categories</ui:msg>
+                        <ui:msg key="formCommonInfo">Common info: </ui:msg>
                     </b:Heading>
                 </b:Column>
+
+                <b:Column size='12' ui:field="companyNameColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formComapanyName">Company name: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="companyName" />
+                </b:Column>
+
+                <b:Column size='12' ui:field="businessTypeColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formBusinessType">Business type: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="businessType" />
+                </b:Column>
+
                 <b:Column size='12'>
-                    <c:CellList ui:field="categories"
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formRanking">Overall rating:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="overalRating" />
+                </b:Column>
+
+                <b:Column size='12' ui:field="certifiedColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formCertified">Certified:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="certified" />
+                </b:Column>
+
+                <b:Column size='12' ui:field="websiteColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formWebsite">Website:</ui:msg>
+                    </g:Label>                
+                    <g:Anchor ui:field="website" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow ui:field='addressBlock' addStyleNames='{res.details.detailBlock}'>
+                <!-- Address info -->
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formAddress">Address: </ui:msg>
+                    </b:Heading>
+                </b:Column>
+
+                <b:Column size='12'>
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formStreet">Street: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="street" />
+                </b:Column>
+
+                <b:Column size='12'>
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formCity">City: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="city" />
+                </b:Column>
+
+                <b:Column size='12'>
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formZipCode">Zip code: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="zipCode" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <g:HTMLPanel ui:field="categoryPanel">
+                    <b:Column size='12'>
+                        <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                            <ui:msg key="formCategories">Categories</ui:msg>
+                        </b:Heading>
+                    </b:Column>
+                    <b:Column size='12'>
+                        <c:CellList ui:field="categories"
                                 styleName='{res.details.detailCategoryLabel}' />
-                </b:Column>
-            </g:HTMLPanel>
-        </b:FluidRow>
+                    </b:Column>
+                </g:HTMLPanel>
+            </b:FluidRow>
 
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <g:HTMLPanel ui:field="localityPanel">
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <g:HTMLPanel ui:field="localityPanel">
+                    <b:Column size='12'>
+                        <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                            <ui:msg key="formLocalities">Localities</ui:msg>
+                        </b:Heading>
+                    </b:Column>
+                    <b:Column size='12'>
+                        <c:CellList ui:field="localities"
+                                styleName='{res.details.detailLocalityLabel}' />
+                    </b:Column>
+                </g:HTMLPanel>
+            </b:FluidRow>
+
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <!-- Detail info -->
                 <b:Column size='12'>
                     <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                        <ui:msg key="formLocalities">Localities</ui:msg>
+                        <ui:msg key="formDetailInfo">Detail info: </ui:msg>
+                    </b:Heading>
+                </b:Column>
+                <b:Column size='12' ui:field="firstNameColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formFirstName">First name:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="firstName" />
+                </b:Column>
+                <b:Column size='12' ui:field="lastNameColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formLastName">Last name: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="lastName" />
+                </b:Column>
+                <b:Column size='12' ui:field="phoneColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formPhone">Phone: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="phone" />
+                </b:Column>
+                <b:Column size='12' ui:field="emailColumn">
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formEmail">Email: </ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="email" />
+                </b:Column>
+            </b:FluidRow>
+
+            <b:FluidRow ui:field="invoiceRow" addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formInvoiceInfo">Invoice info</ui:msg>
                     </b:Heading>
                 </b:Column>
                 <b:Column size='12'>
-                    <c:CellList ui:field="localities"
-                                styleName='{res.details.detailLocalityLabel}' />
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formTaxNumber">Tax number:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="taxId" />
                 </b:Column>
-            </g:HTMLPanel>
-        </b:FluidRow>
+                <b:Column size='12'>
+                    <g:Label styleName='{res.details.detailBlockLabel}'>
+                        <ui:msg key="formVatNumber">Vat number:</ui:msg>
+                    </g:Label>
+                    <g:Label ui:field="identificationNumber" />
+                </b:Column>
+            </b:FluidRow>
 
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <!-- Detail info -->
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formDetailInfo">Detail info: </ui:msg>
-                </b:Heading>
-            </b:Column>
-            <b:Column size='12' ui:field="firstNameColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formFirstName">First name:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="firstName" />
-            </b:Column>
-            <b:Column size='12' ui:field="lastNameColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formLastName">Last name: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="lastName" />
-            </b:Column>
-            <b:Column size='12' ui:field="phoneColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formPhone">Phone: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="phone" />
-            </b:Column>
-            <b:Column size='12' ui:field="emailColumn">
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formEmail">Email: </ui:msg>
-                </g:Label>
-                <g:Label ui:field="email" />
-            </b:Column>
-        </b:FluidRow>
-
-        <b:FluidRow ui:field="invoiceRow" addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formInvoiceInfo">Invoice info</ui:msg>
-                </b:Heading>
-            </b:Column>
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formTaxNumber">Tax number:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="taxId" />
-            </b:Column>
-            <b:Column size='12'>
-                <g:Label styleName='{res.details.detailBlockLabel}'>
-                    <ui:msg key="formVatNumber">Vat number:</ui:msg>
-                </g:Label>
-                <g:Label ui:field="identificationNumber" />
-            </b:Column>
-        </b:FluidRow>
-
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <!-- Description: info -->
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formDescription">Description: </ui:msg>
-                </b:Heading>
-            </b:Column>
-            <b:Column size='12'>
-                <g:HTMLPanel>
-                    <pre class='{res.details.conversationDetailContent}'>
-                        <g:Label ui:field="description" />
-                    </pre>
-                </g:HTMLPanel>
-            </b:Column>
-        </b:FluidRow>
-    </b:FluidContainer>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <!-- Description: info -->
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formDescription">Description: </ui:msg>
+                    </b:Heading>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+        <pre class='{res.details.detailDescriptionContent}'>
+            <g:Label ui:field="description" />
+        </pre>
+    </g:HTMLPanel>
 </ui:UiBinder>

@@ -35,4 +35,6 @@
 .messages-received {}
 .message-unread {}
 .response-container {}
-.detail-description-content {}
+.detail-description-content {
+    margin: 0 10px;
+}

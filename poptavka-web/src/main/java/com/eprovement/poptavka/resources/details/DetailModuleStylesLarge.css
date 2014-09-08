@@ -81,7 +81,8 @@
 .demand-detail-content {
     background: #ffffff;
     float: left;
-    padding: 15px;
+    padding: 15px 3%;
+    width: 94%;
     border: 1px solid #E2DFD2;
     border-bottom: 1px solid #b8b5aa;
     border-top: none;
@@ -90,6 +91,11 @@
     -webkit-border-radius: 0 0 6px 6px;
 
 }
+
+.demand-detail-content .description {
+    margin: 0 2.12766%;
+}
+
 .detail-block {
     float: left;
     margin: 0;
@@ -405,7 +411,7 @@
     background: none;
     border: none;
     line-height: normal;
-    margin: 5px 0 0;
+    margin: 0 15px;
     padding: 0;
     white-space: pre-line;
     word-break: normal;

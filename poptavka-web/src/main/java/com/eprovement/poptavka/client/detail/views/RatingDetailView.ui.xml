@@ -10,133 +10,133 @@
         }
     </ui:style>
 
-    <b:FluidContainer addStyleNames='{res.details.demandDetailContent} {res.details.ratingContainer}'>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formDemandInfo">Demand Info</ui:msg>
-                </b:Heading>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label ui:field="demandDescription"/>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <g:HTMLPanel>
-                <br />
-            </g:HTMLPanel>       
-        </b:FluidRow>              
+    <g:HTMLPanel addStyleNames='{res.details.demandDetailContent} {res.details.ratingContainer}'>
+        <b:FluidContainer>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formDemandInfo">Demand Info</ui:msg>
+                    </b:Heading>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label ui:field="demandDescription"/>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <g:HTMLPanel>
+                    <br />
+                </g:HTMLPanel>       
+            </b:FluidRow>              
 
-        <!--Client-->
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formClientRatingInfo">Client rating info</ui:msg>
-                </b:Heading>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label ui:field="clientDisplayName" addStyleNames='{res.details.detailStrong}'/>
-                <g:Label addStyleNames="{style.no-margin}">
+            <!--Client-->
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formClientRatingInfo">Client rating info</ui:msg>
+                    </b:Heading>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label ui:field="clientDisplayName" addStyleNames='{res.details.detailStrong}'/>
+                    <g:Label addStyleNames="{style.no-margin}">
                                 &nbsp;
-                    <ui:msg key="formCommonReceivedMessage">received following rating</ui:msg>
-                </g:Label>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
+                        <ui:msg key="formCommonReceivedMessage">received following rating</ui:msg>
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <b:WellForm>
+                        <b:FluidRow>
+                            <b:Column size="4">
+                                <g:HTMLPanel ui:field="clientStar1"></g:HTMLPanel>
+                                <g:HTMLPanel ui:field="clientStar2"></g:HTMLPanel>
+                                <g:HTMLPanel ui:field="clientStar3"></g:HTMLPanel>
+                                <g:HTMLPanel ui:field="clientStar4"></g:HTMLPanel>
+                                <g:HTMLPanel ui:field="clientStar5"></g:HTMLPanel>
+                            </b:Column>
+                            <b:Column size="3">
+                                <b:Heading size="4" ui:field="clientHeading"/>
+                            </b:Column>
+                            <b:Column size="5">
+                                <b:Paragraph>
+                                    <g:Label ui:field="clientCommentDefault"/>
+                                </b:Paragraph>
+                            </b:Column>
+                        </b:FluidRow>
+                    </b:WellForm>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label>
+                        <ui:msg key="formRateComment">Additional comment:</ui:msg>
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>                            
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label ui:field="clientCommentAdditional"/>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <g:HTMLPanel>
+                    <br />
+                </g:HTMLPanel>       
+            </b:FluidRow>    
+
+            <!--Supplier-->
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <b:Heading size='5' styleName='{res.details.detailHeader}'>
+                        <ui:msg key="formSupplierRatingInfo">Supplier rating info</ui:msg>
+                    </b:Heading>
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label ui:field="supplierDisplayName" addStyleNames='{res.details.detailStrong}'/>
+                    <g:Label addStyleNames="{style.no-margin}">
+                                &nbsp;
+                        <ui:msg key="formCommonReceivedMessage">received following rating</ui:msg>
+                    </g:Label>                            
+                </b:Column>
+            </b:FluidRow>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
                 <b:WellForm>
                     <b:FluidRow>
                         <b:Column size="4">
-                            <g:HTMLPanel ui:field="clientStar1"></g:HTMLPanel>
-                            <g:HTMLPanel ui:field="clientStar2"></g:HTMLPanel>
-                            <g:HTMLPanel ui:field="clientStar3"></g:HTMLPanel>
-                            <g:HTMLPanel ui:field="clientStar4"></g:HTMLPanel>
-                            <g:HTMLPanel ui:field="clientStar5"></g:HTMLPanel>
+                            <g:HTMLPanel ui:field="supplierStar1"></g:HTMLPanel>
+                            <g:HTMLPanel ui:field="supplierStar2"></g:HTMLPanel>
+                            <g:HTMLPanel ui:field="supplierStar3"></g:HTMLPanel>
+                            <g:HTMLPanel ui:field="supplierStar4"></g:HTMLPanel>
+                            <g:HTMLPanel ui:field="supplierStar5"></g:HTMLPanel>
                         </b:Column>
                         <b:Column size="3">
-                            <b:Heading size="4" ui:field="clientHeading"/>
+                            <b:Heading size="4" ui:field="supplierHeading"/>
                         </b:Column>
                         <b:Column size="5">
                             <b:Paragraph>
-                                <g:Label ui:field="clientCommentDefault"/>
+                                <g:Label ui:field="supplierCommentDefault"/>
                             </b:Paragraph>
                         </b:Column>
                     </b:FluidRow>
                 </b:WellForm>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label>
-                    <ui:msg key="formRateComment">Additional comment:</ui:msg>
-                </g:Label>
-            </b:Column>
-        </b:FluidRow>                            
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label ui:field="clientCommentAdditional"/>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <g:HTMLPanel>
-                <br />
-            </g:HTMLPanel>       
-        </b:FluidRow>    
+            </b:FluidRow>
 
-        <!--Supplier-->
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <b:Heading size='5' styleName='{res.details.detailHeader}'>
-                    <ui:msg key="formSupplierRatingInfo">Supplier rating info</ui:msg>
-                </b:Heading>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label ui:field="supplierDisplayName" addStyleNames='{res.details.detailStrong}'/>
-                <g:Label addStyleNames="{style.no-margin}">
-                                &nbsp;
-                    <ui:msg key="formCommonReceivedMessage">received following rating</ui:msg>
-                </g:Label>                            
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:WellForm>
-                <b:FluidRow>
-                    <b:Column size="4">
-                        <g:HTMLPanel ui:field="supplierStar1"></g:HTMLPanel>
-                        <g:HTMLPanel ui:field="supplierStar2"></g:HTMLPanel>
-                        <g:HTMLPanel ui:field="supplierStar3"></g:HTMLPanel>
-                        <g:HTMLPanel ui:field="supplierStar4"></g:HTMLPanel>
-                        <g:HTMLPanel ui:field="supplierStar5"></g:HTMLPanel>
-                    </b:Column>
-                    <b:Column size="3">
-                        <b:Heading size="4" ui:field="supplierHeading"/>
-                    </b:Column>
-                    <b:Column size="5">
-                        <b:Paragraph>
-                            <g:Label ui:field="supplierCommentDefault"/>
-                        </b:Paragraph>
-                    </b:Column>
-                </b:FluidRow>
-            </b:WellForm>
-        </b:FluidRow>
-
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label>
-                    <ui:msg key="formRateComment">Additional comment:</ui:msg>
-                </g:Label>
-            </b:Column>
-        </b:FluidRow>
-        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
-            <b:Column size='12'>
-                <g:Label ui:field="supplierCommentAdditional"/>                                                            
-            </b:Column>
-        </b:FluidRow>
-    </b:FluidContainer>
+            <b:FluidRow addStyleNames='{res.details.detailBlock}'>
+                <b:Column size='12'>
+                    <g:Label>
+                        <ui:msg key="formRateComment">Additional comment:</ui:msg>
+                    </g:Label>
+                </b:Column>
+            </b:FluidRow>
+        </b:FluidContainer>
+        <pre class='{res.details.detailDescriptionContent}'>
+            <g:Label ui:field="supplierCommentAdditional"/>                                                            
+        </pre>
+    </g:HTMLPanel>
 </ui:UiBinder>

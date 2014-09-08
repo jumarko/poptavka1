@@ -12,6 +12,7 @@
     margin-right: 0;
 }
 .treeStepTabPanel {}
+.fourStepTabPanel {}
 .buttons-panel {}
 
 .createTabPanel .gwt-TabLayoutPanelTab {
@@ -23,7 +24,10 @@
     width: 34%;
     margin-right: -2%;   
 }
-
+.fourStepTabPanel .gwt-TabLayoutPanelTab {
+    width: 26%;
+    margin-right: -2%;   
+}
 .createTabPanel .gwt-TabLayoutPanelTabs {
     width:100% !important;    
 }

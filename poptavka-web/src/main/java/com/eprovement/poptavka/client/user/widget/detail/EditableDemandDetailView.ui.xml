@@ -145,13 +145,17 @@
                     <ui:msg key="formDescription">Description: </ui:msg>
                 </b:Heading>
             </b:Column>
-                        
+        </b:FluidRow>
+        
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
             <b:Column size='12'>
                 <cm:ValidationMonitor ui:field='descriptionMonitor'>
                     <g:TextArea height="150px" width="100%" />
                 </cm:ValidationMonitor>
             </b:Column>
-            
+        </b:FluidRow>
+        
+        <b:FluidRow addStyleNames='{res.details.detailBlock}'>
             <b:Column size='12'>
                 <b:FluidRow ui:field="editButtonsPanel" addStyleNames='{res.details.detailBlock}'>            
                     <b:Column size='12'>
