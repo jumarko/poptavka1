@@ -330,6 +330,7 @@ public class HomeSuppliersPresenter
             } else {
                 //cancel filtering if user selected category from celltree
                 view.getFilterLabel().setVisible(false);
+                view.getFilterClearBtn().setVisible(false);
                 //Set selected category as filter and pass it to filter through that category
                 SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
                 filterHolder.getCategories().add(selected);

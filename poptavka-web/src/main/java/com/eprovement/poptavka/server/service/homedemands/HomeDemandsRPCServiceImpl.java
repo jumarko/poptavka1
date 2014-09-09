@@ -239,15 +239,15 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             || (definition.getFilter().getCategories().isEmpty()
             && definition.getFilter().getLocalities().isEmpty())) {
             search = this.getDemandFilter(definition, true);
-            //1 0
+        //1 0
         } else if (!definition.getFilter().getCategories().isEmpty()
             && definition.getFilter().getLocalities().isEmpty()) {
             search = this.getCategoryFilter(definition, true);
-            //0 1
+        //0 1
         } else if (definition.getFilter().getCategories().isEmpty()
             && !definition.getFilter().getLocalities().isEmpty()) {
             search = this.getLocalityFilter(definition, true);
-            //1 1
+        //1 1
         } else if (!definition.getFilter().getCategories().isEmpty()
             && !definition.getFilter().getLocalities().isEmpty()) {
             search = this.getCategoryLocalityFilter(definition, true);
@@ -268,15 +268,15 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
             || (definition.getFilter().getCategories().isEmpty()
             && definition.getFilter().getLocalities().isEmpty())) {
             search = this.getDemandFilter(definition, false);
-            //1 0
+        //1 0
         } else if (!definition.getFilter().getCategories().isEmpty()
             && definition.getFilter().getLocalities().isEmpty()) {
             search = this.getCategoryFilter(definition, false);
-            //0 1
+        //0 1
         } else if (definition.getFilter().getCategories().isEmpty()
             && !definition.getFilter().getLocalities().isEmpty()) {
             search = this.getLocalityFilter(definition, false);
-            //1 1
+        //1 1
         } else if (!definition.getFilter().getCategories().isEmpty()
             && !definition.getFilter().getLocalities().isEmpty()) {
             search = this.getCategoryLocalityFilter(definition, false);
@@ -315,10 +315,15 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         categorySearch.setDistinct(true);
         //categories
+        List<Filter> filterAnd = new ArrayList<Filter>();
         for (ICatLocDetail cat : definition.getFilter().getCategories()) {
             Category category = this.generalService.find(Category.class, cat.getId());
-            categorySearch.addFilterGreaterOrEqual("category.leftBound", category.getLeftBound());
-            categorySearch.addFilterLessOrEqual("category.leftBound", category.getRightBound());
+            filterAnd.add(
+                Filter.and(
+                    Filter.greaterOrEqual("category.leftBound", category.getLeftBound()),
+                    Filter.lessOrEqual("category.leftBound", category.getRightBound())
+                )
+            );
         }
         return categorySearch;
     }
@@ -339,11 +344,17 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         }
         localitySearch.setDistinct(true);
         //localities
+        List<Filter> filterAnd = new ArrayList<Filter>();
         for (ICatLocDetail cat : definition.getFilter().getLocalities()) {
             Locality locality = this.generalService.find(Locality.class, cat.getId());
-            localitySearch.addFilterGreaterOrEqual("locality.leftBound", locality.getLeftBound());
-            localitySearch.addFilterLessOrEqual("locality.leftBound", locality.getRightBound());
+            filterAnd.add(
+                Filter.and(
+                    Filter.greaterOrEqual("locality.leftBound", locality.getLeftBound()),
+                    Filter.lessOrEqual("locality.leftBound", locality.getRightBound())
+                )
+            );
         }
+        localitySearch.addFilterOr(filterAnd.toArray(new Filter[filterAnd.size()]));
         return localitySearch;
     }
 
@@ -359,10 +370,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         List<Filter> categoryFilters = new ArrayList<Filter>();
         for (ICatLocDetail catDetail : definition.getFilter().getCategories()) {
             Category category = this.generalService.find(Category.class, catDetail.getId());
-            categoryFilters.add(Filter.and(
-                Filter.greaterOrEqual("leftBound", category.getLeftBound()),
-                Filter.lessOrEqual("rightBound", category.getRightBound())
-            ));
+            categoryFilters.add(
+                Filter.and(
+                    Filter.greaterOrEqual("leftBound", category.getLeftBound()),
+                    Filter.lessOrEqual("rightBound", category.getRightBound())
+                )
+            );
         }
         search.addFilterSome("categories",
             Filter.or(categoryFilters.toArray(new Filter[categoryFilters.size()])));
@@ -370,10 +383,12 @@ public class HomeDemandsRPCServiceImpl extends AutoinjectingRemoteService implem
         List<Filter> localityFilters = new ArrayList<Filter>();
         for (ICatLocDetail localityDetail : definition.getFilter().getLocalities()) {
             Locality locality = this.generalService.find(Locality.class, localityDetail.getId());
-            localityFilters.add(Filter.and(
-                Filter.greaterOrEqual("leftBound", locality.getLeftBound()),
-                Filter.lessOrEqual("rightBound", locality.getRightBound())
-            ));
+            localityFilters.add(
+                Filter.and(
+                    Filter.greaterOrEqual("leftBound", locality.getLeftBound()),
+                    Filter.lessOrEqual("rightBound", locality.getRightBound())
+                )
+            );
         }
         search.addFilterSome("localities",
             Filter.or(localityFilters.toArray(new Filter[localityFilters.size()])));

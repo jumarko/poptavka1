@@ -610,7 +610,7 @@ button.button-green {
 
 .form-fields .tooltip-icon {
     float: left;
-    margin: 9px 0 0 12px;
+    margin: 14px 0 0 12px;
     cursor:help;
 }
 .form-fields .selector-box[readonly] {

@@ -348,6 +348,7 @@ public class HomeDemandsPresenter
                 if (!fromWelcome) {
                     fromWelcome = false;
                     view.getFilterLabel().setVisible(false);
+                    view.getFilterClearBtn().setVisible(false);
                 }
                 //Set selected category as filter and pass it to filter through that category
                 SearchModuleDataHolder filterHolder = SearchModuleDataHolder.getSearchModuleDataHolder();
