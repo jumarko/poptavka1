@@ -56,7 +56,8 @@ public class SupplierSettingsView extends Composite implements ISupplierSettings
     /** UiBinder attributes. **/
     @UiField(provided = true) CellList categories, localities;
     @UiField RatingInfoForm ratingInfoForm;
-    @UiField SimplePanel servicePanel;
+//    TODO Martin - replace by displaying all bought user services
+    SimplePanel servicePanel = new SimplePanel();
     @UiField Button editCatBtn, editLocBtn;
     /** Class attributes. **/
     private ListDataProvider categoryProvider;
