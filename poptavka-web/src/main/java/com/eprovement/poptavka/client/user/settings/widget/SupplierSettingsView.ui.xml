@@ -64,7 +64,8 @@
                 <b:FluidRow>
                     <f:RatingInfoForm ui:field='ratingInfoForm'/>
                 </b:FluidRow>
-                <b:FluidRow>
+                <!--TODO Martin - replace by displaying all bought user services-->
+<!--                <b:FluidRow>
                     <g:HTMLPanel addStyleNames='{res.common.wellContainer}'>
                         <b:FluidRow addStyleNames='well-header'>
                             <b:Column size="12">
@@ -79,7 +80,7 @@
                             </b:Column>
                         </b:FluidRow>
                     </g:HTMLPanel>
-                </b:FluidRow>
+                </b:FluidRow>-->
             </b:Column>
         </b:FluidRow>
     </b:FluidContainer>

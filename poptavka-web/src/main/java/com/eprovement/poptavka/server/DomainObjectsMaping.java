@@ -68,7 +68,11 @@ public final class DomainObjectsMaping {
         mapingPairs.add(new MapingPair(Supplier.class, SupplierField.class, ""));
         mapingPairs.add(new MapingPair(Supplier.class, UserDataField.class, "businessUser.businessUserData."));
         mapingPairs.add(new MapingPair(SupplierCategory.class, SupplierField.class, "supplier."));
+        mapingPairs.add(new MapingPair(
+            SupplierCategory.class, UserDataField.class, "supplier.businessUser.businessUserData."));
         mapingPairs.add(new MapingPair(SupplierLocality.class, SupplierField.class, "supplier."));
+        mapingPairs.add(new MapingPair(
+            SupplierLocality.class, UserDataField.class, "supplier.businessUser.businessUserData."));
         //Offer
         mapingPairs.add(new MapingPair(Offer.class, DemandField.class, "demand."));
         //UserMessage

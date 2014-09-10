@@ -5,10 +5,8 @@ package com.eprovement.poptavka.client.user.settings.widget;
 
 import com.eprovement.poptavka.client.catLocSelector.others.CatLocSelectorBuilder;
 import com.eprovement.poptavka.client.common.session.Constants;
-import com.eprovement.poptavka.client.common.session.Storage;
 import com.eprovement.poptavka.client.user.settings.SettingsEventBus;
 import com.eprovement.poptavka.client.user.settings.interfaces.ISupplierSettings;
-import com.eprovement.poptavka.shared.domain.BusinessUserDetail;
 import com.eprovement.poptavka.shared.domain.settings.SettingDetail;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -48,13 +46,14 @@ public class SupplierSettingsPresenter extends LazyPresenter<ISupplierSettings.V
     @Override
     public void onInitSupplierSettings(SimplePanel holder) {
         holder.setWidget(view);
-        if (Storage.getBusinessUserDetail() != null
-            && Storage.getBusinessUserDetail().getBusinessRoles().contains(
-                BusinessUserDetail.BusinessRole.SUPPLIER)) {
-            eventBus.initServicesWidget(view.getServicePanel());
-        } else {
-            eventBus.initServicesWidget(view.getServicePanel());
-        }
+//      TODO Martin - replace by displaying all bought user services
+//        if (Storage.getBusinessUserDetail() != null
+//            && Storage.getBusinessUserDetail().getBusinessRoles().contains(
+//                BusinessUserDetail.BusinessRole.SUPPLIER)) {
+//            eventBus.initServicesWidget(view.getServicePanel());
+//        } else {
+//            eventBus.initServicesWidget(view.getServicePanel());
+//        }
     }
 
     /**************************************************************************/
