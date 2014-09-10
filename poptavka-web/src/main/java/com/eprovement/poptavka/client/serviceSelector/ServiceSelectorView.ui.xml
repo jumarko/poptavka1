@@ -25,5 +25,8 @@
                 <input type="hidden" name="currency_code" value="USD"/>
             </form>
         </g:HTMLPanel>
+        <g:Label addStyleNames="{res.serviceSelector.serviceInfoMessage}">
+            <ui:msg key="serviceNote">Note: System charges you 1 credit for each offer you send and 10 credits for each closed project.</ui:msg>
+        </g:Label>
     </g:HTMLPanel>
 </ui:UiBinder>
