@@ -129,7 +129,12 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Therefore remove them on resize.
      */
     public void onResize(int actualWidth) {
-        if (767 <= actualWidth && actualWidth < 1200) {
+        if (actualWidth < 480) {
+            //nothing by default
+        } else if (480 <= actualWidth && actualWidth < 767) {
+            view.getRightSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonRightToOpen());
+        } else if (767 <= actualWidth && actualWidth < 1200) {
+            view.getLeftSlidingMenuIcon().setResource(StyleResource.INSTANCE.images().toolbarButtonLeftToOpen());
             animation.getRightSlidingPanel().removeAttr("style");
             isDetailPanelOpen = false;
         } else if (1200 <= actualWidth) {
@@ -142,7 +147,7 @@ public class ToolbarPresenter extends LazyPresenter<IToolbar.View, RootEventBus>
      * Opens right sliding panel.
      */
     public void onOpenDetail() {
-        if (Document.get().getClientWidth() <= 480 && !isDetailPanelOpen) {
+        if (Document.get().getClientWidth() <= 767 && !isDetailPanelOpen) {
             openDetailPanel(true);
         }
     }
