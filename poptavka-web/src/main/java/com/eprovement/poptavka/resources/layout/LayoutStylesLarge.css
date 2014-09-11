@@ -134,7 +134,10 @@
     margin-left: 0px;
     width: 42.735%;
 }
-.detail-container {}
+.detail-container {
+    height: 100%;
+    overflow: auto;
+}
 
 .left-container {
     background: url("images/left-container_bg.jpg") repeat-y top right;
