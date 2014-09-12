@@ -126,7 +126,7 @@
 
 	<bean name="paymentSetting" class="com.eprovement.poptavka.rest.payment.PaymentSetting">
 		<property name="businessEmail">
-			<value>boss@eprovement.com</value>
+			<value>info@eprovement.com</value>
 		</property>
 	</bean>
 	

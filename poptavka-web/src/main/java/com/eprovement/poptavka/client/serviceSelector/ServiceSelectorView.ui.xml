@@ -12,12 +12,12 @@
         </g:Label>
         <g:HorizontalPanel ui:field='servicesHolder'/>
         <g:HTMLPanel>
-            <form ui:field="form" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <form ui:field="form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_xclick"/>
-                <input type="hidden" ui:field="formReturnUrl" name="return" value="https://devel.want-something.com:8443"/>
-                <input type="hidden" name="cancel_return" value="https://devel.want-something.com:8443"/>
-                <input type="hidden" name="notify_url" value="https://devel.want-something.com:8443/api/ipn"/>
-                <input type="hidden" name="business" value="boss@eprovement.com"/>
+                <input type="hidden" ui:field="formReturnUrl" name="return" value="https://want-something.com"/>
+                <input type="hidden" name="cancel_return" value="https://want-something.com"/>
+                <input type="hidden" name="notify_url" value="https://want-something.com/api/ipn"/>
+                <input type="hidden" name="business" value="info@eprovement.com"/>
                 <input type="hidden" ui:field="formItemName" name="item_name"/>
                 <input type="hidden" ui:field="formItemNumber" name="item_number"/>
                 <input type="hidden" ui:field="formItemId" name="custom"/>

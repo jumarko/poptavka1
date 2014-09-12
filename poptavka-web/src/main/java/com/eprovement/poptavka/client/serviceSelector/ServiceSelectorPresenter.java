@@ -79,7 +79,7 @@ public class ServiceSelectorPresenter extends LazyPresenter<IServiceSelectorModu
 
     @Override
     public void onResponseCreateUserService(UserServiceDetail userServiceDetail) {
-        view.setPaymentDetails("https://devel.want-something.com:8443", userServiceDetail);
+        view.setPaymentDetails("https://want-something.com", userServiceDetail);
         eventBus.loadingHide();
         eventBus.loadingShow("Forwarding to paypal");
         view.getPaymentForm().submit();
