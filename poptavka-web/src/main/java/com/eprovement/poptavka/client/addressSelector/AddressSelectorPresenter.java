@@ -123,12 +123,13 @@ public class AddressSelectorPresenter
 
             @Override
             public void onBlur(BlurEvent event) {
-                if (addressSuggestion == null && !((String) view.getCityMonitor().getValue()).isEmpty()) {
-                    view.getCityMonitor().setExternalValidation(ControlGroupType.ERROR,
-                        LocalizableMessages.INSTANCE.addressSelectCityFromSuggestedList());
-                } else {
+                if (((String) view.getCityMonitor().getValue()).isEmpty()) {
                     view.getCityMonitor().reset();
                     view.getCityMonitor().validate();
+                } else if (addressSuggestion == null
+                    || !addressSuggestion.toString().equals((String) view.getCityMonitor().getValue())) {
+                    view.getCityMonitor().setExternalValidation(ControlGroupType.ERROR,
+                        LocalizableMessages.INSTANCE.addressSelectCityFromSuggestedList());
                 }
             }
         }, BlurEvent.getType());
