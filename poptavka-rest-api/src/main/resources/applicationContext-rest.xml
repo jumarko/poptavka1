@@ -120,7 +120,7 @@
 
     <bean name="systemUtil" class="com.eprovement.poptavka.rest.payment.SimpleSystemUtil">
 		<property name="production">
-			<value>false</value>
+			<value>true</value>
 		</property>
 	</bean>
 
