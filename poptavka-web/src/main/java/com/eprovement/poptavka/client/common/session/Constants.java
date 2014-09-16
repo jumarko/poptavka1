@@ -233,4 +233,5 @@ public final class Constants {
     public static final String ADMIN_CLIENTS_FILTER_EMAIL = "mailinator.com";
 
     public static final int OFFER_CREDIT_PRICE = 1;
+    public static final int CLOSE_PROJECT_CREDIT_PRICE = 25;
 }

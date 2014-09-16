@@ -96,4 +96,8 @@ public interface ClientDemandsModuleRPCServiceAsync {
     /**************************************************************************/
     void getClientDashboardDetail(long userId, AsyncCallback<ClientDashboardDetail> calback);
 
+    /**
+     * @see com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCService#substractCredit(long, int)
+     */
+    void substractCredit(long offerId, int credits, AsyncCallback<Boolean> callback);
 }

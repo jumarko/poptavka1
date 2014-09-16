@@ -191,7 +191,7 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * Get ratings of my closed demands.
      *
      * @param userId user's id
-     * @param filter
+     * @param searchDefinition
      * @return
      */
     int getClientRatingsCount(long userId,
@@ -247,4 +247,16 @@ public interface ClientDemandsModuleRPCService extends RemoteService {
      * @throws ApplicationSecurityException
      */
     ClientDashboardDetail getClientDashboardDetail(long userId) throws RPCException, ApplicationSecurityException;
+
+    /**
+     * Substract credit from Supplier after Client closes project. Credit can be substracted even when Supplier has no
+     * sufficient requested amount available. In such case, credit will be negative and Supplier cannot send
+     * further offers, therefore he must recharge his credit.
+     * @param offerId
+     * @param credits
+     * @return
+     * @throws RPCException
+     * @throws ApplicationSecurityException
+    */
+    Boolean substractCredit(long offerId, int credits) throws RPCException, ApplicationSecurityException;
 }
