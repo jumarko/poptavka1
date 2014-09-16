@@ -913,4 +913,17 @@ public class ClientDemandsModuleRPCServiceImpl extends AutoinjectingRemoteServic
 
         return cdd;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Secured(CommonAccessRoles.CLIENT_ACCESS_ROLE_CODE)
+    public Boolean substractCredit(long offerId, int credits) throws RPCException, ApplicationSecurityException {
+        Offer offer = generalService.find(Offer.class, offerId);
+        BusinessUser businessUser = offer.getSupplier().getBusinessUser();
+        businessUser.getBusinessUserData().substractCredits(credits);
+        generalService.save(businessUser);
+        return true;
+    }
 }

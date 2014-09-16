@@ -188,6 +188,9 @@ public interface ClientDemandsModuleEventBus extends EventBusWithLookup, IEventB
     @Event(handlers = ClientDemandsModuleHandler.class)
     void getClientDashboardDetail();
 
+    @Event(handlers = ClientDemandsModuleHandler.class)
+    void requestSubstractCredit(long offerId, int credits);
+
     /**************************************************************************/
     /* Business events for demand's CRUD operations                           */
     /**************************************************************************/

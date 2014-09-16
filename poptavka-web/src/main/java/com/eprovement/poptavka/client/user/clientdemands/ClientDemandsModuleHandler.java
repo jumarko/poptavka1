@@ -327,6 +327,7 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
             new SecuredAsyncCallback<Void>(eventBus) {
                 @Override
                 public void onSuccess(Void result) {
+                    eventBus.requestSubstractCredit(offerID, Constants.CLOSE_PROJECT_CREDIT_PRICE);
                     eventBus.sendStatusMessage(Storage.MSGS.closeDemandMessage());
                     eventBus.responseFeedback();
                 }
@@ -393,5 +394,18 @@ public class ClientDemandsModuleHandler extends BaseEventHandler<ClientDemandsMo
                     eventBus.responseUpdateDemand(result);
                 }
             });
+    }
+
+    /**
+     * @see com.eprovement.poptavka.client.service.demand.ClientDemandsModuleRPCService#substractCredit(long, int)
+     */
+    public void onRequestSubstractCredit(long offerId, int credits) {
+        clientDemandsService.substractCredit(offerId, credits, new SecuredAsyncCallback<Boolean>(eventBus) {
+
+            @Override
+            public void onSuccess(Boolean result) {
+                //nothing by default
+            }
+        });
     }
 }
