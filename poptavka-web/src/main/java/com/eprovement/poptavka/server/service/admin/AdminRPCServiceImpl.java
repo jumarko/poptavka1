@@ -378,7 +378,7 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         }
     }
 
-    public void nestyIfs() {
+    public void nastyIfs() {
         if (true) {
             if (false) {
                 if (true) {
@@ -390,6 +390,26 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
                                 }
                             }
 
+                        }
+                    }
+                }
+            }
+        }
+
+        boolean randomTrue = false;
+        if (randomTrue) {
+            if (true) {
+                if (false) {
+                    if (true) {
+                        if (false) {
+                            if (true) {
+                                if (false) {
+                                    if (true) {
+                                        System.out.println("Nasty IFs.");
+                                    }
+                                }
+
+                            }
                         }
                     }
                 }
