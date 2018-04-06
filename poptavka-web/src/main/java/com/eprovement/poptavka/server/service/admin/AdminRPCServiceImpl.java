@@ -377,4 +377,23 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             return detail;
         }
     }
+
+    public void nestyIfs() {
+        if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
