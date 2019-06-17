@@ -3,9 +3,9 @@
 dir\ space/ @Juraj juraj.martinka@empear.com
 # bitbucket style path with spaces: https://mibexsoftware.atlassian.net/wiki/spaces/CODEOWNERS/pages/222822413/Usage 
 "dir space/" @Juraj juraj.martinka@empear.com
-dir.space" @JurajWithDot
+dir.space @JurajWithDot
 src/main/java/ jumarko@gmail.com
 
 # Files with a `#` can still be accesssed by escaping the pound sign
-\#file_with_pound.clj @owner-file-with-pound
+/dir-pound/\#file_with_pound.clj @owner-file-with-pound
 
