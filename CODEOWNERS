@@ -3,5 +3,6 @@
 dir\ space/ @Juraj juraj.martinka@empear.com
 # bitbucket style path with spaces: https://mibexsoftware.atlassian.net/wiki/spaces/CODEOWNERS/pages/222822413/Usage 
 "dir space/" @Juraj juraj.martinka@empear.com
+dir.space" @JurajWithDot
 src/main/java/ jumarko@gmail.com
 
