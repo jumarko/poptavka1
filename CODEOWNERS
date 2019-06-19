@@ -9,7 +9,7 @@ dir.space @JurajWithDot
 src/main/java/**/*.java jumarko@gmail.com
 
 # java files - TRY AGAIN
-*.java jumarko@gmail.com
+*.java jumarko@gmail.com @praso @martin
 
 # Files with a `#` can still be accesssed by escaping the pound sign
 /dir-pound/\#file_with_pound.clj @owner-file-with-pound
