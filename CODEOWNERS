@@ -1,9 +1,11 @@
 * @praso
 # gitlab style path with spaces: https://docs.gitlab.com/ee/user/project/code_owners.html
 dir\ space/ @Juraj juraj.martinka@empear.com
+
 # bitbucket style path with spaces: https://mibexsoftware.atlassian.net/wiki/spaces/CODEOWNERS/pages/222822413/Usage 
 # "dir space/" @Juraj juraj.martinka@empear.com
-dir.space @JurajWithDot
+
+/dir.space/ @JurajWithDot
 
 # java files - DOESN'T WORK?
 src/main/java/ jumarko@gmail.com
