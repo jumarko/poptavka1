@@ -376,5 +376,95 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
             detail.setProcessedItems(log.get(0).getProcessedItems());
             return detail;
         }
+
+         if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+         if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+         if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+         if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+         if (true) {
+            if (false) {
+                if (true) {
+                    if (false) {
+                        if (true) {
+                            if (false) {
+                                if (true) {
+                                    System.out.println("Nasty IFs.");
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
