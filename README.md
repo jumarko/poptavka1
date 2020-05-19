@@ -1,6 +1,7 @@
 # poptavka
 Repository for my former free-time project "poptavka"
 
+Trigger delta
 Trigger delta 1
 Trigger delta 1
 Trigger delta 2
