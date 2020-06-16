@@ -45,7 +45,7 @@
         <cglib.version>2.2.2</cglib.version>
         <aopalliance.version>1.0</aopalliance.version>
         <commons-lang.version>2.5</commons-lang.version>
-        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-collections.version>3.2.2</commons-collections.version>
         <commons-configuration.version>1.6</commons-configuration.version>
         <gwt.inject.version>1.5.0</gwt.inject.version>
         <guice.version>1.0</guice.version>
