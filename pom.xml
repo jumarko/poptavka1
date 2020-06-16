@@ -58,7 +58,7 @@
         <httpcomponents-client.version>4.0.1</httpcomponents-client.version>
         <httpcomponents-httpmime.version>4.0.1</httpcomponents-httpmime.version>
         <xalan.version>2.7.1</xalan.version>
-        <xerces.version>2.9.1</xerces.version>
+        <xerces.version>2.12.0</xerces.version>
         <httpcomponents-httpcore.version>4.0.1</httpcomponents-httpcore.version>
         <apache-mime4j.version>0.6</apache-mime4j.version>
         <sac.version>1.3</sac.version>
