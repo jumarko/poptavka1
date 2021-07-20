@@ -87,6 +87,12 @@ public class AdminRPCServiceImpl extends AutoinjectingRemoteService implements A
         return 0;
     }
 
+
+    public void methodWithManyArgs(int a, int b, int c, int d, int e) {
+        return 0;
+    }
+
+
     /**************************************************************************/
     /* Attributes                                                             */
     /**************************************************************************/
