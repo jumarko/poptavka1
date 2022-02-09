@@ -33,7 +33,7 @@
         <hamcrest.version>1.3</hamcrest.version>
         <p6spy.version>1.3</p6spy.version>
         <guava.version>r07</guava.version>
-        <hibernate.version>4.1.4.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <!--Most recent version 4.3.0.Final cannot be used because GWT does not
             support it! -->
         <hibernate-validator.version>5.3.6.Final</hibernate-validator.version>
