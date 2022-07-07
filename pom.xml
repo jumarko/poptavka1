@@ -72,7 +72,7 @@
         <jackson.version>2.12.6.1</jackson.version>
         <gwt-syncproxy.version>2.0</gwt-syncproxy.version>
         <javax-mail.version>1.4.4</javax-mail.version>
-        <jasypt.version>1.9.0</jasypt.version>
+        <jasypt.version>1.9.2</jasypt.version>
         <tomcat.jdbc.version>7.0.21</tomcat.jdbc.version>
         <tomcat.juli.version>6.0.16</tomcat.juli.version>
         <dbunit.version>2.4.8</dbunit.version>
