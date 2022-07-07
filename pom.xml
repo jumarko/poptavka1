@@ -57,7 +57,7 @@
         <nehohtml.version>1.9.14</nehohtml.version>
         <httpcomponents-client.version>4.5.13</httpcomponents-client.version>
         <httpcomponents-httpmime.version>4.0.1</httpcomponents-httpmime.version>
-        <xalan.version>2.7.1</xalan.version>
+        <xalan.version>2.7.2</xalan.version>
         <xerces.version>2.12.2</xerces.version>
         <httpcomponents-httpcore.version>4.0.1</httpcomponents-httpcore.version>
         <apache-mime4j.version>0.6</apache-mime4j.version>
