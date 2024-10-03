@@ -51,7 +51,7 @@
         <guice.version>1.0</guice.version>
         <html-unit.version>2.37.0</html-unit.version>
         <commons-codec.version>1.4</commons-codec.version>
-        <commons-io.version>2.7</commons-io.version>
+        <commons-io.version>2.14.0</commons-io.version>
         <unit-core.version>2.8</unit-core.version>
         <css-parser.version>0.9.5</css-parser.version>
         <nehohtml.version>1.9.14</nehohtml.version>
